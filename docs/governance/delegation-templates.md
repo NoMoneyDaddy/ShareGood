@@ -2,11 +2,12 @@
 
 > 用法：派 subagent 時，挑對應模板**整段複製**，把 `【…】` 填空補齊後作為 Agent tool 的 prompt。
 > 每份模板已內建「派工三件套」（目標與動機／驗收條件／回報格式）與回報合約。
-> model 與 effort 建議值來自 `model-dispatch.md` §4；拿不準就用表列的預設。
+> model 與投入度建議值來自 `model-dispatch.md` §4。注意：**Agent tool 沒有 effort 參數**，
+> 投入度是寫在 prompt 文字裡的要求（「快速掃過」／「標準」／「務必徹底」）。拿不準就用模板標頭的預設。
 
 ---
 
-## 模板 1：搜尋／盤點（subagent_type: `Explore`，model: haiku 或 sonnet，effort: low–medium）
+## 模板 1：搜尋／盤點（subagent_type: `Explore`，model: haiku 或 sonnet，投入度：快速）
 
 ```
 【目標與動機】
@@ -33,7 +34,7 @@
 
 ---
 
-## 模板 2：實作（subagent_type: `general-purpose`，model: sonnet［規格明確］/ opus［需補設計］，effort: medium–high）
+## 模板 2：實作（subagent_type: `general-purpose`，model: sonnet［規格明確］/ opus［需補設計］，投入度：標準–徹底）
 
 ```
 【目標與動機】
@@ -62,7 +63,7 @@
 
 ---
 
-## 模板 3：重構／批次修改（subagent_type: `general-purpose`，model: haiku［模式已定］/ sonnet，effort: low–medium）
+## 模板 3：重構／批次修改（subagent_type: `general-purpose`，model: haiku［模式已定］/ sonnet，投入度：快速）
 
 ```
 【目標與動機】
@@ -91,7 +92,7 @@
 
 ---
 
-## 模板 4：研究／查文件（subagent_type: `general-purpose`，model: sonnet，effort: medium）
+## 模板 4：研究／查文件（subagent_type: `general-purpose`，model: sonnet，投入度：標準）
 
 ```
 【目標與動機】
@@ -114,7 +115,7 @@
 
 ---
 
-## 模板 5：審查／驗收（subagent_type: `general-purpose`，model: sonnet［常規驗收］/ opus［安全或架構審查］，effort: medium–high）
+## 模板 5：審查／驗收（subagent_type: `general-purpose`，model: sonnet［常規驗收］/ opus［安全或架構審查］，投入度：徹底）
 
 ```
 【目標與動機】

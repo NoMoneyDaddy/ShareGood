@@ -7,13 +7,16 @@
 
 - **Agent tool 的 `model` 參數**：`sonnet`｜`opus`｜`haiku`｜`fable`。
   注意：`fable` 只在特定 session 可用；日常環境拿不到，守則預設不依賴它。
-- **`effort` 參數**（Agent/Workflow 皆有）：`low`｜`medium`｜`high`｜`xhigh`｜`max`。
+- **Agent tool 沒有 `effort` 參數**（實測 schema 只有 model、subagent_type 等欄位）。投入度用
+  prompt 文字指定：「快速掃過即可」／「標準」／「務必徹底、逐項驗證」。`Workflow` 工具的 agent()
+  選項才有 effort（low–max），且 Workflow 不保證每個 session 都有——要用先以 ToolSearch 確認。
 - **內建 agent 類型**（`subagent_type`）：
   - `Explore`：唯讀搜索。掃 repo、找定義、確認慣例用它。不能改檔。
   - `Plan`：設計實作方案，回傳步驟與關鍵檔案。不能改檔。
   - `general-purpose`：可讀可寫可跑指令的通用工人。實作、重構、驗證用它。
   - `claude-code-guide`：查 Claude Code / Agent SDK / API 用法時用。
-- 省略 `model` 參數時 subagent 繼承主對話的模型。**派工時一律顯式指定 model 與 effort**，不要用繼承。
+- 省略 `model` 參數時 subagent 繼承主對話的模型。**派工時一律顯式指定 model，並在 prompt 內
+  寫明投入度**，不要用繼承。
 
 ## 1. 開 session 時選什麼等級當指揮官
 
@@ -53,19 +56,19 @@
 
 ## 4. 派工的 model / effort 對照表
 
-| 子任務 | subagent_type | model | effort |
+| 子任務 | subagent_type | model | 投入度（寫進 prompt）|
 |---|---|---|---|
-| 掃 repo、找定義、確認慣例 | Explore | haiku | low–medium |
-| 大範圍搜索（多處命名、跨模組） | Explore | sonnet | medium |
-| 查外部文件、網頁研究 | general-purpose | sonnet | medium |
-| 照規格實作（規格明確） | general-purpose | sonnet | medium–high |
-| 實作（規格模糊、要自己補設計） | general-purpose | opus | high |
-| 機械式批次修改（模式已解出） | general-purpose | haiku | low |
-| 設計方案、拆解 | Plan | sonnet 起步，重要的用 opus | high |
-| 驗收／read-back／跑測試 | general-purpose | sonnet | medium |
-| 安全審查、高風險第二意見 | general-purpose | opus | high |
+| 掃 repo、找定義、確認慣例 | Explore | haiku | 快速 |
+| 大範圍搜索（多處命名、跨模組） | Explore | sonnet | 標準 |
+| 查外部文件、網頁研究 | general-purpose | sonnet | 標準 |
+| 照規格實作（規格明確） | general-purpose | sonnet | 標準–徹底 |
+| 實作（規格模糊、要自己補設計） | general-purpose | opus | 徹底 |
+| 機械式批次修改（模式已解出） | general-purpose | haiku | 快速 |
+| 設計方案、拆解 | Plan | 命中 judgment-rubrics §1 升級訊號者用 opus，否則 sonnet | 徹底 |
+| 驗收／read-back／跑測試 | general-purpose | sonnet | 標準 |
+| 安全審查、高風險第二意見 | general-purpose | opus | 徹底 |
 
-原則：**規格越明確 → 模型越便宜；判斷成分越高 → 模型越貴。** effort 超過 high 只留給
+原則：**規格越明確 → 模型越便宜；判斷成分越高 → 模型越貴。**「徹底」投入度只留給
 「錯了很貴、又無法事後便宜驗證」的任務。
 
 ## 5. 回報合約（subagent 必須遵守，寫進每個派工 prompt）
@@ -84,8 +87,8 @@
 - **Opus 也解不了** → 停下來，把問題與失敗軌跡整理給使用者，明說卡在哪。不要第三次重試。
 - **降級**：貴模型解出「模式」後（例如：確定了某類修改的正確做法），把模式寫成明確指令，
   降回 haiku/sonnet 批次套用到其餘位置。
-- **重試上限**：同一件事同一等級最多 2 輪。第 2 輪失敗就升級或換路（換路判準見
-  `judgment-rubrics.md` §4），禁止无變化地第 3 次重試。
+- **重試上限**：同一件事同一等級最多 2 輪（**Haiku 例外：只有 1 輪**，見本節第一條）。
+  第 2 輪失敗就升級或換路（換路判準見 `judgment-rubrics.md` §4），禁止無變化地第 3 次重試。
 
 ## 7. 驗證不自驗
 
@@ -103,3 +106,13 @@
 - 互相獨立的子任務**同一則訊息一次派出**（多個 tool call 並行），不要串行等待。
 - 有依賴關係的（B 要用 A 的結果）才串行。
 - 派出去之後不要自己動手做同一件事（重複燒 token）。
+
+## 9. 高效使用 bash（使用者明確要求）
+
+- **批次勝過逐一**：建多個目錄用一次 `mkdir -p a b c`；多個獨立檢查用 `&&`/`;` 串成一次呼叫；
+  批次驗證用 `for f in …; do test -s $f && echo OK $f; done`、`wc -l`、`ls -R`。
+  一次 Bash 呼叫能做完的事，不要拆成五次。
+- **界線**：檔案「內容」的建立與修改用 Write/Edit 工具，不要用 heredoc/`sed -i` 寫長文件——
+  跳脫字元容易出錯且 diff 不可審。bash 負責「操作與驗證」，Write/Edit 負責「內容」。
+- 優先用專用工具而非 bash 等價指令：找檔用 Glob（不用 find）、搜內容用 Grep（不用 grep/rg）、
+  讀檔用 Read（不用 cat）。專用工具對權限與輸出處理更友善。

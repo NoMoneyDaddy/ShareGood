@@ -12,11 +12,15 @@
 
 你多半跑在暫時性的遠端 container 裡。session 結束或閒置回收後，工作目錄一切消失。
 所以：**commit 是逗號，push 才是句號**。每完成一個單位就 commit，session 收尾必 push。
-另外兩個環境事實，別靠訓練記憶猜：
-- 這裡**沒有 `gh` CLI**。GitHub 操作（開 PR、查 issue、看 CI）用 `mcp__github__*` 工具
-  （用 ToolSearch 載入）。
+另外幾個環境事實，別靠訓練記憶猜（都是 2026-07-05 實測，環境可能變，用前先驗）：
+- GitHub 操作以 `mcp__github__*` 工具為準（ToolSearch 載入）。環境裡裝有 `gh` CLI，但實測
+  `GH_TOKEN` 無效（`gh auth status` 失敗）——要用 gh 先驗證，失敗就回 MCP 工具。
+  `git push` 走環境內建 proxy，不吃這個 token，直接推即可。
 - 主分支是 `main`（使用者明確指定）。日常開發開 `feature/*` 分支、push 後開 draft PR 讓使用者過目；
   純文件與制度維護類的小改，使用者若已授權可直接進 main。
+- 部署金鑰：`ZEABUR_TOKEN` 已設定（Zeabur CLI 可經 `npx zeabur@latest` 使用）。環境旗標
+  `INSTALL_ZEABUR_MCP=1`，但本 session 實測**沒有** Zeabur MCP 工具——先用 ToolSearch 查
+  「zeabur」，有就用 MCP，沒有就用 CLI。
 
 ### 2. 使用者要的是「上線給真人用」，不是完美架構
 
@@ -56,9 +60,14 @@ repo 目前是空的。第一個寫程式碼的 session 會定下所有版本與
 1. **模糊題與品味**（UX 取捨、文案語氣、「使用者會不會喜歡」）——出路照 judgment-rubrics §6：
    升級模型出多方案＋trade-off、交使用者選、或明說建議找真人試。不要假裝有把握。
 2. **真實世界的最新事實**（法規、價格、第三方限制）——查得到附來源，查不到標「未確認」。
-3. **法律責任**——條款與隱私政策上線前要台灣律師看過，這在 master-plan §12 是硬 gate。
+3. **法律責任**——master-plan §12 的硬 gate 是「三個政策頁完成＋使用者過目」；台灣律師審閱
+   是強烈建議但模型無法強制，上線前要明確提醒使用者這件事還沒做。
 
 ## 四、交接區（session 之間的未竟事項寫在這裡，完成就清掉）
 
-- （2026-07-05 制度 session）交付 A–G 全部完成。下一步是 M0：開工前先讀 master-plan §5，
-  並照本信第一之 3 的要求先做版本研究。尚無其他未竟事項。
+- （2026-07-05 制度 session）交付 A–G 全部完成，並通過 fresh-context Sonnet 對抗審查
+  （4 BLOCKER / 6 MINOR / 1 NIT 全數修正，最大教訓：Agent tool 沒有 effort 參數，
+  投入度要寫進 prompt 文字）。
+- **下一個 session 的第一件事是 M0**：讀 master-plan §5，照本信「一之 3」先派 research agent
+  查當前版本組合，再 scaffold。M0 交付項含安裝 impeccable 設計技能（master-plan §3.6）。
+- 使用者要求：全程繁體中文；善用高效 bash（model-dispatch §9）；前端設計用 impeccable。

@@ -13,7 +13,7 @@
 
 | 情境 | 讀這份 |
 |---|---|
-| 任何開發任務開工前（必讀） | `docs/plan/master-plan.md`（唯一主控規格，只讀目前 milestone 那節＋通用慣例節） |
+| 任何開發任務開工前（必讀） | `docs/plan/master-plan.md`（唯一主控規格，讀目前 milestone 那節＋通用慣例 §3＋附錄 §11 該 milestone 條目） |
 | 要派 subagent、選 model/effort | `docs/governance/model-dispatch.md` |
 | 拿不準「算不算完成／該不該問使用者／要不要換路」 | `docs/governance/judgment-rubrics.md` |
 | 要寫派工 prompt | `docs/governance/delegation-templates.md`（直接複製模板填空） |
@@ -31,7 +31,9 @@
 3. **驗證不自驗**：驗收派 fresh-context subagent；檔案用 read-back、程式碼用測試或實跑。
    沒有證據（測試輸出／指令結果／file:line）的「已完成」一律視為未完成。
 4. **隨做隨 commit**：每完成一個可交付單位立即 commit（conventional 前綴：feat/fix/docs/…）。
+   功能開發在 `feature/*` 分支、push 後開 draft PR 給使用者過目；純文件小改可直接進 `main`。
    一個 session 只做一個 milestone 的工作，做完驗收、push 後結束。
-5. **踩坑就落檔**：花超過 30 分鐘才解掉的問題，解掉後立即寫一課進 `docs/governance/lessons/`。
+5. **踩坑就落檔**：同一問題重試或修改超過 5 次工具呼叫才解掉的（約半小時工作量），解掉後立即
+   寫一課進 `docs/governance/lessons/`；拿不準要不要寫，就寫。
 6. **安全底線**（寫程式碼時）：所有 mutation API 必須 server-side 權限檢查；圖片與大檔案不進
    PostgreSQL；所有列表查詢必分頁；秘密只放環境變數。細節見 master-plan.md 通用慣例節。
