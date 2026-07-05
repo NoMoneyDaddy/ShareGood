@@ -89,7 +89,7 @@ export default async function HomePage() {
                 className="h-auto border-none bg-transparent p-0 text-base text-ink shadow-none focus-visible:ring-0 disabled:pointer-events-none disabled:bg-transparent"
               />
               <Button
-                size="default"
+                size="xl"
                 className="shrink-0 bg-brand text-white hover:bg-brand-ink"
                 disabled
               >
@@ -237,13 +237,17 @@ export default async function HomePage() {
             <div>
               <h2 className="text-2xl font-bold text-white">把用不到的好物，分享出去</h2>
               <p className="mt-1.5 text-sm text-white/70">
-                登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。
+                {session?.user
+                  ? profile
+                    ? "上架功能即將開放，敬請期待。"
+                    : "只差最後一步，設定暱稱與縣市就能開始分享。"
+                  : "登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。"}
               </p>
             </div>
             {session?.user ? (
               profile ? (
                 <Button
-                  size="lg"
+                  size="xl"
                   className="bg-brand text-white hover:bg-brand-ink"
                   disabled
                   title="M1 起開放上架"
@@ -251,7 +255,7 @@ export default async function HomePage() {
                   我要分享
                 </Button>
               ) : (
-                <Button asChild size="lg" className="bg-brand text-white hover:bg-brand-ink">
+                <Button asChild size="xl" className="bg-brand text-white hover:bg-brand-ink">
                   <Link href="/onboarding">完成設定</Link>
                 </Button>
               )
@@ -262,7 +266,7 @@ export default async function HomePage() {
                   await signIn("google");
                 }}
               >
-                <Button type="submit" size="lg" className="bg-brand text-white hover:bg-brand-ink">
+                <Button type="submit" size="xl" className="bg-brand text-white hover:bg-brand-ink">
                   加入 ShareGood
                 </Button>
               </form>
