@@ -13,7 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     // 非本專案維護的程式碼：
-    ".claude/**", // impeccable skill 自帶腳本
+    ".claude/**", // 已安裝的 Claude Code skill 自帶腳本
+    ".agents/**", // 已安裝的 skill 自帶腳本（design-system/brand 等）
     "src/generated/**", // Prisma 產生碼
   ]),
 ]);
