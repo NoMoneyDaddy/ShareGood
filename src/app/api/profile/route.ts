@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { db } from "@/lib/db";
 
 // POST /api/profile — 設定/更新暱稱與縣市（onboarding 與個人設定共用）
 export async function POST(req: NextRequest) {
-  let user;
+  let user: Awaited<ReturnType<typeof requireUser>>;
   try {
     user = await requireUser();
   } catch (e) {

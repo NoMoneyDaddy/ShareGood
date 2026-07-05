@@ -15,8 +15,5 @@ export const ERROR_STATUS = {
 export type ErrorCode = keyof typeof ERROR_STATUS;
 
 export function jsonError(code: ErrorCode, message: string) {
-  return NextResponse.json(
-    { error: { code, message } },
-    { status: ERROR_STATUS[code] },
-  );
+  return NextResponse.json({ error: { code, message } }, { status: ERROR_STATUS[code] });
 }

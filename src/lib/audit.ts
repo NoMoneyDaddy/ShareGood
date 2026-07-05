@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
 import type { Prisma } from "@/generated/prisma/client";
+import { db } from "@/lib/db";
 
 /** 管理操作與敏感調閱一律經過這裡寫 audit_logs（CLAUDE.md 硬規則 6）。 */
 export async function writeAudit(params: {

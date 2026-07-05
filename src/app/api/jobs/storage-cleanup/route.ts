@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
+import { db } from "@/lib/db";
 import { deleteObject } from "@/lib/storage";
 
 // 每日清理孤兒檔（master-plan §5）：上傳後 48 小時仍未被任何實體引用的 pending 物件。

@@ -69,8 +69,11 @@ S3_PUBLIC_URL           # 圖片對外讀取的 base URL
 COUPON_SECRET_KEY       # M3 起：券碼加密（AES-256-GCM）
 TELEGRAM_BOT_TOKEN / TELEGRAM_WEBHOOK_SECRET              # M4 起
 CRON_SECRET             # 保護 job 觸發 route
+TZ=Asia/Taipei          # 全站顯示台北時間（2026-07 已於正式站設定；本機開發也建議設）
 ```
 - secrets 只放環境變數；repo 內放 `.env.example`（只有 key 沒有值）。
+- **時區**：所有時間顯示（物品建立時間、到期時間、通知時間戳）一律以 `Asia/Taipei` 為準，
+  伺服器環境變數設 `TZ=Asia/Taipei`；前端顯示時間一律走這個時區，不要用 UTC 或使用者瀏覽器時區。
 
 ### 3.5 測試與驗收慣例
 - 每個 milestone 完成的定義：該節「驗收清單」逐條有證據＋`docs/governance/judgment-rubrics.md` §5

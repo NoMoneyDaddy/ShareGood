@@ -128,3 +128,36 @@
     @apply font-sans;
   }
 }
+/* ===== ShareGood 品牌設計系統（ui-ux-pro-max 產出，經人工校正）=====
+ * 色彩策略：暖白底 + 近黑墨字 + 單一飽和色「琥珀橘」。
+ * 避開兩個套路：紫色（AI 泛用色）與棕米配色（高端消費品套路）。
+ * 橘色取「贈與、溫暖、行動」的意象，且全站僅此一個飽和色。
+ */
+@theme {
+  --color-paper: oklch(0.975 0.006 80); /* 頁面底：極低彩度暖白 */
+  --color-paper-2: oklch(0.95 0.01 75); /* 次要底：分類列、頁尾 */
+  /* 卡片色不在這裡宣告：沿用上面 @theme inline 的 --color-card: var(--card)，
+     它已經是 oklch(1 0 0)（跟這裡想要的純白一致），重新宣告會蓋掉 --card 的
+     間接參照，未來接上 dark mode（next-themes 已是相依套件）時卡片會卡死白色。 */
+  --color-ink: oklch(0.22 0.015 75); /* 主文字：近黑 */
+  --color-ink-soft: oklch(0.48 0.02 70); /* 次文字 */
+  /* L=0.55 校正過：對卡片白底對比度 4.86:1，符合 WCAG AA。用實色而非
+     ink-soft 疊透明度——疊到 50% 只剩 2.22:1，看不清楚寫什麼字。 */
+  --color-ink-disabled: oklch(0.55 0.01 70); /* 尚未開放功能的說明文字 */
+  --color-line: oklch(0.88 0.012 75); /* 分隔線 */
+  /* L=0.56 校正過：白字在此橘色上對比度 4.99:1，符合 WCAG AA（一般文字需 4.5:1） */
+  --color-brand: oklch(0.56 0.17 45); /* 品牌唯一飽和色：琥珀橘 */
+  --color-brand-ink: oklch(0.42 0.16 42); /* 深橘：hover/pressed，對白字對比 7:1+ */
+  --color-brand-soft: oklch(0.93 0.03 50); /* 淺橘：badge 底色（配深色文字） */
+  --color-navy: oklch(0.28 0.03 250); /* 中性深色：頁首頁尾、次要強調 */
+
+  --shadow-brand-glow: 0 8px 18px -6px oklch(0.56 0.17 45 / 0.55); /* 品牌色元件的發光陰影，例如底部導覽的分享鍵 */
+
+  --font-display: var(--font-manrope), "PingFang TC", "Noto Sans TC", sans-serif;
+}
+
+:root {
+  --font-sans:
+    var(--font-geist-sans), "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui,
+    sans-serif;
+}
