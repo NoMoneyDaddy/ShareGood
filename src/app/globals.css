@@ -146,6 +146,8 @@
   --color-brand-soft: oklch(0.93 0.03 50);    /* 淺橘：badge 底色（配深色文字） */
   --color-navy: oklch(0.28 0.03 250);         /* 中性深色：頁首頁尾、次要強調 */
 
+  --shadow-brand-glow: 0 8px 18px -6px oklch(0.56 0.17 45 / 0.55); /* 品牌色元件的發光陰影，例如底部導覽的分享鍵 */
+
   --font-display: var(--font-manrope), "PingFang TC", "Noto Sans TC", sans-serif;
 }
 

@@ -24,7 +24,7 @@ export function BottomTab() {
           我的需要
         </span>
         <span className="flex flex-col items-center gap-1" title="即將開放">
-          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-[0_8px_18px_-6px_oklch(0.64_0.16_45_/_0.55)]">
+          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-brand-glow">
             <Plus size={22} strokeWidth={2.4} />
           </span>
           <span className="text-ink-soft/50">分享</span>

@@ -77,10 +77,11 @@ export default async function HomePage() {
               台灣縣市級免費共享。不買賣、不交換，留言就有機會接手。
             </p>
 
-            <label className="mt-7 flex items-center gap-3 rounded-xl border border-line bg-card px-4 py-3.5 shadow-sm">
+            <div className="mt-7 flex items-center gap-3 rounded-xl border border-line bg-card px-4 py-3.5 shadow-sm">
               <Search size={19} strokeWidth={2.2} className="shrink-0 text-ink-soft" />
               <input
                 type="search"
+                aria-label="搜尋好物、分類或縣市"
                 placeholder="搜尋好物、分類或縣市"
                 disabled
                 title="M1 起開放搜尋"
@@ -89,7 +90,7 @@ export default async function HomePage() {
               <Button size="sm" className="shrink-0 bg-brand text-white hover:bg-brand-ink" disabled>
                 搜尋
               </Button>
-            </label>
+            </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
               {CATEGORIES.slice(1, 6).map((c) => (
