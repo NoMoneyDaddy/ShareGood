@@ -17,9 +17,7 @@ export default async function OnboardingPage() {
   return (
     <main className="mx-auto max-w-md px-4 py-12">
       <h1 className="text-2xl font-bold">歡迎加入 ShareGood</h1>
-      <p className="mt-2 text-muted-foreground">
-        設定暱稱與所在縣市，就可以開始分享與接收好物。
-      </p>
+      <p className="mt-2 text-muted-foreground">設定暱稱與所在縣市，就可以開始分享與接收好物。</p>
       <OnboardingForm
         cities={cities}
         defaultNickname={profile?.nickname ?? session.user.name ?? ""}

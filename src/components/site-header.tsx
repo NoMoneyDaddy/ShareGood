@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { auth, signIn, signOut } from "@/auth";
-import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
 
 export async function SiteHeader() {
   const session = await auth();
@@ -16,9 +16,7 @@ export async function SiteHeader() {
           <span className="font-display text-xl font-extrabold tracking-tight text-ink">
             好物共享
           </span>
-          <span className="hidden text-sm font-medium text-ink-soft sm:inline">
-            ShareGood
-          </span>
+          <span className="hidden text-sm font-medium text-ink-soft sm:inline">ShareGood</span>
         </Link>
 
         <nav className="flex items-center gap-2.5">

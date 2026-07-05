@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { Compass, Heart, MessageCircle, Plus, User } from "lucide-react";
+import Link from "next/link";
 
 // 行動版底部導覽（使用者指定必備）。M1 前，逛好物以外的分頁先以停用態呈現。
 export function BottomTab() {
-  const inactive =
-    "flex flex-col items-center gap-1 py-1 text-ink-soft/50 cursor-default";
+  const inactive = "flex flex-col items-center gap-1 py-1 text-ink-soft/50 cursor-default";
 
   return (
     <nav
@@ -12,10 +11,7 @@ export function BottomTab() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-5 items-end px-2 pb-2 pt-1.5 text-[11px]">
-        <Link
-          href="/"
-          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand"
-        >
+        <Link href="/" className="flex flex-col items-center gap-1 py-1 font-semibold text-brand">
           <Compass size={20} strokeWidth={2} />
           逛好物
         </Link>

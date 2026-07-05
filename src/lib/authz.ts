@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import { db } from "@/lib/db";
 import type { Role } from "@/generated/prisma/enums";
+import { db } from "@/lib/db";
 
 export class AuthzError extends Error {
   constructor(public code: "UNAUTHORIZED" | "FORBIDDEN") {
@@ -26,8 +26,7 @@ export async function requireUser() {
 export async function requireRole(role: Role) {
   const user = await requireUser();
   const roles = new Set(user.roles.map((r) => r.role));
-  const ok =
-    roles.has(role) || (role === "moderator" && roles.has("admin"));
+  const ok = roles.has(role) || (role === "moderator" && roles.has("admin"));
   if (!ok) throw new AuthzError("FORBIDDEN");
   return user;
 }

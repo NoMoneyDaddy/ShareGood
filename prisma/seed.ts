@@ -64,10 +64,7 @@ async function main() {
   // 回 OAuthAccountNotLinked 擋掉登入。admin 角色改由 src/auth.ts 的 signIn event
   // 在首次登入時自動授予。
 
-  const [cities, categories] = await Promise.all([
-    prisma.city.count(),
-    prisma.category.count(),
-  ]);
+  const [cities, categories] = await Promise.all([prisma.city.count(), prisma.category.count()]);
   console.log(`Seed 完成：${cities} 縣市、${categories} 分類`);
 }
 

@@ -1,11 +1,11 @@
+import { MapPin, MessageSquare, Search, ShieldCheck, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, MessageSquare, Search, ShieldCheck, Users } from "lucide-react";
 import { auth, signIn } from "@/auth";
-import { db } from "@/lib/db";
-import { SiteHeader } from "@/components/site-header";
 import { BottomTab } from "@/components/bottom-tab";
+import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
 
 // 示範資料：M1 完成後改為查詢 published 物品（本區塊整段替換）
 const DEMO_ITEMS = [
@@ -87,7 +87,11 @@ export default async function HomePage() {
                 title="M1 起開放搜尋"
                 className="w-full bg-transparent text-base text-ink outline-none placeholder:text-ink-soft"
               />
-              <Button size="sm" className="shrink-0 bg-brand text-white hover:bg-brand-ink" disabled>
+              <Button
+                size="sm"
+                className="shrink-0 bg-brand text-white hover:bg-brand-ink"
+                disabled
+              >
                 搜尋
               </Button>
             </div>
@@ -243,16 +247,19 @@ export default async function HomePage() {
         <section className="bg-navy">
           <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-5 px-4 py-12 sm:px-6 md:flex-row md:items-center">
             <div>
-              <h2 className="text-2xl font-bold text-white">
-                把用不到的好物，分享出去
-              </h2>
+              <h2 className="text-2xl font-bold text-white">把用不到的好物，分享出去</h2>
               <p className="mt-1.5 text-sm text-white/70">
                 登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。
               </p>
             </div>
             {session?.user ? (
               profile ? (
-                <Button size="lg" className="bg-brand text-white hover:bg-brand-ink" disabled title="M1 起開放上架">
+                <Button
+                  size="lg"
+                  className="bg-brand text-white hover:bg-brand-ink"
+                  disabled
+                  title="M1 起開放上架"
+                >
                   我要分享
                 </Button>
               ) : (

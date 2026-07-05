@@ -5,7 +5,10 @@ import sharp from "sharp";
 
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5MB
 
-const MAGIC: Array<{ mime: "image/jpeg" | "image/png" | "image/webp"; check: (b: Buffer) => boolean }> = [
+const MAGIC: Array<{
+  mime: "image/jpeg" | "image/png" | "image/webp";
+  check: (b: Buffer) => boolean;
+}> = [
   { mime: "image/jpeg", check: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff },
   {
     mime: "image/png",
