@@ -14,7 +14,7 @@ export function BottomTab() {
       <div className="mx-auto grid max-w-md grid-cols-5 items-end px-2 pb-2 pt-1.5 text-[11px]">
         <Link
           href="/"
-          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <Compass size={20} strokeWidth={2} aria-hidden="true" />
           逛好物
