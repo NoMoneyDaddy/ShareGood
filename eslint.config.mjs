@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 非本專案維護的程式碼：
+    ".claude/**", // impeccable skill 自帶腳本
+    "src/generated/**", // Prisma 產生碼
   ]),
 ]);
 

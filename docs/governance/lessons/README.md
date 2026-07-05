@@ -7,4 +7,4 @@
 
 | 檔案 | 一行結論 |
 |---|---|
-| （尚無教訓——第一個踩坑的 session 從這裡開始記） | |
+| `20260705-node-env-breaks-next-build.md` | 本環境 shell 預設 NODE_ENV=development 會弄壞 next build；build script 已寫死 production |
