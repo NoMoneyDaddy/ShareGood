@@ -6,7 +6,8 @@
 ## 目前階段
 
 - [x] 制度與規格建立（本檔與 docs/ 全部檔案）
-- [ ] M0 Foundation（尚未開始；repo 還沒有程式碼）
+- [ ] M0 Foundation：程式碼完成、本機驗證過；**尚缺**：Zeabur 三服務部署、真實 Google OAuth
+      登入流程、MinIO 真實上傳驗證（本機無 MinIO）。補完並驗收後才可勾選。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
