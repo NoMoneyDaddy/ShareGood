@@ -60,26 +60,15 @@ async function main() {
     });
   }
 
-  // admin 綁定：ADMIN_EMAIL 的帳號首次以 Google 登入後即具 admin 角色
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (adminEmail) {
-    const user = await prisma.user.upsert({
-      where: { email: adminEmail },
-      update: {},
-      create: { email: adminEmail },
-    });
-    await prisma.userRole.upsert({
-      where: { userId_role: { userId: user.id, role: "admin" } },
-      update: {},
-      create: { userId: user.id, role: "admin" },
-    });
-  }
+  // 注意：不在這裡預建 ADMIN_EMAIL 的 User——沒有 OAuth 連結的預建列會讓 Auth.js
+  // 回 OAuthAccountNotLinked 擋掉登入。admin 角色改由 src/auth.ts 的 signIn event
+  // 在首次登入時自動授予。
 
   const [cities, categories] = await Promise.all([
     prisma.city.count(),
     prisma.category.count(),
   ]);
-  console.log(`Seed 完成：${cities} 縣市、${categories} 分類${adminEmail ? "、admin 已綁定" : ""}`);
+  console.log(`Seed 完成：${cities} 縣市、${categories} 分類`);
 }
 
 main()
