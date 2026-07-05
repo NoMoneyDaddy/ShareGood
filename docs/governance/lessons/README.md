@@ -8,3 +8,4 @@
 | 檔案 | 一行結論 |
 |---|---|
 | `20260705-node-env-breaks-next-build.md` | 本環境 shell 預設 NODE_ENV=development 會弄壞 next build；build script 已寫死 production |
+| `20260705-zeabur-cli-gotchas.md` | Zeabur CLI：variable create 不覆寫（改值用 update）、旗標名每個子指令先 --help、自動化加 -y --interactive=false |
