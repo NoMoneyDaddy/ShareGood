@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { auth, signIn, signOut } from "@/auth";
+import type { Session } from "next-auth";
+import { signIn, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
+import type { Profile } from "@/generated/prisma/client";
 
-export async function SiteHeader() {
-  const session = await auth();
-  const profile = session?.user
-    ? await db.profile.findUnique({ where: { userId: session.user.id } })
-    : null;
+type SiteHeaderProps = {
+  session: Session | null;
+  profile: Profile | null;
+};
 
+// session/profile 由呼叫端（HomePage）一次查好往下傳，避免和頁面主體重複查同一筆資料。
+export function SiteHeader({ session, profile }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -26,7 +28,7 @@ export async function SiteHeader() {
                 {profile?.nickname ?? session.user.name ?? "朋友"}
               </span>
               {!profile && (
-                <Button asChild size="sm" className="bg-brand text-white hover:bg-brand-ink">
+                <Button asChild variant="brand" size="xl">
                   <Link href="/onboarding">完成設定</Link>
                 </Button>
               )}
@@ -36,7 +38,7 @@ export async function SiteHeader() {
                   await signOut();
                 }}
               >
-                <Button type="submit" variant="outline" size="sm">
+                <Button type="submit" variant="outline" size="xl">
                   登出
                 </Button>
               </form>
@@ -48,7 +50,7 @@ export async function SiteHeader() {
                 await signIn("google");
               }}
             >
-              <Button type="submit" size="sm" className="bg-brand text-white hover:bg-brand-ink">
+              <Button type="submit" variant="brand" size="xl">
                 登入
               </Button>
             </form>

@@ -44,6 +44,7 @@ const DEMO_ITEMS = [
   },
 ];
 
+// 順序、名稱需與 prisma/seed.ts 的分類清單一致（"全部" 是畫面用的篩選項，非資料庫分類）
 const CATEGORIES = [
   "全部",
   "食品雜貨",
@@ -51,7 +52,9 @@ const CATEGORIES = [
   "居家生活",
   "服飾配件",
   "母嬰童書",
+  "3C 家電",
   "文具玩具",
+  "寵物用品",
   "其他",
 ];
 
@@ -60,10 +63,11 @@ export default async function HomePage() {
   const profile = session?.user
     ? await db.profile.findUnique({ where: { userId: session.user.id } })
     : null;
+  const ctaState = !session?.user ? "guest" : profile ? "active" : "pending";
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-paper text-ink">
-      <SiteHeader />
+      <SiteHeader session={session} profile={profile} />
 
       <main className="flex-1 pb-24 md:pb-0">
         {/* Hero：搜尋為核心 CTA，split 版面 */}
@@ -88,11 +92,7 @@ export default async function HomePage() {
                 title="M1 起開放搜尋"
                 className="h-auto border-none bg-transparent p-0 text-base text-ink shadow-none focus-visible:ring-0 disabled:pointer-events-none disabled:bg-transparent"
               />
-              <Button
-                size="xl"
-                className="shrink-0 bg-brand text-white hover:bg-brand-ink"
-                disabled
-              >
+              <Button variant="brand" size="xl" className="shrink-0" disabled title="M1 起開放搜尋">
                 搜尋
               </Button>
             </div>
@@ -237,28 +237,21 @@ export default async function HomePage() {
             <div>
               <h2 className="text-2xl font-bold text-white">把用不到的好物，分享出去</h2>
               <p className="mt-1.5 text-sm text-white/70">
-                {session?.user
-                  ? profile
-                    ? "上架功能即將開放，敬請期待。"
-                    : "只差最後一步，設定暱稱與縣市就能開始分享。"
-                  : "登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。"}
+                {ctaState === "active"
+                  ? "上架功能即將開放，敬請期待。"
+                  : ctaState === "pending"
+                    ? "只差最後一步，設定暱稱與縣市就能開始分享。"
+                    : "登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。"}
               </p>
             </div>
-            {session?.user ? (
-              profile ? (
-                <Button
-                  size="xl"
-                  className="bg-brand text-white hover:bg-brand-ink"
-                  disabled
-                  title="M1 起開放上架"
-                >
-                  我要分享
-                </Button>
-              ) : (
-                <Button asChild size="xl" className="bg-brand text-white hover:bg-brand-ink">
-                  <Link href="/onboarding">完成設定</Link>
-                </Button>
-              )
+            {ctaState === "active" ? (
+              <Button variant="brand" size="xl" disabled title="M1 起開放上架">
+                我要分享
+              </Button>
+            ) : ctaState === "pending" ? (
+              <Button asChild variant="brand" size="xl">
+                <Link href="/onboarding">完成設定</Link>
+              </Button>
             ) : (
               <form
                 action={async () => {
@@ -266,7 +259,7 @@ export default async function HomePage() {
                   await signIn("google");
                 }}
               >
-                <Button type="submit" size="xl" className="bg-brand text-white hover:bg-brand-ink">
+                <Button type="submit" variant="brand" size="xl">
                   加入 ShareGood
                 </Button>
               </form>

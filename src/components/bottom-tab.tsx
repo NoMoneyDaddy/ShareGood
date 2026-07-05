@@ -23,7 +23,11 @@ export function BottomTab() {
           aria-label="分享（即將開放）"
           className="flex flex-col items-center gap-1 border-0 bg-transparent p-0 disabled:cursor-not-allowed"
         >
-          {/* 停用態不用品牌色發光樣式：避免看起來像可點的主要 CTA，實際上點了沒反應 */}
+          {/* 停用態不用品牌色發光樣式：避免看起來像可點的主要 CTA，實際上點了沒反應。
+              這裡故意不用 <Button size="icon-xl">：Button 的 disabled 樣式是
+              disabled:opacity-50，疊在已經校正過對比度的 ink-disabled 顏色上
+              會再打對折、對比度掉到 AA 不合格（見 globals.css 的 ink-disabled 說明），
+              所以圓形停用態手刻，不透過 Button 元件。 */}
           <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full border border-line bg-paper-2 text-ink-disabled">
             <Plus size={22} strokeWidth={2.4} />
           </span>
