@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // 行動版底部導覽（使用者指定必備）。M1 前，逛好物以外的分頁先以停用態呈現。
 export function BottomTab() {
-  const inactive = "flex flex-col items-center gap-1 py-1 text-ink-soft/50 cursor-default";
+  const inactive = "flex flex-col items-center gap-1 py-1 text-ink-disabled cursor-not-allowed";
 
   return (
     <nav
@@ -23,7 +23,7 @@ export function BottomTab() {
           <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-brand-glow">
             <Plus size={22} strokeWidth={2.4} />
           </span>
-          <span className="text-ink-soft/50">分享</span>
+          <span className="text-ink-disabled">分享</span>
         </span>
         <span className={inactive} title="即將開放">
           <MessageCircle size={20} strokeWidth={2} />

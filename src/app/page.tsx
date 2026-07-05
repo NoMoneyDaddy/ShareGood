@@ -5,6 +5,7 @@ import { auth, signIn } from "@/auth";
 import { BottomTab } from "@/components/bottom-tab";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { db } from "@/lib/db";
 
 // 示範資料：M1 完成後改為查詢 published 物品（本區塊整段替換）
@@ -77,18 +78,18 @@ export default async function HomePage() {
               台灣縣市級免費共享。不買賣、不交換，留言就有機會接手。
             </p>
 
-            <div className="mt-7 flex items-center gap-3 rounded-xl border border-line bg-card px-4 py-3.5 shadow-sm">
+            <div className="mt-7 flex items-center gap-3 rounded-xl border border-line bg-card px-4 py-3.5 shadow-sm has-[:disabled]:cursor-not-allowed">
               <Search size={19} strokeWidth={2.2} className="shrink-0 text-ink-soft" />
-              <input
+              <Input
                 type="search"
                 aria-label="搜尋好物、分類或縣市"
                 placeholder="搜尋好物、分類或縣市"
                 disabled
                 title="M1 起開放搜尋"
-                className="w-full bg-transparent text-base text-ink outline-none placeholder:text-ink-soft"
+                className="h-auto border-none bg-transparent p-0 text-base text-ink shadow-none focus-visible:ring-0 disabled:pointer-events-none disabled:bg-transparent"
               />
               <Button
-                size="sm"
+                size="default"
                 className="shrink-0 bg-brand text-white hover:bg-brand-ink"
                 disabled
               >
@@ -118,15 +119,6 @@ export default async function HomePage() {
                 priority
                 className="aspect-[4/3] w-full object-cover"
               />
-            </div>
-            <div className="absolute -bottom-5 -left-4 flex items-center gap-2.5 rounded-xl border border-line bg-card px-4 py-3 shadow-md">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-soft text-brand-ink">
-                <Users size={17} strokeWidth={2.2} />
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-bold text-ink">1,204 件</p>
-                <p className="text-xs text-ink-soft">好物已找到新主人</p>
-              </div>
             </div>
           </div>
         </section>
@@ -210,36 +202,32 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* 信任與安全 */}
-        <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="flex gap-3.5">
-              <ShieldCheck size={22} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
-              <div>
-                <h3 className="font-bold">絕不收費</h3>
-                <p className="mt-1 text-sm text-ink-soft">
+        {/* 信任與安全：橫向條款列，刻意不用三步驟那種卡片版型，避免版面重複 */}
+        <section className="border-y border-line bg-paper-2/40">
+          <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
+            <ul className="flex flex-col divide-y divide-line sm:flex-row sm:divide-x sm:divide-y-0">
+              <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
+                <ShieldCheck size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <p className="text-sm text-ink-soft">
+                  <strong className="font-bold text-ink">絕不收費。</strong>
                   平台上所有物品一律免費，任何收費都違反規範，可以檢舉。
                 </p>
-              </div>
-            </div>
-            <div className="flex gap-3.5">
-              <MessageSquare size={22} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
-              <div>
-                <h3 className="font-bold">私訊才開放</h3>
-                <p className="mt-1 text-sm text-ink-soft">
+              </li>
+              <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
+                <MessageSquare size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <p className="text-sm text-ink-soft">
+                  <strong className="font-bold text-ink">私訊才開放。</strong>
                   交接成立後才開啟私訊，分享前不需要公開任何聯絡方式。
                 </p>
-              </div>
-            </div>
-            <div className="flex gap-3.5">
-              <Users size={22} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
-              <div>
-                <h3 className="font-bold">分享者做主</h3>
-                <p className="mt-1 text-sm text-ink-soft">
+              </li>
+              <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
+                <Users size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <p className="text-sm text-ink-soft">
+                  <strong className="font-bold text-ink">分享者做主。</strong>
                   誰來接手由分享者親自挑選，不是先搶先贏的戰場。
                 </p>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         </section>
 
