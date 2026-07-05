@@ -6,7 +6,8 @@
 ## 目前階段
 
 - [x] 制度與規格建立（本檔與 docs/ 全部檔案）
-- [ ] M0 Foundation（尚未開始；repo 還沒有程式碼）
+- [ ] M0 Foundation：程式碼完成、本機驗證過；**尚缺**：Zeabur 三服務部署、真實 Google OAuth
+      登入流程、MinIO 真實上傳驗證（本機無 MinIO）。補完並驗收後才可勾選。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
@@ -20,6 +21,7 @@
 | 想修改制度檔或計畫書 | `docs/governance/maintenance-protocol.md`（先讀，有分級授權） |
 | session 開場、或接手交接 | `docs/governance/letter-to-future-sessions.md` ＋ `docs/governance/lessons/README.md` |
 | 想了解 harness 常見失敗模式 | `docs/governance/diagnosis.md` |
+| 寫任何 Next.js 程式之前 | `AGENTS.md`（本版 Next.js 與訓練資料有差異，先讀它指向的官方 docs） |
 
 `docs/plan/original-master-plan-v1.md` 是歷史備份，僅供考古，**不要**照它執行。
 

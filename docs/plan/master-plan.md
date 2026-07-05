@@ -60,9 +60,10 @@ Zeabur Free Plan 用於開發與 demo；正式上線前升級方案（詳見 §1
 ### 3.4 環境變數（單一清單，新增變數必須回寫這裡）
 ```
 DATABASE_URL            # PostgreSQL 連線字串
-NEXTAUTH_URL            # 站台 URL
-NEXTAUTH_SECRET         # Auth.js session 加密
-GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET
+AUTH_URL                # 站台 URL（Auth.js v5 用 AUTH_* 前綴，非 v4 的 NEXTAUTH_*）
+AUTH_SECRET             # Auth.js session 加密
+AUTH_TRUST_HOST         # 反向代理後設 true（Zeabur 需要）
+AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET
 S3_ENDPOINT / S3_ACCESS_KEY / S3_SECRET_KEY / S3_BUCKET   # MinIO
 S3_PUBLIC_URL           # 圖片對外讀取的 base URL
 COUPON_SECRET_KEY       # M3 起：券碼加密（AES-256-GCM）

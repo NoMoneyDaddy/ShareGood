@@ -1,0 +1,190 @@
+// ShareGood M0 schema — 表清單見 docs/plan/master-plan.md §5 與 §11.1
+// 慣例：model PascalCase 單數、DB 表 snake_case 複數（@@map）、欄位 camelCase（@map 成 snake_case）
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // 連線字串在 prisma.config.ts（Prisma 7 起 url 不放 schema）
+}
+
+// ===== Auth.js（@auth/prisma-adapter 標準模型） =====
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  accounts       Account[]
+  sessions       Session[]
+  profile        Profile?
+  roles          UserRole[]
+  auditLogs      AuditLog[]      @relation("AuditActor")
+  storageObjects StorageObject[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ===== 個人資料與權限 =====
+
+model Profile {
+  userId    String   @id @map("user_id")
+  nickname  String
+  cityId    String?  @map("city_id")
+  bio       String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  city City? @relation(fields: [cityId], references: [id])
+
+  @@map("profiles")
+}
+
+enum Role {
+  user
+  moderator
+  admin
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  role      Role
+  grantedAt DateTime @default(now()) @map("granted_at")
+  grantedBy String?  @map("granted_by")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("user_roles")
+}
+
+// ===== 基礎參照資料 =====
+
+model City {
+  id        String   @id @default(cuid())
+  name      String   @unique // 例：台北市
+  slug      String   @unique // 例：taipei-city
+  sortOrder Int      @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  profiles Profile[]
+
+  @@map("cities")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique // 例：食品雜貨
+  slug      String   @unique // 例：groceries
+  sortOrder Int      @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("categories")
+}
+
+// ===== 稽核 =====
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?  @map("actor_id")
+  action     String // 例：user.role.grant / item.force_remove
+  targetType String   @map("target_type") // 例：user / item / report
+  targetId   String?  @map("target_id")
+  detail     Json?
+  sensitive  Boolean  @default(false) // 敏感調閱（私訊、券碼、證據）標記
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId, createdAt])
+  @@index([targetType, targetId, createdAt])
+  @@map("audit_logs")
+}
+
+// ===== 物件儲存（MinIO object key 登錄） =====
+
+enum StorageKind {
+  item_image_thumb
+  item_image_medium
+  report_attachment
+  appeal_attachment
+  support_attachment
+  export_package
+}
+
+enum StorageStatus {
+  pending // 已上傳但尚未被任何實體引用
+  linked // 已被實體引用
+  deleted // 已從 MinIO 刪除（保留紀錄）
+}
+
+model StorageObject {
+  id          String        @id @default(cuid())
+  objectKey   String        @unique @map("object_key")
+  kind        StorageKind
+  status      StorageStatus @default(pending)
+  mimeType    String        @map("mime_type")
+  sizeBytes   Int           @map("size_bytes")
+  width       Int?
+  height      Int?
+  uploaderId  String?       @map("uploader_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  linkedAt    DateTime?     @map("linked_at")
+  deletedAt   DateTime?     @map("deleted_at")
+
+  uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt]) // 孤兒檔清理 job 用
+  @@index([uploaderId, createdAt])
+  @@map("storage_objects")
+}

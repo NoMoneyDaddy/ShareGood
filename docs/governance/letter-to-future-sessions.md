@@ -13,9 +13,10 @@
 你多半跑在暫時性的遠端 container 裡。session 結束或閒置回收後，工作目錄一切消失。
 所以：**commit 是逗號，push 才是句號**。每完成一個單位就 commit，session 收尾必 push。
 另外幾個環境事實，別靠訓練記憶猜（都是 2026-07-05 實測，環境可能變，用前先驗）：
-- GitHub 操作以 `mcp__github__*` 工具為準（ToolSearch 載入）。環境裡裝有 `gh` CLI，但實測
-  `GH_TOKEN` 無效（`gh auth status` 失敗）——要用 gh 先驗證，失敗就回 MCP 工具。
-  `git push` 走環境內建 proxy，不吃這個 token，直接推即可。
+- GitHub 操作以 `mcp__github__*` 工具為準（ToolSearch 載入）。環境裡的 `gh` CLI ＋ `GH_TOKEN`
+  **可用但僅限 REST**（`gh api repos/{owner}/{repo}/...` 正常）；GraphQL 被代理限制在固定的
+  PR-review 操作集，所以 `gh repo view` 會 403、`gh auth status` 會**誤報 token invalid**——
+  別被這個誤報騙了。`git push` 走環境內建 proxy，不吃這個 token，直接推即可。
 - 主分支是 `main`（使用者明確指定）。日常開發開 `feature/*` 分支、push 後開 draft PR 讓使用者過目；
   純文件與制度維護類的小改，使用者若已授權可直接進 main。
 - 部署金鑰：`ZEABUR_TOKEN` 已設定（Zeabur CLI 可經 `npx zeabur@latest` 使用）。環境旗標
@@ -68,6 +69,11 @@ repo 目前是空的。第一個寫程式碼的 session 會定下所有版本與
 - （2026-07-05 制度 session）交付 A–G 全部完成，並通過 fresh-context Sonnet 對抗審查
   （4 BLOCKER / 6 MINOR / 1 NIT 全數修正，最大教訓：Agent tool 沒有 effort 參數，
   投入度要寫進 prompt 文字）。
-- **下一個 session 的第一件事是 M0**：讀 master-plan §5，照本信「一之 3」先派 research agent
-  查當前版本組合，再 scaffold。M0 交付項含安裝 impeccable 設計技能（master-plan §3.6）。
+- （同日更新）M0 已由本 session 開工並大致完成（分支 `feature/m0-foundation`）：scaffold、
+  Prisma 7 schema/migration/seed、Auth.js v5、RBAC、圖片管線、SEO 基礎、impeccable 皆已實測。
+  **M0 尚缺三件事**：(1) Zeabur 建立三服務並部署（ZEABUR_TOKEN 可用）；(2) Google OAuth 正式
+  憑證設定與真人登入→onboarding 流程實測；(3) MinIO 真實上傳驗證（本機無 MinIO，422 攔截已測）。
+  補完後照 master-plan §5 驗收清單逐條打勾，才算 M0 完成。
+- 技術要點：Auth.js v5 用 `AUTH_*` 環境變數；Prisma 7 連線在 `prisma.config.ts`；
+  build 必須 NODE_ENV=production（見 lessons）。
 - 使用者要求：全程繁體中文；善用高效 bash（model-dispatch §9）；前端設計用 impeccable。
