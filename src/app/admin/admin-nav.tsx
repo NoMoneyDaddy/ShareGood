@@ -9,6 +9,15 @@ const ADMIN_NAV_LINKS = [
   { href: "/admin/items", label: "物品管理" },
   { href: "/admin/users", label: "使用者管理" },
   { href: "/admin/audit-logs", label: "稽核紀錄" },
+  // M8 營運強化（master-plan §8a）／M7 資料權利與法務（master-plan §7a）：這四個子頁一直
+  // 存在（各自有自己的權限檢查），只是沒有被這份共用導覽收錄，變成「網址存在但沒有入口
+  // 點得到」的孤兒頁；/admin/legal-holds 是 admin-only、/admin/legal-requests 不對外開放，
+  // 但比照既有 /admin/appeals 的處理方式——moderator 點進去 404 也可以接受，這裡不依角色
+  // 過濾連結本身（見各頁自己的權限判斷）。
+  { href: "/admin/ops", label: "營運儀表板" },
+  { href: "/admin/data", label: "資料管理" },
+  { href: "/admin/legal-holds", label: "訴訟保全" },
+  { href: "/admin/legal-requests", label: "調閱請求" },
 ] as const;
 
 // 後台各頁共用的頂部導覽（master-plan §7 第 7 項「後台最小集」）：避免每個 /admin/* 子頁

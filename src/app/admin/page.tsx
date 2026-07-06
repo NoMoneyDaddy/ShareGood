@@ -104,12 +104,44 @@ export default async function AdminDashboardPage() {
           </Link>
           <Link
             href="/admin/audit-logs"
-            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2 sm:col-span-2"
+            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
           >
             <p className="text-sm font-medium text-ink">稽核紀錄查詢</p>
             <p className="mt-1 text-xs text-ink-soft">
               所有管理操作（actor／action／target／時間）
             </p>
+          </Link>
+          {/* M8 營運強化（master-plan §8a）／M7 資料權利與法務（master-plan §7a）：這四頁一直
+              存在，只是沒有從 /admin 首頁連過去，補上避免孤兒頁（比照上面既有卡片的處理方式）。 */}
+          <Link
+            href="/admin/ops"
+            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
+          >
+            <p className="text-sm font-medium text-ink">營運儀表板</p>
+            <p className="mt-1 text-xs text-ink-soft">
+              資料庫／儲存／背景工作健康檢查、慢查詢與通知重送
+            </p>
+          </Link>
+          <Link
+            href="/admin/data"
+            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
+          >
+            <p className="text-sm font-medium text-ink">資料管理</p>
+            <p className="mt-1 text-xs text-ink-soft">資料保留政策設定與清除紀錄查詢</p>
+          </Link>
+          <Link
+            href="/admin/legal-holds"
+            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
+          >
+            <p className="text-sm font-medium text-ink">訴訟保全（admin-only）</p>
+            <p className="mt-1 text-xs text-ink-soft">建立／解除訴訟保全，暫停資料清除與去識別化</p>
+          </Link>
+          <Link
+            href="/admin/legal-requests"
+            className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
+          >
+            <p className="text-sm font-medium text-ink">警方／檢調調閱請求</p>
+            <p className="mt-1 text-xs text-ink-soft">不對外開放，僅供客服/admin 收到公文後建檔</p>
           </Link>
         </div>
       </section>

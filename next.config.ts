@@ -2,13 +2,17 @@ import type { NextConfig } from "next";
 
 // 物品圖片走 MinIO 的 S3_PUBLIC_URL；環境變數缺漏就讓 next/image 在請求時明確報錯，
 // 不在設定檔這裡加防呆掩蓋部署設定漏掉的問題。
+// PR review 曾建議這裡在缺失時直接 throw（build-time fail fast）；刻意不採納——這支
+// next.config.ts 在多種情境下都會被載入（例如 `prisma generate`、腳本工具鏈間接
+// import 設定），不是只有 `next build`／`next dev` 會跑到，貿然 throw 可能連帶
+// 炸掉跟圖片設定無關的指令。目前的優雅降級（remotePatterns 留空陣列）是刻意選擇。
 const s3PublicUrl = process.env.S3_PUBLIC_URL ? new URL(process.env.S3_PUBLIC_URL) : null;
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      // 首頁熱門好物目前仍是示範圖片，留言/接受/直贈等功能上線後移除
-      { protocol: "https", hostname: "picsum.photos" },
+      // 首頁「熱門好物」與 /items 瀏覽頁已改接真實物品資料（不再用 picsum.photos 示範圖），
+      // 圖片一律走下面的 MinIO S3_PUBLIC_URL 白名單。
       ...(s3PublicUrl
         ? [
             {
