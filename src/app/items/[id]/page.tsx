@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import type { ItemStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
+import { ClaimsSection } from "./claims-section";
 import { DirectShareSection } from "./direct-share-section";
 
 async function getItem(id: string) {
@@ -145,11 +146,13 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
           分享者：{item.owner.profile?.nickname ?? "好物共享用戶"}
         </div>
+
         <DirectShareSection
           itemId={item.id}
           itemStatus={item.status}
           isOwner={session?.user?.id === item.ownerId}
         />
+        <ClaimsSection itemId={item.id} itemStatus={item.status} />
       </main>
     </div>
   );
