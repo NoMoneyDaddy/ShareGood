@@ -426,8 +426,11 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
    - **追蹤維度**：MinIO 總用量（依 bucket，呼叫既有圖片管線用的 S3 client 做
      `ListObjectsV2` 加總 `sizeBytes` 與物件數）；依物品狀態分類的用量（`byItemStatus`，
      資料來源是 DB 內 `storage_objects.sizeBytes` 依 `item_images → items.status` join
-     加總，**不必**額外呼叫 MinIO API）；孤兒用量（`orphanedBytes`／`orphanedCount`，同一組
-     join 篩出終態物品的部分）。
+     加總，**不必**額外呼叫 MinIO API——**注意 `ItemImage` 同時有 `thumbObjectId` 與
+     `mediumObjectId` 兩個各自指向不同 `StorageObject` 列的外鍵，join／加總時必須把這兩條關聯
+     都算進去（例如分別對 `thumbObject`／`mediumObject` 各 join 一次再加總，或用一次查詢把
+     `item_images` 的兩個 FK 都攤平成列再加總），只算其中一個會漏算一半用量**）；孤兒用量
+     （`orphanedBytes`／`orphanedCount`，同一組 join 篩出終態物品的部分，同樣要處理雙 FK）。
    - **一致性交叉驗證**：同一次快照裡，「DB 加總的 `sizeBytes`」與「MinIO `ListObjectsV2`
      實際加總」兩者的 bucket 總量若對不上（誤差超過例如 1%），代表資料有落差（可能是某次
      上傳失敗但 DB 紀錄殘留、或 MinIO 端手動動過檔案），本身就該寫成一筆 `error_logs`
@@ -463,14 +466,16 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
      `pg_stat_statements`（如果平台允許）或手動 `EXPLAIN ANALYZE` 仍是更好的**調查工具**——
      但那是排查手段，不是儀表板的常態資料源，M8 儀表板的目的只是「知道慢，知道多慢，知道是
      哪一類查詢」，不需要為了這個目的追求資料庫內部深度。
-   - **取樣範圍**：不做百分比抽樣（抽樣的盲點正是可能抽到快查詢、漏掉慢查詢，違背「抓慢查詢」
-     的目的）；改用一個遠低於 slow 門檻的「值得記錄」下限——只記錄 `durationMs > 100ms` 的查詢，
-     用意是濾掉大量無意義的健康查詢雜訊（<100ms 不代表異常），但不會漏掉任何可能異常的查詢。
-     `error_logs` 不受此限，所有錯誤一律記錄，不因為快就不記。
+   - **取樣範圍：全量記錄，不設寫入門檻**——曾經考慮「只記錄 `durationMs > 100ms` 的查詢」濾掉
+     健康查詢雜訊，但這個設計有統計學上的缺陷：`percentile_cont(0.95)` 是對**樣本庫**算百分位，
+     如果樣本庫本身就先過濾掉佔絕大多數的快查詢（5ms、10ms 這類），算出來的「P95」實際上會變成
+     「大於 100ms 的查詢裡的 P95」，嚴重偏高、無法反映真實效能，也無法驗證 §12「全體查詢
+     P95 < 1s」這個目標。MVP 階段流量不大，直接記錄全部查詢即可，資料量交給下面的「資料量控制」
+     （30 天保留期清理 job）處理，不做抽樣或門檻篩選。`error_logs` 同樣不受限，所有錯誤一律記錄。
    - **資料量控制**：見交付內容 8 的保留期清理 job（`performance_metrics` 30 天、`error_logs`
      90 天、`health_checks` 30 天；`storage_usage_snapshots` 資料量小且需要長期趨勢，不設
      保留期）。
-   - 數值集中管理：慢查詢門檻（100ms 記錄下限、1000ms 即時旗標）、保留天數等數值，實作時
+   - 數值集中管理：慢查詢門檻（1000ms 即時旗標）、保留天數等數值，實作時
      集中放進一個 config 檔（比照 M1 `src/lib/contribution.ts`「數值進 config 不寫死」的慣例），
      不要分散寫死在各處。
 
@@ -552,7 +557,12 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
    `performance_metrics`（`recordedAt` 超過 30 天）、`error_logs`（`occurredAt` 超過 90 天）、
    `health_checks`（`checkedAt` 超過 30 天）——三張表都是「僅供近期診斷用的高頻寫入表」，用
    同一個 job 內聚處理，不必為此各自開一個 job key 增加 `system_jobs` 管理負擔；
-   `storage_usage_snapshots` 不在此 job 範圍內（見交付內容 3，不設保留期）。
+   `storage_usage_snapshots` 不在此 job 範圍內（見交付內容 3，不設保留期）。**必須分批刪除，
+   不能對這三張高頻表各自下一句單一的 `DELETE ... WHERE <時間欄位> < cutoff`**：這幾張表
+   跑一段時間後過期資料量可能很大，單一大型 DELETE 會長時間鎖表、WAL 暴增，影響線上即時寫入
+   與查詢。實作上對每張表迴圈執行「`DELETE ... WHERE id IN (SELECT id FROM <table> WHERE
+   <時間欄位> < cutoff LIMIT 5000)`，直到某次刪除筆數為 0」，每批次之間可以有意的短暫停頓
+   （例如數十毫秒）讓其他查詢有機會插隊，避免長時間佔用連線與鎖。
 
 9. **本規格新增的 `system_jobs` key 總覽**（附加於 M3/M4 既有 job 之外）：
 
