@@ -20,6 +20,9 @@ const ADMIN_NAV_LINKS = [
   { href: "/admin/legal-requests", label: "調閱請求" },
   // M9（master-plan §9a 交付內容 3）：keyword_blocklist 表從 M2 就存在，一直沒有管理頁。
   { href: "/admin/keyword-blocklist", label: "關鍵字黑名單" },
+  // M9 好康資訊與券票點強化（master-plan §9a 交付內容 2）：來源管理＋審核佇列。
+  { href: "/admin/deal-sources", label: "好康來源" },
+  { href: "/admin/deal-reviews", label: "好康審核" },
 ] as const;
 
 // 後台各頁共用的頂部導覽（master-plan §7 第 7 項「後台最小集」）：避免每個 /admin/* 子頁
