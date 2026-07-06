@@ -264,6 +264,8 @@ model ItemImage {
   mediumObject StorageObject @relation("ItemImageMedium", fields: [mediumObjectId], references: [id])
 
   @@unique([itemId, sortOrder])
+  @@index([thumbObjectId]) // 孤兒檔清理 job 刪 StorageObject 時的外鍵檢查用，避免全表掃描
+  @@index([mediumObjectId])
   @@map("item_images")
 }
 
@@ -302,6 +304,7 @@ model ClaimComment {
 
   @@unique([itemId, userId])
   @@index([itemId, status, createdAt])
+  @@index([userId]) // 「我索取的物品」查詢用；unique(itemId, userId) 的複合索引不能拿來單獨查 userId
   @@map("claim_comments")
 }
 
@@ -347,6 +350,7 @@ model HandoverRecord {
   item     Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
   receiver User @relation(fields: [receiverId], references: [id], onDelete: Cascade)
 
+  @@index([receiverId]) // 接手者查看「交接中/已完成」列表用
   @@map("handover_records")
 }
 
@@ -431,6 +435,7 @@ model ConversationMember {
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([conversationId, userId])
+  @@index([userId]) // 收件夾「我的所有對話」查詢用；複合索引以 conversationId 為前導欄，查 userId 用不到
   @@map("conversation_members")
 }
 

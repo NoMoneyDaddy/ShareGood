@@ -1,4 +1,4 @@
-import heicConvert from "heic-convert";
+import { Worker } from "node:worker_threads";
 import sharp from "sharp";
 
 // 圖片管線（master-plan §3.3）：驗 magic bytes → 去 EXIF → 壓縮 → thumb/medium
@@ -46,14 +46,51 @@ function isHeic(buffer: Buffer): boolean {
   );
 }
 
+// heic-convert 底層是 libheif-js（WASM），解碼是 CPU 密集且同步阻塞事件循環（不會在
+// 解碼過程中讓出）。預期流量規模是上千人同時在線，直接在主執行緒跑會讓同時上傳 HEIC
+// 的使用者互相卡住、拖慢當下所有其他請求，所以搬進 Worker Thread。用 eval 字串（而非
+// 獨立檔案路徑）啟動，避開 Next.js build 不會把獨立 worker 檔案編進輸出產物的問題；
+// worker 內用 require() 走一般 node_modules 解析，正式站/本機開發都適用。
+const HEIC_WORKER_SOURCE = `
+const { parentPort, workerData } = require("node:worker_threads");
+const heicConvert = require("heic-convert");
+
+(async () => {
+  try {
+    const jpeg = await heicConvert({
+      buffer: Buffer.from(workerData.buffer),
+      format: "JPEG",
+      quality: workerData.quality,
+    });
+    parentPort.postMessage({ ok: true, buffer: Buffer.from(jpeg) });
+  } catch (err) {
+    parentPort.postMessage({ ok: false, error: String((err && err.message) || err) });
+  }
+})();
+`;
+
+function convertHeicInWorker(buffer: Buffer, quality: number): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(HEIC_WORKER_SOURCE, { eval: true, workerData: { buffer, quality } });
+    worker.once("message", (msg: { ok: true; buffer: Buffer } | { ok: false; error: string }) => {
+      worker.terminate();
+      if (msg.ok) resolve(msg.buffer);
+      else reject(new Error(msg.error));
+    });
+    worker.once("error", (err) => {
+      worker.terminate();
+      reject(err);
+    });
+  });
+}
+
 /**
  * HEIC/HEIF（iPhone 相機預設格式）不在支援清單內，magic bytes 檢查前先轉成 JPEG，
  * 讓後續管線（sniff/壓縮/縮圖）統一處理，使用者端無感。非 HEIC 原樣回傳。
  */
 export async function normalizeHeic(buffer: Buffer): Promise<Buffer> {
   if (!isHeic(buffer)) return buffer;
-  const jpeg = await heicConvert({ buffer, format: "JPEG", quality: 0.92 });
-  return Buffer.from(jpeg);
+  return convertHeicInWorker(buffer, 0.92);
 }
 
 /** 用 magic bytes 判斷實際格式；不合法回 null（副檔名不可信）。 */
