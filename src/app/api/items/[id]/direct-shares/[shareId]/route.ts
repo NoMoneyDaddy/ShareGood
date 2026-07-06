@@ -40,22 +40,39 @@ export async function PATCH(
     status = "expired";
   }
   if (status !== "pending") {
-    return jsonError("UNPROCESSABLE", "已逾期");
+    const message = status === "expired" ? "已逾期" : "此邀請已處理或已失效";
+    return jsonError("UNPROCESSABLE", message);
   }
 
   const now = new Date();
 
   if (action === "decline") {
-    await db.directShare.update({
-      where: { id: share.id },
+    // 用 updateMany 帶 status: "pending" 條件而非 update：如果同一筆邀請已經被另一個
+    // 併發的 accept 請求搶先處理掉，這裡就不會再把它強行覆蓋回 declined。
+    const updated = await db.directShare.updateMany({
+      where: { id: share.id, status: "pending" },
       data: { status: "declined", respondedAt: now },
     });
+    if (updated.count === 0) {
+      return jsonError("CONFLICT", "此邀請已處理或已失效");
+    }
     return NextResponse.json({ status: "declined" });
   }
 
-  // accept：物品狀態轉換要跟留言/認領那邊比照同一套原子搶佔模式，因為理論上兩邊
-  // 可能同時把同一個物品搶走。
+  // accept：先在交易內用 updateMany（帶 status: "pending" 條件）原子性地「認領」這筆
+  // 邀請本身——只有認領成功才繼續嘗試搶佔物品；認領失敗代表已經被另一個併發請求處理過
+  // （例如同時送出的 decline，或重複點擊 accept），直接回錯誤，不會去動物品或覆蓋邀請狀態。
+  // 物品狀態轉換比照留言/認領那邊同一套原子搶佔模式，因為理論上兩邊可能同時把同一個
+  // 物品搶走。
   const result = await db.$transaction(async (tx) => {
+    const claimed = await tx.directShare.updateMany({
+      where: { id: share.id, status: "pending" },
+      data: { status: "accepted", respondedAt: now },
+    });
+    if (claimed.count === 0) {
+      return { ok: false as const, alreadyProcessed: true as const };
+    }
+
     const updated = await tx.item.updateMany({
       where: { id: itemId, status: "published" },
       data: { status: "reserved" },
@@ -65,13 +82,9 @@ export async function PATCH(
         where: { id: share.id },
         data: { status: "declined", respondedAt: now },
       });
-      return { ok: false as const };
+      return { ok: false as const, alreadyProcessed: false as const };
     }
 
-    await tx.directShare.update({
-      where: { id: share.id },
-      data: { status: "accepted", respondedAt: now },
-    });
     await tx.itemStatusLog.create({
       data: {
         itemId,
@@ -100,6 +113,9 @@ export async function PATCH(
   });
 
   if (!result.ok) {
+    if (result.alreadyProcessed) {
+      return jsonError("CONFLICT", "此邀請已處理或已失效");
+    }
     return jsonError("CONFLICT", "這個物品已經不在了");
   }
   return NextResponse.json({ status: "accepted" });

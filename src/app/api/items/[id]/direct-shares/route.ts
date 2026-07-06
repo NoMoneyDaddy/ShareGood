@@ -37,27 +37,42 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return jsonError("UNPROCESSABLE", "不能贈送給自己");
   }
 
-  const receiver = await db.user.findUnique({ where: { email: receiverEmail } });
+  const receiver = await db.user.findUnique({ where: { email: receiverEmail.toLowerCase() } });
   if (!receiver) {
     return jsonError("UNPROCESSABLE", "找不到這個使用者");
   }
 
-  const existingPending = await db.directShare.findFirst({
-    where: { itemId, status: "pending" },
-  });
-  if (existingPending) {
-    return jsonError("CONFLICT", "已經有一筆進行中的直贈邀請");
-  }
-
   const now = new Date();
-  const created = await db.directShare.create({
-    data: {
-      itemId,
-      receiverId: receiver.id,
-      status: "pending",
-      expiresAt: new Date(now.getTime() + DIRECT_SHARE_TTL_MS),
-    },
-  });
+  // findFirst 跟 create 中間有時間差，物主快速重複點擊或多個併發請求可能同時通過檢查、
+  // 各自建立一筆 pending 直贈。用 `SELECT ... FOR UPDATE` 鎖住這個 item 的資料列，讓併發
+  // 請求排隊逐一處理，確保「同一物品同時最多一筆 pending 直贈」這條規則不會被搶過去。
+  let created: { id: string };
+  try {
+    created = await db.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT id FROM items WHERE id = ${itemId} FOR UPDATE`;
+
+      const existingPending = await tx.directShare.findFirst({
+        where: { itemId, status: "pending" },
+      });
+      if (existingPending) {
+        throw new Error("DIRECT_SHARE_PENDING_EXISTS");
+      }
+
+      return tx.directShare.create({
+        data: {
+          itemId,
+          receiverId: receiver.id,
+          status: "pending",
+          expiresAt: new Date(now.getTime() + DIRECT_SHARE_TTL_MS),
+        },
+      });
+    });
+  } catch (e) {
+    if (e instanceof Error && e.message === "DIRECT_SHARE_PENDING_EXISTS") {
+      return jsonError("CONFLICT", "已經有一筆進行中的直贈邀請");
+    }
+    throw e;
+  }
 
   await db.notification.create({
     data: {
