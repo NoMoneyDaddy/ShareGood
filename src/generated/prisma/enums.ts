@@ -37,3 +37,66 @@ export const StorageStatus = {
 } as const
 
 export type StorageStatus = (typeof StorageStatus)[keyof typeof StorageStatus]
+
+
+export const ItemStatus = {
+  draft: 'draft',
+  pending_review: 'pending_review',
+  published: 'published',
+  reserved: 'reserved',
+  handover_pending: 'handover_pending',
+  completed: 'completed',
+  expired: 'expired',
+  removed_by_user: 'removed_by_user',
+  removed_by_moderator: 'removed_by_moderator'
+} as const
+
+export type ItemStatus = (typeof ItemStatus)[keyof typeof ItemStatus]
+
+
+export const ClaimStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  declined: 'declined'
+} as const
+
+export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]
+
+
+export const DirectShareStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  declined: 'declined',
+  expired: 'expired'
+} as const
+
+export type DirectShareStatus = (typeof DirectShareStatus)[keyof typeof DirectShareStatus]
+
+
+export const HandoverStatus = {
+  pending: 'pending',
+  completed: 'completed',
+  no_show: 'no_show'
+} as const
+
+export type HandoverStatus = (typeof HandoverStatus)[keyof typeof HandoverStatus]
+
+
+export const ContributionType = {
+  share_completed: 'share_completed',
+  receive_completed: 'receive_completed',
+  no_show: 'no_show'
+} as const
+
+export type ContributionType = (typeof ContributionType)[keyof typeof ContributionType]
+
+
+export const NotificationType = {
+  new_comment: 'new_comment',
+  claim_accepted: 'claim_accepted',
+  direct_share_received: 'direct_share_received',
+  handover_message: 'handover_message',
+  completion_confirmed: 'completion_confirmed'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

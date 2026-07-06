@@ -204,6 +204,17 @@ export type UserWhereInput = {
   roles?: Prisma.UserRoleListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   storageObjects?: Prisma.StorageObjectListRelationFilter
+  items?: Prisma.ItemListRelationFilter
+  itemStatusLogsActed?: Prisma.ItemStatusLogListRelationFilter
+  claimComments?: Prisma.ClaimCommentListRelationFilter
+  directSharesReceived?: Prisma.DirectShareListRelationFilter
+  handoverRecords?: Prisma.HandoverRecordListRelationFilter
+  thanksSent?: Prisma.ThanksMessageListRelationFilter
+  thanksReceived?: Prisma.ThanksMessageListRelationFilter
+  contributionEvents?: Prisma.ContributionEventListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  conversationMemberships?: Prisma.ConversationMemberListRelationFilter
+  messagesSent?: Prisma.MessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -220,6 +231,17 @@ export type UserOrderByWithRelationInput = {
   roles?: Prisma.UserRoleOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   storageObjects?: Prisma.StorageObjectOrderByRelationAggregateInput
+  items?: Prisma.ItemOrderByRelationAggregateInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogOrderByRelationAggregateInput
+  claimComments?: Prisma.ClaimCommentOrderByRelationAggregateInput
+  directSharesReceived?: Prisma.DirectShareOrderByRelationAggregateInput
+  handoverRecords?: Prisma.HandoverRecordOrderByRelationAggregateInput
+  thanksSent?: Prisma.ThanksMessageOrderByRelationAggregateInput
+  thanksReceived?: Prisma.ThanksMessageOrderByRelationAggregateInput
+  contributionEvents?: Prisma.ContributionEventOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  conversationMemberships?: Prisma.ConversationMemberOrderByRelationAggregateInput
+  messagesSent?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -239,6 +261,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   roles?: Prisma.UserRoleListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   storageObjects?: Prisma.StorageObjectListRelationFilter
+  items?: Prisma.ItemListRelationFilter
+  itemStatusLogsActed?: Prisma.ItemStatusLogListRelationFilter
+  claimComments?: Prisma.ClaimCommentListRelationFilter
+  directSharesReceived?: Prisma.DirectShareListRelationFilter
+  handoverRecords?: Prisma.HandoverRecordListRelationFilter
+  thanksSent?: Prisma.ThanksMessageListRelationFilter
+  thanksReceived?: Prisma.ThanksMessageListRelationFilter
+  contributionEvents?: Prisma.ContributionEventListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  conversationMemberships?: Prisma.ConversationMemberListRelationFilter
+  messagesSent?: Prisma.MessageListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -281,6 +314,17 @@ export type UserCreateInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -297,6 +341,17 @@ export type UserUncheckedCreateInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserUpdateInput = {
@@ -313,6 +368,17 @@ export type UserUpdateInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -329,6 +395,17 @@ export type UserUncheckedUpdateInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -505,6 +582,162 @@ export type UserUpdateOneWithoutStorageObjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStorageObjectsInput, Prisma.UserUpdateWithoutStorageObjectsInput>, Prisma.UserUncheckedUpdateWithoutStorageObjectsInput>
 }
 
+export type UserCreateNestedOneWithoutItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemsInput, Prisma.UserUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemsInput, Prisma.UserUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemsInput
+  upsert?: Prisma.UserUpsertWithoutItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutItemsInput, Prisma.UserUpdateWithoutItemsInput>, Prisma.UserUncheckedUpdateWithoutItemsInput>
+}
+
+export type UserCreateNestedOneWithoutItemStatusLogsActedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedCreateWithoutItemStatusLogsActedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemStatusLogsActedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutItemStatusLogsActedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedCreateWithoutItemStatusLogsActedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemStatusLogsActedInput
+  upsert?: Prisma.UserUpsertWithoutItemStatusLogsActedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutItemStatusLogsActedInput, Prisma.UserUpdateWithoutItemStatusLogsActedInput>, Prisma.UserUncheckedUpdateWithoutItemStatusLogsActedInput>
+}
+
+export type UserCreateNestedOneWithoutClaimCommentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClaimCommentsInput, Prisma.UserUncheckedCreateWithoutClaimCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClaimCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutClaimCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClaimCommentsInput, Prisma.UserUncheckedCreateWithoutClaimCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClaimCommentsInput
+  upsert?: Prisma.UserUpsertWithoutClaimCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClaimCommentsInput, Prisma.UserUpdateWithoutClaimCommentsInput>, Prisma.UserUncheckedUpdateWithoutClaimCommentsInput>
+}
+
+export type UserCreateNestedOneWithoutDirectSharesReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedCreateWithoutDirectSharesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectSharesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDirectSharesReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedCreateWithoutDirectSharesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDirectSharesReceivedInput
+  upsert?: Prisma.UserUpsertWithoutDirectSharesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDirectSharesReceivedInput, Prisma.UserUpdateWithoutDirectSharesReceivedInput>, Prisma.UserUncheckedUpdateWithoutDirectSharesReceivedInput>
+}
+
+export type UserCreateNestedOneWithoutHandoverRecordsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHandoverRecordsInput, Prisma.UserUncheckedCreateWithoutHandoverRecordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHandoverRecordsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHandoverRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHandoverRecordsInput, Prisma.UserUncheckedCreateWithoutHandoverRecordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHandoverRecordsInput
+  upsert?: Prisma.UserUpsertWithoutHandoverRecordsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHandoverRecordsInput, Prisma.UserUpdateWithoutHandoverRecordsInput>, Prisma.UserUncheckedUpdateWithoutHandoverRecordsInput>
+}
+
+export type UserCreateNestedOneWithoutThanksSentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutThanksSentInput, Prisma.UserUncheckedCreateWithoutThanksSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutThanksSentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutThanksReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutThanksReceivedInput, Prisma.UserUncheckedCreateWithoutThanksReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutThanksReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutThanksSentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutThanksSentInput, Prisma.UserUncheckedCreateWithoutThanksSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutThanksSentInput
+  upsert?: Prisma.UserUpsertWithoutThanksSentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutThanksSentInput, Prisma.UserUpdateWithoutThanksSentInput>, Prisma.UserUncheckedUpdateWithoutThanksSentInput>
+}
+
+export type UserUpdateOneRequiredWithoutThanksReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutThanksReceivedInput, Prisma.UserUncheckedCreateWithoutThanksReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutThanksReceivedInput
+  upsert?: Prisma.UserUpsertWithoutThanksReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutThanksReceivedInput, Prisma.UserUpdateWithoutThanksReceivedInput>, Prisma.UserUncheckedUpdateWithoutThanksReceivedInput>
+}
+
+export type UserCreateNestedOneWithoutContributionEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContributionEventsInput, Prisma.UserUncheckedCreateWithoutContributionEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContributionEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutContributionEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContributionEventsInput, Prisma.UserUncheckedCreateWithoutContributionEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContributionEventsInput
+  upsert?: Prisma.UserUpsertWithoutContributionEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutContributionEventsInput, Prisma.UserUpdateWithoutContributionEventsInput>, Prisma.UserUncheckedUpdateWithoutContributionEventsInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserCreateNestedOneWithoutConversationMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConversationMembershipsInput, Prisma.UserUncheckedCreateWithoutConversationMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConversationMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutConversationMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConversationMembershipsInput, Prisma.UserUncheckedCreateWithoutConversationMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConversationMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutConversationMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutConversationMembershipsInput, Prisma.UserUpdateWithoutConversationMembershipsInput>, Prisma.UserUncheckedUpdateWithoutConversationMembershipsInput>
+}
+
+export type UserCreateNestedOneWithoutMessagesSentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMessagesSentInput, Prisma.UserUncheckedCreateWithoutMessagesSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMessagesSentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMessagesSentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMessagesSentInput, Prisma.UserUncheckedCreateWithoutMessagesSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMessagesSentInput
+  upsert?: Prisma.UserUpsertWithoutMessagesSentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMessagesSentInput, Prisma.UserUpdateWithoutMessagesSentInput>, Prisma.UserUncheckedUpdateWithoutMessagesSentInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
@@ -518,6 +751,17 @@ export type UserCreateWithoutAccountsInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -533,6 +777,17 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -564,6 +819,17 @@ export type UserUpdateWithoutAccountsInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -579,6 +845,17 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -594,6 +871,17 @@ export type UserCreateWithoutSessionsInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -609,6 +897,17 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -640,6 +939,17 @@ export type UserUpdateWithoutSessionsInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -655,6 +965,17 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -670,6 +991,17 @@ export type UserCreateWithoutProfileInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -685,6 +1017,17 @@ export type UserUncheckedCreateWithoutProfileInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -716,6 +1059,17 @@ export type UserUpdateWithoutProfileInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -731,6 +1085,17 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutRolesInput = {
@@ -746,6 +1111,17 @@ export type UserCreateWithoutRolesInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -761,6 +1137,17 @@ export type UserUncheckedCreateWithoutRolesInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -792,6 +1179,17 @@ export type UserUpdateWithoutRolesInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -807,6 +1205,17 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -822,6 +1231,17 @@ export type UserCreateWithoutAuditLogsInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -837,6 +1257,17 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -868,6 +1299,17 @@ export type UserUpdateWithoutAuditLogsInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -883,6 +1325,17 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutStorageObjectsInput = {
@@ -898,6 +1351,17 @@ export type UserCreateWithoutStorageObjectsInput = {
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutStorageObjectsInput = {
@@ -913,6 +1377,17 @@ export type UserUncheckedCreateWithoutStorageObjectsInput = {
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutStorageObjectsInput = {
@@ -944,6 +1419,17 @@ export type UserUpdateWithoutStorageObjectsInput = {
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStorageObjectsInput = {
@@ -959,6 +1445,1337 @@ export type UserUncheckedUpdateWithoutStorageObjectsInput = {
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutItemsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutItemsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemsInput, Prisma.UserUncheckedCreateWithoutItemsInput>
+}
+
+export type UserUpsertWithoutItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutItemsInput, Prisma.UserUncheckedUpdateWithoutItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemsInput, Prisma.UserUncheckedCreateWithoutItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutItemsInput, Prisma.UserUncheckedUpdateWithoutItemsInput>
+}
+
+export type UserUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutItemStatusLogsActedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutItemStatusLogsActedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutItemStatusLogsActedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedCreateWithoutItemStatusLogsActedInput>
+}
+
+export type UserUpsertWithoutItemStatusLogsActedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedUpdateWithoutItemStatusLogsActedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedCreateWithoutItemStatusLogsActedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutItemStatusLogsActedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutItemStatusLogsActedInput, Prisma.UserUncheckedUpdateWithoutItemStatusLogsActedInput>
+}
+
+export type UserUpdateWithoutItemStatusLogsActedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutItemStatusLogsActedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutClaimCommentsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutClaimCommentsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutClaimCommentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutClaimCommentsInput, Prisma.UserUncheckedCreateWithoutClaimCommentsInput>
+}
+
+export type UserUpsertWithoutClaimCommentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutClaimCommentsInput, Prisma.UserUncheckedUpdateWithoutClaimCommentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutClaimCommentsInput, Prisma.UserUncheckedCreateWithoutClaimCommentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutClaimCommentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutClaimCommentsInput, Prisma.UserUncheckedUpdateWithoutClaimCommentsInput>
+}
+
+export type UserUpdateWithoutClaimCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutClaimCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutDirectSharesReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutDirectSharesReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutDirectSharesReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedCreateWithoutDirectSharesReceivedInput>
+}
+
+export type UserUpsertWithoutDirectSharesReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedUpdateWithoutDirectSharesReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedCreateWithoutDirectSharesReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDirectSharesReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDirectSharesReceivedInput, Prisma.UserUncheckedUpdateWithoutDirectSharesReceivedInput>
+}
+
+export type UserUpdateWithoutDirectSharesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDirectSharesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutHandoverRecordsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutHandoverRecordsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutHandoverRecordsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHandoverRecordsInput, Prisma.UserUncheckedCreateWithoutHandoverRecordsInput>
+}
+
+export type UserUpsertWithoutHandoverRecordsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHandoverRecordsInput, Prisma.UserUncheckedUpdateWithoutHandoverRecordsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHandoverRecordsInput, Prisma.UserUncheckedCreateWithoutHandoverRecordsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHandoverRecordsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHandoverRecordsInput, Prisma.UserUncheckedUpdateWithoutHandoverRecordsInput>
+}
+
+export type UserUpdateWithoutHandoverRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHandoverRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutThanksSentInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutThanksSentInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutThanksSentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutThanksSentInput, Prisma.UserUncheckedCreateWithoutThanksSentInput>
+}
+
+export type UserCreateWithoutThanksReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutThanksReceivedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutThanksReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutThanksReceivedInput, Prisma.UserUncheckedCreateWithoutThanksReceivedInput>
+}
+
+export type UserUpsertWithoutThanksSentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutThanksSentInput, Prisma.UserUncheckedUpdateWithoutThanksSentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutThanksSentInput, Prisma.UserUncheckedCreateWithoutThanksSentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutThanksSentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutThanksSentInput, Prisma.UserUncheckedUpdateWithoutThanksSentInput>
+}
+
+export type UserUpdateWithoutThanksSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutThanksSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutThanksReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutThanksReceivedInput, Prisma.UserUncheckedUpdateWithoutThanksReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutThanksReceivedInput, Prisma.UserUncheckedCreateWithoutThanksReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutThanksReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutThanksReceivedInput, Prisma.UserUncheckedUpdateWithoutThanksReceivedInput>
+}
+
+export type UserUpdateWithoutThanksReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutThanksReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutContributionEventsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutContributionEventsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutContributionEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutContributionEventsInput, Prisma.UserUncheckedCreateWithoutContributionEventsInput>
+}
+
+export type UserUpsertWithoutContributionEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutContributionEventsInput, Prisma.UserUncheckedUpdateWithoutContributionEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutContributionEventsInput, Prisma.UserUncheckedCreateWithoutContributionEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutContributionEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutContributionEventsInput, Prisma.UserUncheckedUpdateWithoutContributionEventsInput>
+}
+
+export type UserUpdateWithoutContributionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutContributionEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutConversationMembershipsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutConversationMembershipsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutConversationMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutConversationMembershipsInput, Prisma.UserUncheckedCreateWithoutConversationMembershipsInput>
+}
+
+export type UserUpsertWithoutConversationMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutConversationMembershipsInput, Prisma.UserUncheckedUpdateWithoutConversationMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutConversationMembershipsInput, Prisma.UserUncheckedCreateWithoutConversationMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutConversationMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutConversationMembershipsInput, Prisma.UserUncheckedUpdateWithoutConversationMembershipsInput>
+}
+
+export type UserUpdateWithoutConversationMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutConversationMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutMessagesSentInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMessagesSentInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMessagesSentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMessagesSentInput, Prisma.UserUncheckedCreateWithoutMessagesSentInput>
+}
+
+export type UserUpsertWithoutMessagesSentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMessagesSentInput, Prisma.UserUncheckedUpdateWithoutMessagesSentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMessagesSentInput, Prisma.UserUncheckedCreateWithoutMessagesSentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMessagesSentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMessagesSentInput, Prisma.UserUncheckedUpdateWithoutMessagesSentInput>
+}
+
+export type UserUpdateWithoutMessagesSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMessagesSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -972,6 +2789,17 @@ export type UserCountOutputType = {
   roles: number
   auditLogs: number
   storageObjects: number
+  items: number
+  itemStatusLogsActed: number
+  claimComments: number
+  directSharesReceived: number
+  handoverRecords: number
+  thanksSent: number
+  thanksReceived: number
+  contributionEvents: number
+  notifications: number
+  conversationMemberships: number
+  messagesSent: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -980,6 +2808,17 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   roles?: boolean | UserCountOutputTypeCountRolesArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   storageObjects?: boolean | UserCountOutputTypeCountStorageObjectsArgs
+  items?: boolean | UserCountOutputTypeCountItemsArgs
+  itemStatusLogsActed?: boolean | UserCountOutputTypeCountItemStatusLogsActedArgs
+  claimComments?: boolean | UserCountOutputTypeCountClaimCommentsArgs
+  directSharesReceived?: boolean | UserCountOutputTypeCountDirectSharesReceivedArgs
+  handoverRecords?: boolean | UserCountOutputTypeCountHandoverRecordsArgs
+  thanksSent?: boolean | UserCountOutputTypeCountThanksSentArgs
+  thanksReceived?: boolean | UserCountOutputTypeCountThanksReceivedArgs
+  contributionEvents?: boolean | UserCountOutputTypeCountContributionEventsArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  conversationMemberships?: boolean | UserCountOutputTypeCountConversationMembershipsArgs
+  messagesSent?: boolean | UserCountOutputTypeCountMessagesSentArgs
 }
 
 /**
@@ -1027,6 +2866,83 @@ export type UserCountOutputTypeCountStorageObjectsArgs<ExtArgs extends runtime.T
   where?: Prisma.StorageObjectWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountItemStatusLogsActedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemStatusLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountClaimCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClaimCommentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDirectSharesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DirectShareWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHandoverRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HandoverRecordWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountThanksSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ThanksMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountThanksReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ThanksMessageWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountContributionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContributionEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountConversationMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConversationMemberWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMessagesSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1042,6 +2958,17 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   storageObjects?: boolean | Prisma.User$storageObjectsArgs<ExtArgs>
+  items?: boolean | Prisma.User$itemsArgs<ExtArgs>
+  itemStatusLogsActed?: boolean | Prisma.User$itemStatusLogsActedArgs<ExtArgs>
+  claimComments?: boolean | Prisma.User$claimCommentsArgs<ExtArgs>
+  directSharesReceived?: boolean | Prisma.User$directSharesReceivedArgs<ExtArgs>
+  handoverRecords?: boolean | Prisma.User$handoverRecordsArgs<ExtArgs>
+  thanksSent?: boolean | Prisma.User$thanksSentArgs<ExtArgs>
+  thanksReceived?: boolean | Prisma.User$thanksReceivedArgs<ExtArgs>
+  contributionEvents?: boolean | Prisma.User$contributionEventsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  conversationMemberships?: boolean | Prisma.User$conversationMembershipsArgs<ExtArgs>
+  messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1083,6 +3010,17 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   storageObjects?: boolean | Prisma.User$storageObjectsArgs<ExtArgs>
+  items?: boolean | Prisma.User$itemsArgs<ExtArgs>
+  itemStatusLogsActed?: boolean | Prisma.User$itemStatusLogsActedArgs<ExtArgs>
+  claimComments?: boolean | Prisma.User$claimCommentsArgs<ExtArgs>
+  directSharesReceived?: boolean | Prisma.User$directSharesReceivedArgs<ExtArgs>
+  handoverRecords?: boolean | Prisma.User$handoverRecordsArgs<ExtArgs>
+  thanksSent?: boolean | Prisma.User$thanksSentArgs<ExtArgs>
+  thanksReceived?: boolean | Prisma.User$thanksReceivedArgs<ExtArgs>
+  contributionEvents?: boolean | Prisma.User$contributionEventsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  conversationMemberships?: boolean | Prisma.User$conversationMembershipsArgs<ExtArgs>
+  messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1097,6 +3035,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     roles: Prisma.$UserRolePayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     storageObjects: Prisma.$StorageObjectPayload<ExtArgs>[]
+    items: Prisma.$ItemPayload<ExtArgs>[]
+    itemStatusLogsActed: Prisma.$ItemStatusLogPayload<ExtArgs>[]
+    claimComments: Prisma.$ClaimCommentPayload<ExtArgs>[]
+    directSharesReceived: Prisma.$DirectSharePayload<ExtArgs>[]
+    handoverRecords: Prisma.$HandoverRecordPayload<ExtArgs>[]
+    thanksSent: Prisma.$ThanksMessagePayload<ExtArgs>[]
+    thanksReceived: Prisma.$ThanksMessagePayload<ExtArgs>[]
+    contributionEvents: Prisma.$ContributionEventPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    conversationMemberships: Prisma.$ConversationMemberPayload<ExtArgs>[]
+    messagesSent: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1506,6 +3455,17 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   roles<T extends Prisma.User$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   storageObjects<T extends Prisma.User$storageObjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storageObjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorageObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  items<T extends Prisma.User$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  itemStatusLogsActed<T extends Prisma.User$itemStatusLogsActedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$itemStatusLogsActedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemStatusLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  claimComments<T extends Prisma.User$claimCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$claimCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClaimCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  directSharesReceived<T extends Prisma.User$directSharesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$directSharesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DirectSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  handoverRecords<T extends Prisma.User$handoverRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$handoverRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HandoverRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  thanksSent<T extends Prisma.User$thanksSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$thanksSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ThanksMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  thanksReceived<T extends Prisma.User$thanksReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$thanksReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ThanksMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contributionEvents<T extends Prisma.User$contributionEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$contributionEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContributionEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  conversationMemberships<T extends Prisma.User$conversationMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  messagesSent<T extends Prisma.User$messagesSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2071,6 +4031,270 @@ export type User$storageObjectsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.StorageObjectScalarFieldEnum | Prisma.StorageObjectScalarFieldEnum[]
+}
+
+/**
+ * User.items
+ */
+export type User$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Item
+   */
+  select?: Prisma.ItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Item
+   */
+  omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  where?: Prisma.ItemWhereInput
+  orderBy?: Prisma.ItemOrderByWithRelationInput | Prisma.ItemOrderByWithRelationInput[]
+  cursor?: Prisma.ItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemScalarFieldEnum | Prisma.ItemScalarFieldEnum[]
+}
+
+/**
+ * User.itemStatusLogsActed
+ */
+export type User$itemStatusLogsActedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemStatusLog
+   */
+  select?: Prisma.ItemStatusLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemStatusLog
+   */
+  omit?: Prisma.ItemStatusLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemStatusLogInclude<ExtArgs> | null
+  where?: Prisma.ItemStatusLogWhereInput
+  orderBy?: Prisma.ItemStatusLogOrderByWithRelationInput | Prisma.ItemStatusLogOrderByWithRelationInput[]
+  cursor?: Prisma.ItemStatusLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemStatusLogScalarFieldEnum | Prisma.ItemStatusLogScalarFieldEnum[]
+}
+
+/**
+ * User.claimComments
+ */
+export type User$claimCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClaimComment
+   */
+  select?: Prisma.ClaimCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClaimComment
+   */
+  omit?: Prisma.ClaimCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClaimCommentInclude<ExtArgs> | null
+  where?: Prisma.ClaimCommentWhereInput
+  orderBy?: Prisma.ClaimCommentOrderByWithRelationInput | Prisma.ClaimCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ClaimCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClaimCommentScalarFieldEnum | Prisma.ClaimCommentScalarFieldEnum[]
+}
+
+/**
+ * User.directSharesReceived
+ */
+export type User$directSharesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DirectShare
+   */
+  select?: Prisma.DirectShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DirectShare
+   */
+  omit?: Prisma.DirectShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DirectShareInclude<ExtArgs> | null
+  where?: Prisma.DirectShareWhereInput
+  orderBy?: Prisma.DirectShareOrderByWithRelationInput | Prisma.DirectShareOrderByWithRelationInput[]
+  cursor?: Prisma.DirectShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DirectShareScalarFieldEnum | Prisma.DirectShareScalarFieldEnum[]
+}
+
+/**
+ * User.handoverRecords
+ */
+export type User$handoverRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HandoverRecord
+   */
+  select?: Prisma.HandoverRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HandoverRecord
+   */
+  omit?: Prisma.HandoverRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HandoverRecordInclude<ExtArgs> | null
+  where?: Prisma.HandoverRecordWhereInput
+  orderBy?: Prisma.HandoverRecordOrderByWithRelationInput | Prisma.HandoverRecordOrderByWithRelationInput[]
+  cursor?: Prisma.HandoverRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HandoverRecordScalarFieldEnum | Prisma.HandoverRecordScalarFieldEnum[]
+}
+
+/**
+ * User.thanksSent
+ */
+export type User$thanksSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ThanksMessage
+   */
+  select?: Prisma.ThanksMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ThanksMessage
+   */
+  omit?: Prisma.ThanksMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ThanksMessageInclude<ExtArgs> | null
+  where?: Prisma.ThanksMessageWhereInput
+  orderBy?: Prisma.ThanksMessageOrderByWithRelationInput | Prisma.ThanksMessageOrderByWithRelationInput[]
+  cursor?: Prisma.ThanksMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ThanksMessageScalarFieldEnum | Prisma.ThanksMessageScalarFieldEnum[]
+}
+
+/**
+ * User.thanksReceived
+ */
+export type User$thanksReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ThanksMessage
+   */
+  select?: Prisma.ThanksMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ThanksMessage
+   */
+  omit?: Prisma.ThanksMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ThanksMessageInclude<ExtArgs> | null
+  where?: Prisma.ThanksMessageWhereInput
+  orderBy?: Prisma.ThanksMessageOrderByWithRelationInput | Prisma.ThanksMessageOrderByWithRelationInput[]
+  cursor?: Prisma.ThanksMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ThanksMessageScalarFieldEnum | Prisma.ThanksMessageScalarFieldEnum[]
+}
+
+/**
+ * User.contributionEvents
+ */
+export type User$contributionEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContributionEvent
+   */
+  select?: Prisma.ContributionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContributionEvent
+   */
+  omit?: Prisma.ContributionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContributionEventInclude<ExtArgs> | null
+  where?: Prisma.ContributionEventWhereInput
+  orderBy?: Prisma.ContributionEventOrderByWithRelationInput | Prisma.ContributionEventOrderByWithRelationInput[]
+  cursor?: Prisma.ContributionEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContributionEventScalarFieldEnum | Prisma.ContributionEventScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.conversationMemberships
+ */
+export type User$conversationMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConversationMember
+   */
+  select?: Prisma.ConversationMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConversationMember
+   */
+  omit?: Prisma.ConversationMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConversationMemberInclude<ExtArgs> | null
+  where?: Prisma.ConversationMemberWhereInput
+  orderBy?: Prisma.ConversationMemberOrderByWithRelationInput | Prisma.ConversationMemberOrderByWithRelationInput[]
+  cursor?: Prisma.ConversationMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConversationMemberScalarFieldEnum | Prisma.ConversationMemberScalarFieldEnum[]
+}
+
+/**
+ * User.messagesSent
+ */
+export type User$messagesSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**

@@ -39,13 +39,16 @@ export async function POST(req: NextRequest) {
   if (!mime) return jsonError("UNPROCESSABLE", "僅接受 jpg / png / webp 圖片");
 
   const id = randomUUID();
-  const results: Record<string, { objectKey: string; width: number; height: number }> = {};
+  const results: Record<
+    string,
+    { storageObjectId: string; objectKey: string; width: number; height: number }
+  > = {};
 
   for (const [name, opt] of Object.entries(VARIANTS)) {
     const processed = await toWebpVariant(buffer, opt.maxWidth, opt.quality);
     const objectKey = `images/${id}/${name}.webp`;
     await putObject(objectKey, processed.buffer, "image/webp");
-    await db.storageObject.create({
+    const storageObject = await db.storageObject.create({
       data: {
         objectKey,
         kind: name === "thumb" ? "item_image_thumb" : "item_image_medium",
@@ -56,7 +59,12 @@ export async function POST(req: NextRequest) {
         uploaderId: user.id,
       },
     });
-    results[name] = { objectKey, width: processed.width, height: processed.height };
+    results[name] = {
+      storageObjectId: storageObject.id,
+      objectKey,
+      width: processed.width,
+      height: processed.height,
+    };
   }
 
   return NextResponse.json({ id, variants: results }, { status: 201 });

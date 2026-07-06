@@ -20,22 +20,17 @@ export function BottomTab() {
           逛好物
         </Link>
         <DisabledTab icon={Heart} label="我的需要" />
-        <button
-          type="button"
-          disabled
-          aria-label="分享（即將開放）"
-          className="flex flex-col items-center gap-1 border-0 bg-transparent p-0 disabled:cursor-not-allowed"
+        <Link
+          href="/items/new"
+          className="flex flex-col items-center gap-1 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          {/* 停用態不用品牌色發光樣式：避免看起來像可點的主要 CTA，實際上點了沒反應。
-              這裡故意不用 <Button size="icon-xl">：Button 的 disabled 樣式是
-              disabled:opacity-50，疊在已經校正過對比度的 ink-disabled 顏色上
-              會再打對折、對比度掉到 AA 不合格（見 globals.css 的 ink-disabled 說明），
-              所以圓形停用態手刻，不透過 Button 元件。 */}
-          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full border border-line bg-paper-2 text-ink-disabled">
+          {/* 未登入／未完成 onboarding 的使用者點進 /items/new 會被導去對應頁面，
+              不在這裡重複判斷登入狀態（BottomTab 是全站共用元件，不吃 session）。 */}
+          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-brand-glow">
             <Plus size={22} strokeWidth={2.4} aria-hidden="true" />
           </span>
-          <span className="text-ink-disabled">分享</span>
-        </button>
+          <span className="font-semibold text-ink">分享</span>
+        </Link>
         <DisabledTab icon={MessageCircle} label="訊息" />
         <DisabledTab icon={User} label="我的" />
       </div>
