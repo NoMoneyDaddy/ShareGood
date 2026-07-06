@@ -153,6 +153,63 @@
       `e2e/integration/lottery.test.ts`（15 案例：建立/互斥、報名併發、開獎併發＋
       重演驗證、逾時遞補、婉拒遞補、候補用盡流標、確認＋貢獻值＋交接銜接、取消抽籤、
       稽核時間序），連同既有 13 支整合測試共 115 個案例全過。
+- [x] M6 訂閱通知＋Web Push（PR：feat/m6-subscriptions-webpush）：範圍見 master-plan.md
+      §6a，schema 地基已在 PR #36 merge 進 main（`UserSubscription`／`SubscriptionKeyword`／
+      `SubscriptionCategory`／`SubscriptionCity`／`SubscriptionMatch`／`SubscriptionDigestJob`／
+      `WebPushSubscription` 等表，本次未動 `prisma/schema.prisma`）。訂閱條件 CRUD：
+      `POST/GET /api/subscriptions`、`GET/PATCH/DELETE /api/subscriptions/[id]`（關鍵字≤5／
+      分類／縣市，三維度至少一項、20 筆上限、正規化去重）；Web Push 裝置訂閱
+      `POST/DELETE /api/web-push/subscriptions`（依 endpoint upsert／刪除，`src/lib/web-push.ts`
+      封裝 `web-push` 套件呼叫，404/410 自動停用失效裝置，多裝置推播用 `Promise.all` 平行處理
+      且每個裝置的推播＋DB 更新各自獨立 try/catch，避免單一裝置失敗拖垮整批）；排程比對 job
+      `POST /api/jobs/subscription-match-scan`（cursor 存 `SystemJobRun.detail`，`@@unique
+      (subscriptionId,itemId)` 保 idempotent，逐 pair 呼叫外加 try/catch，單筆例外不中斷整個
+      batch）與每日摘要 job `POST /api/jobs/subscription-daily-digest`（`@@unique(userId,
+      digestDate)` 保同日不重複發送）；`/me/subscriptions` 頁面（表單／列表／啟用瀏覽器推播
+      開關）＋ `public/sw.js` service worker。通知沿用 M1 機制、重用 `completion_confirmed`
+      type＋`payload.kind`（`subscription_match`／`subscription_digest`），首次把 M4
+      `notification_preferences` 的 `inAppEnabled`/`externalEnabled` 真正接進通知建立流程
+      （`src/lib/subscription-notify.ts`，僅套用在這兩個新事件類型）。**關鍵前提**：
+      `handover/[id]/no-show`、`appeals/[id]` 兩支既有 route 補上物品退回 `published` 時
+      同步更新 `publishedAt`，否則比對 job 的 cursor 永遠掃不到重新上架的物品。整合測試
+      `e2e/integration/{subscriptions,web-push}.test.ts`，連同既有套件共 153 個案例全過。
+- [x] M7 資料權利與法務（PR：feat/m7-data-rights-legal）：範圍見 master-plan.md §7a，
+      **技術骨架，法律相關文案上線前需律師與平台法務審閱**。自助資料匯出
+      `POST/GET /api/me/data-exports`、`GET /api/me/data-exports/[id]/download`（15 分鐘
+      簽名連結，每次呼叫重簽）；帳號刪除 `POST/DELETE /api/me/privacy-requests[...]`（7 天
+      冷卻期可撤銷，`account_deletion_execute` job 到期執行**應用層去識別化**，`User` 資料列
+      本身永不真的 `DELETE`，保留其他使用者看得到的歷史紀錄完整性，命中 legal hold 則拒絕
+      執行）；`/admin/data` 可設定的 retention 政策＋`retention_purge` job（`src/lib/
+      retention.ts` 的批次清理一律用 `id` 遞增游標分頁，避免整批命中 legal hold 時提前
+      `break` 或陷入無窮迴圈）；`/admin/legal-holds`（admin-only）建立/解除訴訟保全，
+      `isUnderLegalHold`／`filterUnderLegalHold` 批次查詢供所有清理 job 呼叫避免 N+1；
+      `/admin/legal-requests`（不對外開放）警方／檢調調閱雙人審核（建檔與核准/駁回/解除
+      legal hold 皆為不同 admin，且狀態轉換用 transaction 內條件式 `updateMany` 擋併發覆蓋）。
+      `docs/plan/master-plan.md` §7a 列出的保留天數／去識別化欄位範圍／調閱核准層級等判斷
+      皆標註「需法務確認」。整合測試 `e2e/integration/data-rights.test.ts`（15 案例），連同
+      既有套件共 115 個案例全過（本機無 MinIO，`s3rver` 模擬 S3 簽章驗證端對端測試簽名連結）。
+- [x] M8 營運強化（PR：feat/m8-ops-hardening）：範圍見 master-plan.md §8a，schema 地基已在
+      PR #36 merge 進 main（`health_checks`／`error_logs`／`performance_metrics`／
+      `storage_usage_snapshots`／`NotificationDelivery.lastAttemptAt`）。慢查詢紀錄：
+      `src/lib/db.ts` 用 Prisma Client Extension 量測每次 ORM 查詢耗時寫入
+      `performance_metrics`（門檻 1000ms 標記 `isSlow`），用另一個未擴充的 base client
+      （`rawDb`）寫入量測結果本身避免無窮遞迴；錯誤記錄：`src/instrumentation.ts` 用
+      Next.js `onRequestError` hook 全站捕捉未捕捉例外寫入 `error_logs`，只記路徑/方法，
+      不記 headers/body；`/api/health` 擴充為三個獨立子系統（database／storage／
+      background_jobs），**公開端點回應只留 status/latencyMs，不回傳原始例外訊息**（避免
+      對外洩漏內部錯誤細節），完整 detail 寫入 `health_checks` 供 `/admin/ops`（moderator/
+      admin）查詢；通知失敗指數退避重送 `src/lib/notification-retry.ts`（`min(2^attempts×
+      60,3600)` 秒退避、最多 5 次，連續 3 筆失敗且符合特徵即自動解綁 Telegram 帳號）；
+      四個新 job（`storage_usage_snapshot`／`health_check_probe`／`notification_retry`／
+      `ops_retention_cleanup`，分批刪除避免長時間鎖表）；`/admin/ops` 後台四分頁＋6 支 API，
+      皆限 moderator/admin。**已知落差**：通知重送的「初次發送」管線本來就不存在（M4 遺留
+      缺口，非本次新增，本 PR 只做已存在 failed delivery 的退避重試）；本機無 MinIO，
+      `storage` 健康檢查與用量快照端對端行為改測 DB 端純邏輯；備份還原 runbook
+      （`docs/runbooks/backup-restore.md`）已用一次性測試資料庫實跑 `pg_dump`/`pg_restore`
+      驗證成功，正式站對 Zeabur/MinIO 的首次真實季度演練仍待日後執行。整合測試
+      `e2e/integration/ops-{permissions,storage-usage,notification-retry}.test.ts`，
+      連同既有套件共 210 個案例中 205 個通過（5 個失敗集中在 M7 自己需要 MinIO/S3 的資料
+      匯出測試，本機環境限制，非本次改動造成）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
