@@ -7,6 +7,7 @@ import {
   isNotificationEventType,
   mergeWithDefaults,
 } from "@/lib/notification-preferences";
+import { checkFullBlock } from "@/lib/restrictions";
 
 // GET /api/notification-preferences — 目前登入者每一類事件的通知偏好（站內/外部各自開關）。
 // 看偏好設定不需要完成 onboarding，比照 /api/notifications 只檢查登入、不檢查 profile。
@@ -37,6 +38,12 @@ export async function PATCH(req: NextRequest) {
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const body = await req.json().catch(() => null);

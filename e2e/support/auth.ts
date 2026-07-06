@@ -1,4 +1,5 @@
 import { randomBytes, randomUUID } from "node:crypto";
+import type { Role } from "../../src/generated/prisma/enums";
 import { SESSION_COOKIE_NAME } from "./constants";
 import { db } from "./db";
 
@@ -50,6 +51,11 @@ export async function createTestUser(opts: {
   return { id: user.id, email, nickname, sessionToken };
 }
 
+/** 給測試使用者掛上角色（moderator/admin 權限測試用）。 */
+export async function grantRole(userId: string, role: Role): Promise<void> {
+  await db.userRole.create({ data: { userId, role } });
+}
+
 /** Playwright/瀏覽器情境用的 cookie 物件。 */
 export function sessionCookie(user: TestUser, opts: { domain: string; path?: string }) {
   return {
@@ -67,14 +73,19 @@ export function sessionCookieHeader(user: TestUser): string {
 
 /**
  * 刪掉這次測試建立的所有資料。刻意先刪 Item（cascade 掉 item_images／claim_comments／
- * direct_shares／handover_records／thanks_messages／conversations 等關聯列），再刪這批
- * 使用者上傳的 StorageObject（Item 沒有 onDelete cascade 到 StorageObject 本身，
- * 需要另外清），最後刪 User（cascade 掉 sessions/profiles/roles/notifications/
- * conversation_members/messages/contribution_events 等其餘關聯）。
+ * direct_shares／handover_records／thanks_messages／conversations 等關聯列）與
+ * SupportTicket（cascade 掉 support_ticket_events／support_ticket_attachments，
+ * M2 使用者回報功能新增），再刪這批使用者上傳的 StorageObject（Item／SupportTicket
+ * 都沒有 onDelete cascade 到 StorageObject 本身，需要另外清；SupportTicketAttachment
+ * 對 StorageObject 是 onDelete: Restrict，所以必須先讓上面的 SupportTicket 連帶刪掉
+ * attachment 列，不然這裡刪 StorageObject 會被外鍵擋下），最後刪 User（cascade 掉
+ * sessions/profiles/roles/notifications/conversation_members/messages/
+ * contribution_events 等其餘關聯）。
  */
 export async function cleanupTestData(userIds: string[]): Promise<void> {
   if (userIds.length === 0) return;
   await db.item.deleteMany({ where: { ownerId: { in: userIds } } });
+  await db.supportTicket.deleteMany({ where: { userId: { in: userIds } } });
   await db.storageObject.deleteMany({ where: { uploaderId: { in: userIds } } });
   await db.user.deleteMany({ where: { id: { in: userIds } } });
 }

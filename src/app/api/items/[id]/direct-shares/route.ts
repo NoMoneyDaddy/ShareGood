@@ -3,6 +3,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { createOrMergeNotification } from "@/lib/notifications";
+import { checkFullBlock } from "@/lib/restrictions";
 
 const DIRECT_SHARE_TTL_MS = 72 * 60 * 60 * 1000; // 72 小時
 
@@ -19,6 +20,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
   if (!user.profile) {
     return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const { id: itemId } = await params;

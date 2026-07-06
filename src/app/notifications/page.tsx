@@ -44,6 +44,10 @@ function itemIdOf(payload: Record<string, unknown>) {
 // 判別欄位，這裡優先檢查它、蓋掉原本 handover_message 的文案。force-remove 是低頻的
 // moderation 事件（沒有走 M4 合併 helper，也不會短時間連發），所以不需要 mergedCount 分支。
 //
+// M3 到期 job（master-plan §8）比照同一套做法：重用 completion_confirmed type，
+// payload 帶 kind: "item_expired" / "item_expiring_reminder"（見
+// src/app/api/jobs/item-expiration/route.ts），這裡一併優先檢查。
+//
 // M4 通知合併（見 src/lib/notifications.ts 的 createOrMergeNotification）：同一物品在
 // 30 分鐘窗口內的同類型事件會合併成一筆，payload.mergedCount 帶目前累積的筆數。這裡只有
 // 「短時間內容易連發」的 new_comment／handover_message 兩種特別組聚合文字（例如「有 3 則
@@ -53,6 +57,12 @@ function describeNotification(type: string, payload: unknown): string {
   const p = asPayloadRecord(payload);
   if (p.kind === "item_force_removed") {
     return `你的物品「${itemTitleOf(p)}」已被管理員下架`;
+  }
+  if (p.kind === "item_expired") {
+    return `「${itemTitleOf(p)}」已到期下架，之後可以重新上架分享`;
+  }
+  if (p.kind === "item_expiring_reminder") {
+    return `「${itemTitleOf(p)}」即將到期，記得儘快促成分享`;
   }
   const count = mergedCountOf(payload);
   switch (type) {
@@ -106,12 +116,20 @@ export default async function NotificationsPage({
             留言、認領、直贈與交接的最新消息都會顯示在這裡。
           </p>
         </div>
-        <Link
-          href="/me/notification-preferences"
-          className="mt-1 shrink-0 whitespace-nowrap text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          通知設定
-        </Link>
+        <div className="mt-1 flex shrink-0 flex-col items-end gap-1 whitespace-nowrap text-sm font-medium">
+          <Link
+            href="/me/wallet"
+            className="text-ink-soft underline-offset-4 hover:text-ink hover:underline focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            優惠券錢包
+          </Link>
+          <Link
+            href="/me/notification-preferences"
+            className="text-ink-soft underline-offset-4 hover:text-ink hover:underline focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            通知設定
+          </Link>
+        </div>
       </div>
 
       {notifications.length === 0 ? (

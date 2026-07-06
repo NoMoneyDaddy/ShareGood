@@ -4,6 +4,7 @@ import { AuthzError, requireUser } from "@/lib/authz";
 import { CONTRIBUTION_POINTS } from "@/lib/contribution";
 import { db } from "@/lib/db";
 import { createOrMergeNotification } from "@/lib/notifications";
+import { checkFullBlock } from "@/lib/restrictions";
 
 // PATCH /api/handover/[id]/complete — 物主或接手者標記「我這邊完成了」。
 // 雙方都確認後才真正轉 completed；整段判斷與寫入包在同一個 $transaction 裡，比照
@@ -16,6 +17,12 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const { id: handoverId } = await params;

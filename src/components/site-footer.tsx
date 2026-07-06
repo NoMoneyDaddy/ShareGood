@@ -6,6 +6,7 @@ import Link from "next/link";
 const FOOTER_LINKS = [
   { href: "/guide", label: "新手指南" },
   { href: "/rules", label: "使用規則" },
+  { href: "/support", label: "問題回報" },
   { href: "/terms", label: "服務條款" },
   { href: "/privacy", label: "隱私權政策" },
 ];

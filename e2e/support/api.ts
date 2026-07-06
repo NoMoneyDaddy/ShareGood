@@ -7,11 +7,12 @@ type CallOpts = {
   method?: string;
   user?: TestUser | null;
   body?: unknown;
+  headers?: Record<string, string>;
 };
 
-/** 打正在跑的測試伺服器，選擇性帶登入 cookie。回傳 { status, json }。 */
+/** 打正在跑的測試伺服器，選擇性帶登入 cookie／自訂 header（例如 webhook 的 secret header）。回傳 { status, json }。 */
 export async function api(path: string, opts: CallOpts = {}) {
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...opts.headers };
   if (opts.body !== undefined) headers["content-type"] = "application/json";
   if (opts.user) headers.cookie = sessionCookieHeader(opts.user);
 
