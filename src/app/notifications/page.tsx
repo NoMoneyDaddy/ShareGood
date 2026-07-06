@@ -87,6 +87,18 @@ function describeNotification(type: string, payload: unknown): string {
   if (p.kind === "lottery_cancelled") {
     return `你參加的「${itemTitleOf(p)}」抽籤已被物主取消`;
   }
+  // M6 訂閱通知（master-plan §6a）：NotificationType enum 沒有專屬類型（維持
+  // prisma/schema.prisma 不動），沿用上面 M2/M3 已經立下的既定做法，重用
+  // completion_confirmed type，用 payload.kind 判別（見 src/lib/subscription-notify.ts）。
+  if (p.kind === "subscription_match") {
+    const subscriptionLabel =
+      typeof p.subscriptionLabel === "string" && p.subscriptionLabel ? p.subscriptionLabel : "條件";
+    return `你訂閱的「${subscriptionLabel}」有新物品：《${itemTitleOf(p)}》`;
+  }
+  if (p.kind === "subscription_digest") {
+    const totalCount = typeof p.totalCount === "number" ? p.totalCount : 0;
+    return `今天有 ${totalCount} 件符合你訂閱條件的新物品，點我查看摘要`;
+  }
   const count = mergedCountOf(payload);
   switch (type) {
     case "new_comment":
@@ -152,6 +164,12 @@ export default async function NotificationsPage({
           >
             通知設定
           </Link>
+          <Link
+            href="/me/subscriptions"
+            className="text-ink-soft underline-offset-4 hover:text-ink hover:underline focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            我的訂閱
+          </Link>
         </div>
       </div>
 
@@ -161,16 +179,24 @@ export default async function NotificationsPage({
         <ul className="mt-6 flex flex-col gap-2">
           {notifications.map((n) => {
             const payload = asPayloadRecord(n.payload);
-            const itemId = itemIdOf(payload);
+            // M6 訂閱每日摘要沒有單一 itemId（內容是多筆物品清單），點進去改導向
+            // /me/subscriptions 讓使用者查看完整訂閱與命中狀況，而不是連去某一個物品。
+            const itemId = payload.kind === "subscription_digest" ? null : itemIdOf(payload);
+            const href =
+              payload.kind === "subscription_digest"
+                ? "/me/subscriptions"
+                : itemId
+                  ? `/items/${itemId}`
+                  : null;
             const message = describeNotification(n.type, n.payload);
             const timeLabel = formatTime(n.createdAt);
 
             return (
               <li key={n.id}>
-                {itemId ? (
+                {href ? (
                   <NotificationRow
                     id={n.id}
-                    href={`/items/${itemId}`}
+                    href={href}
                     initialReadAt={n.readAt?.toISOString() ?? null}
                     message={message}
                     timeLabel={timeLabel}

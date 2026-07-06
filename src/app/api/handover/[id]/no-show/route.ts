@@ -54,19 +54,30 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
       return { ok: false as const };
     }
 
-    await tx.item.updateMany({
+    // publishedAt 重蓋成現在：master-plan §6a M6 訂閱通知比對 job 用 (publishedAt, id) 當
+    // cursor 掃描新上架物品，物品從 handover_pending 退回 published 若不更新 publishedAt，
+    // 舊時間點會小於 cursor 已經前進的位置，導致這次「重新上架」永遠不會被訂閱比對 job 掃到。
+    // 副作用是物品也會在前台列表重新置頂，符合「重新開放」的直覺預期。
+    //
+    // 只有物品目前真的還是 handover_pending 才寫狀態轉換紀錄（比照
+    // src/app/api/appeals/[id]/route.ts 核准分支的既有寫法）：理論上不該發生物品狀態已經
+    // 被其他途徑改變的情況，但求穩，避免 updateMany 是 no-op 時卻仍然寫一筆誤導性的
+    // 「handover_pending → published」紀錄。
+    const itemUpdate = await tx.item.updateMany({
       where: { id: handover.item.id, status: "handover_pending" },
-      data: { status: "published" },
+      data: { status: "published", publishedAt: new Date() },
     });
-    await tx.itemStatusLog.create({
-      data: {
-        itemId: handover.item.id,
-        fromStatus: "handover_pending",
-        toStatus: "published",
-        actorId: user.id,
-        reason: "no_show",
-      },
-    });
+    if (itemUpdate.count === 1) {
+      await tx.itemStatusLog.create({
+        data: {
+          itemId: handover.item.id,
+          fromStatus: "handover_pending",
+          toStatus: "published",
+          actorId: user.id,
+          reason: "no_show",
+        },
+      });
+    }
 
     // 貢獻值記分：跟上面 item.updateMany 一樣，只會在 flipped.count > 0（也就是這次呼叫
     // 真的把它從 pending 轉成 no_show）時執行到，同一筆交接重複呼叫會被外層的 409 擋掉，
