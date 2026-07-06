@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { DEFAULT_RETENTION_POLICIES } from "../src/lib/retention";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -64,8 +65,27 @@ async function main() {
   // 回 OAuthAccountNotLinked 擋掉登入。admin 角色改由 src/auth.ts 的 signIn event
   // 在首次登入時自動授予。
 
-  const [cities, categories] = await Promise.all([prisma.city.count(), prisma.category.count()]);
-  console.log(`Seed 完成：${cities} 縣市、${categories} 分類`);
+  // M7 資料保留政策初始值（master-plan §7a 交付內容 4）：只在資料庫沒有這個 policyKey
+  // 時才建立，已存在就不覆蓋（後台可能已經被 admin 調整過，不希望重跑 seed 蓋掉設定）。
+  for (const policy of DEFAULT_RETENTION_POLICIES) {
+    await prisma.dataRetentionPolicy.upsert({
+      where: { policyKey: policy.policyKey },
+      update: {},
+      create: {
+        policyKey: policy.policyKey,
+        description: policy.description,
+        retentionDays: policy.retentionDays,
+        action: policy.action,
+      },
+    });
+  }
+
+  const [cities, categories, retentionPolicies] = await Promise.all([
+    prisma.city.count(),
+    prisma.category.count(),
+    prisma.dataRetentionPolicy.count(),
+  ]);
+  console.log(`Seed 完成：${cities} 縣市、${categories} 分類、${retentionPolicies} 筆資料保留政策`);
 }
 
 main()
