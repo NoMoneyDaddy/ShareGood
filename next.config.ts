@@ -7,8 +7,8 @@ const s3PublicUrl = process.env.S3_PUBLIC_URL ? new URL(process.env.S3_PUBLIC_UR
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      // 首頁熱門好物目前仍是示範圖片，留言/接受/直贈等功能上線後移除
-      { protocol: "https", hostname: "picsum.photos" },
+      // 首頁「熱門好物」與 /items 瀏覽頁已改接真實物品資料（不再用 picsum.photos 示範圖），
+      // 圖片一律走下面的 MinIO S3_PUBLIC_URL 白名單。
       ...(s3PublicUrl
         ? [
             {
