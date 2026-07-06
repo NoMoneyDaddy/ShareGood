@@ -69,6 +69,11 @@ export async function sendWebPushToUser(
 
   // 各裝置互相獨立（各自對應不同的 webPushSubscription row，DB 更新也各自只動自己那一筆），
   // 平行送出可以避免使用者多台裝置時，後面的裝置要排隊等前面裝置的網路呼叫做完才收到通知。
+  //
+  // 每台裝置「推播 + 對應的狀態更新」整段包在同一個 try/catch 裡，內層的狀態更新
+  // db.webPushSubscription.update 若剛好出錯（例如短暫斷線）也一律轉成回傳值、不往外拋，
+  // 否則單一裝置的資料庫寫入失敗會讓整個 Promise.all reject，連帶遺失其他裝置的推播結果，
+  // 呼叫端也會完全拿不到 { attempted, anySuccess }（bot review 抓到的真實風險）。
   const results = await Promise.all(
     subscriptions.map(async (sub) => {
       try {
@@ -76,23 +81,31 @@ export async function sendWebPushToUser(
           { endpoint: sub.endpoint, keys: { p256dh: sub.p256dhKey, auth: sub.authKey } },
           payloadJson,
         );
-        await db.webPushSubscription.update({
-          where: { id: sub.id },
-          data: { lastSuccessAt: new Date(), failureCount: 0 },
-        });
+        try {
+          await db.webPushSubscription.update({
+            where: { id: sub.id },
+            data: { lastSuccessAt: new Date(), failureCount: 0 },
+          });
+        } catch (dbErr) {
+          console.error(`[web-push] 更新成功狀態失敗 webPushSubscriptionId=${sub.id}:`, dbErr);
+        }
         return true;
       } catch (err) {
         const statusCode = (err as { statusCode?: number } | null)?.statusCode;
-        if (statusCode === 404 || statusCode === 410) {
-          await db.webPushSubscription.update({
-            where: { id: sub.id },
-            data: { isActive: false, deactivatedAt: new Date() },
-          });
-        } else {
-          await db.webPushSubscription.update({
-            where: { id: sub.id },
-            data: { failureCount: { increment: 1 }, lastFailureAt: new Date() },
-          });
+        try {
+          if (statusCode === 404 || statusCode === 410) {
+            await db.webPushSubscription.update({
+              where: { id: sub.id },
+              data: { isActive: false, deactivatedAt: new Date() },
+            });
+          } else {
+            await db.webPushSubscription.update({
+              where: { id: sub.id },
+              data: { failureCount: { increment: 1 }, lastFailureAt: new Date() },
+            });
+          }
+        } catch (dbErr) {
+          console.error(`[web-push] 更新失敗狀態失敗 webPushSubscriptionId=${sub.id}:`, dbErr);
         }
         return false;
       }
