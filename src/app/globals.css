@@ -128,6 +128,18 @@
     @apply font-sans;
   }
 }
+
+/* tw-animate-css 本身不處理 prefers-reduced-motion；Dialog/DropdownMenu 等
+   Radix 元件靠 data-open/data-closed 觸發的 animate-in/animate-out 開合動畫
+   在這裡統一收斂成近乎瞬時，而不是逐一元件覆寫。 */
+@media (prefers-reduced-motion: reduce) {
+  [data-open],
+  [data-closed] {
+    /* biome-ignore lint/complexity/noImportantStyles: 蓋過 Tailwind 動畫 utility 產生的
+       animation-duration，不用逐一列出每個元件可能用到的 duration class */
+    animation-duration: 0.01ms !important;
+  }
+}
 /* ===== ShareGood 品牌設計系統（ui-ux-pro-max 產出，經人工校正）=====
  * 色彩策略：暖白底 + 近黑墨字 + 單一飽和色「琥珀橘」。
  * 避開兩個套路：紫色（AI 泛用色）與棕米配色（高端消費品套路）。
