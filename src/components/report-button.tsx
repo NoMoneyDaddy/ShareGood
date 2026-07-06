@@ -145,14 +145,14 @@ function ReportForm({
   }
 
   function removeEvidence(key: string) {
-    setEvidence((prev) => {
-      const found = prev.find((e) => e.key === key);
-      if (found) {
-        URL.revokeObjectURL(found.previewUrl);
-        previewUrlsRef.current = previewUrlsRef.current.filter((url) => url !== found.previewUrl);
-      }
-      return prev.filter((e) => e.key !== key);
-    });
+    // 副作用（revokeObjectURL、更新 ref）在 updater 外面先做完，updater 本身保持純函式，
+    // 避免 React Strict Mode 下 updater 被重複呼叫導致副作用重複執行。
+    const found = evidence.find((e) => e.key === key);
+    if (found) {
+      URL.revokeObjectURL(found.previewUrl);
+      previewUrlsRef.current = previewUrlsRef.current.filter((url) => url !== found.previewUrl);
+    }
+    setEvidence((prev) => prev.filter((e) => e.key !== key));
   }
 
   const readyEvidence = evidence.filter(

@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       where: { id: messageId },
       select: { id: true, conversation: { select: { members: { select: { userId: true } } } } },
     });
-    if (!message?.conversation.members.some((m) => m.userId === user.id)) {
+    if (!message?.conversation?.members.some((m) => m.userId === user.id)) {
       return jsonError("NOT_FOUND", "找不到這則私訊");
     }
   }

@@ -59,9 +59,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   }
 
   const now = new Date();
-  const updated = await db.$transaction(async (tx) => {
-    const r = await tx.report.update({
-      where: { id },
+  // updateMany 帶 status: report.status 條件，原子性地確保只有一個管理員的請求能真的
+  // 把狀態轉換過去：兩個管理員同時操作同一筆檢舉時，只有先到的那個會把 count 更新成 1，
+  // 另一個會看到 count 0（狀態已經不是它讀到的那個 report.status 了），回 409 請對方重整。
+  // audit log 只在真的轉換成功時才寫，跟着放在同一個 transaction 裡。
+  const result = await db.$transaction(async (tx) => {
+    const flipped = await tx.report.updateMany({
+      where: { id, status: report.status },
       data: {
         status: nextStatus as ReportStatus,
         handledBy: user.id,
@@ -69,6 +73,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         ...(isFinalizing ? { resolvedAt: now } : {}),
       },
     });
+
+    if (flipped.count !== 1) {
+      return { ok: false as const };
+    }
+
     await writeAudit({
       actorId: user.id,
       action: "report.status_change",
@@ -80,14 +89,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         resolutionNote: resolutionNote ?? null,
       },
     });
-    return r;
+
+    return { ok: true as const };
   });
 
+  if (!result.ok) {
+    return jsonError("CONFLICT", "檢舉狀態已被其他管理員變更，請重新整理頁面");
+  }
+
   return NextResponse.json({
-    id: updated.id,
-    status: updated.status,
-    resolutionNote: updated.resolutionNote,
-    resolvedAt: updated.resolvedAt,
-    handledBy: updated.handledBy,
+    id,
+    status: nextStatus,
+    resolutionNote: resolutionNote ?? report.resolutionNote,
+    resolvedAt: isFinalizing ? now : report.resolvedAt,
+    handledBy: user.id,
   });
 }
