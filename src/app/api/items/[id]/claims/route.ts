@@ -5,6 +5,7 @@ import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
+import { checkUserRestriction } from "@/lib/restrictions";
 
 const DEFAULT_PAGE_SIZE = 20;
 const MAX_PAGE_SIZE = 50;
@@ -23,6 +24,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
   if (!user.profile) {
     return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被禁止留言或被全站封鎖的使用者不能認領物品。
+  const restriction = await checkUserRestriction(user.id, "claiming");
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   // M2 治理底線：每小時/每日留言次數上限，超過回 429（見 src/lib/rate-limit.ts）。

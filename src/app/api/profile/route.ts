@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkFullBlock } from "@/lib/restrictions";
 
 // POST /api/profile — 設定/更新暱稱與縣市（onboarding 與個人設定共用）
 export async function POST(req: NextRequest) {
@@ -11,6 +12,12 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const body = await req.json().catch(() => null);
