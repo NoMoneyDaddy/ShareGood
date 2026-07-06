@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 
 const MIN_IMAGES = 1;
 const MAX_IMAGES = 5;
+const LIST_DEFAULT_PAGE_SIZE = 20;
+const LIST_MAX_PAGE_SIZE = 50;
 
 type ImageInput = { thumbObjectId: string; mediumObjectId: string };
 
@@ -147,4 +149,73 @@ export async function POST(req: NextRequest) {
     }
     throw err;
   }
+}
+
+// GET /api/items — 公開物品列表（縣市/分類/關鍵字篩選、cursor-based 分頁）。
+// 這是 master-plan §6 第 2 項「列表」在 E2E 驗收前補上的實作：先前幾個 PR 只做了
+// 上架／詳情頁，首頁目前仍是示範資料，還沒有真正查詢 published 物品的列表端點。
+// 篩選＋排序刻意只用 items(status, city_id, category_id, created_at) 這條複合索引
+// 涵蓋的欄位（見 master-plan §11.2），關鍵字用 title/description contains 屬於索引
+// 之外的額外過濾，不影響 status+city+category+createdAt 這段走索引。
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const cityId = searchParams.get("cityId") || undefined;
+  const categoryId = searchParams.get("categoryId") || undefined;
+  const keyword = searchParams.get("q")?.trim() || undefined;
+  const cursor = searchParams.get("cursor")?.trim() || undefined;
+  const limitParam = Number.parseInt(searchParams.get("limit") ?? "", 10);
+  const take =
+    Number.isFinite(limitParam) && limitParam > 0
+      ? Math.min(limitParam, LIST_MAX_PAGE_SIZE)
+      : LIST_DEFAULT_PAGE_SIZE;
+
+  const where = {
+    status: "published" as const,
+    ...(cityId ? { cityId } : {}),
+    ...(categoryId ? { categoryId } : {}),
+    ...(keyword
+      ? {
+          OR: [
+            { title: { contains: keyword, mode: "insensitive" as const } },
+            { description: { contains: keyword, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
+  };
+
+  const items = await db.item.findMany({
+    where,
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: take + 1,
+    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      createdAt: true,
+      city: { select: { name: true } },
+      category: { select: { name: true } },
+      images: {
+        take: 1,
+        orderBy: { sortOrder: "asc" },
+        select: { thumbObject: { select: { objectKey: true } } },
+      },
+    },
+  });
+
+  const hasMore = items.length > take;
+  const page = hasMore ? items.slice(0, take) : items;
+
+  return NextResponse.json({
+    items: page.map((item) => ({
+      id: item.id,
+      title: item.title,
+      status: item.status,
+      createdAt: item.createdAt,
+      city: item.city.name,
+      category: item.category.name,
+      thumbObjectKey: item.images[0]?.thumbObject?.objectKey ?? null,
+    })),
+    nextCursor: hasMore ? page[page.length - 1].id : null,
+  });
 }
