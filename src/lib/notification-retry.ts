@@ -61,6 +61,17 @@ function formatNotificationText(type: string, payload: unknown): string {
  * `src/lib/telegram.ts` 既有「單次符合就立刻解綁」判斷的備援——兩者都是 idempotent 的
  * `updateMany({ where: { isActive: true } })`，重疊觸發不會出錯，故意保留這層重疊
  * （見 telegram.ts 的說明）。
+ *
+ * 刻意掃描「全站所有 `isActive: true` 帳號」而不是只查這批次 retry 迴圈實際碰過的
+ * 使用者：曾經評估過把範圍限縮成這批次 touched 的 userId 清單以降低查詢量，但這樣會
+ * 讓「delivery.attempts 已經到上限、不會再被上面 retry 候選查詢挑中」的帳號永遠沒有
+ * 機會被這支獨立掃描檢查到——`e2e/integration/ops-notification-retry.test.ts`
+ * 「連續 3 次失敗且符合『帳號已失效』特徵：telegram 帳號自動解綁」這個案例就是刻意把
+ * attempts 設到上限來驗證這件事，限縮範圍會讓這個案例失敗（已實測驗證）。目前規模
+ * （台灣縣市級平台，非全球量級）下這裡的 O(啟用中帳號數) 掃描可接受，先不犧牲正確性
+ * 換效能；未來帳號規模真的大到需要優化時，應該改用一次性的 SQL 聚合查詢（例如用
+ * window function 在資料庫端算出每個帳號最近 N 筆是否全部符合條件），而不是限縮掃描
+ * 範圍。
  */
 async function deactivateAccountsWithRepeatedFailures(): Promise<number> {
   const activeAccounts = await db.telegramAccount.findMany({ where: { isActive: true } });

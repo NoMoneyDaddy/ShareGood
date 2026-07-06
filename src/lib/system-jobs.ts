@@ -42,14 +42,23 @@ export async function runSystemJob<T extends object>(
     });
     return { jobRunId: run.id, result };
   } catch (e) {
-    await db.systemJobRun.update({
-      where: { id: run.id },
-      data: {
-        status: "failed",
-        finishedAt: new Date(),
-        detail: { error: e instanceof Error ? e.message : String(e) },
-      },
-    });
+    // 這個 update 呼叫本身若又失敗（例如 DB 斷線），不能讓它蓋掉原本真正的任務錯誤原因
+    // ——外層一律往外拋原始的 `e`，這裡的失敗只用 console.error 留痕跡。
+    try {
+      await db.systemJobRun.update({
+        where: { id: run.id },
+        data: {
+          status: "failed",
+          finishedAt: new Date(),
+          detail: { error: e instanceof Error ? e.message : String(e) },
+        },
+      });
+    } catch (updateError) {
+      console.error(
+        `runSystemJob: 寫入 system_job_runs（id=${run.id}）failed 狀態時發生錯誤，原始任務錯誤仍會照常往外拋`,
+        updateError,
+      );
+    }
     throw e;
   }
 }
