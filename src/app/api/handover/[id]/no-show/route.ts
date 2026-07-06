@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { CONTRIBUTION_POINTS } from "@/lib/contribution";
 import { db } from "@/lib/db";
 
 // PATCH /api/handover/[id]/no-show — 物主標記「被接受者沒有出現」。
@@ -57,6 +58,18 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
         toStatus: "published",
         actorId: user.id,
         reason: "no_show",
+      },
+    });
+
+    // 貢獻值記分：跟上面 item.updateMany 一樣，只會在 flipped.count > 0（也就是這次呼叫
+    // 真的把它從 pending 轉成 no_show）時執行到，同一筆交接重複呼叫會被外層的 409 擋掉，
+    // 不會重複扣分。扣分對象是接手者（沒有出現的人），不是物主。
+    await tx.contributionEvent.create({
+      data: {
+        userId: handover.receiverId,
+        itemId: handover.item.id,
+        type: "no_show",
+        points: CONTRIBUTION_POINTS.no_show,
       },
     });
 

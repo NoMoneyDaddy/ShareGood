@@ -1,6 +1,7 @@
 import { MapPin } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { SiteHeader } from "@/components/site-header";
@@ -10,6 +11,7 @@ import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
+import { ThanksSection } from "./thanks-section";
 
 async function getItem(id: string) {
   return db.item.findUnique({
@@ -97,6 +99,16 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
     }
   }
 
+  // 感謝留言：只有 completed 之後才可能存在（見 /api/items/[id]/thanks 的檢查），
+  // 其他狀態不用多查一次浪費一趟資料庫往返。
+  const thanksMessage =
+    item.status === "completed"
+      ? await db.thanksMessage.findFirst({
+          where: { itemId: item.id },
+          include: { fromUser: { include: { profile: true } } },
+        })
+      : null;
+
   // SEO/AEO（master-plan §3.7）：物品詳情頁的 Product + Offer 結構化資料。
   const firstImage = item.images[0];
   const jsonLd = {
@@ -170,7 +182,10 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
         <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
-          分享者：{item.owner.profile?.nickname ?? "好物共享用戶"}
+          分享者：
+          <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
+            {item.owner.profile?.nickname ?? "好物共享用戶"}
+          </Link>
         </div>
 
         <DirectShareSection
@@ -186,6 +201,18 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           isReceiver={isReceiver}
           handoverId={handoverId}
           conversationId={conversationId}
+          hasThanks={thanksMessage !== null}
+        />
+        <ThanksSection
+          thanks={
+            thanksMessage
+              ? {
+                  message: thanksMessage.message,
+                  createdAt: thanksMessage.createdAt,
+                  fromNickname: thanksMessage.fromUser.profile?.nickname ?? "好物共享用戶",
+                }
+              : null
+          }
         />
       </main>
     </div>

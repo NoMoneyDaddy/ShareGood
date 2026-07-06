@@ -14,6 +14,8 @@ type HandoverSectionProps = {
   // handover_pending／completed 狀態才有 handoverId／conversationId 可用（見 page.tsx 查詢）。
   handoverId: string | null;
   conversationId: string | null;
+  // completed 狀態才有意義：這個物品是否已經有一則感謝留言（見 page.tsx 查詢）。
+  hasThanks: boolean;
 };
 
 // 交接與私訊區塊：只在物品進入 reserved／handover_pending／completed，且目前登入者是
@@ -26,6 +28,7 @@ export function HandoverSection({
   isReceiver,
   handoverId,
   conversationId,
+  hasThanks,
 }: HandoverSectionProps) {
   if (!isOwner && !isReceiver) return null;
   if (
@@ -57,7 +60,10 @@ export function HandoverSection({
             </p>
           ))}
         {itemStatus === "completed" && (
-          <p className="rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">已完成分享</p>
+          <div className="space-y-3">
+            <p className="rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">已完成分享</p>
+            {isReceiver && !hasThanks && <ThanksForm itemId={itemId} />}
+          </div>
         )}
       </div>
     </section>
@@ -193,5 +199,64 @@ function InProgressHandover({
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
+  );
+}
+
+// 感謝留言表單：只有接手者、且這個物品還沒有感謝留言時才會被掛載（見上方 HandoverSection）。
+// 送出成功後用 router.refresh() 讓 page.tsx 重新查一次 ThanksMessage——ThanksSection 會
+// 顯示出新留言，hasThanks 也會跟著變 true 讓這個表單自然消失，不需要另外管理本地已送出狀態。
+function ThanksForm({ itemId }: { itemId: string }) {
+  const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const canSubmit = message.trim().length >= 1 && message.trim().length <= 300 && !submitting;
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canSubmit) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/items/${itemId}/thanks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        setMessage("");
+        router.refresh();
+      } else {
+        setError(data?.error?.message ?? "留言失敗，請再試一次");
+      }
+    } catch {
+      setError("網路連線異常，請再試一次");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="space-y-2">
+      <p className="text-sm text-ink-soft">跟物主留言感謝一下吧（限一次）。</p>
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        maxLength={300}
+        rows={2}
+        placeholder="謝謝你的分享！"
+        className="w-full rounded-lg border border-line bg-card px-3 py-2 text-base text-ink shadow-sm outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+      />
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      <Button type="submit" variant="brand" disabled={!canSubmit}>
+        {submitting ? (
+          <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+        ) : (
+          "送出感謝"
+        )}
+      </Button>
+    </form>
   );
 }
