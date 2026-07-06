@@ -17,11 +17,13 @@ export function normalizeForCouponTypeCheck(text: string): string {
 }
 
 // 清單已內含常見變體字面（未正規化前的原文，方便閱讀），比對時雙方都會先正規化。
+// 注意：刻意不收裸詞「即享券」——那是 Edenred 的通用電子票券品牌（麥當勞/SOGO/家樂福
+// 即享券等），多數為可自由轉贈的序號券，正是本平台利基；研究 04 查證到的「官方明文
+// 禁轉贈」僅限 LINE 禮物/LINE 即享券，故只擋 LINE 前綴的組合。
 export const NON_TRANSFERABLE_COUPON_TYPES: readonly string[] = [
   "LINE即享券",
   "LINE 禮物",
   "line gift",
-  "即享券",
   "隨買跨店取",
   "行動隨時取",
 ];

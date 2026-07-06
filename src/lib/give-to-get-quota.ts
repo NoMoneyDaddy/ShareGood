@@ -45,10 +45,13 @@ export async function checkGiveToGetQuota(userId: string): Promise<void> {
   const limit = resolveDailyLimit(score);
 
   const since = new Date(Date.now() - DAY_MS);
+  // 排除 declined：先到先得搶輸的人也會留下一筆 declined 的 ClaimComment
+  // （claims/route.ts 的「慢了一步」分支），沒拿到東西不該佔每日額度。
   const count = await db.claimComment.count({
     where: {
       userId,
       createdAt: { gte: since },
+      status: { not: "declined" },
       item: { category: { slug: { in: Array.from(GIVE_TO_GET_CATEGORY_SLUGS) } } },
     },
   });

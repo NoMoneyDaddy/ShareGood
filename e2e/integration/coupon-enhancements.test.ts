@@ -106,6 +106,26 @@ describe("M9 give-to-get 領取配額（券票點類物品）", () => {
     expect(third.status).toBe(201);
   });
 
+  it("declined 的認領不佔每日額度（先到先得搶輸不吃掉配額）", async () => {
+    const claimer = await user("quota-declined-claimer");
+    const lostItem = await couponOwner("quota-declined-owner-1", `搶輸的券-${Date.now()}`);
+    const freshItem = await couponOwner("quota-declined-owner-2", `還能認領的券-${Date.now()}`);
+
+    // 直接模擬「慢了一步」分支留下的 declined 紀錄（claims/route.ts 對已被搶走的物品
+    // 會建立 status=declined 的留言後回 409）。
+    await db.claimComment.create({
+      data: { itemId: lostItem, userId: claimer.id, message: "慢了一步", status: "declined" },
+    });
+
+    // 貢獻值 0 分、每日額度 1：declined 那筆若被誤算，這裡會 429。
+    const res = await api(`/api/items/${freshItem}/claims`, {
+      method: "POST",
+      user: claimer,
+      body: { message: "搶輸不該佔額度" },
+    });
+    expect(res.status).toBe(201);
+  });
+
   it("實體物品的認領完全不受券票點配額影響（同一使用者已用盡券類額度仍可正常認領實體物品）", async () => {
     const claimer = await user("quota-control-claimer");
     const couponItem = await couponOwner("quota-control-coupon-owner", `配額對照券-${Date.now()}`);
@@ -300,6 +320,29 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
       });
       expect(res.status).toBe(422);
     }
+  });
+
+  it("通用「即享券」（無 LINE 前綴）不被誤殺：麥當勞即享券可正常上架", async () => {
+    // 回歸防護：裸詞「即享券」是 Edenred 通用票券品牌，多數可自由轉贈，
+    // 只有 LINE 即享券官方禁轉贈（研究 04）。層一常數清單與層二 seed 詞庫都不得收裸詞。
+    const owner = await user("blocklist-edenred-owner");
+    const { cityId } = await pickCityAndCategory();
+    const images = await createImagePair(owner.id);
+
+    const res = await api("/api/items", {
+      method: "POST",
+      user: owner,
+      body: {
+        title: "麥當勞即享券 大麥克買一送一",
+        description: "序號券，可自由轉贈",
+        categoryId: couponCategoryId,
+        cityId,
+        images: [images],
+        expiresAt: tomorrow(),
+        coupon: { faceValue: "買一送一", merchantName: "麥當勞", code: `CODE-${Date.now()}` },
+      },
+    });
+    expect(res.status).toBe(201);
   });
 
   it("店家欄位命中不可上架清單也會被擋（不只檢查標題）", async () => {
