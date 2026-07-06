@@ -9,7 +9,7 @@
 - [x] M0 Foundation：已部署 https://sharegood.nomoneydaddy.app（web/postgres/minio/redis 四服務、
       migration＋seed 已在正式站跑過、health 綠、Google OAuth 登入與 MinIO 真實上傳皆已由
       使用者在正式站實測通過）。
-- [ ] M1 核心共享主迴路（進行中）：範圍見 master-plan.md §6，規模遠超一個 session，採分段
+- [x] M1 核心共享主迴路：範圍見 master-plan.md §6，規模遠超一個 session，採分段
       commit／push，每個階段完成後在這裡更新進度。已知決策：圖片上傳要支援 iPhone 預設的
       HEIC 格式，走後端 HEIC→JPEG 轉碼（不是前端轉檔、也不是純提示訊息了事）。
     - [x] 上架（建立好物）：`POST /api/items`、`/items/new`（表單）、`/items/[id]`（詳情頁），
@@ -37,7 +37,19 @@
           留言與通知包在同一個 transaction 裡）；物品詳情頁新增 `thanks-section.tsx`
           顯示感謝留言、`handover-section.tsx` 的 completed 分支給接手者留言表單；
           新增公開個人頁 `/u/[userId]` 顯示暱稱與累計貢獻值（PR #15）。
-    - [ ] 剩餘：E2E 全流程測試。
+    - [x] E2E 全流程測試（PR：feat/m1-e2e-tests）：Playwright 主迴路測試
+          `e2e/tests/main-loop.spec.ts`（database session 直接插 cookie 登入，繞過
+          OAuth；上架用真的 API 呼叫，其餘每步都是真的瀏覽器操作）；併發／權限邊界／
+          分頁與索引三支 Vitest 整合測試在 `e2e/integration/`；併發測試改成 10 個並發
+          留言（原本兩個請求在本機低延遲環境幾乎每次都被第一層預先讀取擋成 409，測不到
+          transaction 內 updateMany 那層 race，見 `docs/governance/lessons/`）；補上
+          先前 PR 沒做的 `GET /api/items` 列表端點（cursor 分頁＋縣市/分類/關鍵字篩選，
+          對齊 master-plan §11.2 索引）讓「分頁與索引」這條驗收有東西可測——**已知遺留
+          缺口**：首頁 (`src/app/page.tsx`) 目前仍是 `DEMO_ITEMS` 示範資料，沒有接上這支
+          新列表 API，之後要做真的物品瀏覽頁時記得接上。EXPLAIN ANALYZE 確認主查詢走
+          `items_status_city_id_category_id_created_at_idx`（Index Scan，非 Seq Scan）；
+          `npx biome check .`／`npx tsc --noEmit`／`NODE_ENV=production npx next build`
+          全過。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
