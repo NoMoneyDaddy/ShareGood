@@ -41,11 +41,24 @@ function itemIdOf(payload: Record<string, unknown>) {
 // prisma/schema.prisma 不動），寫入端（src/app/api/items/[id]/force-remove/route.ts）
 // 複用了既有的 handover_message type，但在 payload 帶 kind: "item_force_removed" 當
 // 判別欄位，這裡優先檢查它、蓋掉原本 handover_message 的文案。
+//
+// M3 到期 job（src/app/api/jobs/expiration-check/route.ts）額外會送兩種事件：物品到期下架、
+// 即將到期提醒。因為 NotificationType enum（prisma/schema.prisma）目前也沒有對應的值，
+// 同樣借用既有的 "handover_message" 當 type 佔位，實際文字改用 payload.expirationAction
+// 判斷——這裡跟強制下架的 payload.kind 判斷並列，兩者用的是不同判別欄位，互不衝突，
+// 都優先於下面針對 "handover_message" 原本的 switch 分支。
 function describeNotification(type: string, payload: unknown): string {
   const p = asPayloadRecord(payload);
   if (p.kind === "item_force_removed") {
     return `你的物品「${itemTitleOf(p)}」已被管理員下架`;
   }
+  if (p.expirationAction === "expired") {
+    return `「${itemTitleOf(p)}」已超過到期時間，系統自動下架了`;
+  }
+  if (p.expirationAction === "reminder_sent") {
+    return `「${itemTitleOf(p)}」將在 3 天內到期，記得盡快處理喔`;
+  }
+
   switch (type) {
     case "new_comment":
       return `有人在你的物品「${itemTitleOf(p)}」留言了`;
