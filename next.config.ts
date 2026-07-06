@@ -15,9 +15,13 @@ const nextConfig: NextConfig = {
               protocol: s3PublicUrl.protocol.replace(":", "") as "http" | "https",
               hostname: s3PublicUrl.hostname,
               port: s3PublicUrl.port || undefined,
-              // publicUrl() 只會組出 `${S3_PUBLIC_URL}/images/...`（見 src/lib/storage.ts），
-              // 限制 pathname 避免 next/image 被拿去優化這個 host 上其他不相干的路徑。
-              pathname: "/images/**",
+              // publicUrl() 組出 `${S3_PUBLIC_URL}/images/...`（見 src/lib/storage.ts）；
+              // S3_PUBLIC_URL 本身可能已經帶路徑（本機 MinIO path-style 慣例，例如
+              // ".env.example" 的 "http://localhost:9000/sharegood" 就帶了 bucket 名稱這段
+              // path），漏算這段會讓 next/image 用「/images/**」比對不到實際路徑「/sharegood/
+              // images/**」而報 "hostname is not configured"。這裡把 s3PublicUrl 自己的
+              // pathname 併進來，兩種情境（S3_PUBLIC_URL 純 host、或帶 bucket 路徑）都涵蓋。
+              pathname: `${s3PublicUrl.pathname === "/" ? "" : s3PublicUrl.pathname}/images/**`,
             },
           ]
         : []),

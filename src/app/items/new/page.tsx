@@ -16,7 +16,7 @@ export default async function NewItemPage() {
     db.category.findMany({
       where: { isActive: true },
       orderBy: { sortOrder: "asc" },
-      select: { id: true, name: true },
+      select: { id: true, name: true, slug: true },
     }),
     db.city.findMany({ orderBy: { sortOrder: "asc" }, select: { id: true, name: true } }),
   ]);
