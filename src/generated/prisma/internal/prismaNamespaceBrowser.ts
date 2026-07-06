@@ -94,7 +94,34 @@ export const ModelName = {
   NotificationDelivery: 'NotificationDelivery',
   TelegramAccount: 'TelegramAccount',
   TelegramLinkToken: 'TelegramLinkToken',
-  TelegramUpdate: 'TelegramUpdate'
+  TelegramUpdate: 'TelegramUpdate',
+  Lottery: 'Lottery',
+  LotteryEntry: 'LotteryEntry',
+  LotteryResult: 'LotteryResult',
+  LotteryAuditLog: 'LotteryAuditLog',
+  UserSubscription: 'UserSubscription',
+  SubscriptionKeyword: 'SubscriptionKeyword',
+  SubscriptionCategory: 'SubscriptionCategory',
+  SubscriptionCity: 'SubscriptionCity',
+  SubscriptionMatch: 'SubscriptionMatch',
+  SubscriptionDigestJob: 'SubscriptionDigestJob',
+  WebPushSubscription: 'WebPushSubscription',
+  PrivacyRequest: 'PrivacyRequest',
+  DataExport: 'DataExport',
+  DataRetentionPolicy: 'DataRetentionPolicy',
+  DataPurgeLog: 'DataPurgeLog',
+  LawEnforcementRequest: 'LawEnforcementRequest',
+  LawEnforcementRequestTarget: 'LawEnforcementRequestTarget',
+  LawEnforcementRequestDocument: 'LawEnforcementRequestDocument',
+  LawEnforcementRequestEvent: 'LawEnforcementRequestEvent',
+  LawEnforcementExport: 'LawEnforcementExport',
+  LegalHold: 'LegalHold',
+  LegalHoldTarget: 'LegalHoldTarget',
+  LegalHoldEvent: 'LegalHoldEvent',
+  HealthCheck: 'HealthCheck',
+  ErrorLog: 'ErrorLog',
+  PerformanceMetric: 'PerformanceMetric',
+  StorageUsageSnapshot: 'StorageUsageSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -119,6 +146,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -623,6 +651,7 @@ export const NotificationDeliveryScalarFieldEnum = {
   status: 'status',
   attempts: 'attempts',
   lastError: 'lastError',
+  lastAttemptAt: 'lastAttemptAt',
   sentAt: 'sentAt',
   createdAt: 'createdAt'
 } as const
@@ -663,6 +692,371 @@ export const TelegramUpdateScalarFieldEnum = {
 } as const
 
 export type TelegramUpdateScalarFieldEnum = (typeof TelegramUpdateScalarFieldEnum)[keyof typeof TelegramUpdateScalarFieldEnum]
+
+
+export const LotteryScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  creatorId: 'creatorId',
+  entryDeadline: 'entryDeadline',
+  status: 'status',
+  seed: 'seed',
+  entrySnapshot: 'entrySnapshot',
+  algoVersion: 'algoVersion',
+  drawnAt: 'drawnAt',
+  currentRank: 'currentRank',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LotteryScalarFieldEnum = (typeof LotteryScalarFieldEnum)[keyof typeof LotteryScalarFieldEnum]
+
+
+export const LotteryEntryScalarFieldEnum = {
+  id: 'id',
+  lotteryId: 'lotteryId',
+  userId: 'userId',
+  status: 'status',
+  enteredAt: 'enteredAt',
+  cancelledAt: 'cancelledAt'
+} as const
+
+export type LotteryEntryScalarFieldEnum = (typeof LotteryEntryScalarFieldEnum)[keyof typeof LotteryEntryScalarFieldEnum]
+
+
+export const LotteryResultScalarFieldEnum = {
+  id: 'id',
+  lotteryId: 'lotteryId',
+  entryId: 'entryId',
+  userId: 'userId',
+  rank: 'rank',
+  status: 'status',
+  offeredAt: 'offeredAt',
+  confirmDeadline: 'confirmDeadline',
+  respondedAt: 'respondedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type LotteryResultScalarFieldEnum = (typeof LotteryResultScalarFieldEnum)[keyof typeof LotteryResultScalarFieldEnum]
+
+
+export const LotteryAuditLogScalarFieldEnum = {
+  id: 'id',
+  lotteryId: 'lotteryId',
+  action: 'action',
+  actorId: 'actorId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type LotteryAuditLogScalarFieldEnum = (typeof LotteryAuditLogScalarFieldEnum)[keyof typeof LotteryAuditLogScalarFieldEnum]
+
+
+export const UserSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  immediateEnabled: 'immediateEnabled',
+  dailyDigestEnabled: 'dailyDigestEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserSubscriptionScalarFieldEnum = (typeof UserSubscriptionScalarFieldEnum)[keyof typeof UserSubscriptionScalarFieldEnum]
+
+
+export const SubscriptionKeywordScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  keyword: 'keyword',
+  normalizedKeyword: 'normalizedKeyword',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionKeywordScalarFieldEnum = (typeof SubscriptionKeywordScalarFieldEnum)[keyof typeof SubscriptionKeywordScalarFieldEnum]
+
+
+export const SubscriptionCategoryScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionCategoryScalarFieldEnum = (typeof SubscriptionCategoryScalarFieldEnum)[keyof typeof SubscriptionCategoryScalarFieldEnum]
+
+
+export const SubscriptionCityScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  cityId: 'cityId',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionCityScalarFieldEnum = (typeof SubscriptionCityScalarFieldEnum)[keyof typeof SubscriptionCityScalarFieldEnum]
+
+
+export const SubscriptionMatchScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  itemId: 'itemId',
+  matchedAt: 'matchedAt',
+  notifiedAt: 'notifiedAt',
+  notifiedVia: 'notifiedVia',
+  digestJobId: 'digestJobId'
+} as const
+
+export type SubscriptionMatchScalarFieldEnum = (typeof SubscriptionMatchScalarFieldEnum)[keyof typeof SubscriptionMatchScalarFieldEnum]
+
+
+export const SubscriptionDigestJobScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  digestDate: 'digestDate',
+  status: 'status',
+  itemCount: 'itemCount',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriptionDigestJobScalarFieldEnum = (typeof SubscriptionDigestJobScalarFieldEnum)[keyof typeof SubscriptionDigestJobScalarFieldEnum]
+
+
+export const WebPushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dhKey: 'p256dhKey',
+  authKey: 'authKey',
+  userAgent: 'userAgent',
+  isActive: 'isActive',
+  failureCount: 'failureCount',
+  lastSuccessAt: 'lastSuccessAt',
+  lastFailureAt: 'lastFailureAt',
+  createdAt: 'createdAt',
+  deactivatedAt: 'deactivatedAt'
+} as const
+
+export type WebPushSubscriptionScalarFieldEnum = (typeof WebPushSubscriptionScalarFieldEnum)[keyof typeof WebPushSubscriptionScalarFieldEnum]
+
+
+export const PrivacyRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  status: 'status',
+  reason: 'reason',
+  coolingOffUntil: 'coolingOffUntil',
+  processedBy: 'processedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  completedAt: 'completedAt'
+} as const
+
+export type PrivacyRequestScalarFieldEnum = (typeof PrivacyRequestScalarFieldEnum)[keyof typeof PrivacyRequestScalarFieldEnum]
+
+
+export const DataExportScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  privacyRequestId: 'privacyRequestId',
+  status: 'status',
+  storageObjectId: 'storageObjectId',
+  requestedAt: 'requestedAt',
+  readyAt: 'readyAt',
+  expiresAt: 'expiresAt',
+  downloadCount: 'downloadCount',
+  lastDownloadedAt: 'lastDownloadedAt',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataExportScalarFieldEnum = (typeof DataExportScalarFieldEnum)[keyof typeof DataExportScalarFieldEnum]
+
+
+export const DataRetentionPolicyScalarFieldEnum = {
+  id: 'id',
+  policyKey: 'policyKey',
+  description: 'description',
+  retentionDays: 'retentionDays',
+  action: 'action',
+  isActive: 'isActive',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataRetentionPolicyScalarFieldEnum = (typeof DataRetentionPolicyScalarFieldEnum)[keyof typeof DataRetentionPolicyScalarFieldEnum]
+
+
+export const DataPurgeLogScalarFieldEnum = {
+  id: 'id',
+  policyKey: 'policyKey',
+  jobRunId: 'jobRunId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  actionTaken: 'actionTaken',
+  skippedLegalHold: 'skippedLegalHold',
+  createdAt: 'createdAt'
+} as const
+
+export type DataPurgeLogScalarFieldEnum = (typeof DataPurgeLogScalarFieldEnum)[keyof typeof DataPurgeLogScalarFieldEnum]
+
+
+export const LawEnforcementRequestScalarFieldEnum = {
+  id: 'id',
+  agencyName: 'agencyName',
+  caseReference: 'caseReference',
+  legalBasis: 'legalBasis',
+  requestScope: 'requestScope',
+  receivedAt: 'receivedAt',
+  status: 'status',
+  submittedBy: 'submittedBy',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  rejectionReason: 'rejectionReason',
+  notifyUser: 'notifyUser',
+  notifiedAt: 'notifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LawEnforcementRequestScalarFieldEnum = (typeof LawEnforcementRequestScalarFieldEnum)[keyof typeof LawEnforcementRequestScalarFieldEnum]
+
+
+export const LawEnforcementRequestTargetScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  targetType: 'targetType',
+  targetId: 'targetId'
+} as const
+
+export type LawEnforcementRequestTargetScalarFieldEnum = (typeof LawEnforcementRequestTargetScalarFieldEnum)[keyof typeof LawEnforcementRequestTargetScalarFieldEnum]
+
+
+export const LawEnforcementRequestDocumentScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  storageObjectId: 'storageObjectId',
+  uploadedBy: 'uploadedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type LawEnforcementRequestDocumentScalarFieldEnum = (typeof LawEnforcementRequestDocumentScalarFieldEnum)[keyof typeof LawEnforcementRequestDocumentScalarFieldEnum]
+
+
+export const LawEnforcementRequestEventScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  action: 'action',
+  actorId: 'actorId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type LawEnforcementRequestEventScalarFieldEnum = (typeof LawEnforcementRequestEventScalarFieldEnum)[keyof typeof LawEnforcementRequestEventScalarFieldEnum]
+
+
+export const LawEnforcementExportScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  storageObjectId: 'storageObjectId',
+  generatedAt: 'generatedAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type LawEnforcementExportScalarFieldEnum = (typeof LawEnforcementExportScalarFieldEnum)[keyof typeof LawEnforcementExportScalarFieldEnum]
+
+
+export const LegalHoldScalarFieldEnum = {
+  id: 'id',
+  reason: 'reason',
+  relatedRequestId: 'relatedRequestId',
+  status: 'status',
+  createdBy: 'createdBy',
+  releasedBy: 'releasedBy',
+  releasedAt: 'releasedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LegalHoldScalarFieldEnum = (typeof LegalHoldScalarFieldEnum)[keyof typeof LegalHoldScalarFieldEnum]
+
+
+export const LegalHoldTargetScalarFieldEnum = {
+  id: 'id',
+  legalHoldId: 'legalHoldId',
+  targetType: 'targetType',
+  targetId: 'targetId'
+} as const
+
+export type LegalHoldTargetScalarFieldEnum = (typeof LegalHoldTargetScalarFieldEnum)[keyof typeof LegalHoldTargetScalarFieldEnum]
+
+
+export const LegalHoldEventScalarFieldEnum = {
+  id: 'id',
+  legalHoldId: 'legalHoldId',
+  action: 'action',
+  actorId: 'actorId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type LegalHoldEventScalarFieldEnum = (typeof LegalHoldEventScalarFieldEnum)[keyof typeof LegalHoldEventScalarFieldEnum]
+
+
+export const HealthCheckScalarFieldEnum = {
+  id: 'id',
+  subsystem: 'subsystem',
+  status: 'status',
+  latencyMs: 'latencyMs',
+  detail: 'detail',
+  checkedAt: 'checkedAt'
+} as const
+
+export type HealthCheckScalarFieldEnum = (typeof HealthCheckScalarFieldEnum)[keyof typeof HealthCheckScalarFieldEnum]
+
+
+export const ErrorLogScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  routeOrJob: 'routeOrJob',
+  message: 'message',
+  stack: 'stack',
+  context: 'context',
+  occurredAt: 'occurredAt'
+} as const
+
+export type ErrorLogScalarFieldEnum = (typeof ErrorLogScalarFieldEnum)[keyof typeof ErrorLogScalarFieldEnum]
+
+
+export const PerformanceMetricScalarFieldEnum = {
+  id: 'id',
+  metricType: 'metricType',
+  label: 'label',
+  durationMs: 'durationMs',
+  isSlow: 'isSlow',
+  context: 'context',
+  recordedAt: 'recordedAt'
+} as const
+
+export type PerformanceMetricScalarFieldEnum = (typeof PerformanceMetricScalarFieldEnum)[keyof typeof PerformanceMetricScalarFieldEnum]
+
+
+export const StorageUsageSnapshotScalarFieldEnum = {
+  id: 'id',
+  bucket: 'bucket',
+  totalBytes: 'totalBytes',
+  objectCount: 'objectCount',
+  orphanedBytes: 'orphanedBytes',
+  orphanedCount: 'orphanedCount',
+  byItemStatus: 'byItemStatus',
+  snapshotAt: 'snapshotAt'
+} as const
+
+export type StorageUsageSnapshotScalarFieldEnum = (typeof StorageUsageSnapshotScalarFieldEnum)[keyof typeof StorageUsageSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {

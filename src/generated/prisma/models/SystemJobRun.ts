@@ -195,6 +195,7 @@ export type SystemJobRunWhereInput = {
   detail?: Prisma.JsonNullableFilter<"SystemJobRun">
   createdAt?: Prisma.DateTimeFilter<"SystemJobRun"> | Date | string
   job?: Prisma.XOR<Prisma.SystemJobScalarRelationFilter, Prisma.SystemJobWhereInput>
+  dataPurgeLogs?: Prisma.DataPurgeLogListRelationFilter
 }
 
 export type SystemJobRunOrderByWithRelationInput = {
@@ -206,6 +207,7 @@ export type SystemJobRunOrderByWithRelationInput = {
   detail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   job?: Prisma.SystemJobOrderByWithRelationInput
+  dataPurgeLogs?: Prisma.DataPurgeLogOrderByRelationAggregateInput
 }
 
 export type SystemJobRunWhereUniqueInput = Prisma.AtLeast<{
@@ -220,6 +222,7 @@ export type SystemJobRunWhereUniqueInput = Prisma.AtLeast<{
   detail?: Prisma.JsonNullableFilter<"SystemJobRun">
   createdAt?: Prisma.DateTimeFilter<"SystemJobRun"> | Date | string
   job?: Prisma.XOR<Prisma.SystemJobScalarRelationFilter, Prisma.SystemJobWhereInput>
+  dataPurgeLogs?: Prisma.DataPurgeLogListRelationFilter
 }, "id">
 
 export type SystemJobRunOrderByWithAggregationInput = {
@@ -256,6 +259,7 @@ export type SystemJobRunCreateInput = {
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   job: Prisma.SystemJobCreateNestedOneWithoutRunsInput
+  dataPurgeLogs?: Prisma.DataPurgeLogCreateNestedManyWithoutJobRunInput
 }
 
 export type SystemJobRunUncheckedCreateInput = {
@@ -266,6 +270,7 @@ export type SystemJobRunUncheckedCreateInput = {
   finishedAt?: Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogUncheckedCreateNestedManyWithoutJobRunInput
 }
 
 export type SystemJobRunUpdateInput = {
@@ -276,6 +281,7 @@ export type SystemJobRunUpdateInput = {
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   job?: Prisma.SystemJobUpdateOneRequiredWithoutRunsNestedInput
+  dataPurgeLogs?: Prisma.DataPurgeLogUpdateManyWithoutJobRunNestedInput
 }
 
 export type SystemJobRunUncheckedUpdateInput = {
@@ -286,6 +292,7 @@ export type SystemJobRunUncheckedUpdateInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogUncheckedUpdateManyWithoutJobRunNestedInput
 }
 
 export type SystemJobRunCreateManyInput = {
@@ -355,6 +362,11 @@ export type SystemJobRunMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
+export type SystemJobRunNullableScalarRelationFilter = {
+  is?: Prisma.SystemJobRunWhereInput | null
+  isNot?: Prisma.SystemJobRunWhereInput | null
+}
+
 export type SystemJobRunCreateNestedManyWithoutJobInput = {
   create?: Prisma.XOR<Prisma.SystemJobRunCreateWithoutJobInput, Prisma.SystemJobRunUncheckedCreateWithoutJobInput> | Prisma.SystemJobRunCreateWithoutJobInput[] | Prisma.SystemJobRunUncheckedCreateWithoutJobInput[]
   connectOrCreate?: Prisma.SystemJobRunCreateOrConnectWithoutJobInput | Prisma.SystemJobRunCreateOrConnectWithoutJobInput[]
@@ -401,6 +413,22 @@ export type EnumSystemJobRunStatusFieldUpdateOperationsInput = {
   set?: $Enums.SystemJobRunStatus
 }
 
+export type SystemJobRunCreateNestedOneWithoutDataPurgeLogsInput = {
+  create?: Prisma.XOR<Prisma.SystemJobRunCreateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedCreateWithoutDataPurgeLogsInput>
+  connectOrCreate?: Prisma.SystemJobRunCreateOrConnectWithoutDataPurgeLogsInput
+  connect?: Prisma.SystemJobRunWhereUniqueInput
+}
+
+export type SystemJobRunUpdateOneWithoutDataPurgeLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.SystemJobRunCreateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedCreateWithoutDataPurgeLogsInput>
+  connectOrCreate?: Prisma.SystemJobRunCreateOrConnectWithoutDataPurgeLogsInput
+  upsert?: Prisma.SystemJobRunUpsertWithoutDataPurgeLogsInput
+  disconnect?: Prisma.SystemJobRunWhereInput | boolean
+  delete?: Prisma.SystemJobRunWhereInput | boolean
+  connect?: Prisma.SystemJobRunWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SystemJobRunUpdateToOneWithWhereWithoutDataPurgeLogsInput, Prisma.SystemJobRunUpdateWithoutDataPurgeLogsInput>, Prisma.SystemJobRunUncheckedUpdateWithoutDataPurgeLogsInput>
+}
+
 export type SystemJobRunCreateWithoutJobInput = {
   id?: string
   status?: $Enums.SystemJobRunStatus
@@ -408,6 +436,7 @@ export type SystemJobRunCreateWithoutJobInput = {
   finishedAt?: Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogCreateNestedManyWithoutJobRunInput
 }
 
 export type SystemJobRunUncheckedCreateWithoutJobInput = {
@@ -417,6 +446,7 @@ export type SystemJobRunUncheckedCreateWithoutJobInput = {
   finishedAt?: Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogUncheckedCreateNestedManyWithoutJobRunInput
 }
 
 export type SystemJobRunCreateOrConnectWithoutJobInput = {
@@ -458,6 +488,62 @@ export type SystemJobRunScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"SystemJobRun"> | Date | string
 }
 
+export type SystemJobRunCreateWithoutDataPurgeLogsInput = {
+  id?: string
+  status?: $Enums.SystemJobRunStatus
+  startedAt?: Date | string
+  finishedAt?: Date | string | null
+  detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  job: Prisma.SystemJobCreateNestedOneWithoutRunsInput
+}
+
+export type SystemJobRunUncheckedCreateWithoutDataPurgeLogsInput = {
+  id?: string
+  jobId: string
+  status?: $Enums.SystemJobRunStatus
+  startedAt?: Date | string
+  finishedAt?: Date | string | null
+  detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type SystemJobRunCreateOrConnectWithoutDataPurgeLogsInput = {
+  where: Prisma.SystemJobRunWhereUniqueInput
+  create: Prisma.XOR<Prisma.SystemJobRunCreateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedCreateWithoutDataPurgeLogsInput>
+}
+
+export type SystemJobRunUpsertWithoutDataPurgeLogsInput = {
+  update: Prisma.XOR<Prisma.SystemJobRunUpdateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedUpdateWithoutDataPurgeLogsInput>
+  create: Prisma.XOR<Prisma.SystemJobRunCreateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedCreateWithoutDataPurgeLogsInput>
+  where?: Prisma.SystemJobRunWhereInput
+}
+
+export type SystemJobRunUpdateToOneWithWhereWithoutDataPurgeLogsInput = {
+  where?: Prisma.SystemJobRunWhereInput
+  data: Prisma.XOR<Prisma.SystemJobRunUpdateWithoutDataPurgeLogsInput, Prisma.SystemJobRunUncheckedUpdateWithoutDataPurgeLogsInput>
+}
+
+export type SystemJobRunUpdateWithoutDataPurgeLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSystemJobRunStatusFieldUpdateOperationsInput | $Enums.SystemJobRunStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  job?: Prisma.SystemJobUpdateOneRequiredWithoutRunsNestedInput
+}
+
+export type SystemJobRunUncheckedUpdateWithoutDataPurgeLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  jobId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSystemJobRunStatusFieldUpdateOperationsInput | $Enums.SystemJobRunStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type SystemJobRunCreateManyJobInput = {
   id?: string
   status?: $Enums.SystemJobRunStatus
@@ -474,6 +560,7 @@ export type SystemJobRunUpdateWithoutJobInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogUpdateManyWithoutJobRunNestedInput
 }
 
 export type SystemJobRunUncheckedUpdateWithoutJobInput = {
@@ -483,6 +570,7 @@ export type SystemJobRunUncheckedUpdateWithoutJobInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   detail?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataPurgeLogs?: Prisma.DataPurgeLogUncheckedUpdateManyWithoutJobRunNestedInput
 }
 
 export type SystemJobRunUncheckedUpdateManyWithoutJobInput = {
@@ -495,6 +583,35 @@ export type SystemJobRunUncheckedUpdateManyWithoutJobInput = {
 }
 
 
+/**
+ * Count Type SystemJobRunCountOutputType
+ */
+
+export type SystemJobRunCountOutputType = {
+  dataPurgeLogs: number
+}
+
+export type SystemJobRunCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  dataPurgeLogs?: boolean | SystemJobRunCountOutputTypeCountDataPurgeLogsArgs
+}
+
+/**
+ * SystemJobRunCountOutputType without action
+ */
+export type SystemJobRunCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SystemJobRunCountOutputType
+   */
+  select?: Prisma.SystemJobRunCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SystemJobRunCountOutputType without action
+ */
+export type SystemJobRunCountOutputTypeCountDataPurgeLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DataPurgeLogWhereInput
+}
+
 
 export type SystemJobRunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -505,6 +622,8 @@ export type SystemJobRunSelect<ExtArgs extends runtime.Types.Extensions.Internal
   detail?: boolean
   createdAt?: boolean
   job?: boolean | Prisma.SystemJobDefaultArgs<ExtArgs>
+  dataPurgeLogs?: boolean | Prisma.SystemJobRun$dataPurgeLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.SystemJobRunCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["systemJobRun"]>
 
 export type SystemJobRunSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -542,6 +661,8 @@ export type SystemJobRunSelectScalar = {
 export type SystemJobRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "jobId" | "status" | "startedAt" | "finishedAt" | "detail" | "createdAt", ExtArgs["result"]["systemJobRun"]>
 export type SystemJobRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   job?: boolean | Prisma.SystemJobDefaultArgs<ExtArgs>
+  dataPurgeLogs?: boolean | Prisma.SystemJobRun$dataPurgeLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.SystemJobRunCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SystemJobRunIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   job?: boolean | Prisma.SystemJobDefaultArgs<ExtArgs>
@@ -554,6 +675,7 @@ export type $SystemJobRunPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "SystemJobRun"
   objects: {
     job: Prisma.$SystemJobPayload<ExtArgs>
+    dataPurgeLogs: Prisma.$DataPurgeLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -958,6 +1080,7 @@ readonly fields: SystemJobRunFieldRefs;
 export interface Prisma__SystemJobRunClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   job<T extends Prisma.SystemJobDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SystemJobDefaultArgs<ExtArgs>>): Prisma.Prisma__SystemJobClient<runtime.Types.Result.GetResult<Prisma.$SystemJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  dataPurgeLogs<T extends Prisma.SystemJobRun$dataPurgeLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SystemJobRun$dataPurgeLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DataPurgeLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1392,6 +1515,30 @@ export type SystemJobRunDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many SystemJobRuns to delete.
    */
   limit?: number
+}
+
+/**
+ * SystemJobRun.dataPurgeLogs
+ */
+export type SystemJobRun$dataPurgeLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DataPurgeLog
+   */
+  select?: Prisma.DataPurgeLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DataPurgeLog
+   */
+  omit?: Prisma.DataPurgeLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DataPurgeLogInclude<ExtArgs> | null
+  where?: Prisma.DataPurgeLogWhereInput
+  orderBy?: Prisma.DataPurgeLogOrderByWithRelationInput | Prisma.DataPurgeLogOrderByWithRelationInput[]
+  cursor?: Prisma.DataPurgeLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DataPurgeLogScalarFieldEnum | Prisma.DataPurgeLogScalarFieldEnum[]
 }
 
 /**

@@ -237,3 +237,138 @@ export type TelegramLinkToken = Prisma.TelegramLinkTokenModel
  * 
  */
 export type TelegramUpdate = Prisma.TelegramUpdateModel
+/**
+ * Model Lottery
+ * 
+ */
+export type Lottery = Prisma.LotteryModel
+/**
+ * Model LotteryEntry
+ * 
+ */
+export type LotteryEntry = Prisma.LotteryEntryModel
+/**
+ * Model LotteryResult
+ * 
+ */
+export type LotteryResult = Prisma.LotteryResultModel
+/**
+ * Model LotteryAuditLog
+ * 
+ */
+export type LotteryAuditLog = Prisma.LotteryAuditLogModel
+/**
+ * Model UserSubscription
+ * 
+ */
+export type UserSubscription = Prisma.UserSubscriptionModel
+/**
+ * Model SubscriptionKeyword
+ * 
+ */
+export type SubscriptionKeyword = Prisma.SubscriptionKeywordModel
+/**
+ * Model SubscriptionCategory
+ * 
+ */
+export type SubscriptionCategory = Prisma.SubscriptionCategoryModel
+/**
+ * Model SubscriptionCity
+ * 
+ */
+export type SubscriptionCity = Prisma.SubscriptionCityModel
+/**
+ * Model SubscriptionMatch
+ * 
+ */
+export type SubscriptionMatch = Prisma.SubscriptionMatchModel
+/**
+ * Model SubscriptionDigestJob
+ * 
+ */
+export type SubscriptionDigestJob = Prisma.SubscriptionDigestJobModel
+/**
+ * Model WebPushSubscription
+ * 
+ */
+export type WebPushSubscription = Prisma.WebPushSubscriptionModel
+/**
+ * Model PrivacyRequest
+ * 
+ */
+export type PrivacyRequest = Prisma.PrivacyRequestModel
+/**
+ * Model DataExport
+ * 
+ */
+export type DataExport = Prisma.DataExportModel
+/**
+ * Model DataRetentionPolicy
+ * 
+ */
+export type DataRetentionPolicy = Prisma.DataRetentionPolicyModel
+/**
+ * Model DataPurgeLog
+ * 
+ */
+export type DataPurgeLog = Prisma.DataPurgeLogModel
+/**
+ * Model LawEnforcementRequest
+ * 
+ */
+export type LawEnforcementRequest = Prisma.LawEnforcementRequestModel
+/**
+ * Model LawEnforcementRequestTarget
+ * 
+ */
+export type LawEnforcementRequestTarget = Prisma.LawEnforcementRequestTargetModel
+/**
+ * Model LawEnforcementRequestDocument
+ * 
+ */
+export type LawEnforcementRequestDocument = Prisma.LawEnforcementRequestDocumentModel
+/**
+ * Model LawEnforcementRequestEvent
+ * 
+ */
+export type LawEnforcementRequestEvent = Prisma.LawEnforcementRequestEventModel
+/**
+ * Model LawEnforcementExport
+ * 
+ */
+export type LawEnforcementExport = Prisma.LawEnforcementExportModel
+/**
+ * Model LegalHold
+ * 
+ */
+export type LegalHold = Prisma.LegalHoldModel
+/**
+ * Model LegalHoldTarget
+ * 
+ */
+export type LegalHoldTarget = Prisma.LegalHoldTargetModel
+/**
+ * Model LegalHoldEvent
+ * 
+ */
+export type LegalHoldEvent = Prisma.LegalHoldEventModel
+/**
+ * Model HealthCheck
+ * 
+ */
+export type HealthCheck = Prisma.HealthCheckModel
+/**
+ * Model ErrorLog
+ * 
+ */
+export type ErrorLog = Prisma.ErrorLogModel
+/**
+ * Model PerformanceMetric
+ * 
+ */
+export type PerformanceMetric = Prisma.PerformanceMetricModel
+/**
+ * Model StorageUsageSnapshot
+ * 
+ */
+export type StorageUsageSnapshot = Prisma.StorageUsageSnapshotModel
