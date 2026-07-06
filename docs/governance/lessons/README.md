@@ -16,3 +16,4 @@
 | `20260706-playwright-cannot-import-prisma7-client.md` | Playwright Test 的 TS 轉譯器不支援 Prisma 7 產生的 client（`import.meta`）；db 相關邏輯要抽成獨立 `npx tsx` 腳本，spec 檔用 child_process 呼叫，不要直接 import |
 | `20260706-image-remote-pattern-missing-bucket-path.md` | `next.config.ts` 的 `next/image` remotePatterns 寫死 `pathname: "/images/**"`，沒算進 `S3_PUBLIC_URL` 自帶的 bucket 路徑（如 `/sharegood`），本機任何帶圖片頁面一律 500；已改成併入 `s3PublicUrl.pathname` |
 | `20260707-env-placeholder-breaks-existing-tests.md` | worktree 補 `.env` 缺變數別用同一套非空 placeholder 打遍全部：`TELEGRAM_BOT_TOKEN` 必須留空、`WEB_PUSH_VAPID_*` 必須是真的合法格式金鑰，否則既有整合測試會冒出跟本次改動無關的新失敗 |
+| `20260707-shared-disk-exhaustion-during-m9-parallel-work.md` | 多個平行 worktree 共用同一顆磁碟容易被擠爆導致 postgres 斷線／`vitest run` 中途 ENOSPC；只清自己的 `.next`／npm `_npx`／apt 快取，絕對不要動別的 worktree（權限系統會擋，不要繞） |
