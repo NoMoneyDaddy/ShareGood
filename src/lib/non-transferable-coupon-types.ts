@@ -1,0 +1,41 @@
+// M9（master-plan §9a 交付內容 3）：不可上架清單「攔截層一」——官方明文禁轉贈／官方閉環
+// 券種（LINE 即享券／LINE 禮物、7-ELEVEN 行動隨時取、全家隨買跨店取），這些不是「內容
+// 違規」而是「這個券種本來就不該出現在這個平台」，正確做法是引導使用者走官方轉贈功能，
+// 所以獨立於 keyword_blocklist（攔截層二，負責擋自由文字裡的加價/折現/個資徵求詞），
+// 用程式內定的常數清單擋「類型選擇＋標題」。
+//
+// 正規化：去空白、全形轉半形、英文小寫化，之後用子字串比對——「LINE即享券」「LINE 即享券」
+// 「line即享券」都會正規化成同一個字串，不需要每個變體各自列一次。
+const FULLWIDTH_OFFSET = 0xfee0;
+
+export function normalizeForCouponTypeCheck(text: string): string {
+  return text
+    .replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - FULLWIDTH_OFFSET))
+    .replace(/　/g, "")
+    .replace(/\s+/g, "")
+    .toLowerCase();
+}
+
+// 清單已內含常見變體字面（未正規化前的原文，方便閱讀），比對時雙方都會先正規化。
+export const NON_TRANSFERABLE_COUPON_TYPES: readonly string[] = [
+  "LINE即享券",
+  "LINE 禮物",
+  "line gift",
+  "即享券",
+  "隨買跨店取",
+  "行動隨時取",
+];
+
+/**
+ * 檢查文字是否命中不可上架清單，命中回傳命中的原始詞條（未正規化），否則回傳 null。
+ */
+export function checkNonTransferableCouponType(text: string): string | null {
+  if (!text) return null;
+  const normalized = normalizeForCouponTypeCheck(text);
+  for (const term of NON_TRANSFERABLE_COUPON_TYPES) {
+    if (normalized.includes(normalizeForCouponTypeCheck(term))) {
+      return term;
+    }
+  }
+  return null;
+}

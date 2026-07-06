@@ -3,6 +3,11 @@ import { Prisma } from "@/generated/prisma/client";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import {
+  checkGiveToGetQuota,
+  GIVE_TO_GET_CATEGORY_SLUGS,
+  GiveToGetQuotaExceededError,
+} from "@/lib/give-to-get-quota";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { hasActiveLottery } from "@/lib/lottery";
 import { createOrMergeNotification } from "@/lib/notifications";
@@ -55,7 +60,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return jsonError("UNPROCESSABLE", "留言包含不允許的內容，請修改後再送出");
   }
 
-  const item = await db.item.findUnique({ where: { id: itemId } });
+  const item = await db.item.findUnique({
+    where: { id: itemId },
+    include: { category: { select: { slug: true } } },
+  });
   if (!item) return jsonError("NOT_FOUND", "找不到這個物品");
   if (item.ownerId === user.id) {
     return jsonError("CONFLICT", "不能認領自己分享的物品");
@@ -68,6 +76,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   // 避免三種選人方式互相打架；抽籤流標/取消/完成之後這個檢查自然放行。
   if (await hasActiveLottery(itemId)) {
     return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言/直贈");
+  }
+
+  // M9（master-plan §9a 交付內容 3）：give-to-get 領取配額，只套用在券票點三類物品，
+  // 一般實體物品的認領完全不受影響（見 src/lib/give-to-get-quota.ts）。
+  if (GIVE_TO_GET_CATEGORY_SLUGS.has(item.category.slug)) {
+    try {
+      await checkGiveToGetQuota(user.id);
+    } catch (e) {
+      if (e instanceof GiveToGetQuotaExceededError) return jsonError("RATE_LIMITED", e.message);
+      throw e;
+    }
   }
 
   try {
