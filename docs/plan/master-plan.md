@@ -458,10 +458,13 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
 
 3. **訂閱建立/編輯/刪除 API（上限一律 server-side 驗證，不能只靠前端）**：
    - `POST /api/subscriptions`：建立一筆訂閱（`label`、`immediateEnabled`、`dailyDigestEnabled`、
-     `keywords[]`（≤5，每個做交付內容 5 的正規化）、`categoryIds[]`、`cityIds[]`）。
-     三個篩選維度（關鍵字/分類/縣市）**至少要有一個非空**，否則回 422（避免建立「什麼都比對」
-     的訂閱，對比對 job 與使用者自己都是雜訊）。同一 transaction 內先數使用者目前訂閱數，
-     `>= 20` 回 422（`{"error":{"code":"VALIDATION_ERROR","message":"訂閱已達上限（20 筆）"}}`）；
+     `keywords[]`（≤5，每個做交付內容 5 的正規化）、`categoryIds[]`、`cityIds[]`）。寫入前對
+     `keywords`（正規化後）、`categoryIds`、`cityIds` 各自去重（例如 `Array.from(new Set(...))`），
+     避免輸入重複值觸發 `@@unique([subscriptionId, categoryId])`/`@@unique([subscriptionId,
+     cityId])` 拋出 500。三個篩選維度（關鍵字/分類/縣市）**至少要有一個非空**，否則回 422
+     （避免建立「什麼都比對」的訂閱，對比對 job 與使用者自己都是雜訊）。同一 transaction 內先數
+     使用者目前訂閱數，`>= 20` 回 422（`{"error":{"code":"VALIDATION_ERROR","message":"訂閱已達
+     上限（20 筆）"}}`）；
      `keywords.length > 5` 回 422。
      **已知取捨**：這個計數檢查與寫入不是同一個原子操作（Postgres 預設 READ COMMITTED 下，同一
      使用者從兩個分頁同時快速連點「新增訂閱」有極小機率讓計數短暫超過 20），影響範圍僅止於這個
@@ -494,7 +497,11 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
      `status='success'` 的 `SystemJobRun.detail.cursor`，撈
      `items.status='published' AND (published_at, id) > cursor`（依 `published_at asc, id asc`
      排序，一批最多 500 筆，避免單次執行時間過長，剩下的下次 tick 繼續處理），執行完把本次掃到
-     的最後一筆 `(publishedAt, id)` 寫進這次 run 的 `detail.cursor`。
+     的最後一筆 `(publishedAt, id)` 寫進這次 run 的 `detail.cursor`。**關鍵前提**：物品從
+     `reserved`／`handover_pending` 等狀態退回 `published`（例如認領被取消、no-show 退回）時，
+     既有的狀態轉移邏輯必須把 `publishedAt` 更新為 `now()`，否則舊的 `publishedAt` 會小於 cursor
+     已經前進到的位置，導致這次「重新上架」永遠不會被掃描 job 撈到、訂閱者收不到通知——這點
+     順便也讓物品在前台列表重新置頂，符合使用者對「重新開放」的直覺預期。
    - **這個 job 首次上線時，cursor 起點 = 上線當下的時間**，不回溯掃描既有已上架的物品（見「不做」
      的「不做建立訂閱時回填比對存量物品」，理由相同：避免第一次跑就要處理全庫存量造成長時間
      阻塞）。
@@ -522,6 +529,9 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
          .toLowerCase();       // 大小寫不敏感
      }
      ```
+     **建立/編輯訂閱的 API 必須拒絕正規化後長度為 0 的關鍵字**（例如只輸入空白字元）：若不擋，
+     `normalizedItemText.includes("")` 恆為 `true`，會讓該訂閱無條件命中所有新上架物品，形同
+     關鍵字篩選完全失效。驗證順序是先正規化、再檢查長度 > 0，不合格的關鍵字整批回 422。
    - **比對規則**：三個維度內部用 OR，跨維度用 AND；某維度沒設定就視為該維度不篩選（永遠 true）：
      ```
      function isMatch(subscription, item, normalizedItemText): boolean {
@@ -580,8 +590,11 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
      dailyDigestEnabled=true` 的列，依 `subscription.userId` 分組。
    - 對每個 `userId`：先用 `INSERT ... ON CONFLICT (user_id, digest_date) DO NOTHING` 嘗試建立
      今天（Asia/Taipei 曆日）的 `subscription_digest_jobs` 列（`status='pending'`）；若撞到
-     unique 代表今天已經處理過這個使用者（不論成功與否都不重複跑），直接跳過——這是「同一天
-     不重複發送摘要」的 idempotency 機制，即使 job 因故被重複觸發也不會對同一使用者發兩封。
+     unique，要看既有那筆的狀態：`status IN ('sent', 'skipped_empty')` 代表今天已經成功處理過
+     這個使用者，直接跳過；`status IN ('failed', 'pending')`（暫時性錯誤失敗、或前一次執行中途
+     崩潰留下的半成品）則**允許重新處理**，沿用同一列繼續走完流程——否則使用者會因為一次偶發的
+     網路錯誤或 Web Push 服務暫時不通，當天永遠收不到摘要通知。這是「同一天不重複\*成功\*發送
+     摘要」的 idempotency 機制，即使 job 因故被重複觸發，也不會對已成功處理的使用者重發。
    - 過濾掉物品目前狀態已經不是 `published` 的 match（例如被搶先接手、下架、過期——避免摘要裡
      出現點進去是死連結的物品）；這些被過濾掉的列仍然蓋章 `notifiedAt=now()`／
      `notifiedVia='digest'`／`digestJobId`（代表「已處理，不會再被下次摘要 job 重複檢視」），
@@ -600,17 +613,22 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
      三個環境變數（subject 是 Web Push 規範要求的聯絡方式，格式 `mailto:<站方聯絡信箱>`）。
    - **Service Worker**：新增 `public/sw.js`，監聽 `push` 事件呼叫
      `self.registration.showNotification(title, {body, icon, data:{itemUrl}})`；監聽
-     `notificationclick` 事件，`clients.openWindow(event.notification.data.itemUrl)`（優先
-     focus 既有分頁，沒有才開新分頁）。
+     `notificationclick` 事件時，**`clients.openWindow()` 本身沒有「找既有分頁」的語意，一定是
+     開新分頁**——要做到「優先 focus 既有分頁」必須自己用 `clients.matchAll({type:'window'})`
+     取得所有已開啟的視窗、比對 URL 是否吻合，找到就呼叫該 `client.focus()`，都沒找到才呼叫
+     `clients.openWindow(event.notification.data.itemUrl)`。
    - **前端註冊流程**：`/me/subscriptions` 頁頂端提供「啟用瀏覽器推播通知」開關 →
      `navigator.serviceWorker.register('/sw.js')` → 使用者同意瀏覽器通知權限提示 →
      `registration.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:
      <WEB_PUSH_VAPID_PUBLIC_KEY 轉成的 Uint8Array>})` → 拿到的 `PushSubscription` 呼叫
      `POST /api/web-push/subscriptions` 存進 `web_push_subscriptions`。
    - **失效偵測與自動清理**（比照 M4 Telegram「發送失敗重試＋失效自動解綁」的精神，Web Push 的
-     失效訊號比 Telegram 更明確——是標準化的 HTTP 狀態碼，不需要額外偵測邏輯）：發送時用
-     `webpush.sendNotification(subscription, payload, {vapidDetails})`；回應
-     **404/410（Gone）代表該裝置的推播訂閱已在瀏覽器端失效**（使用者關閉了通知權限、清除瀏覽器
+     失效訊號比 Telegram 更明確——是標準化的 HTTP 狀態碼，不需要額外偵測邏輯）：`web-push` 套件的
+     `sendNotification` 在推播服務回應非 2xx 時是**用 throw 一個帶 `statusCode` 的 Error 表達失敗**，
+     不是回傳值，所以呼叫時必須包 `try/catch`：`try { await webpush.sendNotification(subscription,
+     payload, {vapidDetails}) } catch (err) { ...依 err.statusCode 判斷... }`，沒有這層
+     try/catch，失敗會直接讓派送 job 整個中斷。**`err.statusCode` 為 404/410（Gone）代表該裝置的
+     推播訂閱已在瀏覽器端失效**（使用者關閉了通知權限、清除瀏覽器
      資料、或解除安裝），立刻把該筆 `web_push_subscriptions.isActive=false`／
      `deactivatedAt=now()`，之後派送直接跳過這筆；其他錯誤（逾時、5xx）視為暫時性失敗，沿用
      `notification_deliveries` 既有的 `attempts`/`lastError` 重試機制，不動
