@@ -11,8 +11,8 @@ const FOOTER_LINKS = [
   { href: "/privacy", label: "隱私權政策" },
 ];
 
-// hasBottomTab：頁面若掛載了行動版 BottomTab（目前只有首頁），底部要留出額外空間避免
-// 內容被蓋住；其他沒有 BottomTab 的頁面（/guide、/rules、/terms、/privacy、物品詳情頁等）
+// hasBottomTab：頁面若掛載了行動版 BottomTab（首頁與 /items 瀏覽頁），底部要留出額外空間
+// 避免內容被蓋住；其他沒有 BottomTab 的頁面（/guide、/rules、/terms、/privacy、物品詳情頁等）
 // 用標準頁尾留白即可，不需要多出這一大塊空白（Gemini review 指出的真實排版問題）。
 export function SiteFooter({ hasBottomTab = false }: { hasBottomTab?: boolean }) {
   return (
@@ -35,6 +35,14 @@ export function SiteFooter({ hasBottomTab = false }: { hasBottomTab?: boolean })
             </Link>
           ))}
         </nav>
+      </div>
+      {/* 非官方合作聲明：物品標題／描述由使用者自行填寫，可能提到店家或品牌名稱
+          （例如優惠券的「適用店家」），這裡明確聲明平台與這些品牌無合作/授權關係，
+          避免使用者或品牌方誤以為是官方合作內容。 */}
+      <div className="mx-auto max-w-6xl px-4 pb-2 sm:px-6">
+        <p className="border-t border-line/70 pt-4 text-xs text-ink-soft/80">
+          本平台所提及之商店名稱、品牌及商標均屬各權利人所有；除另有標示外，本平台與各品牌並無合作、授權或從屬關係。
+        </p>
       </div>
     </footer>
   );
