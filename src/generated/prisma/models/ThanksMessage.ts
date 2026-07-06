@@ -209,10 +209,10 @@ export type ThanksMessageOrderByWithRelationInput = {
 
 export type ThanksMessageWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  itemId?: string
   AND?: Prisma.ThanksMessageWhereInput | Prisma.ThanksMessageWhereInput[]
   OR?: Prisma.ThanksMessageWhereInput[]
   NOT?: Prisma.ThanksMessageWhereInput | Prisma.ThanksMessageWhereInput[]
-  itemId?: Prisma.StringFilter<"ThanksMessage"> | string
   fromUserId?: Prisma.StringFilter<"ThanksMessage"> | string
   toUserId?: Prisma.StringFilter<"ThanksMessage"> | string
   message?: Prisma.StringFilter<"ThanksMessage"> | string
@@ -220,7 +220,7 @@ export type ThanksMessageWhereUniqueInput = Prisma.AtLeast<{
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   fromUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   toUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+}, "id" | "itemId">
 
 export type ThanksMessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

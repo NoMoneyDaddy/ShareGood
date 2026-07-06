@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { CONTRIBUTION_POINTS } from "@/lib/contribution";
 import { db } from "@/lib/db";
 
 // PATCH /api/handover/[id]/complete — 物主或接手者標記「我這邊完成了」。
@@ -85,6 +86,25 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
               userId: handover.receiverId,
               type: "completion_confirmed",
               payload: { itemId: handover.item.id, itemTitle: handover.item.title },
+            },
+          ],
+        });
+        // 貢獻值記分：塞在 flipped.count === 1 這個「恰好只會發生一次」的分支裡，借用上面
+        // updateMany + count 判斷的原子保護，確保雙方各自呼叫或其中一方重複呼叫 complete
+        // 都不會重複記分。
+        await tx.contributionEvent.createMany({
+          data: [
+            {
+              userId: handover.item.ownerId,
+              itemId: handover.item.id,
+              type: "share_completed",
+              points: CONTRIBUTION_POINTS.share_completed,
+            },
+            {
+              userId: handover.receiverId,
+              itemId: handover.item.id,
+              type: "receive_completed",
+              points: CONTRIBUTION_POINTS.receive_completed,
             },
           ],
         });
