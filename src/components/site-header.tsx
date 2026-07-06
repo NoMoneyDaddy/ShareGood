@@ -18,7 +18,7 @@ export function SiteHeader({ session, profile }: SiteHeaderProps) {
           <span className="font-display text-xl font-extrabold tracking-tight text-ink">
             好物共享
           </span>
-          <span className="hidden text-sm font-medium text-ink-soft sm:inline">ShareGood</span>
+          <span className="text-sm font-medium text-ink-soft">ShareGood</span>
         </Link>
 
         <nav className="flex items-center gap-2.5">

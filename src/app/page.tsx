@@ -115,14 +115,15 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-md md:col-span-5">
+          {/* 手機版隱藏：split hero 設計是給桌機的左右對照，手機疊成單欄時圖片會把第一屏
+              擠得太滿、緊貼底部導覽列看起來像被截斷，索性只在 md 以上顯示 */}
+          <div className="relative mx-auto hidden w-full max-w-md md:col-span-5 md:block">
             <div className="overflow-hidden rounded-2xl border border-line shadow-lg">
               <Image
                 src="https://picsum.photos/seed/sharegood-hero/720/560"
                 alt="鄰居互相交接好物的日常場景"
                 width={720}
                 height={560}
-                priority
                 className="aspect-[4/3] w-full object-cover"
               />
             </div>
