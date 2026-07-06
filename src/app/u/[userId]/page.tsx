@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { auth } from "@/auth";
@@ -53,6 +54,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
           <p className="text-sm text-ink-soft">累計貢獻值</p>
           <p className="mt-1 text-3xl font-bold tracking-tight text-brand-ink">{totalPoints}</p>
         </div>
+
+        {session?.user?.id === userId && (
+          <Link
+            href="/me/wallet"
+            className="mt-4 flex items-center justify-between rounded-xl border border-line bg-card px-4 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-paper-2 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            優惠券錢包
+            <span aria-hidden="true">→</span>
+          </Link>
+        )}
       </main>
     </div>
   );

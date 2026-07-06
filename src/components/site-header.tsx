@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react";
+import { Bell, Ticket } from "lucide-react";
 import Link from "next/link";
 import type { Session } from "next-auth";
 import { signIn, signOut } from "@/auth";
@@ -32,6 +32,13 @@ export async function SiteHeader({ session, profile }: SiteHeaderProps) {
         <nav className="flex items-center gap-2.5">
           {session?.user ? (
             <>
+              <Link
+                href="/me/wallet"
+                aria-label="優惠券錢包"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <Ticket size={19} strokeWidth={2} aria-hidden="true" />
+              </Link>
               <Link
                 href="/notifications"
                 aria-label={unreadCount > 0 ? `通知，${unreadCount} 則未讀` : "通知"}
