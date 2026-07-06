@@ -132,6 +132,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     select: {
       id: true,
+      userId: true,
       message: true,
       status: true,
       createdAt: true,
@@ -145,6 +146,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   return NextResponse.json({
     claims: page.map((c) => ({
       id: c.id,
+      userId: c.userId,
       message: c.message,
       status: c.status,
       createdAt: c.createdAt,

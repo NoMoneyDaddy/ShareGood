@@ -50,6 +50,22 @@
           `items_status_city_id_category_id_created_at_idx`（Index Scan，非 Seq Scan）；
           `npx biome check .`／`npx tsc --noEmit`／`NODE_ENV=production npx next build`
           全過。
+- [ ] M2 治理底線：範圍見 master-plan.md §7，跟 M1 一樣分段 commit／push。
+    - [x] 檢舉（PR：feat/m2-reports）：對物品/留言/私訊三選一檢舉＋最多 3 張證據圖片，
+          狀態機 `submitted→triaged→in_progress→resolved/rejected→closed`（跳過中間態或逆向
+          轉換一律 409，resolved/rejected 結案必填處理備註）；`POST/GET /api/reports`、
+          `PATCH /api/reports/[id]`（moderator/admin）、`POST /api/reports/attachments`
+          （沿用 §3.3 圖片管線，只產生單一 webp 變體，`kind` 固定 `report_attachment`）；
+          證據圖片沿用 `POST /api/items` 的「uploaderId+status=pending」原子 updateMany
+          搶用防呆；私訊檢舉會檢查檢舉人是否為該 conversation 成員（非成員一律 404，不洩漏
+          conversation 存在）；一般使用者 `GET /api/reports` 只看得到自己的檢舉，
+          `?scope=all` 限 moderator/admin。前端接上物品詳情頁（檢舉物品）、留言列表
+          （檢舉他人留言，`claims-section.tsx` 順手把 `GET .../claims` 回應加了
+          `userId` 欄位方便前端判斷是不是自己的留言）、私訊對話串（檢舉他人訊息）
+          共用的 `src/components/report-button.tsx`。已知範圍外：moderator 後台的檢舉
+          審核佇列 UI 留給 M2 任務 7「後台最小集」那一波再做，這波只做前台送出＋API 處理端。
+          （另外 main 上已有其他 wave 併入的強制下架 `PATCH /api/items/[id]/force-remove`
+          與 M4 通知偏好設定，不屬於本次 PR 範圍，未在此列出細節。）
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { ReportButton } from "@/components/report-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { ItemStatus } from "@/generated/prisma/enums";
@@ -186,11 +187,19 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <h1 className="mt-2 text-2xl font-bold tracking-tight">{item.title}</h1>
         <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
-        <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
-          分享者：
-          <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
-            {item.owner.profile?.nickname ?? "好物共享用戶"}
-          </Link>
+        <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
+          <span>
+            分享者：
+            <Link
+              href={`/u/${item.ownerId}`}
+              className="text-ink underline-offset-2 hover:underline"
+            >
+              {item.owner.profile?.nickname ?? "好物共享用戶"}
+            </Link>
+          </span>
+          {session?.user && session.user.id !== item.ownerId && (
+            <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+          )}
         </div>
 
         <CouponSection
@@ -215,7 +224,11 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           itemStatus={item.status}
           isOwner={session?.user?.id === item.ownerId}
         />
-        <ClaimsSection itemId={item.id} itemStatus={item.status} />
+        <ClaimsSection
+          itemId={item.id}
+          itemStatus={item.status}
+          currentUserId={session?.user?.id}
+        />
         <HandoverSection
           itemId={item.id}
           itemStatus={item.status}

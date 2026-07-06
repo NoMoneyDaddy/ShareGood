@@ -38,3 +38,25 @@ export async function createImagePair(uploaderId: string) {
   ]);
   return { thumbObjectId: thumb.id, mediumObjectId: medium.id };
 }
+
+/**
+ * 直接在 storage_objects 造一筆「已上傳完成、待掛上檢舉」的 report_attachment 假資料，
+ * 略過真的打 MinIO（理由同 createImagePair）。objectKey 格式沿用
+ * src/app/api/reports/attachments/route.ts 的慣例 `report-attachments/<uuid>.webp`。
+ */
+export async function createReportEvidenceObject(uploaderId: string) {
+  const id = randomUUID();
+  const object = await db.storageObject.create({
+    data: {
+      objectKey: `report-attachments/${id}.webp`,
+      kind: "report_attachment",
+      status: "pending",
+      mimeType: "image/webp",
+      sizeBytes: 200_000,
+      width: 768,
+      height: 768,
+      uploaderId,
+    },
+  });
+  return object.id;
+}
