@@ -10,6 +10,7 @@ import {
   toWebpVariant,
   VARIANTS,
 } from "@/lib/images";
+import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { putObject } from "@/lib/storage";
 
 // POST /api/uploads — multipart form（欄位 file）。
@@ -24,6 +25,14 @@ export async function POST(req: NextRequest) {
     user = await requireUser();
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
+    throw e;
+  }
+
+  // M2 治理底線：每小時/每日上傳次數上限，超過回 429（見 src/lib/rate-limit.ts）。
+  try {
+    await checkRateLimit(user.id, "upload_create");
+  } catch (e) {
+    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
     throw e;
   }
 
