@@ -54,9 +54,13 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
       return { ok: false as const };
     }
 
+    // publishedAt 重蓋成現在：master-plan §6a M6 訂閱通知比對 job 用 (publishedAt, id) 當
+    // cursor 掃描新上架物品，物品從 handover_pending 退回 published 若不更新 publishedAt，
+    // 舊時間點會小於 cursor 已經前進的位置，導致這次「重新上架」永遠不會被訂閱比對 job 掃到。
+    // 副作用是物品也會在前台列表重新置頂，符合「重新開放」的直覺預期。
     await tx.item.updateMany({
       where: { id: handover.item.id, status: "handover_pending" },
-      data: { status: "published" },
+      data: { status: "published", publishedAt: new Date() },
     });
     await tx.itemStatusLog.create({
       data: {

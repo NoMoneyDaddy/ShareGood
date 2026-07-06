@@ -43,6 +43,24 @@ export const NOTIFICATION_EVENT_TYPES = [
     defaultInAppEnabled: true,
     defaultExternalEnabled: true,
   },
+  {
+    // M6 訂閱通知（master-plan §6a 交付內容 2）：訂閱本身的 immediateEnabled 只決定「符合
+    // 條件時要立刻通知還是併入明天的每日摘要」這個時機問題；不論選哪個時機，實際「站內通知
+    // 要不要建立、要不要外送到 Telegram／Web Push」都要另外查這裡的偏好設定，是正交的兩層
+    // 閘門。即時比對命中算是比較即時、使用者主動選擇要收即時通知的情境，預設連外部通知也開。
+    eventType: "subscription_match",
+    label: "訂閱條件即時命中新物品",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: true,
+  },
+  {
+    // 每日摘要本身已經是「不打擾」設計（一天最多一封），外部通知預設關，留給使用者自己選擇
+    // 要不要額外收 Telegram/Web Push 提醒去看摘要。
+    eventType: "subscription_digest",
+    label: "訂閱每日摘要",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: false,
+  },
 ] as const;
 
 export type NotificationEventType = (typeof NOTIFICATION_EVENT_TYPES)[number]["eventType"];

@@ -116,9 +116,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
           // 只有物品目前仍是 removed_by_moderator 才轉回 published；如果狀態已經被
           // 其他方式改變（理論上不該發生，但求穩），就略過物品狀態變更，申訴審核結果
           // 仍然照使用者的決定記錄下來。
+          // publishedAt 重蓋成現在：master-plan §6a M6 訂閱通知比對 job 靠 (publishedAt, id)
+          // cursor 掃描新上架物品，物品從 removed_by_moderator 復原成 published 若不更新
+          // publishedAt，舊時間點會小於 cursor 已經前進的位置，導致這次「復原上架」永遠不會被
+          // 訂閱比對 job 掃到（同時也讓復原後的物品在前台列表重新置頂，符合直覺）。
           const itemUpdated = await tx.item.updateMany({
             where: { id: removal.itemId, status: "removed_by_moderator" },
-            data: { status: "published" },
+            data: { status: "published", publishedAt: now },
           });
           if (itemUpdated.count === 1) {
             await tx.itemStatusLog.create({
