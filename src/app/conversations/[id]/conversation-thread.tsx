@@ -57,6 +57,18 @@ export function ConversationThread({
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
   }, []);
 
+  // polling 刷新時，只有使用者本來就停在接近底部才自動捲到最新訊息；如果使用者往上
+  // 捲去看舊訊息，polling 不該打斷閱讀、把畫面搶捲回底部。
+  // biome-ignore lint/correctness/useExhaustiveDependencies: 特意依賴 messages 觸發重新捲動，effect 內用 DOM API 讀取捲動位置而不是讀 messages 變數本身
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    if (distanceToBottom <= 80) {
+      el.scrollTo({ top: el.scrollHeight });
+    }
+  }, [messages]);
+
   const canSend = body.trim().length >= 1 && body.trim().length <= 1000 && !sending;
 
   async function submit(e: React.FormEvent) {

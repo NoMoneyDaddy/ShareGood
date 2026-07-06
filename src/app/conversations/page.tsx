@@ -19,8 +19,8 @@ export default async function ConversationsPage() {
 
   const memberships = await db.conversationMember.findMany({
     where: { userId: session.user.id },
-    orderBy: { joinedAt: "desc" },
     select: {
+      joinedAt: true,
       conversation: {
         select: {
           id: true,
@@ -33,6 +33,14 @@ export default async function ConversationsPage() {
         },
       },
     },
+  });
+
+  // 依「最新一則訊息時間」排序，沒有訊息的對話 fallback 用 joinedAt；訊息串通常不多，
+  // 這裡在記憶體排序即可，不需要 Prisma 對 to-many 關聯做 aggregate orderBy。
+  memberships.sort((a, b) => {
+    const aTime = a.conversation.messages[0]?.createdAt ?? a.joinedAt;
+    const bTime = b.conversation.messages[0]?.createdAt ?? b.joinedAt;
+    return bTime.getTime() - aTime.getTime();
   });
 
   return (

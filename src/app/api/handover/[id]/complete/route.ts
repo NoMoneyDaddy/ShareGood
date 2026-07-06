@@ -36,17 +36,20 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
   const now = new Date();
 
   const result = await db.$transaction(async (tx) => {
-    // updateMany 帶「自己那欄還是 null」的條件：自己已經確認過就不會再更新一次（idempotent），
-    // 也不會報錯。單一 UPDATE 陳述式本身是原子的，兩個併發請求即使同時打進來，也只有一個
-    // 會真的把值寫進去，另一個 count 會是 0。
+    // updateMany 帶「自己那欄還是 null」＋「status 還是 pending」的條件：自己已經確認過
+    // 就不會再更新一次（idempotent），也不會報錯；多帶 status: "pending" 是為了關掉一個
+    // 時間差——外層的 no_show 檢查讀的是進 transaction 之前的資料，如果另一個併發請求
+    // 幾乎同時把這筆交接標記成 no_show，這裡的 updateMany 條件會讓 count 變 0，不會在
+    // 已經 no_show 的紀錄上誤寫確認時間。單一 UPDATE 陳述式本身是原子的，兩個併發請求
+    // 即使同時打進來，也只有一個會真的把值寫進去，另一個 count 會是 0。
     if (isOwner) {
       await tx.handoverRecord.updateMany({
-        where: { id: handoverId, ownerConfirmedAt: null },
+        where: { id: handoverId, ownerConfirmedAt: null, status: "pending" },
         data: { ownerConfirmedAt: now },
       });
     } else {
       await tx.handoverRecord.updateMany({
-        where: { id: handoverId, receiverConfirmedAt: null },
+        where: { id: handoverId, receiverConfirmedAt: null, status: "pending" },
         data: { receiverConfirmedAt: now },
       });
     }

@@ -41,13 +41,21 @@ export function HandoverSection({
       <h2 className="text-lg font-bold tracking-tight">交接與私訊</h2>
       <div className="mt-4">
         {itemStatus === "reserved" && <StartHandoverButton itemId={itemId} />}
-        {itemStatus === "handover_pending" && handoverId && conversationId && (
-          <InProgressHandover
-            handoverId={handoverId}
-            conversationId={conversationId}
-            isOwner={isOwner}
-          />
-        )}
+        {itemStatus === "handover_pending" &&
+          (handoverId && conversationId ? (
+            <InProgressHandover
+              handoverId={handoverId}
+              conversationId={conversationId}
+              isOwner={isOwner}
+            />
+          ) : (
+            // 正常情況下 handover_pending 一定有 handoverId／conversationId（page.tsx 查詢
+            // 保證同時存在）；這裡是資料異常時的保底提示，避免整塊區域悄悄消失讓人以為
+            // 沒有交接功能。
+            <p className="rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">
+              無法顯示交接資訊，請重新整理頁面或稍後再試。
+            </p>
+          ))}
         {itemStatus === "completed" && (
           <p className="rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">已完成分享</p>
         )}
