@@ -50,8 +50,7 @@
           `items_status_city_id_category_id_created_at_idx`（Index Scan，非 Seq Scan）；
           `npx biome check .`／`npx tsc --noEmit`／`NODE_ENV=production npx next build`
           全過。
-- [ ] M2 治理底線：範圍見 master-plan.md §7，跟 M1 一樣分段 commit／push。7 個交付內容中
-      6 個已完成，只剩「Admin 後台最小集 `/admin`」（依賴以下全部資料，故意留到最後）。
+- [x] M2 治理底線：範圍見 master-plan.md §7，跟 M1 一樣分段 commit／push。7 個交付內容全部完成。
     - [x] 檢舉（PR #28）：對物品/留言/私訊三選一檢舉＋最多 3 張證據圖片，
           狀態機 `submitted→triaged→in_progress→resolved/rejected→closed`（跳過中間態或逆向
           轉換一律 409，resolved/rejected 結案必填處理備註）；`POST/GET /api/reports`、
@@ -85,6 +84,26 @@
           私訊/上傳/檢舉各自時窗上限，超過 429）、關鍵字黑名單攔上架標題/描述與留言內容
           （422）、`REQUIRE_REVIEW` feature flag（開啟後新物品先進 `pending_review`，
           物品詳情頁對非物主一律 404、不產生 SEO metadata）。
+    - [x] Admin 後台最小集（PR #37）：`/admin` 首頁（moderator/admin 限定，其餘 404，比照
+          `/admin/support-tickets` 既有寫法）顯示待辦總覽三個數字（未處理檢舉／待處理回報／
+          待複審申訴，直接查 db 算），並連到各子頁；`/admin/reports`＋`reports-panel.tsx`
+          （檢舉列表＋狀態機操作，呼叫既有 `GET /api/reports?scope=all`／
+          `PATCH /api/reports/[id]`）；`/admin/appeals`＋`appeals-panel.tsx`（申訴複審，
+          刻意收窄成 **admin-only**，因為既有 `GET /api/appeals?scope=all` 本來就只有 admin
+          看得到全站待審佇列，讓 moderator 進來只會看到誤導性空清單，呼叫既有
+          `GET/PATCH /api/appeals[/:id]`）；`/admin/items`＋`force-remove-form.tsx`
+          （物品搜尋＋非終態物品可強制下架，呼叫既有 `PATCH /api/items/[id]/force-remove`，
+          沒有現成的後台物品搜尋 API 所以直接查 db，比照 `/admin/support-tickets` 慣例）；
+          `/admin/users`＋`restriction-panel.tsx`（使用者搜尋＋建立/解除限制，呼叫既有
+          `POST/DELETE /api/admin/user-restrictions[...]`，同樣直接查 db 搜尋）；
+          `/admin/audit-logs`（稽核紀錄唯讀查詢，依 targetType/targetId 篩選）；
+          `admin-nav.tsx` 共用頂部導覽，補進既有的 `/admin/support-tickets`；
+          `site-header.tsx` 新增「後台管理」入口（moderator/admin 可見）避免整批頁面變成
+          孤兒頁。E2E 整合測試 `e2e/integration/admin-dashboard.test.ts` 涵蓋權限邊界
+          （404/200）、待辦總覽數字正確 +1、物品搜尋＋強制下架後表單消失＋稽核紀錄查得到、
+          使用者搜尋＋建立/解除限制、site-header 入口可見性；`npx biome check .`／
+          `npx tsc --noEmit`／`NODE_ENV=production npx next build`／
+          `npx vitest run --config vitest.config.ts`（14 個測試檔 106 個測試）全過。
 - [x] M3 到期與優惠券（PR #34）：範圍見 master-plan.md §8。優惠券／即期食品子表單接在
       `/items/new`，`POST /api/items` 驗證額外欄位並用 AES-256-GCM 加密券碼存
       `CouponSecret`；`POST /api/items/[id]/coupon/reveal`（僅交接確定後的接手者能看明文，
