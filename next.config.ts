@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
               // 限制 pathname 避免 next/image 被拿去優化這個 host 上其他不相干的路徑。
               pathname: "/images/**",
             },
+            {
+              protocol: s3PublicUrl.protocol.replace(":", "") as "http" | "https",
+              hostname: s3PublicUrl.hostname,
+              port: s3PublicUrl.port || undefined,
+              // M2 使用者回報附件（見 src/app/api/uploads/support-attachment/route.ts）走獨立
+              // 的 support-attachments/ 前綴，不跟物品圖片共用 images/ 前綴，這裡另開一條白名單。
+              pathname: "/support-attachments/**",
+            },
           ]
         : []),
     ],
