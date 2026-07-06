@@ -33,9 +33,10 @@
           `complete`／`no-show` 兩支既有 API 已驗證過的原子分支裡（分享完成 +10、接手完成
           +2、no_show -5，數值集中在 `src/lib/contribution.ts`），idempotent 保護沿用既有
           機制，已驗證重複呼叫不重複記分；`POST /api/items/[id]/thanks`（接手者單向感謝，
-          一物品限一則，findFirst-then-create，非狀態機關鍵路徑故不做原子交易級防護）；
-          物品詳情頁新增 `thanks-section.tsx` 顯示感謝留言、`handover-section.tsx` 的
-          completed 分支給接手者留言表單；新增公開個人頁 `/u/[userId]` 顯示暱稱與累計貢獻值。
+          一物品限一則，`ThanksMessage.itemId` 為 `@unique`，靠資料庫唯一索引擋重複、
+          留言與通知包在同一個 transaction 裡）；物品詳情頁新增 `thanks-section.tsx`
+          顯示感謝留言、`handover-section.tsx` 的 completed 分支給接手者留言表單；
+          新增公開個人頁 `/u/[userId]` 顯示暱稱與累計貢獻值（PR #15）。
     - [ ] 剩餘：E2E 全流程測試。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
