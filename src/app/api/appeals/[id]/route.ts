@@ -134,6 +134,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 reason: "申訴核准，復原上架",
               },
             });
+          } else {
+            // count !== 1 代表物品目前已經不是 removed_by_moderator（理論上不該發生），
+            // 不寫狀態轉換紀錄是正確的語意（沒有真的發生轉換）；留一行 log 方便日後真的
+            // 出現這個邊界情況時，管理員能從紀錄裡發現「申訴核准了但物品沒有被復原上架」。
+            console.warn(
+              `[appeals] 申訴核准但物品狀態非 removed_by_moderator，略過復原：itemId=${removal.itemId}`,
+            );
           }
         }
       }
