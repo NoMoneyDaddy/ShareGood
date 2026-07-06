@@ -10,6 +10,7 @@ import type { ItemStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
+import { CouponSection } from "./coupon-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
 import { ThanksSection } from "./thanks-section";
@@ -25,6 +26,9 @@ async function getItem(id: string) {
         orderBy: { sortOrder: "asc" },
         include: { thumbObject: true, mediumObject: true },
       },
+      // M3（master-plan §8）：只查 CouponDetail（面額／店家／備註，描述性文字非機密），
+      // 不 include 它底下的 CouponSecret——券碼密文完全不進這支查詢，也不會出現在這個頁面。
+      couponDetail: true,
     },
   });
 }
@@ -188,6 +192,23 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
             {item.owner.profile?.nickname ?? "好物共享用戶"}
           </Link>
         </div>
+
+        <CouponSection
+          itemId={item.id}
+          coupon={
+            item.couponDetail
+              ? {
+                  faceValue: item.couponDetail.faceValue,
+                  merchantName: item.couponDetail.merchantName,
+                  notes: item.couponDetail.notes,
+                  expiresAt: item.expiresAt,
+                }
+              : null
+          }
+          canReveal={
+            isReceiver && (item.status === "handover_pending" || item.status === "completed")
+          }
+        />
 
         <DirectShareSection
           itemId={item.id}
