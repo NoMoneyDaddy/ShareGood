@@ -67,12 +67,24 @@ const KEYWORD_BLOCKLIST_NON_TRANSFERABLE: string[] = ["LINE即享券", "LINE 即
 // 個資徵求詞：點數類型個資最小化（硬規則），固定詞攔截；手機號格式另由獨立正則 helper 處理
 // （非本表範圍，見 §9a 交付內容 5）。
 const KEYWORD_BLOCKLIST_PII: string[] = ["驗證碼", "會員帳號", "OTP"];
+// M9 §9a 交付內容 6：研究 04 文案「絕對不能寫」清單裡可行者建為攔截規則（子字串比對）。
+// 「點數可折現」「換現金」已被 KEYWORD_BLOCKLIST_CASH_OUT 的「折現」「換現金」子字串涵蓋，
+// 這裡只補尚未涵蓋的禁句：保證可兌換/保證有效（平台非發行人無履約能力）、官方授權（未經授權
+// 不得宣稱）、代購費/手續費（票券收費暗示，文創法 10-1／運動條例 24-1）。
+const KEYWORD_BLOCKLIST_PROHIBITED_CLAIMS: string[] = [
+  "保證可兌換",
+  "保證有效",
+  "官方授權",
+  "代購費",
+  "手續費",
+];
 
 const KEYWORD_BLOCKLIST_SEED: string[] = [
   ...KEYWORD_BLOCKLIST_MARKUP,
   ...KEYWORD_BLOCKLIST_CASH_OUT,
   ...KEYWORD_BLOCKLIST_NON_TRANSFERABLE,
   ...KEYWORD_BLOCKLIST_PII,
+  ...KEYWORD_BLOCKLIST_PROHIBITED_CLAIMS,
 ];
 
 // M9 交付內容 2：方案 B 的 10 個 S1 官方來源種子（研究 03 選定 #1,3,4,5,6,7,9,10,12,13）。
