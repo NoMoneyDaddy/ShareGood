@@ -33,6 +33,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   const item = await db.item.findUnique({ where: { id: itemId } });
   if (!item) return jsonError("NOT_FOUND", "找不到這個物品");
+  if (item.ownerId === user.id) {
+    return jsonError("CONFLICT", "不能認領自己分享的物品");
+  }
   if (item.status !== "published") {
     return jsonError("CONFLICT", "這個物品目前無法留言");
   }

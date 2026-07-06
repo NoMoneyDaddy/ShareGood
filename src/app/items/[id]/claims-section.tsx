@@ -34,13 +34,21 @@ export function ClaimsSection({ itemId, itemStatus }: { itemId: string; itemStat
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const [currentStatus, setCurrentStatus] = useState(itemStatus);
+  const [claimsError, setClaimsError] = useState("");
 
   const loadClaims = useCallback(async () => {
     setLoading(true);
+    setClaimsError("");
     try {
       const res = await fetch(`/api/items/${itemId}/claims`);
       const data = await res.json().catch(() => null);
-      if (res.ok && data) setClaims(data.claims);
+      if (res.ok && data) {
+        setClaims(data.claims);
+      } else {
+        setClaimsError("留言載入失敗，請重新整理頁面再試一次");
+      }
+    } catch {
+      setClaimsError("網路連線異常，留言載入失敗，請重新整理頁面再試一次");
     } finally {
       setLoading(false);
     }
@@ -68,7 +76,10 @@ export function ClaimsSection({ itemId, itemStatus }: { itemId: string; itemStat
 
       if (res.ok) {
         setMessage("");
-        if (data.status === "accepted") setCurrentStatus("reserved");
+        // 先到先得模式下，只要留言送出成功（不論這則留言本身是 accepted 還是
+        // declined），物品都已經轉成 reserved——declined 代表慢了一步、被別人搶走，
+        // 不是「留言失敗」，一樣要把表單收起來，不然使用者會誤以為還能繼續搶。
+        setCurrentStatus("reserved");
         await loadClaims();
       } else {
         setFormError(data?.error?.message ?? "留言失敗，請再試一次");
@@ -116,9 +127,11 @@ export function ClaimsSection({ itemId, itemStatus }: { itemId: string; itemStat
         )
       )}
 
+      {claimsError && <p className="mt-4 text-sm text-destructive">{claimsError}</p>}
+
       <ul className="mt-6 space-y-3">
         {loading && claims.length === 0 && <li className="text-sm text-ink-soft">載入中…</li>}
-        {!loading && claims.length === 0 && (
+        {!loading && !claimsError && claims.length === 0 && (
           <li className="text-sm text-ink-soft">還沒有留言，當第一個留言的人吧</li>
         )}
         {claims.map((claim) => (
