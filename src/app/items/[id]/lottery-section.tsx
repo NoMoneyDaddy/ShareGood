@@ -155,7 +155,11 @@ function CreateLotteryForm({ itemId, onCreated }: { itemId: string; onCreated: (
     setError("");
     try {
       // datetime-local 沒有時區資訊；全站以台北時間為準（master-plan §3.4），這裡明確補上 +08:00。
-      const entryDeadline = new Date(`${deadline}:00+08:00`).toISOString();
+      // datetime-local 預設值長度是 16（YYYY-MM-DDTHH:mm，無秒），但部分瀏覽器在 step 屬性
+      // 允許秒數精度時可能給出長度 19（含秒）的值，固定補 `:00` 會組出格式錯誤的字串，
+      // 因此依長度判斷是否需要補秒數，避免 new Date(...) 產生 Invalid Date。
+      const withSeconds = deadline.length === 16 ? `${deadline}:00` : deadline;
+      const entryDeadline = new Date(`${withSeconds}+08:00`).toISOString();
       const res = await fetch(`/api/items/${itemId}/lottery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

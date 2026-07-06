@@ -52,17 +52,19 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
     where: { lotteryId, status: "entered" },
     select: { userId: true },
   });
-  for (const entrant of entrants) {
-    await createOrMergeNotification(db, {
-      userId: entrant.userId,
-      type: "completion_confirmed",
-      payload: {
-        itemId: lottery.item.id,
-        itemTitle: lottery.item.title,
-        kind: "lottery_cancelled",
-      },
-    });
-  }
+  await Promise.all(
+    entrants.map((entrant) =>
+      createOrMergeNotification(db, {
+        userId: entrant.userId,
+        type: "completion_confirmed",
+        payload: {
+          itemId: lottery.item.id,
+          itemTitle: lottery.item.title,
+          kind: "lottery_cancelled",
+        },
+      }),
+    ),
+  );
 
   return NextResponse.json({ id: lotteryId, status: "cancelled" });
 }

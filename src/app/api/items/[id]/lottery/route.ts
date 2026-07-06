@@ -43,17 +43,33 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   try {
-    const lottery = await db.lottery.create({
-      data: {
-        itemId,
-        creatorId: user.id,
-        entryDeadline,
-        status: "open",
-      },
-      select: { id: true, entryDeadline: true, status: true },
+    const lottery = await db.$transaction(async (tx) => {
+      // 物品狀態檢查（line 35-37）與建立抽籤之間原本有窄視窗：物主開抽籤的同時，物品
+      // 若被其他請求（留言認領、直贈接受）搶先改變狀態，外部的 findUnique 檢查會過期失效。
+      // 這裡在 transaction 內用條件式 updateMany 重新做一次原子檢查（同值回寫，純粹當
+      // 樂觀鎖），count===0 代表狀態已經被搶先改變，比照 confirm/route.ts 既有慣例處理。
+      const stillValid = await tx.item.updateMany({
+        where: { id: itemId, status: { in: ["draft", "published"] } },
+        data: { status: item.status },
+      });
+      if (stillValid.count === 0) {
+        throw new Error("ITEM_STATE_CHANGED");
+      }
+      return tx.lottery.create({
+        data: {
+          itemId,
+          creatorId: user.id,
+          entryDeadline,
+          status: "open",
+        },
+        select: { id: true, entryDeadline: true, status: true },
+      });
     });
     return NextResponse.json(lottery, { status: 201 });
   } catch (e) {
+    if (e instanceof Error && e.message === "ITEM_STATE_CHANGED") {
+      return jsonError("CONFLICT", "這個物品目前無法開抽籤");
+    }
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       return jsonError("CONFLICT", "這個物品已經開過抽籤，一物品終身只能抽籤一次");
     }
