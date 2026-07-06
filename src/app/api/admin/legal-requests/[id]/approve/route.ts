@@ -29,15 +29,22 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
   }
 
   const now = new Date();
-  await db.$transaction(async (tx) => {
-    await tx.lawEnforcementRequest.update({
-      where: { id },
+  // 上面的狀態檢查只是快速失敗；併發安全靠這裡的 updateMany 帶條件式 where 當原子檢查
+  // （避免兩個 admin 同時核准/駁回同一筆請求時互相覆蓋彼此的判斷）。
+  const approved = await db.$transaction(async (tx) => {
+    const updated = await tx.lawEnforcementRequest.updateMany({
+      where: { id, status: { in: ["submitted", "legal_review"] } },
       data: { status: "approved", approvedBy: actor.id, approvedAt: now },
     });
+    if (updated.count === 0) return false;
     await tx.lawEnforcementRequestEvent.create({
       data: { requestId: id, action: "approved", actorId: actor.id },
     });
+    return true;
   });
+  if (!approved) {
+    return jsonError("CONFLICT", "這筆請求目前的狀態無法核准或已被其他管理員處理");
+  }
 
   await writeAudit({
     actorId: actor.id,

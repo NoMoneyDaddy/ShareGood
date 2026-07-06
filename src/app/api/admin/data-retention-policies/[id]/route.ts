@@ -35,7 +35,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const action = "action" in body ? body.action : existing.action;
   const isActive = typeof body.isActive === "boolean" ? body.isActive : existing.isActive;
 
-  if (retentionDays !== null && (typeof retentionDays !== "number" || retentionDays < 0)) {
+  if (
+    retentionDays !== null &&
+    (typeof retentionDays !== "number" || !Number.isInteger(retentionDays) || retentionDays < 0)
+  ) {
     return jsonError("UNPROCESSABLE", "retentionDays 需為 null 或非負整數");
   }
   if (action !== null && !VALID_ACTIONS.has(action)) {

@@ -28,15 +28,22 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (hold.status !== "active") return jsonError("CONFLICT", "這筆保全已經解除過了");
 
   const now = new Date();
-  await db.$transaction(async (tx) => {
-    await tx.legalHold.update({
-      where: { id },
+  // 上面的狀態檢查只是快速失敗；併發安全靠這裡的 updateMany 帶條件式 where 當原子檢查
+  // （避免兩個 admin 同時點擊解除，兩邊都各自寫一筆 released 事件）。
+  const released = await db.$transaction(async (tx) => {
+    const updated = await tx.legalHold.updateMany({
+      where: { id, status: "active" },
       data: { status: "released", releasedBy: actor.id, releasedAt: now },
     });
+    if (updated.count === 0) return false;
     await tx.legalHoldEvent.create({
       data: { legalHoldId: id, action: "released", actorId: actor.id },
     });
+    return true;
   });
+  if (!released) {
+    return jsonError("CONFLICT", "這筆保全目前的狀態無法解除或已被其他管理員處理");
+  }
 
   await writeAudit({
     actorId: actor.id,

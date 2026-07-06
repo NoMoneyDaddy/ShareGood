@@ -47,12 +47,18 @@ export async function POST(req: Request) {
     return jsonError("UNPROCESSABLE", "請至少指定一個保全目標（targetType/targetId）");
   }
 
+  // 去重：同一個 targetType+targetId 重複送出只留一筆，避免 legal_hold_targets 累積冗餘
+  // 資料（不影響保全效力本身，filterUnderLegalHold 只看是否存在，但重複列會讓資料膨脹）。
+  const uniqueTargets = Array.from(
+    new Map(body.targets.map((t: TargetInput) => [`${t.targetType}:${t.targetId}`, t])).values(),
+  ) as TargetInput[];
+
   const legalHold = await db.$transaction(async (tx) => {
     const hold = await tx.legalHold.create({
       data: { reason, relatedRequestId, createdBy: actor.id },
     });
     await tx.legalHoldTarget.createMany({
-      data: body.targets.map((t: TargetInput) => ({
+      data: uniqueTargets.map((t) => ({
         legalHoldId: hold.id,
         targetType: t.targetType,
         targetId: t.targetId,
@@ -63,7 +69,7 @@ export async function POST(req: Request) {
         legalHoldId: hold.id,
         action: "created",
         actorId: actor.id,
-        note: `建立時保全 ${body.targets.length} 個目標`,
+        note: `建立時保全 ${uniqueTargets.length} 個目標`,
       },
     });
     return hold;
@@ -74,7 +80,7 @@ export async function POST(req: Request) {
     action: "legal_hold.create",
     targetType: "legal_hold",
     targetId: legalHold.id,
-    detail: { reason, targets: body.targets },
+    detail: { reason, targets: uniqueTargets },
     sensitive: true,
   });
 

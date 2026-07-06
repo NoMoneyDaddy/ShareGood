@@ -48,6 +48,8 @@ export function LegalHoldForm() {
         const body = await res.json().catch(() => null);
         setError(body?.error?.message ?? "建立失敗");
       }
+    } catch {
+      setError("網路錯誤，請稍後再試");
     } finally {
       setPending(false);
     }

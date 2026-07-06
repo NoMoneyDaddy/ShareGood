@@ -32,15 +32,22 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return jsonError("FORBIDDEN", "建檔人不能駁回自己建立的調閱請求，需由另一位 admin 審核");
   }
 
-  await db.$transaction(async (tx) => {
-    await tx.lawEnforcementRequest.update({
-      where: { id },
+  // 上面的狀態檢查只是快速失敗；併發安全靠這裡的 updateMany 帶條件式 where 當原子檢查
+  // （避免兩個 admin 同時核准/駁回同一筆請求時互相覆蓋彼此的判斷）。
+  const rejected = await db.$transaction(async (tx) => {
+    const updated = await tx.lawEnforcementRequest.updateMany({
+      where: { id, status: { in: ["submitted", "legal_review"] } },
       data: { status: "rejected", approvedBy: actor.id, rejectionReason },
     });
+    if (updated.count === 0) return false;
     await tx.lawEnforcementRequestEvent.create({
       data: { requestId: id, action: "rejected", actorId: actor.id, note: rejectionReason },
     });
+    return true;
   });
+  if (!rejected) {
+    return jsonError("CONFLICT", "這筆請求目前的狀態無法駁回或已被其他管理員處理");
+  }
 
   await writeAudit({
     actorId: actor.id,

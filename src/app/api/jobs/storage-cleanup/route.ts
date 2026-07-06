@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { db } from "@/lib/db";
-import { isUnderLegalHold } from "@/lib/legal-hold";
+import { filterUnderLegalHold } from "@/lib/legal-hold";
 import { deleteObject } from "@/lib/storage";
 
 // 每日清理孤兒檔（master-plan §5）：上傳後 48 小時仍未被任何實體引用的 pending 物件。
@@ -24,8 +24,12 @@ export async function POST(req: NextRequest) {
 
   let deleted = 0;
   let skippedLegalHold = 0;
+  const heldIds = await filterUnderLegalHold(
+    "storage_object",
+    orphans.map((obj) => obj.id),
+  );
   for (const obj of orphans) {
-    if (await isUnderLegalHold("storage_object", obj.id)) {
+    if (heldIds.has(obj.id)) {
       skippedLegalHold++;
       continue;
     }

@@ -109,25 +109,33 @@ const BATCH_SIZE = 5000;
 export type PolicyRunResult = { processed: number; skipped: number; note?: string };
 
 /**
- * 批次刪除（`purge`）通用流程：候選 id 用迴圈分批（每批最多 BATCH_SIZE 筆）處理，
- * 避免單次 `DELETE ... WHERE id IN (...)` 無上限鎖表太久；每批先用一次 `IN` 查詢批次檢查
- * legal hold（不逐筆查，見 master-plan §7a 交付內容 4 對 N+1 的明確要求），命中的跳過。
- * 一批裡如果全部被 legal hold 擋下（`freeIds.length === 0`），就結束這個政策的處理——
- * 剩餘候選同一批 id 不會再變動，繼續查下一批只會查到同樣被保全的資料，避免無窮迴圈。
+ * 批次刪除（`purge`）通用流程：候選 id 用「以 `id` 遞增的游標」分批處理（每批最多
+ * BATCH_SIZE 筆），避免單次 `DELETE ... WHERE id IN (...)` 無上限鎖表太久；每批先用一次
+ * `IN` 查詢批次檢查 legal hold（不逐筆查，見 master-plan §7a 交付內容 4 對 N+1 的明確要求），
+ * 命中的跳過但不刪除。
+ *
+ * 游標無論這一批「是否有任何一筆真的被刪除」都會往前推進（`lastId` 取這批最後一筆的 id）——
+ * 修正先前版本的兩個問題：(1) 如果整批候選剛好全部被 legal hold 擋下就直接 `break`，會讓
+ * 排在後面、沒被保全的候選永遠輪不到清理；(2) 如果分批查詢條件本身不帶游標（每次重查
+ * 「還沒被刪除的前 N 筆」），命中整批 legal hold 時候選集合不會縮小，下一輪查到一模一樣的
+ * 資料，會無窮迴圈。改用穩定的 `id` 游標後，兩個問題都不會發生：游標永遠往前走，最多跑
+ * ceil(候選數／BATCH_SIZE) 輪就會结束。
  */
 async function purgeSimpleRows(params: {
   policyKey: string;
   targetType: string;
   jobRunId: string;
   action: RetentionAction;
-  findCandidateIds: (limit: number) => Promise<string[]>;
+  findCandidateIds: (limit: number, lastId?: string) => Promise<string[]>;
   deleteByIds: (ids: string[]) => Promise<void>;
 }): Promise<PolicyRunResult> {
   let processed = 0;
   let skipped = 0;
+  let lastId: string | undefined;
   for (;;) {
-    const ids = await params.findCandidateIds(BATCH_SIZE);
+    const ids = await params.findCandidateIds(BATCH_SIZE, lastId);
     if (ids.length === 0) break;
+    lastId = ids[ids.length - 1];
 
     const heldIds = await filterUnderLegalHold(params.targetType, ids);
     const freeIds = ids.filter((id) => !heldIds.has(id));
@@ -148,7 +156,6 @@ async function purgeSimpleRows(params: {
     processed += freeIds.length;
     skipped += heldIds.size;
 
-    if (freeIds.length === 0) break;
     if (ids.length < BATCH_SIZE) break;
   }
   return { processed, skipped };
@@ -161,11 +168,12 @@ async function runNotificationsPurge(retentionDays: number, jobRunId: string) {
     targetType: "notification",
     jobRunId,
     action: "purge",
-    findCandidateIds: async (limit) =>
+    findCandidateIds: async (limit, lastId) =>
       (
         await db.notification.findMany({
-          where: { createdAt: { lt: cutoff } },
+          where: { createdAt: { lt: cutoff }, ...(lastId ? { id: { gt: lastId } } : {}) },
           select: { id: true },
+          orderBy: { id: "asc" },
           take: limit,
         })
       ).map((r) => r.id),
@@ -182,11 +190,12 @@ async function runTelegramRawUpdatesPurge(retentionDays: number, jobRunId: strin
     targetType: "telegram_update",
     jobRunId,
     action: "purge",
-    findCandidateIds: async (limit) =>
+    findCandidateIds: async (limit, lastId) =>
       (
         await db.telegramUpdate.findMany({
-          where: { createdAt: { lt: cutoff } },
+          where: { createdAt: { lt: cutoff }, ...(lastId ? { id: { gt: lastId } } : {}) },
           select: { id: true },
+          orderBy: { id: "asc" },
           take: limit,
         })
       ).map((r) => r.id),
@@ -203,11 +212,12 @@ async function runWebPushInactivePurge(_retentionDays: number, jobRunId: string)
     targetType: "web_push_subscription",
     jobRunId,
     action: "purge",
-    findCandidateIds: async (limit) =>
+    findCandidateIds: async (limit, lastId) =>
       (
         await db.webPushSubscription.findMany({
-          where: { isActive: false },
+          where: { isActive: false, ...(lastId ? { id: { gt: lastId } } : {}) },
           select: { id: true },
+          orderBy: { id: "asc" },
           take: limit,
         })
       ).map((r) => r.id),
@@ -224,20 +234,24 @@ async function runItemImagesCompletedDowngrade(retentionDays: number, jobRunId: 
   const cutoff = new Date(Date.now() - retentionDays * DAY_MS);
   let processed = 0;
   let skipped = 0;
+  let lastId: string | undefined;
   for (;;) {
     const candidates = await db.itemImage.findMany({
       where: {
         item: { status: "completed", handoverRecord: { completedAt: { lte: cutoff } } },
         mediumObject: { status: { not: "deleted" } },
+        ...(lastId ? { id: { gt: lastId } } : {}),
       },
       select: {
         id: true,
         mediumObjectId: true,
         mediumObject: { select: { objectKey: true } },
       },
+      orderBy: { id: "asc" },
       take: BATCH_SIZE,
     });
     if (candidates.length === 0) break;
+    lastId = candidates[candidates.length - 1].id;
 
     const ids = candidates.map((c) => c.id);
     const heldIds = await filterUnderLegalHold("item_image", ids);
@@ -266,7 +280,6 @@ async function runItemImagesCompletedDowngrade(retentionDays: number, jobRunId: 
 
     processed += freeCandidates.length;
     skipped += heldIds.size;
-    if (freeCandidates.length === 0) break;
     if (candidates.length < BATCH_SIZE) break;
   }
   return { processed, skipped };
@@ -283,6 +296,7 @@ async function runItemImagesPurgeByCategory(params: {
   const cutoff = new Date(Date.now() - params.retentionDays * DAY_MS);
   let processed = 0;
   let skipped = 0;
+  let lastId: string | undefined;
   for (;;) {
     const candidates = await db.itemImage.findMany({
       where: {
@@ -295,6 +309,7 @@ async function runItemImagesPurgeByCategory(params: {
           { thumbObject: { status: { not: "deleted" } } },
           { mediumObject: { status: { not: "deleted" } } },
         ],
+        ...(lastId ? { id: { gt: lastId } } : {}),
       },
       select: {
         id: true,
@@ -303,9 +318,11 @@ async function runItemImagesPurgeByCategory(params: {
         mediumObjectId: true,
         mediumObject: { select: { objectKey: true, status: true } },
       },
+      orderBy: { id: "asc" },
       take: BATCH_SIZE,
     });
     if (candidates.length === 0) break;
+    lastId = candidates[candidates.length - 1].id;
 
     const ids = candidates.map((c) => c.id);
     const heldIds = await filterUnderLegalHold("item_image", ids);
@@ -341,7 +358,6 @@ async function runItemImagesPurgeByCategory(params: {
 
     processed += freeCandidates.length;
     skipped += heldIds.size;
-    if (freeCandidates.length === 0) break;
     if (candidates.length < BATCH_SIZE) break;
   }
   return { processed, skipped };
@@ -399,12 +415,17 @@ async function runReportAppealEvidencePurge(retentionDays: number, jobRunId: str
   const cutoff = new Date(Date.now() - retentionDays * DAY_MS);
   let processed = 0;
   let skipped = 0;
+  // 兩張表各自獨立分頁（各自的候選集合、各自的游標），因為 report_evidence／
+  // appeal_evidence 是兩個不相關的來源，共用一個游標會讓其中一邊提早被跳過。
+  let lastReportEvidenceId: string | undefined;
+  let lastAppealEvidenceId: string | undefined;
 
   for (;;) {
     const reportEvidence = await db.reportEvidence.findMany({
       where: {
         report: { status: { in: ["resolved", "rejected", "closed"] }, updatedAt: { lte: cutoff } },
         storageObject: { status: { not: "deleted" } },
+        ...(lastReportEvidenceId ? { id: { gt: lastReportEvidenceId } } : {}),
       },
       select: {
         id: true,
@@ -412,12 +433,14 @@ async function runReportAppealEvidencePurge(retentionDays: number, jobRunId: str
         storageObjectId: true,
         storageObject: { select: { objectKey: true } },
       },
+      orderBy: { id: "asc" },
       take: BATCH_SIZE,
     });
     const appealEvidence = await db.appealEvidence.findMany({
       where: {
         appeal: { status: { in: ["approved", "rejected"] }, reviewedAt: { lte: cutoff } },
         storageObject: { status: { not: "deleted" } },
+        ...(lastAppealEvidenceId ? { id: { gt: lastAppealEvidenceId } } : {}),
       },
       select: {
         id: true,
@@ -425,10 +448,17 @@ async function runReportAppealEvidencePurge(retentionDays: number, jobRunId: str
         storageObjectId: true,
         storageObject: { select: { objectKey: true } },
       },
+      orderBy: { id: "asc" },
       take: BATCH_SIZE,
     });
 
     if (reportEvidence.length === 0 && appealEvidence.length === 0) break;
+    if (reportEvidence.length > 0) {
+      lastReportEvidenceId = reportEvidence[reportEvidence.length - 1].id;
+    }
+    if (appealEvidence.length > 0) {
+      lastAppealEvidenceId = appealEvidence[appealEvidence.length - 1].id;
+    }
 
     const reportHeldIds = await filterUnderLegalHold(
       "report",

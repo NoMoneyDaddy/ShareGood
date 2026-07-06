@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { db } from "@/lib/db";
-import { isUnderLegalHold } from "@/lib/legal-hold";
+import { filterUnderLegalHold } from "@/lib/legal-hold";
 import { deleteObject } from "@/lib/storage";
 
 // data_export_purge job（master-plan §7a 交付內容 2）：每日掃描
@@ -33,8 +33,14 @@ export async function POST(req: NextRequest) {
       include: { storageObject: true },
     });
 
+    // 批次查詢一次，迴圈內只查表（master-plan §7a 交付內容 4 對 N+1 的明確要求）。
+    const heldIds = await filterUnderLegalHold(
+      "data_export",
+      expired.map((e) => e.id),
+    );
+
     for (const exportRow of expired) {
-      const held = await isUnderLegalHold("data_export", exportRow.id);
+      const held = heldIds.has(exportRow.id);
       if (held) {
         skippedLegalHold++;
         await db.dataPurgeLog.create({
@@ -50,6 +56,15 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
+      // 條件式 updateMany 當樂觀鎖：如果另一個併發跑的 job 已經搶先把這筆轉成
+      // expired，這裡 count===0 就跳過，避免兩個 job 同時對同一個 S3 物件重複刪除、
+      // 重複寫 data_purge_logs。
+      const claimed = await db.dataExport.updateMany({
+        where: { id: exportRow.id, status: "ready" },
+        data: { status: "expired" },
+      });
+      if (claimed.count === 0) continue;
+
       if (exportRow.storageObject) {
         await deleteObject(exportRow.storageObject.objectKey).catch(() => {
           /* MinIO 上已不存在也視為清理成功 */
@@ -59,7 +74,6 @@ export async function POST(req: NextRequest) {
           data: { status: "deleted", deletedAt: new Date() },
         });
       }
-      await db.dataExport.update({ where: { id: exportRow.id }, data: { status: "expired" } });
       await db.dataPurgeLog.create({
         data: {
           policyKey: "data_exports",

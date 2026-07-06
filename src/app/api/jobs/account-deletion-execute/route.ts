@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { deidentifyUser } from "@/lib/account-deletion";
 import { jsonError } from "@/lib/api";
 import { db } from "@/lib/db";
-import { isUnderLegalHold } from "@/lib/legal-hold";
+import { filterUnderLegalHold } from "@/lib/legal-hold";
 import { createOrMergeNotification } from "@/lib/notifications";
 
 // account_deletion_execute job（master-plan §7a 交付內容 3）：由外部 cron 以
@@ -42,6 +42,12 @@ export async function POST(req: NextRequest) {
       take: BATCH_LIMIT,
     });
 
+    // 批次查詢一次，迴圈內只查表（master-plan §7a 交付內容 4 對 N+1 的明確要求）。
+    const heldUserIds = await filterUnderLegalHold(
+      "user",
+      dueRequests.map((r) => r.userId),
+    );
+
     for (const request of dueRequests) {
       // 條件式 updateMany 當樂觀鎖，避免同一筆請求被重複觸發的 job 執行兩次。
       const claimed = await db.privacyRequest.updateMany({
@@ -50,7 +56,7 @@ export async function POST(req: NextRequest) {
       });
       if (claimed.count === 0) continue;
 
-      const held = await isUnderLegalHold("user", request.userId);
+      const held = heldUserIds.has(request.userId);
       if (held) {
         blockedByLegalHold++;
         await db.$transaction(async (tx) => {

@@ -33,6 +33,8 @@ export function LegalRequestActions({
         const body = await res.json().catch(() => null);
         setError(body?.error?.message ?? "核准失敗");
       }
+    } catch {
+      setError("網路錯誤，請稍後再試");
     } finally {
       setPending(false);
     }
@@ -55,6 +57,8 @@ export function LegalRequestActions({
         const body = await res.json().catch(() => null);
         setError(body?.error?.message ?? "駁回失敗");
       }
+    } catch {
+      setError("網路錯誤，請稍後再試");
     } finally {
       setPending(false);
     }
@@ -71,6 +75,8 @@ export function LegalRequestActions({
         const body = await res.json().catch(() => null);
         setError(body?.error?.message ?? "產生匯出包失敗");
       }
+    } catch {
+      setError("網路錯誤，請稍後再試");
     } finally {
       setPending(false);
     }
@@ -108,9 +114,11 @@ export function ExportDownloadButton({
   exportId: string;
 }) {
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleDownload() {
     setPending(true);
+    setError(null);
     try {
       const res = await fetch(
         `/api/admin/legal-requests/${requestId}/exports/${exportId}/download`,
@@ -118,15 +126,23 @@ export function ExportDownloadButton({
       if (res.ok) {
         const body = (await res.json()) as { url: string };
         window.location.assign(body.url);
+      } else {
+        const body = await res.json().catch(() => null);
+        setError(body?.error?.message ?? "取得下載連結失敗");
       }
+    } catch {
+      setError("網路錯誤，請稍後再試");
     } finally {
       setPending(false);
     }
   }
 
   return (
-    <Button size="sm" variant="outline" disabled={pending} onClick={handleDownload}>
-      下載
-    </Button>
+    <div className="flex flex-col items-end gap-1">
+      <Button size="sm" variant="outline" disabled={pending} onClick={handleDownload}>
+        下載
+      </Button>
+      {error && <p className="text-xs text-destructive">{error}</p>}
+    </div>
   );
 }
