@@ -41,6 +41,15 @@ export function mergedCountOf(payload: unknown): number {
  *   可以用 `mergedCountOf` 讀出筆數，組出「有 3 則新留言」這類聚合文字。
  * - `client` 參數接受 `db` 或 `$transaction` 給的 `tx`，讓合併判斷與寫入可以跟呼叫端原本的
  *   atomic 操作包在同一個 transaction 裡（例如認領搶佔、交接完成那些既有的原子分支）。
+ *
+ * 已知限制（多個 bot review 都指出過，記錄下來避免以為是疏漏）：`findFirst` 到
+ * `update`/`create` 之間不是原子操作，同一個 (userId, type, itemId) 在極短時間內被
+ * 兩個併發請求同時觸發時，理論上可能各自建立一筆而不是合併成一筆。目前沒有可以拿來做
+ * `INSERT ... ON CONFLICT` 的 unique constraint（要動 schema，M2/M3/M4 schema 已凍結），
+ * 且在現階段的流量下發生機率極低、後果僅止於通知筆數/文案略有落差，非資料損毀，暫不處理；
+ * 若未來要收斂，方向是幫 (userId, type, itemId, 是否未讀) 這個合併鍵加 unique constraint
+ * 並改寫成真正的 upsert，或在 transaction 內用 `pg_advisory_xact_lock` 鎖住這個組合
+ * （見 `POST /api/admin/user-restrictions` 已經用同一招處理過類似的重複建立問題）。
  */
 export async function createOrMergeNotification(
   client: NotificationClient,
