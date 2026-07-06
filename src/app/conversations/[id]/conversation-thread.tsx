@@ -2,6 +2,7 @@
 
 import { Loader2, Send } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ReportButton } from "@/components/report-button";
 import { cn } from "@/lib/utils";
 
 type Message = {
@@ -114,11 +115,21 @@ export function ConversationThread({
                 )}
               >
                 <p className="whitespace-pre-wrap">{m.body}</p>
-                <span
-                  className={cn("mt-1 block text-[11px]", mine ? "text-white/70" : "text-ink-soft")}
+                <div
+                  className={cn(
+                    "mt-1 flex items-center gap-2 text-[11px]",
+                    mine ? "text-white/70" : "text-ink-soft",
+                  )}
                 >
-                  {formatTime(m.createdAt)}
-                </span>
+                  <span>{formatTime(m.createdAt)}</span>
+                  {!mine && (
+                    <ReportButton
+                      target={{ messageId: m.id }}
+                      label="檢舉"
+                      className="text-inherit hover:text-destructive"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           );

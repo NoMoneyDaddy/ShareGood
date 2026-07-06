@@ -2,10 +2,12 @@
 
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { ReportButton } from "@/components/report-button";
 import { Button } from "@/components/ui/button";
 
 type Claim = {
   id: string;
+  userId: string;
   message: string;
   status: "pending" | "accepted" | "declined";
   createdAt: string;
@@ -27,7 +29,15 @@ function formatTime(iso: string) {
   return new Date(iso).toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
 }
 
-export function ClaimsSection({ itemId, itemStatus }: { itemId: string; itemStatus: string }) {
+export function ClaimsSection({
+  itemId,
+  itemStatus,
+  currentUserId,
+}: {
+  itemId: string;
+  itemStatus: string;
+  currentUserId?: string;
+}) {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -141,11 +151,16 @@ export function ClaimsSection({ itemId, itemStatus }: { itemId: string; itemStat
               <span className="text-xs text-ink-soft">{formatTime(claim.createdAt)}</span>
             </div>
             <p className="mt-1 whitespace-pre-wrap text-sm text-ink-soft">{claim.message}</p>
-            {claim.status === "accepted" && (
-              <span className="mt-2 inline-block rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand-ink">
-                已被認領
-              </span>
-            )}
+            <div className="mt-2 flex items-center gap-3">
+              {claim.status === "accepted" && (
+                <span className="inline-block rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand-ink">
+                  已被認領
+                </span>
+              )}
+              {currentUserId && currentUserId !== claim.userId && (
+                <ReportButton target={{ claimCommentId: claim.id }} label="檢舉留言" />
+              )}
+            </div>
           </li>
         ))}
       </ul>

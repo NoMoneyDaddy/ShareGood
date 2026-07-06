@@ -1,4 +1,5 @@
 import { randomBytes, randomUUID } from "node:crypto";
+import type { Role } from "../../src/generated/prisma/enums";
 import { SESSION_COOKIE_NAME } from "./constants";
 import { db } from "./db";
 
@@ -48,6 +49,11 @@ export async function createTestUser(opts: {
   });
 
   return { id: user.id, email, nickname, sessionToken };
+}
+
+/** 給測試使用者掛上角色（moderator/admin 權限測試用）。 */
+export async function grantRole(userId: string, role: Role): Promise<void> {
+  await db.userRole.create({ data: { userId, role } });
 }
 
 /** Playwright/瀏覽器情境用的 cookie 物件。 */
