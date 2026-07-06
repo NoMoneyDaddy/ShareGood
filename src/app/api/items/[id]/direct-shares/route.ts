@@ -1,0 +1,90 @@
+import { type NextRequest, NextResponse } from "next/server";
+import { jsonError } from "@/lib/api";
+import { AuthzError, requireUser } from "@/lib/authz";
+import { db } from "@/lib/db";
+
+const DIRECT_SHARE_TTL_MS = 72 * 60 * 60 * 1000; // 72 小時
+
+// POST /api/items/[id]/direct-shares — 物主直接指定某使用者贈與（M1：直贈）。
+// MVP 簡化：目前沒有使用者搜尋 UI，用「輸入對方 email」解析成 userId；
+// 同一物品同時間只允許一筆 pending 直贈，避免物主亂發邀請造成混亂。
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  let user: Awaited<ReturnType<typeof requireUser>>;
+  try {
+    user = await requireUser();
+  } catch (e) {
+    if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
+    throw e;
+  }
+  if (!user.profile) {
+    return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  const { id: itemId } = await params;
+  const item = await db.item.findUnique({ where: { id: itemId } });
+  if (!item) return jsonError("NOT_FOUND", "找不到這個物品");
+  if (item.ownerId !== user.id) return jsonError("FORBIDDEN", "只有物主可以贈與這個物品");
+  if (item.status !== "published") {
+    return jsonError("CONFLICT", "這個物品目前無法贈與");
+  }
+
+  const body = await req.json().catch(() => null);
+  const receiverEmail = typeof body?.receiverEmail === "string" ? body.receiverEmail.trim() : "";
+  if (!receiverEmail) {
+    return jsonError("UNPROCESSABLE", "請輸入對方 email");
+  }
+  if (receiverEmail.toLowerCase() === user.email.toLowerCase()) {
+    return jsonError("UNPROCESSABLE", "不能贈送給自己");
+  }
+
+  const receiver = await db.user.findUnique({ where: { email: receiverEmail.toLowerCase() } });
+  if (!receiver) {
+    return jsonError("UNPROCESSABLE", "找不到這個使用者");
+  }
+
+  const now = new Date();
+  // findFirst 跟 create 中間有時間差，物主快速重複點擊或多個併發請求可能同時通過檢查、
+  // 各自建立一筆 pending 直贈。用 `SELECT ... FOR UPDATE` 鎖住這個 item 的資料列，讓併發
+  // 請求排隊逐一處理，確保「同一物品同時最多一筆 pending 直贈」這條規則不會被搶過去。
+  let created: { id: string };
+  try {
+    created = await db.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT id FROM items WHERE id = ${itemId} FOR UPDATE`;
+
+      const existingPending = await tx.directShare.findFirst({
+        where: { itemId, status: "pending" },
+      });
+      if (existingPending) {
+        throw new Error("DIRECT_SHARE_PENDING_EXISTS");
+      }
+
+      return tx.directShare.create({
+        data: {
+          itemId,
+          receiverId: receiver.id,
+          status: "pending",
+          expiresAt: new Date(now.getTime() + DIRECT_SHARE_TTL_MS),
+        },
+      });
+    });
+  } catch (e) {
+    if (e instanceof Error && e.message === "DIRECT_SHARE_PENDING_EXISTS") {
+      return jsonError("CONFLICT", "已經有一筆進行中的直贈邀請");
+    }
+    throw e;
+  }
+
+  await db.notification.create({
+    data: {
+      userId: receiver.id,
+      type: "direct_share_received",
+      payload: {
+        itemId: item.id,
+        itemTitle: item.title,
+        itemOwnerNickname: user.profile.nickname,
+      },
+    },
+  });
+
+  return NextResponse.json({ id: created.id }, { status: 201 });
+}

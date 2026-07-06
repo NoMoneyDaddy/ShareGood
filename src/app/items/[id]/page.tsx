@@ -4,9 +4,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { SiteHeader } from "@/components/site-header";
+import type { ItemStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
+import { DirectShareSection } from "./direct-share-section";
 
 async function getItem(id: string) {
   return db.item.findUnique({
@@ -23,6 +25,19 @@ async function getItem(id: string) {
   });
 }
 
+// SEO/AEO（master-plan §3.7）：物品狀態對應 schema.org Offer availability。
+function offerAvailability(status: ItemStatus) {
+  switch (status) {
+    case "published":
+      return "https://schema.org/InStock";
+    case "reserved":
+    case "handover_pending":
+      return "https://schema.org/LimitedAvailability";
+    default:
+      return "https://schema.org/SoldOut";
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,9 +46,18 @@ export async function generateMetadata({
   const { id } = await params;
   const item = await getItem(id);
   if (!item || item.status === "removed_by_moderator") return {};
+  const title = `${item.title}｜${item.city.name}`;
+  const description = item.description.slice(0, 120);
+  const firstImage = item.images[0];
   return {
-    title: `${item.title}｜${item.city.name}`,
-    description: item.description.slice(0, 120),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      ...(firstImage ? { images: [publicUrl(firstImage.mediumObject.objectKey)] } : {}),
+    },
   };
 }
 
@@ -47,8 +71,32 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
     ? await db.profile.findUnique({ where: { userId: session.user.id } })
     : null;
 
+  // SEO/AEO（master-plan §3.7）：物品詳情頁的 Product + Offer 結構化資料。
+  const firstImage = item.images[0];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: item.title,
+    description: item.description,
+    ...(firstImage ? { image: [publicUrl(firstImage.mediumObject.objectKey)] } : {}),
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "TWD",
+      availability: offerAvailability(item.status),
+    },
+  };
+
   return (
     <div className="flex min-h-[100dvh] flex-col bg-paper text-ink">
+      {/* Next.js 官方建議的 JSON-LD 寫法：JSON.stringify 已跳脫，另對 "<" 做保險轉義避免斷出 </script> */}
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD 內容來自 JSON.stringify（已跳脫）＋額外 < 轉義，非使用者可控 HTML
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <SiteHeader session={session} profile={profile} />
 
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
@@ -99,6 +147,11 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           分享者：{item.owner.profile?.nickname ?? "好物共享用戶"}
         </div>
 
+        <DirectShareSection
+          itemId={item.id}
+          itemStatus={item.status}
+          isOwner={session?.user?.id === item.ownerId}
+        />
         <ClaimsSection itemId={item.id} itemStatus={item.status} />
       </main>
     </div>
