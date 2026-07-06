@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+type IdName = { id: string; name: string };
+
 export type SubscriptionListItem = {
   id: string;
   label: string | null;
   immediateEnabled: boolean;
   dailyDigestEnabled: boolean;
   keywords: string[];
-  categories: string[];
-  cities: string[];
+  categories: IdName[];
+  cities: IdName[];
   matchCount: number;
   pendingMatchCount: number;
 };
@@ -37,8 +39,8 @@ export function SubscriptionList({ subscriptions }: { subscriptions: Subscriptio
 function summarize(s: SubscriptionListItem): string {
   const parts: string[] = [];
   if (s.keywords.length > 0) parts.push(`關鍵字：${s.keywords.join("、")}`);
-  if (s.categories.length > 0) parts.push(`分類：${s.categories.join("、")}`);
-  if (s.cities.length > 0) parts.push(`縣市：${s.cities.join("、")}`);
+  if (s.categories.length > 0) parts.push(`分類：${s.categories.map((c) => c.name).join("、")}`);
+  if (s.cities.length > 0) parts.push(`縣市：${s.cities.map((c) => c.name).join("、")}`);
   return parts.join(" ・ ");
 }
 
@@ -52,12 +54,18 @@ function SubscriptionCard({
   const [immediateEnabled, setImmediateEnabled] = useState(subscription.immediateEnabled);
   const [dailyDigestEnabled, setDailyDigestEnabled] = useState(subscription.dailyDigestEnabled);
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // PATCH /api/subscriptions/[id] 是整包替換語意：漏傳 categoryIds/cityIds 等於把它們清空，
+  // 所以這裡一定要把 subscription 目前的分類/縣市 id 原樣送回去，不能只送這次要改的開關欄位。
   async function patch(next: { immediateEnabled?: boolean; dailyDigestEnabled?: boolean }) {
     if (pending) return;
     setPending(true);
+    setError(null);
+    const prevImmediate = immediateEnabled;
+    const prevDailyDigest = dailyDigestEnabled;
     try {
-      await fetch(`/api/subscriptions/${subscription.id}`, {
+      const res = await fetch(`/api/subscriptions/${subscription.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -65,10 +73,20 @@ function SubscriptionCard({
           immediateEnabled: next.immediateEnabled ?? immediateEnabled,
           dailyDigestEnabled: next.dailyDigestEnabled ?? dailyDigestEnabled,
           keywords: subscription.keywords,
-          categoryIds: [],
-          cityIds: [],
+          categoryIds: subscription.categories.map((c) => c.id),
+          cityIds: subscription.cities.map((c) => c.id),
         }),
       });
+      if (!res.ok) {
+        // 更新失敗要把開關復原成呼叫前的狀態，避免畫面顯示跟後端實際設定不一致。
+        setImmediateEnabled(prevImmediate);
+        setDailyDigestEnabled(prevDailyDigest);
+        setError("更新失敗，請稍後再試");
+      }
+    } catch {
+      setImmediateEnabled(prevImmediate);
+      setDailyDigestEnabled(prevDailyDigest);
+      setError("網路異常，請稍後再試");
     } finally {
       setPending(false);
     }
@@ -78,9 +96,16 @@ function SubscriptionCard({
     if (pending) return;
     if (!window.confirm("確定要刪除這筆訂閱嗎？")) return;
     setPending(true);
+    setError(null);
     try {
-      await fetch(`/api/subscriptions/${subscription.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/subscriptions/${subscription.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        setError("刪除失敗，請稍後再試");
+        return;
+      }
       onChanged();
+    } catch {
+      setError("網路異常，請稍後再試");
     } finally {
       setPending(false);
     }
@@ -131,6 +156,8 @@ function SubscriptionCard({
           累積命中 {subscription.matchCount} 筆（{subscription.pendingMatchCount} 筆待通知）
         </span>
       </div>
+
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </li>
   );
 }

@@ -17,8 +17,9 @@ self.addEventListener("push", (event) => {
     if (event.data) {
       payload = { ...payload, ...event.data.json() };
     }
-  } catch {
-    // payload 不是合法 JSON 就用預設文字，不讓整個 push 事件處理失敗。
+  } catch (err) {
+    // payload 不是合法 JSON 就用預設文字，不讓整個 push 事件處理失敗，但留一筆 log 方便除錯。
+    console.error("[sw] push payload 不是合法 JSON：", err);
   }
 
   const { title, body, itemUrl } = payload;

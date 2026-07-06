@@ -59,8 +59,12 @@ export default async function SubscriptionsPage() {
     immediateEnabled: s.immediateEnabled,
     dailyDigestEnabled: s.dailyDigestEnabled,
     keywords: s.keywords.map((k) => k.keyword),
-    categories: s.categories.map((c) => c.category.name),
-    cities: s.cities.map((c) => c.city.name),
+    // 保留 {id, name} 而不是只留名稱字串：PATCH /api/subscriptions/[id] 是整包替換語意，
+    // 前端切換即時通知／每日摘要開關時要能把原本的 categoryIds/cityIds 原封不動送回去，
+    // 只有名稱字串會導致這兩個欄位只能送出空陣列，把使用者原本的篩選條件意外清空
+    // （bot review 抓到的真實 bug，見 subscription-list.tsx 的 patch()）。
+    categories: s.categories.map((c) => c.category),
+    cities: s.cities.map((c) => c.city),
     matchCount: totalMap.get(s.id) ?? 0,
     pendingMatchCount: pendingMap.get(s.id) ?? 0,
   }));

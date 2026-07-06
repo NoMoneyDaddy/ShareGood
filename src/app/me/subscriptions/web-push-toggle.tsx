@@ -81,6 +81,9 @@ export function WebPushToggle({ publicKey }: { publicKey: string }) {
         body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys }),
       });
       if (!res.ok) {
+        // 後端沒登記成功，把瀏覽器端剛建立的 PushSubscription 也一併取消，避免瀏覽器端
+        // 誤以為已訂閱、但伺服器端其實完全沒有這筆紀錄（永遠收不到推播，使用者卻看不出問題）。
+        await subscription.unsubscribe();
         setMessage("啟用失敗，請稍後再試");
         return;
       }

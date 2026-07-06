@@ -71,12 +71,21 @@ export async function POST(req: NextRequest) {
     let sentCount = 0;
     let skippedEmptyCount = 0;
     let alreadyDoneCount = 0;
+    let errorCount = 0;
 
     for (const [userId, matches] of byUser) {
-      const result = await processUserDigest(userId, digestDate, matches, now);
-      if (result === "sent") sentCount++;
-      else if (result === "skipped_empty") skippedEmptyCount++;
-      else alreadyDoneCount++;
+      // 跟 subscription-match-scan job 同樣的道理：單一使用者的摘要處理出錯（例如 Web Push
+      // 派送時的非預期錯誤）不該讓整個 job 中斷，否則後面所有使用者當天都收不到摘要通知。
+      // 記錄下來跳過這個使用者，繼續處理其餘使用者。
+      try {
+        const result = await processUserDigest(userId, digestDate, matches, now);
+        if (result === "sent") sentCount++;
+        else if (result === "skipped_empty") skippedEmptyCount++;
+        else alreadyDoneCount++;
+      } catch (e) {
+        errorCount++;
+        console.error(`[subscription-daily-digest] processUserDigest 失敗 userId=${userId}:`, e);
+      }
     }
 
     await db.systemJobRun.update({
@@ -84,7 +93,13 @@ export async function POST(req: NextRequest) {
       data: {
         status: "success",
         finishedAt: new Date(),
-        detail: { processedUsers: byUser.size, sentCount, skippedEmptyCount, alreadyDoneCount },
+        detail: {
+          processedUsers: byUser.size,
+          sentCount,
+          skippedEmptyCount,
+          alreadyDoneCount,
+          errorCount,
+        },
       },
     });
 
@@ -94,6 +109,7 @@ export async function POST(req: NextRequest) {
       sentCount,
       skippedEmptyCount,
       alreadyDoneCount,
+      errorCount,
     });
   } catch (e) {
     await db.systemJobRun.update({

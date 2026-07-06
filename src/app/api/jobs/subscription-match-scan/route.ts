@@ -89,16 +89,29 @@ export async function POST(req: NextRequest) {
 
     let matchedCount = 0;
     let notifiedCount = 0;
+    let errorCount = 0;
 
     for (const item of candidates) {
       const normalizedItemText = buildNormalizedItemText(item.title, item.description);
       for (const subscription of subscriptions) {
         if (!isMatch(subscription, item, normalizedItemText)) continue;
 
-        const outcome = await processMatch(subscription, item);
-        if (outcome.created) {
-          matchedCount++;
-          if (outcome.notifiedImmediate) notifiedCount++;
+        // 單一 (subscription, item) pair 出錯（非 P2002 的非預期錯誤，例如 Web Push 派送時
+        // 底層 DB 剛好斷線）不該讓整個 job 中斷——中斷代表 cursor 不會前進，剩下所有候選物品
+        // 與訂閱都不會被處理到，且下次 job 重跑會撞到同一個壞資料再次失敗，等於整條訂閱通知
+        // 管道卡死。這裡記錄下來並跳過這個 pair，讓其餘 pair 繼續處理。
+        try {
+          const outcome = await processMatch(subscription, item);
+          if (outcome.created) {
+            matchedCount++;
+            if (outcome.notifiedImmediate) notifiedCount++;
+          }
+        } catch (e) {
+          errorCount++;
+          console.error(
+            `[subscription-match-scan] processMatch 失敗 subscriptionId=${subscription.id} itemId=${item.id}:`,
+            e,
+          );
         }
       }
     }
@@ -113,7 +126,13 @@ export async function POST(req: NextRequest) {
       data: {
         status: "success",
         finishedAt: new Date(),
-        detail: { cursor: newCursor, scannedItems: candidates.length, matchedCount, notifiedCount },
+        detail: {
+          cursor: newCursor,
+          scannedItems: candidates.length,
+          matchedCount,
+          notifiedCount,
+          errorCount,
+        },
       },
     });
 
@@ -122,6 +141,7 @@ export async function POST(req: NextRequest) {
       scannedItems: candidates.length,
       matchedCount,
       notifiedCount,
+      errorCount,
     });
   } catch (e) {
     await db.systemJobRun.update({

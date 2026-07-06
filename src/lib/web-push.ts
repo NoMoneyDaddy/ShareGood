@@ -66,34 +66,38 @@ export async function sendWebPushToUser(
   }
 
   const payloadJson = JSON.stringify(payload);
-  let anySuccess = false;
 
-  for (const sub of subscriptions) {
-    try {
-      await webpush.sendNotification(
-        { endpoint: sub.endpoint, keys: { p256dh: sub.p256dhKey, auth: sub.authKey } },
-        payloadJson,
-      );
-      anySuccess = true;
-      await db.webPushSubscription.update({
-        where: { id: sub.id },
-        data: { lastSuccessAt: new Date(), failureCount: 0 },
-      });
-    } catch (err) {
-      const statusCode = (err as { statusCode?: number } | null)?.statusCode;
-      if (statusCode === 404 || statusCode === 410) {
+  // 各裝置互相獨立（各自對應不同的 webPushSubscription row，DB 更新也各自只動自己那一筆），
+  // 平行送出可以避免使用者多台裝置時，後面的裝置要排隊等前面裝置的網路呼叫做完才收到通知。
+  const results = await Promise.all(
+    subscriptions.map(async (sub) => {
+      try {
+        await webpush.sendNotification(
+          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dhKey, auth: sub.authKey } },
+          payloadJson,
+        );
         await db.webPushSubscription.update({
           where: { id: sub.id },
-          data: { isActive: false, deactivatedAt: new Date() },
+          data: { lastSuccessAt: new Date(), failureCount: 0 },
         });
-      } else {
-        await db.webPushSubscription.update({
-          where: { id: sub.id },
-          data: { failureCount: { increment: 1 }, lastFailureAt: new Date() },
-        });
+        return true;
+      } catch (err) {
+        const statusCode = (err as { statusCode?: number } | null)?.statusCode;
+        if (statusCode === 404 || statusCode === 410) {
+          await db.webPushSubscription.update({
+            where: { id: sub.id },
+            data: { isActive: false, deactivatedAt: new Date() },
+          });
+        } else {
+          await db.webPushSubscription.update({
+            where: { id: sub.id },
+            data: { failureCount: { increment: 1 }, lastFailureAt: new Date() },
+          });
+        }
+        return false;
       }
-    }
-  }
+    }),
+  );
 
-  return { attempted: true, anySuccess };
+  return { attempted: true, anySuccess: results.some(Boolean) };
 }
