@@ -33,10 +33,14 @@ export function ClaimsSection({
   itemId,
   itemStatus,
   currentUserId,
+  lotteryActive = false,
 }: {
   itemId: string;
   itemStatus: string;
   currentUserId?: string;
+  // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，
+  // POST .../claims 會回 409，這裡提前隱藏留言表單，避免使用者送出後才看到衝突錯誤。
+  lotteryActive?: boolean;
 }) {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
@@ -107,7 +111,11 @@ export function ClaimsSection({
     <section className="mt-8 border-t border-line pt-6">
       <h2 className="text-lg font-bold tracking-tight">留言</h2>
 
-      {currentStatus === "published" ? (
+      {currentStatus === "published" && lotteryActive ? (
+        <p className="mt-4 rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">
+          物品目前為抽籤模式，暫時無法留言，請見下方的抽籤區塊。
+        </p>
+      ) : currentStatus === "published" ? (
         <form onSubmit={submit} className="mt-4 space-y-2">
           <textarea
             value={message}

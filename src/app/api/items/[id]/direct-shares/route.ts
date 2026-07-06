@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { hasActiveLottery } from "@/lib/lottery";
 import { createOrMergeNotification } from "@/lib/notifications";
 import { checkFullBlock } from "@/lib/restrictions";
 
@@ -34,6 +35,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (item.ownerId !== user.id) return jsonError("FORBIDDEN", "只有物主可以贈與這個物品");
   if (item.status !== "published") {
     return jsonError("CONFLICT", "這個物品目前無法贈與");
+  }
+
+  // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路。
+  if (await hasActiveLottery(itemId)) {
+    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言/直贈");
   }
 
   const body = await req.json().catch(() => null);

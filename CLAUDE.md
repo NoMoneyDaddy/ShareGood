@@ -105,6 +105,35 @@
           已知限制：`findFirst`+`update` 非原子操作，極端併發下理論上可能各自建立一筆，
           現階段流量下風險極低、暫不處理，見程式碼註解）、`shouldSendExternalNotification`
           （每人每日外部通知上限預設 20，只影響外部發送判斷、不影響站內通知）。
+- [x] M5 抽籤（PR：feat/m5-lottery）：範圍見 master-plan.md §5a，schema 地基已在 PR #36
+      merge 進 main（`Lottery`／`LotteryEntry`／`LotteryResult`／`LotteryAuditLog` 四表，
+      本次未動 `prisma/schema.prisma` 任何一行）。`POST/GET /api/items/[id]/lottery`
+      （物主開抽籤／查詢狀態）、`POST/DELETE /api/items/[id]/lottery/entries`（報名／
+      取消報名，`@@unique([lotteryId,userId])` 擋併發重複報名）、`PATCH /api/lotteries/
+      [id]/{cancel,confirm,decline}`；`POST /api/jobs/lottery-draw`（沿用 M3 的
+      `system_jobs`／`CRON_SECRET` 模式，每次執行處理「到期開獎」與「逾時遞補」兩件事，
+      逐筆用 `lotteries.status`／`lottery_results.status` 的條件式 `updateMany` 當樂觀鎖，
+      重複觸發或多 worker 同時執行皆 idempotent）；開獎演算法與遞補共用邏輯集中在
+      `src/lib/lottery.ts`（`deterministicShuffle` 用 `crypto.randomBytes` 產生種子＋
+      HMAC-SHA256 決定性 Fisher-Yates 洗牌，可重演驗證）。物品在整場抽籤期間全程維持
+      `published`，僅在得主 `confirm` 的同一 transaction 內轉 `reserved`；`claims`／
+      `direct-shares` 兩支既有 API 新增一段非終態抽籤時回 409 的檢查，其餘不變。
+      **銜接既有交接流程的實作筆記**：`confirm` 端點會順手補寫一筆
+      `ClaimComment`（`status=accepted`），讓完全不修改的既有
+      `POST /api/items/[id]/handover/ensure`（靠 `acceptedClaim`/`acceptedDirectShare`
+      找接手者）能認得出抽籤產生的配對——這不是新發明的資料表或欄位，只是借用 M1
+      既有的查詢管道；因為物品在抽籤期間全程 `published`、且 `published` 狀態下依
+      `claims/route.ts` 的邏輯不可能存在任何既有 `ClaimComment`，這筆插入不會撞到
+      `@@unique([itemId,userId])`。物品詳情頁新增 `lottery-section.tsx`（比照
+      `thanks-section.tsx`／`handover-section.tsx` 拆分慣例），`claims-section.tsx`／
+      `direct-share-section.tsx` 新增 `lotteryActive` prop 在抽籤進行中提前隱藏表單。
+      通知沿用 M1 站內通知機制、重用 `completion_confirmed` type＋`payload.kind`
+      判別欄位（`lottery_won`／`lottery_drawn`／`lottery_backup_offered`／
+      `lottery_progress`／`lottery_failed`／`lottery_cancelled`），比照 M2 強制下架、
+      M3 到期 job 的既定做法，不新增 `NotificationType` enum 值。整合測試
+      `e2e/integration/lottery.test.ts`（15 案例：建立/互斥、報名併發、開獎併發＋
+      重演驗證、逾時遞補、婉拒遞補、候補用盡流標、確認＋貢獻值＋交接銜接、取消抽籤、
+      稽核時間序），連同既有 13 支整合測試共 115 個案例全過。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案

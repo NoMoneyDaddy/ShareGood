@@ -15,10 +15,14 @@ export function DirectShareSection({
   itemId,
   itemStatus,
   isOwner,
+  lotteryActive = false,
 }: {
   itemId: string;
   itemStatus: string;
   isOwner: boolean;
+  // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，
+  // POST .../direct-shares 會回 409，這裡提前隱藏直贈表單。
+  lotteryActive?: boolean;
 }) {
   const router = useRouter();
   const [mine, setMine] = useState<MineShare | null | undefined>(undefined);
@@ -40,7 +44,7 @@ export function DirectShareSection({
   }, [itemId, isOwner]);
 
   if (isOwner) {
-    if (itemStatus !== "published") return null;
+    if (itemStatus !== "published" || lotteryActive) return null;
     return <OwnerDirectShareForm itemId={itemId} />;
   }
 
