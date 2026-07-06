@@ -83,11 +83,17 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-7 flex items-center gap-3 rounded-xl border border-line bg-card px-4 py-3.5 shadow-sm has-[:disabled]:cursor-not-allowed">
-              <Search size={19} strokeWidth={2.2} className="shrink-0 text-ink-soft" />
+              <Search
+                size={19}
+                strokeWidth={2.2}
+                aria-hidden="true"
+                className="shrink-0 text-ink-soft"
+              />
               <Input
                 type="search"
+                name="q"
                 aria-label="搜尋好物、分類或縣市"
-                placeholder="搜尋好物、分類或縣市"
+                placeholder="搜尋好物、分類或縣市…"
                 disabled
                 title="M1 起開放搜尋"
                 className="h-auto border-none bg-transparent p-0 text-base text-ink shadow-none focus-visible:ring-0 disabled:pointer-events-none disabled:bg-transparent"
@@ -142,7 +148,7 @@ export default async function HomePage() {
                     alt={it.title}
                     fill
                     sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
                   <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-white">
                     免費
@@ -150,7 +156,7 @@ export default async function HomePage() {
                 </div>
                 <div className="p-3">
                   <div className="flex items-center gap-1 text-[11px] text-ink-soft">
-                    <MapPin size={11} strokeWidth={2.4} />
+                    <MapPin size={11} strokeWidth={2.4} aria-hidden="true" />
                     {it.district} ・ {it.time}
                   </div>
                   <h3 className="mt-1 truncate font-semibold leading-snug">{it.title}</h3>
@@ -167,7 +173,7 @@ export default async function HomePage() {
         {/* 怎麼運作：三步驟，非置中版面 */}
         <section className="border-y border-line bg-paper-2/60">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-            <h2 className="max-w-[16ch] text-2xl font-bold tracking-tight md:text-3xl">
+            <h2 className="max-w-[16ch] text-pretty text-2xl font-bold tracking-tight md:text-3xl">
               三步驟，把好物交給下一個需要的人
             </h2>
             <div className="mt-9 grid gap-8 md:grid-cols-3">
@@ -207,21 +213,36 @@ export default async function HomePage() {
           <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6">
             <ul className="flex flex-col divide-y divide-line sm:flex-row sm:divide-x sm:divide-y-0">
               <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
-                <ShieldCheck size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <ShieldCheck
+                  size={18}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-brand"
+                />
                 <p className="text-sm text-ink-soft">
                   <strong className="font-bold text-ink">絕不收費。</strong>
                   平台上所有物品一律免費，任何收費都違反規範，可以檢舉。
                 </p>
               </li>
               <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
-                <MessageSquare size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <MessageSquare
+                  size={18}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-brand"
+                />
                 <p className="text-sm text-ink-soft">
                   <strong className="font-bold text-ink">私訊才開放。</strong>
                   交接成立後才開啟私訊，分享前不需要公開任何聯絡方式。
                 </p>
               </li>
               <li className="flex items-start gap-2.5 py-4 first:pt-0 sm:flex-1 sm:px-6 sm:py-0 sm:first:pl-0 sm:last:pr-0">
-                <Users size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-brand" />
+                <Users
+                  size={18}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-brand"
+                />
                 <p className="text-sm text-ink-soft">
                   <strong className="font-bold text-ink">分享者做主。</strong>
                   誰來接手由分享者親自挑選，不是先搶先贏的戰場。
