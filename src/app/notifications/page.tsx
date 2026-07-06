@@ -86,10 +86,20 @@ export default async function NotificationsPage({
 
   return (
     <main className="mx-auto w-full max-w-lg px-4 py-8 pb-24 sm:px-6">
-      <h1 className="text-2xl font-bold tracking-tight">通知</h1>
-      <p className="mt-1.5 text-sm text-ink-soft">
-        留言、認領、直贈與交接的最新消息都會顯示在這裡。
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">通知</h1>
+          <p className="mt-1.5 text-sm text-ink-soft">
+            留言、認領、直贈與交接的最新消息都會顯示在這裡。
+          </p>
+        </div>
+        <Link
+          href="/me/notification-preferences"
+          className="mt-1 shrink-0 whitespace-nowrap text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          通知設定
+        </Link>
+      </div>
 
       {notifications.length === 0 ? (
         <p className="mt-10 text-center text-sm text-ink-soft">目前還沒有通知。</p>
