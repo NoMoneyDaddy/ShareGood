@@ -14,6 +14,7 @@ import { ClaimsSection } from "./claims-section";
 import { CouponSection } from "./coupon-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
+import { LotterySection } from "./lottery-section";
 import { ThanksSection } from "./thanks-section";
 
 async function getItem(id: string) {
@@ -111,6 +112,17 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       conversationId = conversation?.id ?? null;
     }
   }
+
+  // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言/直贈表單要提前
+  // 隱藏（對應的 mutation API 本身也會回 409，這裡只是避免使用者送出後才看到衝突錯誤）。
+  const lottery = await db.lottery.findUnique({
+    where: { itemId: item.id },
+    select: { status: true },
+  });
+  const lotteryActive =
+    lottery?.status === "open" ||
+    lottery?.status === "drawing" ||
+    lottery?.status === "awaiting_confirmation";
 
   // 感謝留言：只有 completed 之後才可能存在（見 /api/items/[id]/thanks 的檢查），
   // 其他狀態不用多查一次浪費一趟資料庫往返。itemId 有 unique constraint，最多一筆。
@@ -230,11 +242,19 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           itemId={item.id}
           itemStatus={item.status}
           isOwner={session?.user?.id === item.ownerId}
+          lotteryActive={lotteryActive}
         />
         <ClaimsSection
           itemId={item.id}
           itemStatus={item.status}
           currentUserId={session?.user?.id}
+          lotteryActive={lotteryActive}
+        />
+        <LotterySection
+          itemId={item.id}
+          itemStatus={item.status}
+          isOwner={session?.user?.id === item.ownerId}
+          isLoggedIn={!!session?.user}
         />
         <HandoverSection
           itemId={item.id}

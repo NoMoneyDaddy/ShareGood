@@ -4,6 +4,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { hasActiveLottery } from "@/lib/lottery";
 import { createOrMergeNotification } from "@/lib/notifications";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
@@ -61,6 +62,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
   if (item.status !== "published") {
     return jsonError("CONFLICT", "這個物品目前無法留言");
+  }
+
+  // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路，
+  // 避免三種選人方式互相打架；抽籤流標/取消/完成之後這個檢查自然放行。
+  if (await hasActiveLottery(itemId)) {
+    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言/直贈");
   }
 
   try {

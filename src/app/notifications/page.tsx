@@ -48,6 +48,11 @@ function itemIdOf(payload: Record<string, unknown>) {
 // payload 帶 kind: "item_expired" / "item_expiring_reminder"（見
 // src/app/api/jobs/item-expiration/route.ts），這裡一併優先檢查。
 //
+// M5 抽籤（master-plan §5a）沿用同一套「重用 completion_confirmed type，payload 帶 kind
+// 判別欄位」做法（不新增 NotificationType 列，維持 prisma/schema.prisma 不動）：
+// lottery_won／lottery_drawn／lottery_backup_offered／lottery_progress／lottery_failed／
+// lottery_cancelled，見 src/lib/lottery.ts 與 src/app/api/lotteries/[id]/cancel/route.ts。
+//
 // M4 通知合併（見 src/lib/notifications.ts 的 createOrMergeNotification）：同一物品在
 // 30 分鐘窗口內的同類型事件會合併成一筆，payload.mergedCount 帶目前累積的筆數。這裡只有
 // 「短時間內容易連發」的 new_comment／handover_message 兩種特別組聚合文字（例如「有 3 則
@@ -63,6 +68,24 @@ function describeNotification(type: string, payload: unknown): string {
   }
   if (p.kind === "item_expiring_reminder") {
     return `「${itemTitleOf(p)}」即將到期，記得儘快促成分享`;
+  }
+  if (p.kind === "lottery_won") {
+    return `恭喜！你在「${itemTitleOf(p)}」的抽籤中中選了，請於 48 小時內確認`;
+  }
+  if (p.kind === "lottery_drawn") {
+    return `「${itemTitleOf(p)}」已完成開獎，正在等待中選者確認`;
+  }
+  if (p.kind === "lottery_backup_offered") {
+    return `「${itemTitleOf(p)}」的抽籤遞補到你了，請於 48 小時內確認`;
+  }
+  if (p.kind === "lottery_progress") {
+    return `「${itemTitleOf(p)}」的抽籤正在遞補下一位候選人`;
+  }
+  if (p.kind === "lottery_failed") {
+    return `「${itemTitleOf(p)}」的抽籤流標了，已恢復開放，可改用留言或直贈分享`;
+  }
+  if (p.kind === "lottery_cancelled") {
+    return `你參加的「${itemTitleOf(p)}」抽籤已被物主取消`;
   }
   const count = mergedCountOf(payload);
   switch (type) {
