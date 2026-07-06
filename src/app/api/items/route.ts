@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
+import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 
 const MIN_IMAGES = 1;
 const MAX_IMAGES = 5;
@@ -28,7 +31,8 @@ function parseImages(value: unknown): ImageInput[] | null {
   return parsed;
 }
 
-// POST /api/items — 上架（M1：發布即公開，不走 pending_review）。
+// POST /api/items — 上架。M1 預設發布即公開；M2 起若 REQUIRE_REVIEW feature flag 開啟，
+// 改為先進 pending_review 等人工審核（見下方 requireReview 判斷）。
 export async function POST(req: NextRequest) {
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {
@@ -41,6 +45,14 @@ export async function POST(req: NextRequest) {
   // 避免有人跳過表單直接打 API 建立物品。
   if (!user.profile) {
     return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  // M2 治理底線：每小時/每日上架次數上限，超過回 429（見 src/lib/rate-limit.ts）。
+  try {
+    await checkRateLimit(user.id, "item_create");
+  } catch (e) {
+    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
+    throw e;
   }
 
   const body = await req.json().catch(() => null);
@@ -61,6 +73,13 @@ export async function POST(req: NextRequest) {
   }
   if (!images) {
     return jsonError("UNPROCESSABLE", `請上傳 ${MIN_IMAGES}–${MAX_IMAGES} 張圖片`);
+  }
+
+  // M2 治理底線：關鍵字黑名單攔標題／描述，命中就擋（見 src/lib/keyword-blocklist.ts）。
+  const hitKeyword =
+    (await checkKeywordBlocklist(title)) ?? (await checkKeywordBlocklist(description));
+  if (hitKeyword) {
+    return jsonError("UNPROCESSABLE", "標題或描述包含不允許的內容，請修改後再送出");
   }
 
   const [category, city] = await Promise.all([
@@ -100,6 +119,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // M2 治理底線：REQUIRE_REVIEW flag 開啟時，新物品先進 pending_review（不直接公開），
+  // 要人工審核通過才轉 published；後台審核佇列 UI 不在本次任務範圍內。
+  const requireReview = await getFeatureFlag(FEATURE_FLAGS.REQUIRE_REVIEW);
+  const initialStatus = requireReview ? ("pending_review" as const) : ("published" as const);
+
   const now = new Date();
   try {
     const item = await db.$transaction(async (tx) => {
@@ -110,8 +134,8 @@ export async function POST(req: NextRequest) {
           description,
           categoryId,
           cityId,
-          status: "published",
-          publishedAt: now,
+          status: initialStatus,
+          publishedAt: initialStatus === "published" ? now : null,
         },
       });
 
@@ -125,7 +149,7 @@ export async function POST(req: NextRequest) {
       });
 
       await tx.itemStatusLog.create({
-        data: { itemId: created.id, fromStatus: null, toStatus: "published", actorId: user.id },
+        data: { itemId: created.id, fromStatus: null, toStatus: initialStatus, actorId: user.id },
       });
 
       // 狀態檢查跟這個 updateMany 之間有時間差：把 status: "pending" 跟 uploaderId 一併寫進

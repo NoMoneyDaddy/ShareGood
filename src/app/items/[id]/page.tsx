@@ -49,7 +49,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const item = await getItem(id);
-  if (!item || item.status === "removed_by_moderator") return {};
+  // M2 治理底線：REQUIRE_REVIEW 開啟時新物品先進 pending_review，審核通過前不產生
+  // 公開 SEO metadata（避免搜尋引擎索引到尚未審核的內容）。
+  if (!item || item.status === "removed_by_moderator" || item.status === "pending_review") {
+    return {};
+  }
   const title = `${item.title}｜${item.city.name}`;
   const description = item.description.slice(0, 120);
   const firstImage = item.images[0];
@@ -66,10 +70,13 @@ export async function generateMetadata({
 }
 
 // M1：發布即公開，任何人（含未登入）都能看物品詳情；留言/直贈是後續才做的功能。
+// M2：REQUIRE_REVIEW 開啟時新物品先進 pending_review，審核通過前只有物主自己能預覽，
+// 其他人（含未登入）一律視為找不到，避免繞過審核直接分享連結公開瀏覽。
 export default async function ItemDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const [item, session] = await Promise.all([getItem(id), auth()]);
   if (!item || item.status === "removed_by_moderator") notFound();
+  if (item.status === "pending_review" && session?.user?.id !== item.ownerId) notFound();
 
   const profile = session?.user
     ? await db.profile.findUnique({ where: { userId: session.user.id } })
