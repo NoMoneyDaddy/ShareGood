@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
               protocol: s3PublicUrl.protocol.replace(":", "") as "http" | "https",
               hostname: s3PublicUrl.hostname,
               port: s3PublicUrl.port || undefined,
+              // publicUrl() 只會組出 `${S3_PUBLIC_URL}/images/...`（見 src/lib/storage.ts），
+              // 限制 pathname 避免 next/image 被拿去優化這個 host 上其他不相干的路徑。
+              pathname: "/images/**",
             },
           ]
         : []),

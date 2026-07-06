@@ -63,25 +63,32 @@ export function ItemForm({
 
     await Promise.all(
       newSlots.map(async ({ key, file }) => {
-        const form = new FormData();
-        form.append("file", file);
-        const res = await fetch("/api/uploads", { method: "POST", body: form });
-        const data = await res.json().catch(() => null);
+        try {
+          const form = new FormData();
+          form.append("file", file);
+          const res = await fetch("/api/uploads", { method: "POST", body: form });
+          const data = await res.json().catch(() => null);
+          const thumbId = data?.variants?.thumb?.storageObjectId;
+          const mediumId = data?.variants?.medium?.storageObjectId;
 
-        setImages((prev) =>
-          prev.map((img) =>
-            img.key !== key
-              ? img
-              : res.ok
-                ? {
-                    ...img,
-                    status: "done",
-                    thumbObjectId: data.variants.thumb.storageObjectId,
-                    mediumObjectId: data.variants.medium.storageObjectId,
-                  }
-                : { ...img, status: "error", error: data?.error?.message ?? "上傳失敗" },
-          ),
-        );
+          setImages((prev) =>
+            prev.map((img) =>
+              img.key !== key
+                ? img
+                : res.ok && thumbId && mediumId
+                  ? { ...img, status: "done", thumbObjectId: thumbId, mediumObjectId: mediumId }
+                  : { ...img, status: "error", error: data?.error?.message ?? "上傳失敗" },
+            ),
+          );
+        } catch {
+          setImages((prev) =>
+            prev.map((img) =>
+              img.key !== key
+                ? img
+                : { ...img, status: "error", error: "上傳失敗，請檢查網路連線" },
+            ),
+          );
+        }
       }),
     );
   }
@@ -117,27 +124,32 @@ export function ItemForm({
     setSubmitting(true);
     setFormError("");
 
-    const res = await fetch("/api/items", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        description,
-        categoryId,
-        cityId,
-        images: readyImages.map((img) => ({
-          thumbObjectId: img.thumbObjectId,
-          mediumObjectId: img.mediumObjectId,
-        })),
-      }),
-    });
-    const data = await res.json().catch(() => null);
+    try {
+      const res = await fetch("/api/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          description,
+          categoryId,
+          cityId,
+          images: readyImages.map((img) => ({
+            thumbObjectId: img.thumbObjectId,
+            mediumObjectId: img.mediumObjectId,
+          })),
+        }),
+      });
+      const data = await res.json().catch(() => null);
 
-    if (res.ok) {
-      router.push(`/items/${data.id}`);
-      router.refresh();
-    } else {
-      setFormError(data?.error?.message ?? "上架失敗，請再試一次");
+      if (res.ok) {
+        router.push(`/items/${data.id}`);
+        router.refresh();
+      } else {
+        setFormError(data?.error?.message ?? "上架失敗，請再試一次");
+        setSubmitting(false);
+      }
+    } catch {
+      setFormError("網路連線異常，請再試一次");
       setSubmitting(false);
     }
   }

@@ -35,6 +35,11 @@ export async function POST(req: NextRequest) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
   }
+  // /items/new 頁面會擋未完成 onboarding（無 profile）的使用者，但 API 本身也要重複這個檢查，
+  // 避免有人跳過表單直接打 API 建立物品。
+  if (!user.profile) {
+    return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
 
   const body = await req.json().catch(() => null);
   const title = typeof body?.title === "string" ? body.title.trim() : "";
