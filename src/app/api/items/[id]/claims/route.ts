@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma/client";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { POINT_CATEGORY_SLUG } from "@/lib/categories";
 import { db } from "@/lib/db";
 import {
   checkGiveToGetQuota,
@@ -11,6 +12,7 @@ import {
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { hasActiveLottery } from "@/lib/lottery";
 import { createOrMergeNotification } from "@/lib/notifications";
+import { containsTaiwanMobileNumber } from "@/lib/phone-guard";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
@@ -70,6 +72,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
   if (item.status !== "published") {
     return jsonError("CONFLICT", "這個物品目前無法留言");
+  }
+
+  // M9 §9a 交付內容 5：點數類型個資最小化——留言內容禁含疑似台灣手機號（keyword_blocklist
+  // 只做子字串比對，攔不了格式，見 src/lib/phone-guard.ts）；只套用在點數類物品，
+  // 實體物品/其他類型完全不受影響。
+  if (item.category.slug === POINT_CATEGORY_SLUG && containsTaiwanMobileNumber(message)) {
+    return jsonError("UNPROCESSABLE", "請勿在留言中留下手機號碼等個人資料，本平台不經手點數與會員帳號");
   }
 
   // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路，

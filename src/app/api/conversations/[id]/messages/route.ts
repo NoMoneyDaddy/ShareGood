@@ -1,8 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { POINT_CATEGORY_SLUG } from "@/lib/categories";
 import { db } from "@/lib/db";
 import { createOrMergeNotification } from "@/lib/notifications";
+import { containsTaiwanMobileNumber } from "@/lib/phone-guard";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
@@ -86,7 +88,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const conversation = await db.conversation.findUnique({
     where: { id: conversationId },
     include: {
-      item: { select: { id: true, title: true } },
+      item: { select: { id: true, title: true, category: { select: { slug: true } } } },
       members: { select: { userId: true } },
     },
   });
@@ -112,6 +114,15 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const message = typeof body?.body === "string" ? body.body.trim() : "";
   if (message.length < 1 || message.length > 1000) {
     return jsonError("UNPROCESSABLE", "訊息需為 1–1000 個字");
+  }
+
+  // M9 §9a 交付內容 5：點數類型個資最小化——私訊內容禁含疑似台灣手機號，只套用在點數類
+  // 物品的交接對話，其他類型完全不受影響（見 src/lib/phone-guard.ts）。
+  if (
+    conversation.item.category.slug === POINT_CATEGORY_SLUG &&
+    containsTaiwanMobileNumber(message)
+  ) {
+    return jsonError("UNPROCESSABLE", "請勿在訊息中留下手機號碼等個人資料，本平台不經手點數與會員帳號");
   }
 
   const created = await db.message.create({

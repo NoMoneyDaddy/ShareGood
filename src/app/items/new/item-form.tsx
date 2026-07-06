@@ -6,7 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { COUPON_CATEGORY_SLUG, EXPIRING_FOOD_CATEGORY_SLUG } from "@/lib/categories";
+import {
+  COUPON_CATEGORY_SLUG,
+  EXPIRING_FOOD_CATEGORY_SLUG,
+  POINT_CATEGORY_SLUG,
+  TICKET_CATEGORY_SLUG,
+} from "@/lib/categories";
 
 const MAX_IMAGES = 5;
 
@@ -37,10 +42,13 @@ export function ItemForm({
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // M3（master-plan §8）：優惠券／即期食品各自的額外欄位，依選到的分類 slug 決定要不要顯示。
+  // M3（master-plan §8）／M9（master-plan §9a）：優惠券／即期食品／票券／點數各自的額外欄位，
+  // 依選到的分類 slug 決定要不要顯示。
   const selectedCategory = categories.find((c) => c.id === categoryId);
   const isCoupon = selectedCategory?.slug === COUPON_CATEGORY_SLUG;
   const isExpiringFood = selectedCategory?.slug === EXPIRING_FOOD_CATEGORY_SLUG;
+  const isTicket = selectedCategory?.slug === TICKET_CATEGORY_SLUG;
+  const isPoint = selectedCategory?.slug === POINT_CATEGORY_SLUG;
 
   const [expiresAt, setExpiresAt] = useState("");
   const [expiringFoodConfirmed, setExpiringFoodConfirmed] = useState(false);
@@ -48,6 +56,11 @@ export function ItemForm({
   const [couponMerchantName, setCouponMerchantName] = useState("");
   const [couponNotes, setCouponNotes] = useState("");
   const [couponCode, setCouponCode] = useState("");
+  const [ticketType, setTicketType] = useState("");
+  const [ticketOriginPlatform, setTicketOriginPlatform] = useState("");
+  const [ticketEventName, setTicketEventName] = useState("");
+  const [pointPlatform, setPointPlatform] = useState("");
+  const [pointAmount, setPointAmount] = useState("");
 
   // 追蹤本機選檔建立的 blob: 預覽連結，組件卸載時統一釋放，避免瀏覽器記憶體洩漏。
   const previewUrlsRef = useRef<string[]>([]);
@@ -130,6 +143,17 @@ export function ItemForm({
       expiresAt.length > 0);
   const expiringFoodFieldsValid =
     !isExpiringFood || (expiringFoodConfirmed && expiresAt.length > 0);
+  // M9 §9a 交付內容 4：票種／原平台為必填，活動名稱選填；到期日沿用既有 expiresAt 欄位
+  // （不強制必填，票券可能沒有明確使用期限）。
+  const ticketFieldsValid =
+    !isTicket || (ticketType.trim().length >= 1 && ticketOriginPlatform.trim().length >= 1);
+  // M9 §9a 交付內容 5：點數平台／數量為必填，數量須為正整數。
+  const pointAmountNumber = Number.parseInt(pointAmount, 10);
+  const pointFieldsValid =
+    !isPoint ||
+    (pointPlatform.trim().length >= 1 &&
+      Number.isInteger(pointAmountNumber) &&
+      pointAmountNumber > 0);
   const canSubmit =
     title.trim().length >= 2 &&
     description.trim().length >= 1 &&
@@ -139,7 +163,9 @@ export function ItemForm({
     !hasUploading &&
     !submitting &&
     couponFieldsValid &&
-    expiringFoodFieldsValid;
+    expiringFoodFieldsValid &&
+    ticketFieldsValid &&
+    pointFieldsValid;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -172,6 +198,18 @@ export function ItemForm({
               }
             : {}),
           ...(isExpiringFood ? { expiringFoodConfirmed } : {}),
+          ...(isTicket
+            ? {
+                ticket: {
+                  ticketType,
+                  originPlatform: ticketOriginPlatform,
+                  eventName: ticketEventName || undefined,
+                },
+              }
+            : {}),
+          ...(isPoint
+            ? { point: { pointPlatform, pointAmount: pointAmountNumber } }
+            : {}),
         }),
       });
       const data = await res.json().catch(() => null);
@@ -345,6 +383,107 @@ export function ItemForm({
             />
             我確認這項食品完整包裝、未開封、常溫保存、尚未過期。
           </label>
+          {/* M9 §9a 交付內容 6：即期食品食安提示（借鏡 Olio），提示性、不強制擋，避免誤傷。 */}
+          <p className="text-xs text-ink-soft">
+            建議拍攝清楚的有效日期標籤照片，方便接手者確認效期。即期食品請於有效日期前食用完畢，實際狀況以外包裝標示為準。
+          </p>
+        </div>
+      )}
+
+      {isTicket && (
+        <div className="space-y-4 rounded-xl border border-line bg-card p-4">
+          <p className="text-sm font-medium text-ink">票券資訊</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="ticket-type">券種</Label>
+              <Input
+                id="ticket-type"
+                value={ticketType}
+                onChange={(e) => setTicketType(e.target.value)}
+                maxLength={50}
+                placeholder="例：紙本入場券、序號券"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ticket-origin-platform">原平台</Label>
+              <Input
+                id="ticket-origin-platform"
+                value={ticketOriginPlatform}
+                onChange={(e) => setTicketOriginPlatform(e.target.value)}
+                maxLength={50}
+                placeholder="例：KKTIX、主辦官網"
+                required
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="ticket-event-name">活動名稱（選填）</Label>
+            <Input
+              id="ticket-event-name"
+              value={ticketEventName}
+              onChange={(e) => setTicketEventName(e.target.value)}
+              maxLength={100}
+              placeholder="例：2026 夏季音樂節"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="ticket-expires-at">使用期限（選填）</Label>
+            <Input
+              id="ticket-expires-at"
+              type="date"
+              value={expiresAt}
+              onChange={(e) => setExpiresAt(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
+            <p>
+              依文創法第 10 條之 1 及運動產業發展條例第 24 條之 1，以超過票面金額轉售票券可處票面
+              10 至 50 倍罰鍰。本平台僅允許無償轉贈。
+            </p>
+            <p>
+              本平台僅提供無償轉贈之資訊媒合，不經手、不保管、不擔保任何票券或優惠券之真偽與可兌換性；能否轉讓請依發行人使用條款。
+            </p>
+          </div>
+        </div>
+      )}
+
+      {isPoint && (
+        <div className="space-y-4 rounded-xl border border-line bg-card p-4">
+          <p className="text-sm font-medium text-ink">點數資訊</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="point-platform">點數平台</Label>
+              <Input
+                id="point-platform"
+                value={pointPlatform}
+                onChange={(e) => setPointPlatform(e.target.value)}
+                maxLength={50}
+                placeholder="例：FamiPoint、OPEN POINT"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="point-amount">點數數量</Label>
+              <Input
+                id="point-amount"
+                type="number"
+                min={1}
+                step={1}
+                value={pointAmount}
+                onChange={(e) => setPointAmount(e.target.value)}
+                placeholder="例：100"
+                required
+              />
+            </div>
+          </div>
+          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
+            <p>
+              點數轉贈依各平台官方規則，能否轉贈、次數與期限以官方 App
+              為準；本平台不經手點數。實際轉移請雙方一律走官方 App 的轉贈功能完成。
+            </p>
+            <p>請勿在任何欄位或留言中填寫會員帳號、手機號碼、簡訊驗證碼等個人資料。</p>
+          </div>
         </div>
       )}
 
