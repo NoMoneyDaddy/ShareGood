@@ -1877,6 +1877,357 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
 
 ---
 
+## 9a. M9 — 好康資訊與券票點強化（草案，待使用者確認）
+
+> **本章為草案，經使用者確認前不得實作**（比照 M5–M8：規格先行、核准才動工）。其中**點數類型
+> （交付內容 5）為使用者 2026-07-06 拍板納入**——研究報告（`docs/research/2026-07-06-deal-aggregation/`
+> 04 法務、README §7）原建議「未經律師查證前不做」，使用者明確推翻該建議要求納入；本規格如實
+> 並存記錄「使用者決策」與「研究風險標記」，並把兩項監理未定性列為「上線前律師必答」。其餘方向
+> 採研究建議之假定，逐處標「⚠️ 假定待確認」。
+
+**目標**：把 ShareGood 從「只有實體物品＋優惠券主迴路」擴充成「免費共享＋好康資訊」雙軌——
+（a）長出不走交付狀態機的「資訊型好康」（DealInfo）內容類型；（b）用**編輯人工收錄自寫摘要＋
+導流**（研究方案 B）合法承接 10 個官方來源，全程排除任何自動爬取；（c）強化券類（領取配額掛
+貢獻值、使用結果回報、不可上架清單）；（d）新增票券與點數兩種以「無償轉贈資訊媒合」為定位的
+內容類型，交付沿用既有 claims/handover，配齊防加價／個資最小化／法定警示；（e）把研究 04 的
+必寫/禁寫文案清單逐項落到頁面，即期食品補 Olio 式食安提示。
+
+**依賴**：
+- M1（`items` 狀態機、`claim_comments`／`direct_shares`／`handover_records` 交付流程、
+  `contribution_events` 貢獻值、`notifications` 站內通知——票券/點數類型沿用，不重造）。
+- M2（`keyword_blocklist` 關鍵字黑名單、`reports` 檢舉、`feature_flags` 的 `REQUIRE_REVIEW`
+  審核旗標、rate limit——本章擴充黑名單詞庫與新增內容類型的送審路徑，不改既有機制）。
+- M3（`coupon_details`／`coupon_secrets`／`coupon_reveal_logs` 券碼加密與揭露、`system_jobs`／
+  `system_job_runs` 排程、`item-expiration` job 模式——DealInfo 的硬性 TTL 直接複用此 job 架構）。
+- **缺口修正 wave 的 `/items` 瀏覽頁**（正由 `feature/gap-browse-page` 分支平行開發）：DealInfo
+  與票券/點數的瀏覽/篩選 UI 掛在該頁的列表基礎設施上（見下方「依賴關係」；本章不重造瀏覽頁）。
+
+**研究依據（開工前必讀）**：`docs/research/2026-07-06-deal-aggregation/` 五份文件——01 現況盤點、
+02 市場 benchmark（可借鏡 Top 10、票券轉贈官方規則表、不應照抄清單）、03 資料來源可行性
+（S0–S5 分級、方案 B 的 10 個 S1 來源）、04 法務政策（爬蟲三分法、文案必寫/禁寫清單、需律師
+審閱 8 項）、README 執行摘要。
+
+**假定與決策紀錄**（每處對應下方交付內容）：
+1. ⚠️ **假定待確認**：聚合採**方案 B**（使用者投稿 S3 ＋官方頁人工收錄自寫摘要＋導流 S1），
+   **排除一切自動爬取**（研究 03/04；Lawsnote 一審把「違反 ToS 的爬取」連到刑法 359）。
+2. ⚠️ **假定待確認**：票券做**資訊型媒合＋防加價配套**（研究 02/04：無償轉贈在黃牛條款文義之外，
+   但平台媒介加價的幫助責任查無依據）。**上線前需律師審閱**。
+3. **使用者拍板（非假定）**：點數類型**要做**，採法務最低風險形態（無償贈與媒合＋引導官方 App
+   閉環完成轉移，平台不經手）。**上線前需律師審閱**（兩項監理未定性見交付內容 5）。
+
+### 交付內容
+
+#### 1. 資訊型好康（DealInfo）——不走 claims/handover 的新內容類型
+
+DealInfo 是「純資訊、無實體交付」的內容：它不是一個 `items` 列，**不進 claims/handover 狀態機**
+（研究 01 §1：現有狀態機假設一對一交付，資訊類完全沒有對應路徑），因此獨立成 `deal_infos` 表，
+與 `items` 平行。任何人（登入使用者投稿，S3）或編輯（人工收錄，S1，見交付內容 2）都可建立。
+
+**必填欄位**（表單層與 API 層雙重驗證）：標題、**自寫摘要**（明文規則：禁止複製官方圖文，只能
+轉述事實；研究 03/04：麥當勞、肯德基 ToS 明文禁重製）、來源連結（URL）、來源類型
+（`user_submission` / `editorial`）、適用縣市（可多選，或勾「全台」）、到期日（硬性 TTL）。
+
+`deal_infos`（欄位為本規格草案，命名依 §3.1、分頁/索引/個資最小化依 §11.2 慣例）：
+```
+id                 cuid
+title              text            -- 標題
+summary            text            -- 自寫摘要（禁複製官方圖文，純事實轉述）
+source_url         text            -- 來源連結（原始官方 URL；活動短網址收錄時改存原始網址）
+source_type        DealSourceType  -- user_submission | editorial
+deal_source_id     FK → deal_sources.id, nullable  -- editorial 類關聯的 S1 來源（見交付內容 2）
+is_nationwide      boolean         -- 是否全台適用（true 時忽略 deal_info_cities）
+submitter_id       FK → users.id, nullable  -- 使用者投稿者；editorial 收錄可為 null（由編輯建立）
+status             DealInfoStatus  -- 見下方狀態機
+verified_at        timestamptz     -- 「查證日期」：建立/最近一次人工查證的時間，顯著標示於卡片與詳情
+expires_at         timestamptz     -- 硬性 TTL 到期日（必填）
+stale_reported_at  timestamptz, nullable  -- 最近一次被判定 stale 的時間
+published_at       timestamptz, nullable
+created_at / updated_at
+```
+
+`deal_info_cities`（多選縣市 join；`is_nationwide=true` 時不建列）：
+```
+id
+deal_info_id  FK
+city_id       FK → cities.id
+@@unique([deal_info_id, city_id])
+```
+
+**狀態機**（DealInfoStatus；刻意**不動** `items.status` enum，與 M5 封裝抽籤狀態同精神）：
+```
+draft      -- REQUIRE_REVIEW 開啟時，使用者投稿先進此態（沿用 M2 送審路徑）；關閉時直接 published
+published  -- 上架中，公開可見、產生 SEO metadata
+stale      -- 失效回報達門檻，自動標記（可 reactivate 回 published，見下方失效回報）
+expired    -- 到期日已過（硬性 TTL），終態
+```
+轉換：`draft→published`（審核通過或未開審核）、`published→stale`（失效回報達門檻）、
+`stale→published`（reactivate）、`published→expired`／`stale→expired`（TTL 到期）。expired 為
+終態（不可 reactivate；已過期的好康沒有救回意義）。跳態或逆向轉換一律 409（比照 M2 檢舉狀態機
+慣例）。
+
+**硬性 TTL（複用 M3 `item-expiration` job 模式）**：新增 job kind 掛在既有 `system_jobs`／
+`system_job_runs`＋`CRON_SECRET` 機制上（**不重新發明排程**），每次執行把 `status IN
+(published, stale)` 且 `expires_at <= now()` 的 DealInfo 轉 `expired`；用條件式 `updateMany`
+（`WHERE status IN (...) AND expires_at <= now()`）當樂觀鎖保 idempotent，重複觸發不重複轉態。
+可比照 M3 在到期前 N 天提醒投稿者（沿用 `notifications`，選配）。
+
+**失效回報（借鏡 hotukdeals：多人回報＋狀態可逆，研究 02 可借鏡 #1/#2）**：
+- `deal_info_reports`（失效回報，一人一物一次；防單人惡意殺文靠 unique＋門檻 ≥2）：
+  ```
+  id
+  deal_info_id  FK
+  reporter_id   FK → users.id
+  round         int          -- 第幾輪回報（reactivate 後 +1，見下方），配合 unique 允許同人跨輪再報
+  created_at
+  @@unique([deal_info_id, reporter_id, round])
+  ```
+- 機制：登入使用者可對 `published` 的 DealInfo 回報「已失效」；當**同一輪內不重複的回報人數**達
+  門檻（預設 `DEAL_STALE_THRESHOLD=3`，門檻 ≥2 才生效，避免單人殺文）→ 自動轉 `stale`、寫
+  `stale_reported_at`。unique(`deal_info_id, reporter_id, round`) 擋同一人同一輪重複回報。
+- **reactivate**：原投稿者或 moderator/admin 可把 `stale` 轉回 `published`，並把該 DealInfo 的
+  `round` 遞增一輪（等同清空本輪回報計數但保留稽核歷史，不真的刪 `deal_info_reports`）。
+- 這條 job 也可順手掃「stale 超過 X 天無人 reactivate」自動轉 expired（選配，門檻可設）。
+
+**來源與查證日期顯著標示**：DealInfo 卡片與詳情頁**必顯示**來源（連結到 `source_url` 或關聯的
+`deal_sources`）與 `verified_at`「查證日期：YYYY-MM-DD」；詳情頁**標配免責**（研究 04 必寫清單）：
+「優惠與兌換條件可能隨時變動，實際內容以發行商家最新公告及現場為準。」（＝「以官方最新公告及
+現場為準」）。SEO：DealInfo 詳情頁比照物品頁做 OG＋JSON-LD，但**非 Product/Offer**（它不是可
+交易物品）；用一般 Article/WebPage 型別，避免對外暗示可購買或保證兌換。
+
+#### 2. 編輯人工收錄（方案 B 的 S1 來源）——後台「來源管理」
+
+**scope guard（本交付的硬邊界）：不做任何自動抓取、不做異動偵測自動化。** 全部靠編輯人工瀏覽
+官方頁→自寫摘要→附官方固定 URL 導流→更新查證日期（研究 03 方案 B）。
+
+- `deal_sources`（S1 官方來源主檔，由 moderator/admin 於後台維護）：
+  ```
+  id
+  name           text            -- 來源顯示名稱
+  official_url   text            -- 官方固定頁 URL（導流目標）
+  source_grade   text            -- 記錄 S 分級（本章一律 S1；欄位保留供未來 S0/S2 標註）
+  last_checked_at timestamptz    -- 「上次查證日期」（每次人工查閱後更新，顯著顯示）
+  is_active      boolean
+  notes          text, nullable  -- 收錄注意事項（如「JS SPA、活動 URL 生命週期短」）
+  created_at / updated_at
+  ```
+- **後台頁面** `/admin/deal-sources`（moderator/admin，比照既有 `/admin/*` 頁慣例，直接查 db）：
+  來源 CRUD、每來源顯示 `last_checked_at`、一鍵「標記已查證」（更新 `last_checked_at`＋寫
+  `audit_logs`）；`admin-nav.tsx` 補入口。
+- **10 個 S1 種子來源**（研究 03 方案 B 選定 #1,3,4,5,6,7,9,10,12,13）：麥當勞台灣官網「現正推出」、
+  肯德基台灣、摩斯漢堡、漢堡王台灣、全家活動頁、**全家「友善食光」說明頁（高優先）**、7-ELEVEN
+  官網活動頁、**7-ELEVEN「i珍食」說明頁（高優先）**、全聯、**萬家福（原家樂福，已 301 至
+  uni-prosperity.com.tw）**。以 seed 或後台手動建檔皆可。
+  - **明確排除**：麥當勞 App（S4，且文案**禁用「麥當勞報報」舊名**，已改版為「麥當勞 APP」）、
+    OPEN POINT／FamiPoint App（S4，僅導流）、所有 App 內個人化券／序號／動態條碼（S5，禁收錄）。
+- DealInfo（`source_type=editorial`）以 `deal_source_id` 關聯 `deal_sources`，詳情頁顯示來源名稱＋
+  該來源 `last_checked_at`。
+
+#### 3. 券類強化（give-to-get 配額＋使用結果回報＋不可上架清單）
+
+延續 M3 既有優惠券（AES-256-GCM 券碼加密＋領取後揭露），本交付補三項：
+
+- **give-to-get 領取配額掛既有貢獻值**（研究 02 CouponShare 借鏡 #3）：券類物品的每日「留言/認領」
+  額度依使用者累計 `contribution_events` 貢獻值分級（例：新手每日 N 次；分享過券後提高），配額檢查
+  加在既有 `POST /api/items/[id]/claims` 券類分支，超額回 429（沿用 M2 rate limit 錯誤格式）。
+  **具體級距數字為草案，待使用者確認**（⚠️ 假定待確認）。
+- **優惠券「使用結果回報」**（研究 02 借鏡 #1 的可用/失效閉環；研究 01 §4 標記未支援）：
+  - `coupon_usage_reports`（一人一券一次）：
+    ```
+    id
+    item_id      FK → items.id
+    reporter_id  FK → users.id
+    result       CouponUsageResult  -- usable | expired_or_used（可用 | 已失效）
+    created_at
+    @@unique([item_id, reporter_id])
+    ```
+  - 券類物品詳情頁顯示聚合統計（「N 人回報可用／M 人回報已失效」），**文案不得暗示平台保證有效**
+    （研究 04 禁寫：「保證可兌換」「保證有效」）；統計只是使用者回報事實。
+- **不可上架清單（雙重攔截）**（研究 02 台灣在地化 #2、票券結論；研究 01 §4）：
+  - **官方禁轉贈/官方閉環類型**：LINE 禮物／即享券（官方明文禁轉贈）、7-ELEVEN 行動隨時取、
+    全家隨買跨店取（官方閉環，正確做法是引導走官方轉贈功能，不在本平台上架）。
+  - **攔截層一（表單/API）**：程式內定一份「不可上架類型」常數清單，券票類上架時比對命中即
+    422 拒絕（附說明「此類型為官方閉環/禁轉贈，請走官方 App 轉贈功能」）。
+  - **攔截層二（關鍵字）**：擴充 M2 `keyword_blocklist` 詞庫（如「即享券」「LINE 禮物」「隨買
+    跨店取」等），命中標題/描述即 422（沿用既有黑名單機制，不新增攔截程式）。
+
+#### 4. 票券類型（⚠️ 假定待確認＋上線前需律師）——資訊型無償轉贈媒合
+
+**定位**：資訊型媒合。發布者聲明「這是什麼券種、原本在哪個平台」，平台只做媒合，**不碰票、不
+擔保**（研究 02 票券結論、研究 04 #3a/#3b）。票券是 `items` 的一種內容類型（沿用既有 claims/
+handover 交付；研究 01 建議「先用 type 欄位＋既有狀態機漸進」，不做獨立五類型狀態機重構）。
+
+- 新增 `ticket_details`（掛在對應 `items` 列上，比照 `coupon_details` 慣例）：
+  ```
+  id
+  item_id       FK → items.id, @unique
+  ticket_type   text     -- 券種（如「紙本入場券」「序號券」；自由文字，不含金額）
+  origin_platform text   -- 原平台聲明（如「KKTIX」「主辦官網」）
+  event_name    text, nullable
+  valid_until   timestamptz, nullable  -- 使用期限（沿用 items.expires_at 亦可，擇一，實作定案）
+  created_at / updated_at
+  ```
+  **明確無「金額」欄位**（研究 04：任何金額/補貼名義收費即違法）。
+- **加價關鍵字攔截**：擴充 M2 `keyword_blocklist`，攔截「+300」「小補」「私訊出價」「補差價」
+  「加價」等對價暗示（研究 04 #3a），命中標題/描述/留言即 422。
+- **法定警示文案（標配於票券詳情頁與上架表單，句式依研究 04 必寫清單）**：
+  「依文創法第 10 條之 1 及運動產業發展條例第 24 條之 1，以超過票面金額轉售票券可處票面 10 至
+  50 倍罰鍰。本平台僅允許無償轉贈。」＋轉贈風險提示：「本平台僅提供無償轉贈之資訊媒合，不經手、
+  不保管、不擔保任何票券或優惠券之真偽與可兌換性；能否轉讓請依發行人使用條款。」
+- **KKTIX 類引導官方轉讓**（研究 02 票券轉贈官方規則表）：偵測到 `origin_platform` 屬有官方轉讓
+  閉環者（如 KKTIX，轉讓後原 QR 失效、部分動態 QR），詳情頁顯示說明「此平台提供官方轉讓功能，
+  請雙方走官方流程完成轉讓，本平台僅協助媒合、不碰票」。
+- **交付**：沿用既有 `claims`／`direct-shares`／`handover` 流程（雙方確認完成），不新增交付狀態機。
+
+#### 5. 點數類型（使用者 2026-07-06 拍板要做；採法務最低風險形態）——無償贈與媒合＋引導官方閉環
+
+> **決策並存記錄**：本功能為**使用者決策**；研究報告（04 #8、README §7）原建議「未經律師查證前
+> 不做」（點數轉贈查無可靠法規依據）。使用者明確推翻該建議要求納入，本規格採「法務最低風險形態」
+> 設計，並把兩項監理未定性列為「上線前律師必答」（見下方「需律師審閱項目彙總」）。
+
+**定位**：**無償贈與的媒合＋引導官方閉環完成轉移**。點數是 `items` 的一種內容類型（沿用既有
+claims/handover 交付）。
+
+- 發布者聲明**點數平台**（FamiPoint／OPEN POINT／其他）與**數量**。實際轉移**一律引導雙方走官方
+  App 的轉贈功能**完成（研究 02 確認 FamiPoint 有轉入/轉出功能，**細則需查證**，見「實作前查證
+  清單」）。**平台不經手點數本身**。
+- 新增 `point_details`（掛在對應 `items` 列上）：
+  ```
+  id
+  item_id        FK → items.id, @unique
+  point_platform text    -- 點數平台聲明（FamiPoint / OPEN POINT / 其他自由文字）
+  point_amount   int     -- 點數數量（純數量，不是金額、不換算現金）
+  created_at / updated_at
+  ```
+- **個資最小化（硬規則）**：平台**不記錄任何會員帳號／手機號／驗證碼**——這些欄位**明文禁止**
+  出現在表單與留言，並以關鍵字攔截（擴充 M2 `keyword_blocklist`：手機號格式、「驗證碼」「會員
+  帳號」「OTP」等），命中即 422。轉移的帳號級操作只發生在雙方各自的官方 App 內，平台不觸及。
+- **嚴禁對價（硬規則）**：**無金額欄位**；擴充 `keyword_blocklist` 攔截「折現」「換現金」「交換」
+  「面交補」等字眼（研究 04 禁句清單），命中即 422。
+- **交付**：狀態機沿用既有 claims/handover（雙方確認完成），不新增交付狀態機。
+- **詳情頁標配警示**：「點數轉贈依各平台官方規則，能否轉贈、次數與期限以官方 App 為準；本平台
+  不經手點數。」＋非官方合作聲明（研究 04 必寫）。
+- **本功能不做（並記錄理由）**：**平台代轉點數**（任何形式的平台經手/代管點數帳戶或點數本身）
+  ——永久禁止，違反 §1 non-goals（不做金流）與個資最小化，且放大監理風險。設計上平台只做「資訊
+  媒合＋引導官方 App 閉環」，全程不觸及任一方的點數餘額或帳號。
+
+#### 6. 文案套用（研究 04 必寫/禁寫清單逐項落頁）＋即期食品食安提示
+
+- **必寫清單逐項落到對應頁面**（研究 04 二、必寫）：
+  1. **非官方合作聲明**（頁尾/關於頁/DealInfo 與券票點詳情頁）：「本平台所提及之商店名稱、品牌
+     及商標均屬各權利人所有；除另有標示外，本平台與各品牌並無合作、授權或從屬關係。」
+  2. **現場/官方為準**（DealInfo、即期食品、券票詳情頁）：「優惠與兌換條件可能隨時變動，實際
+     內容以發行商家最新公告及現場為準。」
+  3. **轉贈風險提示**（券/票/點詳情頁）：見交付內容 4 句式。
+  4. **禁止加價警示**（票券）：見交付內容 4 句式。
+  5. **點數官方為準警示**（點數）：見交付內容 5 句式。
+- **禁寫清單建為攔截/審查規則**（研究 04 二、絕對不能寫）：「保證可兌換」「保證有效」「與 XX
+  品牌合作提供」「官方授權」「平台一概不負任何責任」「代購費」「手續費」「點數可折現」「換
+  現金」——列入送審檢查與（可行者）`keyword_blocklist`。
+- **非官方聲明主模板**：以研究 04 之 Dealy.TW 免責樣式為主要模板（最完整）。
+- **即期食品子表單補 Olio 式食安提示**（研究 02 借鏡 #7；研究 01 §1 即期食品僅有 checkbox）：
+  - **有效日期過期禁分享**（硬性：`valid_until < 今日` 的即期食品禁上架，表單/API 雙重擋）。
+  - **建議拍效期標籤照**（表單提示「請拍攝清楚的有效日期標籤照片」，比照 Olio「食品照片必拍效期
+    標籤」；提示性、不強制擋，避免誤傷）。
+  - 期望管理文案：「即期食品請於有效日期前食用完畢，實際狀況以外包裝標示為準。」
+
+### 不做（scope guard；各附一句理由）
+
+- **不做任何自動爬蟲/自動抓取/自動異動偵測**：Lawsnote 一審把「違反 ToS 的爬取」連到刑法 359、
+  民事判賠約 1.05 億（研究 04 #5）——二審定讞前一律當危險區，來源只走人工收錄自寫摘要＋導流。
+- **不做門市維度**：需政府開放資料＋geocoding（研究 03 #17，TGOS 費用需查證），與現階段縣市級
+  定位無關，屬方案 C 後續增量，不綁進本章。
+- **不做距離排序**：schema 無經緯度、與縣市級定位衝突（研究 01 §2/(d)），過度工程。
+- **不做 LINE 通知**：每則 Push 都是變動成本、免費平台無回收模型（研究 04 #6a），Telegram 管線
+  優先。
+- **不做 Email 送達**：沿用既有站內通知＋Telegram／Web Push 管道（比照 M6 scope guard），不引入
+  郵件基礎設施。
+- **不做熱門排序演算法**：量級未到、易被灌票操縱（研究 02 不應照抄 #1 manufactured votes），
+  先靠 newest／expiring 兩種既有排序。
+- **不做點數折現/換現金/交換**：變相金流＋儲值監理疑慮（研究 04 禁句），且違反 §1 non-goals
+  （不做金流、不做交換）——永久禁止，任何 session 不得加回。
+- **不做平台代轉點數/代管券碼以外的擔保兌換**：平台嚴守「資訊揭示＋聯繫媒介」，代管/擔保會被
+  認定參與販售通路（研究 04 #2），放大監理風險。
+- **不做聯盟連結/分潤**：本章不引入商業分潤（一旦做需逐處揭露、觸及公平會薦證規範，研究 04
+  #7），維持「不商業」信任資產。
+- **不做獨立五類型狀態機重構**：票券/點數用 `items` 內容類型＋既有 claims/handover 漸進
+  （研究 01 (d)），DealInfo 才獨立成表（因它無交付）。
+
+### 依賴關係
+
+- **強依賴 `/items` 瀏覽頁（`feature/gap-browse-page` 分支平行開發中）**：DealInfo 與票券/點數的
+  瀏覽、縣市/類型篩選、卡片列表 UI 都掛在該頁的列表基礎設施上。本章**不重造瀏覽頁**；若該分支
+  尚未合併，M9 前端無處掛載，需先等缺口修正 wave 落地。實作排序上，交付內容 1/3/4/5 的**後端
+  API 與 schema 可先行**，前端瀏覽/篩選待 `/items` 頁就緒後接上。
+- 依賴 M2 `REQUIRE_REVIEW` 送審路徑（DealInfo 與券票點的先發後審）與 `keyword_blocklist`（交付
+  內容 3/4/5 的多處攔截都擴充既有詞庫，不新增攔截程式）。
+- 依賴 M3 `item-expiration` job 模式（DealInfo 硬性 TTL）與 `system_jobs` 排程。
+
+### 需律師審閱項目彙總（上線前必答）
+
+> 沿用 M7 慣例：法務相關段落上線前需**台灣執業律師**審閱，模型無法替代（研究 04 開頭免責）。
+
+1. **（票券，交付內容 4）平台媒介「使用者私下加價」的幫助責任**：無償轉贈文義合法（文創法 10-1／
+   運動條例 24-1），但「平台媒介加價的幫助責任」查無依據（研究 04 #3a）；「防加價做到什麼程度算
+   盡到義務」無標準答案。
+2. **（點數，交付內容 5，使用者決策）點數無償轉贈媒合的監理定性**：研究 04 #8 標記「不確定，需
+   查證」（可能觸及發行人條款＋儲值監理）——**本功能為使用者 2026-07-06 拍板納入，研究報告原
+   建議暫緩**。
+3. **（點數，交付內容 5，使用者決策）發行人條款普遍禁轉讓時，平台媒合的責任**：多數點數/會員條款
+   限制轉讓，平台即使只做「無償媒合＋引導官方 App」，仍需律師確認媒合行為本身的責任邊界。
+4. **（券類，交付內容 3）C2C 無償轉贈媒合平台是否落入禮券定型化契約規範**：研究 04 #2 查無主管
+   機關函釋；平台定位須嚴守「資訊媒介、不代管、不擔保兌換」。
+5. **（文案，交付內容 6）notice-and-takedown 時限承諾**與**非官方合作聲明/免責文字**的最終定稿
+   （研究 04 #4b／必寫清單），需律師拿捏。
+6. **即期食品分享的法規責任**（台灣「有效日期」對應 use-by 的責任歸屬，研究 02 台灣在地化 #7
+   標記需查證）。
+
+### 實作前查證清單（非律師項，工程/編輯查證）
+
+- **FamiPoint／OPEN POINT 轉贈細則**（是否可轉贈、次數、期限、需否雙方會員）——研究 02 票券轉贈
+  表標記「需查證」；交付內容 5 的引導文案上線前需以官方頁核實。
+- **10 個 S1 來源官方頁現況**（URL 是否仍有效、ToS 是否更新）——收錄前由編輯人工再核（研究 03：
+  麥當勞/肯德基明文禁重製，摩斯/OPEN POINT 有反自動化措施）。
+- **正式站 `REQUIRE_REVIEW` 是否開啟**（研究 01「不確定，需查證」）——影響 DealInfo/券票點是否
+  先進 draft。
+
+### 驗收清單
+
+- [ ] 乾淨 DB `prisma migrate deploy` 後 `deal_infos`／`deal_info_cities`／`deal_info_reports`／
+      `deal_sources`／`coupon_usage_reports`／`ticket_details`／`point_details` 七張表皆存在；
+      直接查 DB schema 確認 §11.2 新增索引（`deal_infos(status, expires_at)`、
+      `deal_info_reports` 的 unique、`coupon_usage_reports` 的 unique 等）皆已建立。
+- [ ] 建立一筆 DealInfo（必填齊全）：卡片與詳情頁顯著顯示「來源」與「查證日期」，詳情頁出現
+      「以發行商家最新公告及現場為準」免責；缺任一必填欄位（標題/摘要/來源連結/來源類型/縣市或
+      全台/到期日）→ API 回 422。
+- [ ] DealInfo 硬性 TTL：把某筆 `expires_at` 撥到過去、觸發 `deal-info-expiration` job → 該筆轉
+      `expired`；重複觸發 job 不重複轉態（條件式 `updateMany` idempotent）。
+- [ ] 失效回報：門檻設 3，兩個不同帳號回報後仍 `published`（未達門檻），第三個不同帳號回報後自動
+      轉 `stale`；**同一帳號重複回報同一輪不計入**（unique 擋下）；moderator reactivate 後回
+      `published` 且 `round` +1，本輪回報計數歸零（舊回報列仍在，稽核可查）。
+- [ ] `/admin/deal-sources`：moderator/admin 可 CRUD 來源、10 個 S1 種子來源在列、每來源顯示
+      `last_checked_at`、按「標記已查證」後 `last_checked_at` 更新且寫 `audit_logs`；非
+      moderator/admin 存取 → 404/403。**全站 grep 確認無任何自動抓取/排程抓取 S1 來源的程式**。
+- [ ] 券類 give-to-get 配額：低貢獻值帳號在當日額度用盡後，第 N+1 次券類認領回 429；分享過券
+      提高額度後可繼續。
+- [ ] 券使用結果回報：同一使用者對同一券回報兩次 → 第二次被 unique 擋下；詳情頁聚合統計
+      （可用/已失效人數）正確；**文案無「保證有效/保證可兌換」字樣**。
+- [ ] 不可上架清單：以「LINE 即享券」「隨買跨店取」為標題/券種上架 → 422（表單常數清單＋
+      `keyword_blocklist` 任一命中即擋）。
+- [ ] 票券類型：`ticket_details` 無金額欄位；上架帶「+300」「小補」「私訊出價」→ 422（關鍵字
+      攔截）；票券詳情頁標配文創法/運動條例警示與轉贈風險提示；`origin_platform=KKTIX` 顯示
+      「走官方轉讓」說明；確認後能無痛接續既有 `handover/ensure` 交接。
+- [ ] 點數類型：`point_details` 無金額欄位、僅 `point_platform`＋`point_amount`；表單/留言含手機號/
+      「驗證碼」/「會員帳號」→ 422（個資最小化攔截）；含「折現」「換現金」「交換」→ 422；詳情頁
+      標配「以官方 App 為準、本平台不經手點數」警示；**全站 grep 確認無任何「平台代轉/代管點數」
+      邏輯或欄位**；交付沿用既有 claims/handover。
+- [ ] 文案：非官方合作聲明出現在頁尾/關於頁與券票點詳情頁；禁寫清單詞彙在送審檢查中被標記；
+      即期食品 `valid_until < 今日` 上架被擋，表單有「拍效期標籤照」提示。
+- [ ] read-back 全章：無任何自動爬取規劃、無「麥當勞報報」舊名、家樂福一律用新名「萬家福」、
+      點數段落無任何「平台代轉點數」設計。
+- [ ] `docs/governance/judgment-rubrics.md` §5 三組底線逐條過（比照 M1 驗收慣例）。
+
+---
+
 ## 11. 參考附錄（設計已定案的細節，實作該 milestone 時查閱）
 
 ### 11.1 完整資料表清單（依 milestone 標注）
@@ -1894,6 +2245,9 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
 - M7：privacy_requests, data_exports, data_retention_policies, data_purge_logs,
   law_enforcement_requests（相關表組）, legal_holds（相關表組）
 - M8：health_checks, error_logs, performance_metrics, storage_usage_snapshots
+- M9（草案，待使用者確認，見 §9a）：deal_infos, deal_info_cities, deal_info_reports, deal_sources,
+  coupon_usage_reports, ticket_details, point_details（票券/點數為 `items` 內容類型，掛既有
+  claims/handover；DealInfo 獨立成表因無交付）
 - 後移未排：badges/user_badges/leaderboard_*（徽章排行榜——等有活躍使用者再說）、
   sensitive_access_logs（M2 併入 audit_logs 加 `sensitive` 欄位起步，量大再拆表）
 
@@ -1927,6 +2281,11 @@ contribution_events(user_id, created_at)
 audit_logs(actor_id, created_at)
 （M5+）lottery_entries unique(lottery_id, user_id)
 （M6+）subscription_keywords(normalized_keyword)
+（M9+，草案）deal_infos(status, expires_at)         -- 硬性 TTL job 掃描
+（M9+，草案）deal_infos(status, created_at)          -- 好康列表/瀏覽分頁（cursor）
+（M9+，草案）deal_info_cities(city_id, deal_info_id)  -- 縣市篩選
+（M9+，草案）deal_info_reports unique(deal_info_id, reporter_id, round)  -- 失效回報一人一輪一次
+（M9+，草案）coupon_usage_reports unique(item_id, reporter_id)          -- 使用回報一人一券一次
 ```
 
 ### 11.3 併發保護對照（v1 §11.2 全數保留）
@@ -1939,9 +2298,13 @@ audit_logs(actor_id, created_at)
 | 完成共享重複確認 | idempotency key |
 | Telegram webhook 重複 | update_id 去重 |
 | 通知重複 | delivery idempotency |
+| 失效回報重複（M9 草案） | unique(deal_info_id, reporter_id, round) |
+| 券使用回報重複（M9 草案） | unique(item_id, reporter_id) |
 
 ### 11.4 快取策略（v1 §10.3 保留；MVP 先靠 Next.js 內建即可）
 分類/縣市 long cache；首頁熱門 short cache；私訊/券碼/檢舉/法務 一律不快取。
+（M9 草案）好康資訊（DealInfo）列表 short cache、詳情頁隨 `verified_at`/狀態變動失效；券票點詳情
+與券碼揭露一律不快取。
 
 ### 11.5 資料保留（v1 §4.5 表全數保留，M7 實作，之前一律不主動刪）
 
@@ -1954,6 +2317,9 @@ v1 §7 的前後台頁面清單全數有效，但按 milestone 分批實作：M0
 IDOR→object-level permission；XSS→escape+sanitize；CSRF→protected mutation；
 Upload→magic bytes；Webhook→secret header；券碼→加密+reveal log；管理員→audit log；
 洗版→rate limit。實作時對照 judgment-rubrics §5a 驗。
+（M9 草案）點數/會員資料最小化→表單與留言禁存會員帳號/手機號/驗證碼（keyword_blocklist 攔截）、
+平台不經手點數；票券/點數禁對價→無金額欄位＋加價/折現關鍵字攔截；外部來源→僅人工收錄自寫摘要＋
+導流，禁自動爬取（Lawsnote 風險）。
 
 ---
 
