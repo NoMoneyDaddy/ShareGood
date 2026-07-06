@@ -68,6 +68,8 @@ S3_ENDPOINT / S3_ACCESS_KEY / S3_SECRET_KEY / S3_BUCKET   # MinIO
 S3_PUBLIC_URL           # 圖片對外讀取的 base URL
 COUPON_SECRET_KEY       # M3 起：券碼加密（AES-256-GCM）
 TELEGRAM_BOT_TOKEN / TELEGRAM_WEBHOOK_SECRET              # M4 起
+TELEGRAM_BOT_USERNAME   # M4 起：bot 的 @username（不含 @），組深連結
+                        # https://t.me/<username>?start=<token> 用
 WEB_PUSH_VAPID_PUBLIC_KEY / WEB_PUSH_VAPID_PRIVATE_KEY    # M6 起：Web Push VAPID 金鑰對，用
                         # `npx web-push generate-vapid-keys` 產生；public key 前端可見，
                         # private key 僅伺服器持有
