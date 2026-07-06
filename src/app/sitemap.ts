@@ -26,6 +26,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: baseUrl,
       lastModified: homeLastModified,
     },
+    // 新手說明／使用規則／服務條款／隱私權政策：純靜態內容頁，lastModified 用部署時間即可。
+    { url: `${baseUrl}/guide` },
+    { url: `${baseUrl}/rules` },
+    { url: `${baseUrl}/terms` },
+    { url: `${baseUrl}/privacy` },
   ];
 
   const itemPages: MetadataRoute.Sitemap = items.map((item) => ({
