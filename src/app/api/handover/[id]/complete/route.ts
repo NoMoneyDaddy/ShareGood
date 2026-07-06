@@ -3,6 +3,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { CONTRIBUTION_POINTS } from "@/lib/contribution";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 
 // PATCH /api/handover/[id]/complete — 物主或接手者標記「我這邊完成了」。
 // 雙方都確認後才真正轉 completed；整段判斷與寫入包在同一個 $transaction 裡，比照
@@ -75,19 +76,15 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
             actorId: user.id,
           },
         });
-        await tx.notification.createMany({
-          data: [
-            {
-              userId: handover.item.ownerId,
-              type: "completion_confirmed",
-              payload: { itemId: handover.item.id, itemTitle: handover.item.title },
-            },
-            {
-              userId: handover.receiverId,
-              type: "completion_confirmed",
-              payload: { itemId: handover.item.id, itemTitle: handover.item.title },
-            },
-          ],
+        await createOrMergeNotification(tx, {
+          userId: handover.item.ownerId,
+          type: "completion_confirmed",
+          payload: { itemId: handover.item.id, itemTitle: handover.item.title },
+        });
+        await createOrMergeNotification(tx, {
+          userId: handover.receiverId,
+          type: "completion_confirmed",
+          payload: { itemId: handover.item.id, itemTitle: handover.item.title },
         });
         // 貢獻值記分：塞在 flipped.count === 1 這個「恰好只會發生一次」的分支裡，借用上面
         // updateMany + count 判斷的原子保護，確保雙方各自呼叫或其中一方重複呼叫 complete

@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 
 const DEFAULT_PAGE_SIZE = 20;
 const MAX_PAGE_SIZE = 50;
@@ -102,18 +103,19 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     select: { id: true, senderId: true, body: true, createdAt: true },
   });
 
-  // 通知「另一位成員」（不是自己）有新的交接訊息。
+  // 通知「另一位成員」（不是自己）有新的交接訊息。這是最容易短時間內連發好幾則的場景
+  // （雙方你一言我一語聊交接細節），所以用 createOrMergeNotification：30 分鐘窗口內對
+  // 同一物品的多則 handover_message 只會合併成一筆未讀通知（見 src/lib/notifications.ts），
+  // 不會每傳一句話就轟炸對方一則新通知。
   const otherMember = conversation.members.find((m) => m.userId !== user.id);
   if (otherMember) {
-    await db.notification.create({
-      data: {
-        userId: otherMember.userId,
-        type: "handover_message",
-        payload: {
-          itemId: conversation.item.id,
-          itemTitle: conversation.item.title,
-          conversationId: conversation.id,
-        },
+    await createOrMergeNotification(db, {
+      userId: otherMember.userId,
+      type: "handover_message",
+      payload: {
+        itemId: conversation.item.id,
+        itemTitle: conversation.item.title,
+        conversationId: conversation.id,
       },
     });
   }

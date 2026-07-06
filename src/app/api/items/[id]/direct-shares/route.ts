@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 
 const DIRECT_SHARE_TTL_MS = 72 * 60 * 60 * 1000; // 72 小時
 
@@ -74,15 +75,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     throw e;
   }
 
-  await db.notification.create({
-    data: {
-      userId: receiver.id,
-      type: "direct_share_received",
-      payload: {
-        itemId: item.id,
-        itemTitle: item.title,
-        itemOwnerNickname: user.profile.nickname,
-      },
+  await createOrMergeNotification(db, {
+    userId: receiver.id,
+    type: "direct_share_received",
+    payload: {
+      itemId: item.id,
+      itemTitle: item.title,
+      itemOwnerNickname: user.profile.nickname,
     },
   });
 
