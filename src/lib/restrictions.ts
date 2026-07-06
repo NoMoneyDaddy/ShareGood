@@ -28,7 +28,11 @@ export async function checkUserRestriction(
   action: RestrictionAction,
 ): Promise<RestrictionCheckResult> {
   const now = new Date();
-  const restriction = await db.userRestriction.findFirst({
+  // 用 findMany 撈出所有目前生效中、跟這個 action 有關的限制（該 action 對應的 type
+  // 以及 full_block），而不是只取「最新一筆」——否則使用者若同時有較舊的 full_block（停權）
+  // 跟較新的 no_posting（禁上架），findFirst + orderBy desc 只會看到較新的 no_posting，
+  // 顯示成「限制上架」而不是更嚴重的「停權」，判斷不準確。
+  const restrictions = await db.userRestriction.findMany({
     where: {
       userId,
       liftedAt: null,
@@ -36,12 +40,12 @@ export async function checkUserRestriction(
       type: { in: [ACTION_TYPE[action], RestrictionType.full_block] },
     },
     select: { type: true },
-    orderBy: { createdAt: "desc" },
   });
 
-  if (!restriction) return { blocked: false };
+  if (restrictions.length === 0) return { blocked: false };
 
-  if (restriction.type === RestrictionType.full_block) {
+  const hasFullBlock = restrictions.some((r) => r.type === RestrictionType.full_block);
+  if (hasFullBlock) {
     return {
       blocked: true,
       message: "您的帳號目前被停權，如有疑問請聯繫站方",

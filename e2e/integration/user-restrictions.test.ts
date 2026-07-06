@@ -272,6 +272,99 @@ describe("M2 功能限制（禁上架/禁留言/禁私訊/封鎖）", () => {
     expect(liftAgain.status).toBe(409);
   });
 
+  it("同一使用者同類型不能重複建立生效中的限制 → 409", async () => {
+    const target = await user("restrict-duplicate");
+    const mod = await moderator("restrict-duplicate-mod");
+
+    const first = await api("/api/admin/user-restrictions", {
+      method: "POST",
+      user: mod,
+      body: { userId: target.id, type: "no_posting", reason: "第一筆" },
+    });
+    expect(first.status).toBe(201);
+
+    const second = await api("/api/admin/user-restrictions", {
+      method: "POST",
+      user: mod,
+      body: { userId: target.id, type: "no_posting", reason: "重複的第二筆" },
+    });
+    expect(second.status).toBe(409);
+    expect((second.json as { error: { code: string } }).error.code).toBe("CONFLICT");
+  });
+
+  it("使用者同時有較舊的 full_block 跟較新的 no_posting 時，優先回報停權而非限制上架", async () => {
+    const target = await user("restrict-priority");
+    const mod = await moderator("restrict-priority-mod");
+
+    // 先建立較舊的 full_block。
+    await db.userRestriction.create({
+      data: {
+        userId: target.id,
+        type: "full_block",
+        reason: "較舊的停權",
+        createdBy: mod.id,
+        createdAt: new Date(Date.now() - 60 * 60 * 1000),
+      },
+    });
+    // 再建立較新的 no_posting（模擬同時存在兩筆限制、其中一筆較新）。
+    await db.userRestriction.create({
+      data: {
+        userId: target.id,
+        type: "no_posting",
+        reason: "較新的禁止上架",
+        createdBy: mod.id,
+      },
+    });
+
+    const { cityId, categoryId } = await pickCityAndCategory();
+    const res = await api("/api/items", {
+      method: "POST",
+      user: target,
+      body: { title: "應該顯示停權", description: "不是限制上架", categoryId, cityId, images: [] },
+    });
+    expect(res.status).toBe(403);
+    expect((res.json as { error: { message: string } }).error.message).toContain("停權");
+  });
+
+  it("被全站封鎖（full_block）的管理員自己不能建立或解除限制", async () => {
+    const target = await user("restrict-blocked-mod-target");
+    const mod = await moderator("restrict-blocked-mod");
+
+    // 先讓另一個 moderator/admin 把這個 moderator 自己也標記為 full_block
+    // （模擬角色還沒被立刻停用、但已經被停權的情境）。
+    const otherMod = await moderator("restrict-blocked-mod-other");
+    const blockMod = await api("/api/admin/user-restrictions", {
+      method: "POST",
+      user: otherMod,
+      body: { userId: mod.id, type: "full_block", reason: "測試停權後的管理員自己" },
+    });
+    expect(blockMod.status).toBe(201);
+
+    const create = await api("/api/admin/user-restrictions", {
+      method: "POST",
+      user: mod,
+      body: { userId: target.id, type: "no_posting", reason: "被停權的管理員嘗試建立限制" },
+    });
+    expect(create.status).toBe(403);
+    expect((create.json as { error: { message: string } }).error.message).toContain("停權");
+
+    // 用 otherMod 先幫 target 建一筆限制，再讓被停權的 mod 嘗試解除它。
+    const created = await api("/api/admin/user-restrictions", {
+      method: "POST",
+      user: otherMod,
+      body: { userId: target.id, type: "no_posting", reason: "給被停權的管理員嘗試解除用" },
+    });
+    expect(created.status).toBe(201);
+    const restrictionId = (created.json as { id: string }).id;
+
+    const lift = await api(`/api/admin/user-restrictions/${restrictionId}`, {
+      method: "DELETE",
+      user: mod,
+    });
+    expect(lift.status).toBe(403);
+    expect((lift.json as { error: { message: string } }).error.message).toContain("停權");
+  });
+
   it("moderator 不能限制 admin 帳號（RBAC 邊界）", async () => {
     const targetAdmin = await admin("restrict-rbac-admin");
     const mod = await moderator("restrict-rbac-mod");

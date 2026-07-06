@@ -4,6 +4,7 @@ import { jsonError } from "@/lib/api";
 import { writeAudit } from "@/lib/audit";
 import { AuthzError, requireRole } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkFullBlock } from "@/lib/restrictions";
 
 const VALID_TYPES = new Set<string>(Object.values(RestrictionType));
 const REASON_MIN = 1;
@@ -21,6 +22,13 @@ export async function POST(req: NextRequest) {
       return jsonError(e.code, e.code === "UNAUTHORIZED" ? "請先登入" : "需要管理權限");
     }
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，操作者自己若被全站封鎖（full_block），
+  // 即使角色還沒被立刻停用，也不能繼續建立限制。
+  const actorRestriction = await checkFullBlock(actor.id);
+  if (actorRestriction.blocked) {
+    return jsonError("FORBIDDEN", actorRestriction.message);
   }
 
   const body = await req.json().catch(() => null);
@@ -64,6 +72,22 @@ export async function POST(req: NextRequest) {
   const targetIsAdmin = targetUser.roles.some((r) => r.role === "admin");
   if (targetIsAdmin && !actorRoles.has("admin")) {
     return jsonError("FORBIDDEN", "moderator 不能限制 admin 帳號");
+  }
+
+  // 同一使用者同類型不能疊加多筆生效中的限制：否則之後解除只會解除其中一筆，
+  // 其餘還在生效，違反直覺（見 PR review）。
+  const now = new Date();
+  const existing = await db.userRestriction.findFirst({
+    where: {
+      userId,
+      type: type as RestrictionType,
+      liftedAt: null,
+      OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+    },
+    select: { id: true },
+  });
+  if (existing) {
+    return jsonError("CONFLICT", "該使用者目前已有生效中的同類型限制");
   }
 
   const restriction = await db.userRestriction.create({
