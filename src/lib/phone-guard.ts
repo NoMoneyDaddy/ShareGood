@@ -10,15 +10,12 @@
 const FULLWIDTH_DIGITS = "０１２３４５６７８９";
 
 function toHalfWidthDigits(text: string): string {
-  return text
-    .replace(/[０-９]/g, (ch) => String(FULLWIDTH_DIGITS.indexOf(ch)))
-    .replace(/　/g, " ");
+  return text.replace(/[０-９]/g, (ch) => String(FULLWIDTH_DIGITS.indexOf(ch))).replace(/　/g, " ");
 }
 
 // 台灣手機號：09 開頭共 10 碼數字，允許 "-"、"."、空白 分隔（例："0912345678"／
 // "0912-345-678"／"0912 345 678"），也接受 +886/886 國際碼變體（國際碼後面接的號碼不含開頭 0）。
-const TAIWAN_MOBILE_PATTERN =
-  /(?:(?:\+?886[-.\s]?)9|09)\d{2}[-.\s]?\d{3}[-.\s]?\d{3}(?!\d)/;
+const TAIWAN_MOBILE_PATTERN = /(?:(?:\+?886[-.\s]?)9|09)\d{2}[-.\s]?\d{3}[-.\s]?\d{3}(?!\d)/;
 
 /**
  * 文字內是否含疑似台灣手機號（含全形數字／分隔符變體）。命中回傳 true，呼叫端自行決定

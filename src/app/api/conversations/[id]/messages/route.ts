@@ -122,7 +122,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     conversation.item.category.slug === POINT_CATEGORY_SLUG &&
     containsTaiwanMobileNumber(message)
   ) {
-    return jsonError("UNPROCESSABLE", "請勿在訊息中留下手機號碼等個人資料，本平台不經手點數與會員帳號");
+    return jsonError(
+      "UNPROCESSABLE",
+      "請勿在訊息中留下手機號碼等個人資料，本平台不經手點數與會員帳號",
+    );
   }
 
   const created = await db.message.create({

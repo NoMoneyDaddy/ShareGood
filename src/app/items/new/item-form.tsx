@@ -207,9 +207,7 @@ export function ItemForm({
                 },
               }
             : {}),
-          ...(isPoint
-            ? { point: { pointPlatform, pointAmount: pointAmountNumber } }
-            : {}),
+          ...(isPoint ? { point: { pointPlatform, pointAmount: pointAmountNumber } } : {}),
         }),
       });
       const data = await res.json().catch(() => null);
@@ -438,8 +436,8 @@ export function ItemForm({
           </div>
           <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
             <p>
-              依文創法第 10 條之 1 及運動產業發展條例第 24 條之 1，以超過票面金額轉售票券可處票面
-              10 至 50 倍罰鍰。本平台僅允許無償轉贈。
+              依文創法第 10 條之 1 及運動產業發展條例第 24 條之 1，以超過票面金額轉售票券可處票面 10
+              至 50 倍罰鍰。本平台僅允許無償轉贈。
             </p>
             <p>
               本平台僅提供無償轉贈之資訊媒合，不經手、不保管、不擔保任何票券或優惠券之真偽與可兌換性；能否轉讓請依發行人使用條款。

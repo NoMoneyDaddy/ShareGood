@@ -104,11 +104,7 @@ function parsePointInput(value: unknown): PointInput | null {
   const pointPlatform = typeof p?.pointPlatform === "string" ? p.pointPlatform.trim() : "";
   const pointAmount = typeof p?.pointAmount === "number" ? p.pointAmount : Number.NaN;
   if (!pointPlatform || pointPlatform.length > POINT_FIELD_LENGTHS.pointPlatform) return null;
-  if (
-    !Number.isInteger(pointAmount) ||
-    pointAmount <= 0 ||
-    pointAmount > MAX_POINT_AMOUNT
-  ) {
+  if (!Number.isInteger(pointAmount) || pointAmount <= 0 || pointAmount > MAX_POINT_AMOUNT) {
     return null;
   }
   return { pointPlatform, pointAmount };

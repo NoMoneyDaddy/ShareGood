@@ -16,7 +16,9 @@ import { CouponUsageSection } from "./coupon-usage-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
 import { LotterySection } from "./lottery-section";
+import { PointSection } from "./point-section";
 import { ThanksSection } from "./thanks-section";
+import { TicketSection } from "./ticket-section";
 
 async function getItem(id: string) {
   return db.item.findUnique({
@@ -32,6 +34,9 @@ async function getItem(id: string) {
       // M3（master-plan §8）：只查 CouponDetail（面額／店家／備註，描述性文字非機密），
       // 不 include 它底下的 CouponSecret——券碼密文完全不進這支查詢，也不會出現在這個頁面。
       couponDetail: true,
+      // M9（master-plan §9a 交付內容 4/5）：票券／點數 detail 表皆無機密欄位，直接查即可。
+      ticketDetail: true,
+      pointDetail: true,
     },
   });
 }
@@ -270,6 +275,28 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
             alreadyReported={alreadyReportedUsage}
           />
         )}
+        <TicketSection
+          ticket={
+            item.ticketDetail
+              ? {
+                  ticketType: item.ticketDetail.ticketType,
+                  originPlatform: item.ticketDetail.originPlatform,
+                  eventName: item.ticketDetail.eventName,
+                  expiresAt: item.expiresAt,
+                }
+              : null
+          }
+        />
+        <PointSection
+          point={
+            item.pointDetail
+              ? {
+                  pointPlatform: item.pointDetail.pointPlatform,
+                  pointAmount: item.pointDetail.pointAmount,
+                }
+              : null
+          }
+        />
 
         <DirectShareSection
           itemId={item.id}

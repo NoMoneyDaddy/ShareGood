@@ -78,7 +78,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   // 只做子字串比對，攔不了格式，見 src/lib/phone-guard.ts）；只套用在點數類物品，
   // 實體物品/其他類型完全不受影響。
   if (item.category.slug === POINT_CATEGORY_SLUG && containsTaiwanMobileNumber(message)) {
-    return jsonError("UNPROCESSABLE", "請勿在留言中留下手機號碼等個人資料，本平台不經手點數與會員帳號");
+    return jsonError(
+      "UNPROCESSABLE",
+      "請勿在留言中留下手機號碼等個人資料，本平台不經手點數與會員帳號",
+    );
   }
 
   // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路，
