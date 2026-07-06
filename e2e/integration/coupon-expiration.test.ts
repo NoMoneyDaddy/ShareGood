@@ -291,6 +291,53 @@ describe("M3 到期 job", () => {
     });
     expect(reminderNotificationsAfterSecond).toHaveLength(1);
   });
+
+  // 併發安全：如果物品在 job 查出候選清單之後、實際執行 transaction 之前，已經被別人預約
+  // 進入 reserved（甚至 handover_pending），這支 job 不該用無條件 update 把它蓋成 expired、
+  // 蓋掉正在進行的交接。用「先建立已過期但仍是 published 的物品、再讓它被搶先認領變成
+  // reserved、才觸發 job」模擬這個時序（見 src/app/api/jobs/item-expiration/route.ts
+  // processExpired 的 updateMany({ where: { status: "published" } }) 防呆）。
+  it("物品到期當下已不是 published（例如剛好被預約成 reserved）→ job 不會強制轉態", async () => {
+    expect(CRON_SECRET).toBeTruthy();
+
+    const owner = await user("expiring-job-reserved-owner");
+    const receiver = await user("expiring-job-reserved-receiver");
+
+    const itemId = await createPublishedItem(owner, {
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+    });
+    // 先讓它「已到期」，但這時還是 published——對應 job 查候選清單那一刻的狀態。
+    await db.item.update({
+      where: { id: itemId },
+      data: { expiresAt: new Date(Date.now() - 60_000) },
+    });
+    // 在 job 真正執行 transaction 之前，物品已經被接手者認領變成 reserved。
+    const claimRes = await api(`/api/items/${itemId}/claims`, {
+      method: "POST",
+      user: receiver,
+      body: { message: "我想要這個" },
+    });
+    expect(claimRes.status).toBe(201);
+    const reservedItem = await db.item.findUniqueOrThrow({ where: { id: itemId } });
+    expect(reservedItem.status).toBe("reserved");
+
+    const run = await callJob(CRON_SECRET);
+    expect(run.status).toBe(200);
+
+    // 物品維持 reserved，沒有被 job 蓋成 expired，也沒有留下到期 log 或到期通知——
+    // 讓它自然被排除，交由 M1 既有交接流程繼續走。（物主此時已經有一筆「有人留言／認領」
+    // 的通知，那是留言流程本身送的，跟這支 job 無關，所以只檢查 job 會送的
+    // kind: "item_expired" 通知沒有被送出，不檢查通知總數。）
+    const afterJob = await db.item.findUniqueOrThrow({ where: { id: itemId } });
+    expect(afterJob.status).toBe("reserved");
+    const logs = await db.itemExpirationLog.findMany({ where: { itemId } });
+    expect(logs).toHaveLength(0);
+    const notifications = await db.notification.findMany({ where: { userId: owner.id } });
+    const expiredNotifications = notifications.filter(
+      (n) => (n.payload as { kind?: string }).kind === "item_expired",
+    );
+    expect(expiredNotifications).toHaveLength(0);
+  });
 });
 
 // master-plan §8 交付內容第 4 項：「列表『即將到期』排序加權」。

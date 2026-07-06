@@ -128,13 +128,23 @@ function CouponList({
 export default async function WalletPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sharedCursor?: string; receivedCursor?: string }>;
+  searchParams: Promise<{
+    sharedCursor?: string | string[];
+    receivedCursor?: string | string[];
+  }>;
 }) {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) redirect("/");
 
-  const { sharedCursor, receivedCursor } = await searchParams;
+  // Next.js 15 的 searchParams 允許同一個 query key 重複出現而變成陣列
+  // （例如 ?sharedCursor=a&sharedCursor=b），若把陣列直接丟進 Prisma 的 cursor
+  // 查詢會拋錯導致 500，所以這裡只接受字串，其餘一律當成沒帶 cursor。
+  const rawParams = await searchParams;
+  const sharedCursor =
+    typeof rawParams.sharedCursor === "string" ? rawParams.sharedCursor : undefined;
+  const receivedCursor =
+    typeof rawParams.receivedCursor === "string" ? rawParams.receivedCursor : undefined;
   const [shared, received] = await Promise.all([
     loadSharedCoupons(userId, sharedCursor),
     loadReceivedCoupons(userId, receivedCursor),

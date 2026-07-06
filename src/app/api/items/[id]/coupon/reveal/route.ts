@@ -14,9 +14,11 @@ import { db } from "@/lib/db";
 //   - 呼叫者不是 HandoverRecord 記錄的 receiverId（含物主本人、路人）→ 403 FORBIDDEN。
 //   - 物品沒有優惠券資料 → 404 NOT_FOUND。
 //
-// 稽核：每次成功呼叫都先寫一筆 CouponRevealLog 再解密回傳——刻意不做「同一人重複揭露
-// 就不重複記錄」的 idempotent 保護，揭露次數本身就是稽核想看到的資訊；log 寫入失敗就整支
-// API 500，不會有「明文已經回傳但完全沒有稽核紀錄」的狀態。
+// 稽核：刻意先解密、解密成功後才寫入 CouponRevealLog，最後才回傳明文——如果順序反過來，
+// 一旦解密失敗（金鑰設定錯誤、資料損毀等）會留下「已成功查看」的假紀錄，但使用者其實
+// 沒看到券碼，稽核紀錄就不再等於「真的看到了」。也刻意不做「同一人重複揭露就不重複記錄」
+// 的 idempotent 保護，揭露次數本身就是稽核想看到的資訊；log 寫入失敗就整支 API 500，
+// 不會有「明文已經回傳但完全沒有稽核紀錄」的狀態。
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {
@@ -46,11 +48,12 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     return jsonError("FORBIDDEN", "只有接手者可以查看券碼");
   }
 
+  const code = decryptCouponCode(secret);
+
   const revealLog = await db.couponRevealLog.create({
     data: { couponSecretId: secret.id, revealedBy: user.id },
     select: { revealedAt: true },
   });
-  const code = decryptCouponCode(secret);
 
   return NextResponse.json({ code, revealedAt: revealLog.revealedAt });
 }

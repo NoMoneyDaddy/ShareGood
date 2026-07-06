@@ -73,9 +73,21 @@ async function processExpired(now: Date): Promise<number> {
 
   let count = 0;
   for (const item of items) {
-    const processed = await runOnce(async (tx) => {
+    const expired = await runOnce(async (tx) => {
+      // 先用帶 status: "published" 條件的 updateMany 轉態，而不是無條件 update：如果在
+      // 上面查出候選清單之後、實際執行這個 transaction 之前，物品剛好被別人預約或開始
+      // 交接（狀態變成 reserved／handover_pending），代表它已經進入 M1 的交接流程，這支
+      // job 不該強制把它蓋成 expired、蓋掉正在進行的交接。updateMany 的 count === 0
+      // 就代表物品已經不是 published，直接跳過——刻意不寫 ItemExpirationLog／
+      // itemStatusLog／notification，讓它自然被排除即可（它可能正在走交接流程）。
+      const updated = await tx.item.updateMany({
+        where: { id: item.id, status: "published" },
+        data: { status: "expired" },
+      });
+      if (updated.count === 0) {
+        return false;
+      }
       await tx.itemExpirationLog.create({ data: { itemId: item.id, action: "expired" } });
-      await tx.item.update({ where: { id: item.id }, data: { status: "expired" } });
       await tx.itemStatusLog.create({
         data: {
           itemId: item.id,
@@ -96,8 +108,9 @@ async function processExpired(now: Date): Promise<number> {
           payload: { itemId: item.id, itemTitle: item.title, kind: "item_expired" },
         },
       });
+      return true;
     });
-    if (processed) count++;
+    if (expired) count++;
   }
   return count;
 }
@@ -125,6 +138,7 @@ async function processReminders(now: Date): Promise<number> {
           payload: { itemId: item.id, itemTitle: item.title, kind: "item_expiring_reminder" },
         },
       });
+      return true;
     });
     if (processed) count++;
   }
@@ -132,11 +146,11 @@ async function processReminders(now: Date): Promise<number> {
 }
 
 // 執行一個 transaction；撞到 ItemExpirationLog 的 unique constraint（P2002）代表這個物品已經
-// 被別次 job 執行處理過，視為正常跳過（回傳 false），其餘錯誤照常往上拋。
-async function runOnce(fn: (tx: Prisma.TransactionClient) => Promise<void>): Promise<boolean> {
+// 被別次 job 執行處理過，視為正常跳過（回傳 false），其餘錯誤照常往上拋。回傳值沿用 fn 的
+// 回傳值，讓呼叫端可以分辨「transaction 執行完成但選擇跳過（回傳 false）」跟「真的處理了」。
+async function runOnce<T>(fn: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T | false> {
   try {
-    await db.$transaction(fn);
-    return true;
+    return await db.$transaction(fn);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       return false;
