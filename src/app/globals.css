@@ -130,9 +130,14 @@
 }
 
 /* tw-animate-css 本身不處理 prefers-reduced-motion；Dialog/DropdownMenu 等
-   Radix 元件靠 data-open/data-closed 觸發的 animate-in/animate-out 開合動畫
-   在這裡統一收斂成近乎瞬時，而不是逐一元件覆寫。 */
+   Radix 元件實際吐出的是 data-state="open"/"closed"（不是裸的 data-open/
+   data-closed——那是 Base UI／Headless UI 的寫法，Tailwind 的 data-open:
+   variant 語法會同時編譯支援兩者，但這裡是手寫原生 CSS 選擇器，兩種都要列
+   才會匹配到 Radix 元件）觸發的 animate-in/animate-out 開合動畫，在這裡
+   統一收斂成近乎瞬時，而不是逐一元件覆寫。 */
 @media (prefers-reduced-motion: reduce) {
+  [data-state="open"],
+  [data-state="closed"],
   [data-open],
   [data-closed] {
     /* biome-ignore lint/complexity/noImportantStyles: 蓋過 Tailwind 動畫 utility 產生的
