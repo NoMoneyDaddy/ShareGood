@@ -17,8 +17,10 @@ const HOME_FEATURED_COUNT = 8;
 const HOME_CATEGORY_SHORTCUT_COUNT = 6;
 
 export default async function HomePage() {
-  const [session, categories, featured] = await Promise.all([
-    auth(),
+  // 同 /items 頁：先 await auth()（純解析 cookie/JWT，很快），profile 查詢併進下面的
+  // Promise.all，避免序列化瀑布流多一次資料庫來回。
+  const session = await auth();
+  const [categories, featured, profile] = await Promise.all([
     db.category.findMany({
       where: { isActive: true },
       orderBy: { sortOrder: "asc" },
@@ -26,10 +28,10 @@ export default async function HomePage() {
       select: { id: true, name: true },
     }),
     listPublishedItems({ limit: HOME_FEATURED_COUNT }),
+    session?.user
+      ? db.profile.findUnique({ where: { userId: session.user.id } })
+      : Promise.resolve(null),
   ]);
-  const profile = session?.user
-    ? await db.profile.findUnique({ where: { userId: session.user.id } })
-    : null;
   const ctaState = !session?.user ? "guest" : profile ? "active" : "pending";
 
   return (
@@ -135,7 +137,7 @@ export default async function HomePage() {
                   className="group overflow-hidden rounded-xl border border-line bg-card transition-shadow hover:shadow-md"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-paper-2">
-                    {item.thumbObjectKey && (
+                    {item.thumbObjectKey ? (
                       <Image
                         src={publicUrl(item.thumbObjectKey)}
                         alt={item.title}
@@ -143,6 +145,10 @@ export default async function HomePage() {
                         sizes="(min-width: 768px) 25vw, 50vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                       />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xs text-ink-soft">
+                        無圖片
+                      </div>
                     )}
                     <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-white">
                       免費

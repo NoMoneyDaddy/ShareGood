@@ -40,8 +40,10 @@ export default async function ItemsPage({
   const keyword = q?.trim() || undefined;
   const activeSort = sort === "expiring" ? "expiring" : "newest";
 
-  const [session, cities, categories, result] = await Promise.all([
-    auth(),
+  // auth() 只解析 cookie/JWT 很快，先 await 拿到 session 後把 profile 查詢併進下面的
+  // Promise.all，避免「等其他查詢跑完才單獨查 profile」的序列化瀑布流多一次資料庫來回。
+  const session = await auth();
+  const [cities, categories, result, profile] = await Promise.all([
     db.city.findMany({ orderBy: { sortOrder: "asc" }, select: { id: true, name: true } }),
     db.category.findMany({
       where: { isActive: true },
@@ -56,10 +58,10 @@ export default async function ItemsPage({
       limit: PAGE_SIZE,
       sort: activeSort,
     }),
+    session?.user
+      ? db.profile.findUnique({ where: { userId: session.user.id } })
+      : Promise.resolve(null),
   ]);
-  const profile = session?.user
-    ? await db.profile.findUnique({ where: { userId: session.user.id } })
-    : null;
 
   // 篩選條件＋分頁游標一起組回查詢字串：切換排序／換頁時要保留目前的縣市/分類/關鍵字篩選。
   function hrefWith(overrides: { sort?: string; cursor?: string | null }) {
