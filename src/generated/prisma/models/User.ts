@@ -256,6 +256,9 @@ export type UserWhereInput = {
   legalHoldsCreated?: Prisma.LegalHoldListRelationFilter
   legalHoldsReleased?: Prisma.LegalHoldListRelationFilter
   legalHoldEvents?: Prisma.LegalHoldEventListRelationFilter
+  dealInfosSubmitted?: Prisma.DealInfoListRelationFilter
+  dealInfoReports?: Prisma.DealInfoReportListRelationFilter
+  couponUsageReports?: Prisma.CouponUsageReportListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -317,6 +320,9 @@ export type UserOrderByWithRelationInput = {
   legalHoldsCreated?: Prisma.LegalHoldOrderByRelationAggregateInput
   legalHoldsReleased?: Prisma.LegalHoldOrderByRelationAggregateInput
   legalHoldEvents?: Prisma.LegalHoldEventOrderByRelationAggregateInput
+  dealInfosSubmitted?: Prisma.DealInfoOrderByRelationAggregateInput
+  dealInfoReports?: Prisma.DealInfoReportOrderByRelationAggregateInput
+  couponUsageReports?: Prisma.CouponUsageReportOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -381,6 +387,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   legalHoldsCreated?: Prisma.LegalHoldListRelationFilter
   legalHoldsReleased?: Prisma.LegalHoldListRelationFilter
   legalHoldEvents?: Prisma.LegalHoldEventListRelationFilter
+  dealInfosSubmitted?: Prisma.DealInfoListRelationFilter
+  dealInfoReports?: Prisma.DealInfoReportListRelationFilter
+  couponUsageReports?: Prisma.CouponUsageReportListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -470,6 +479,9 @@ export type UserCreateInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -531,6 +543,9 @@ export type UserUncheckedCreateInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserUpdateInput = {
@@ -592,6 +607,9 @@ export type UserUpdateInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -653,6 +671,9 @@ export type UserUncheckedUpdateInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1483,6 +1504,50 @@ export type UserUpdateOneWithoutLegalHoldEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLegalHoldEventsInput, Prisma.UserUpdateWithoutLegalHoldEventsInput>, Prisma.UserUncheckedUpdateWithoutLegalHoldEventsInput>
 }
 
+export type UserCreateNestedOneWithoutDealInfosSubmittedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedCreateWithoutDealInfosSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDealInfosSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDealInfosSubmittedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedCreateWithoutDealInfosSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDealInfosSubmittedInput
+  upsert?: Prisma.UserUpsertWithoutDealInfosSubmittedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDealInfosSubmittedInput, Prisma.UserUpdateWithoutDealInfosSubmittedInput>, Prisma.UserUncheckedUpdateWithoutDealInfosSubmittedInput>
+}
+
+export type UserCreateNestedOneWithoutDealInfoReportsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDealInfoReportsInput, Prisma.UserUncheckedCreateWithoutDealInfoReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDealInfoReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDealInfoReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDealInfoReportsInput, Prisma.UserUncheckedCreateWithoutDealInfoReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDealInfoReportsInput
+  upsert?: Prisma.UserUpsertWithoutDealInfoReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDealInfoReportsInput, Prisma.UserUpdateWithoutDealInfoReportsInput>, Prisma.UserUncheckedUpdateWithoutDealInfoReportsInput>
+}
+
+export type UserCreateNestedOneWithoutCouponUsageReportsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouponUsageReportsInput, Prisma.UserUncheckedCreateWithoutCouponUsageReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouponUsageReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCouponUsageReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouponUsageReportsInput, Prisma.UserUncheckedCreateWithoutCouponUsageReportsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouponUsageReportsInput
+  upsert?: Prisma.UserUpsertWithoutCouponUsageReportsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouponUsageReportsInput, Prisma.UserUpdateWithoutCouponUsageReportsInput>, Prisma.UserUncheckedUpdateWithoutCouponUsageReportsInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
@@ -1541,6 +1606,9 @@ export type UserCreateWithoutAccountsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1601,6 +1669,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1677,6 +1748,9 @@ export type UserUpdateWithoutAccountsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1737,6 +1811,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1797,6 +1874,9 @@ export type UserCreateWithoutSessionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1857,6 +1937,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1933,6 +2016,9 @@ export type UserUpdateWithoutSessionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1993,6 +2079,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -2053,6 +2142,9 @@ export type UserCreateWithoutProfileInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -2113,6 +2205,9 @@ export type UserUncheckedCreateWithoutProfileInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -2189,6 +2284,9 @@ export type UserUpdateWithoutProfileInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -2249,6 +2347,9 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutRolesInput = {
@@ -2309,6 +2410,9 @@ export type UserCreateWithoutRolesInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -2369,6 +2473,9 @@ export type UserUncheckedCreateWithoutRolesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -2445,6 +2552,9 @@ export type UserUpdateWithoutRolesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -2505,6 +2615,9 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -2565,6 +2678,9 @@ export type UserCreateWithoutAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2625,6 +2741,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2701,6 +2820,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -2761,6 +2883,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutStorageObjectsInput = {
@@ -2821,6 +2946,9 @@ export type UserCreateWithoutStorageObjectsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutStorageObjectsInput = {
@@ -2881,6 +3009,9 @@ export type UserUncheckedCreateWithoutStorageObjectsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutStorageObjectsInput = {
@@ -2957,6 +3088,9 @@ export type UserUpdateWithoutStorageObjectsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStorageObjectsInput = {
@@ -3017,6 +3151,9 @@ export type UserUncheckedUpdateWithoutStorageObjectsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutItemsInput = {
@@ -3077,6 +3214,9 @@ export type UserCreateWithoutItemsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutItemsInput = {
@@ -3137,6 +3277,9 @@ export type UserUncheckedCreateWithoutItemsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutItemsInput = {
@@ -3213,6 +3356,9 @@ export type UserUpdateWithoutItemsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemsInput = {
@@ -3273,6 +3419,9 @@ export type UserUncheckedUpdateWithoutItemsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutItemStatusLogsActedInput = {
@@ -3333,6 +3482,9 @@ export type UserCreateWithoutItemStatusLogsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutItemStatusLogsActedInput = {
@@ -3393,6 +3545,9 @@ export type UserUncheckedCreateWithoutItemStatusLogsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutItemStatusLogsActedInput = {
@@ -3469,6 +3624,9 @@ export type UserUpdateWithoutItemStatusLogsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemStatusLogsActedInput = {
@@ -3529,6 +3687,9 @@ export type UserUncheckedUpdateWithoutItemStatusLogsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutClaimCommentsInput = {
@@ -3589,6 +3750,9 @@ export type UserCreateWithoutClaimCommentsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutClaimCommentsInput = {
@@ -3649,6 +3813,9 @@ export type UserUncheckedCreateWithoutClaimCommentsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutClaimCommentsInput = {
@@ -3725,6 +3892,9 @@ export type UserUpdateWithoutClaimCommentsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClaimCommentsInput = {
@@ -3785,6 +3955,9 @@ export type UserUncheckedUpdateWithoutClaimCommentsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutDirectSharesReceivedInput = {
@@ -3845,6 +4018,9 @@ export type UserCreateWithoutDirectSharesReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutDirectSharesReceivedInput = {
@@ -3905,6 +4081,9 @@ export type UserUncheckedCreateWithoutDirectSharesReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutDirectSharesReceivedInput = {
@@ -3981,6 +4160,9 @@ export type UserUpdateWithoutDirectSharesReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectSharesReceivedInput = {
@@ -4041,6 +4223,9 @@ export type UserUncheckedUpdateWithoutDirectSharesReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutHandoverRecordsInput = {
@@ -4101,6 +4286,9 @@ export type UserCreateWithoutHandoverRecordsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutHandoverRecordsInput = {
@@ -4161,6 +4349,9 @@ export type UserUncheckedCreateWithoutHandoverRecordsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutHandoverRecordsInput = {
@@ -4237,6 +4428,9 @@ export type UserUpdateWithoutHandoverRecordsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHandoverRecordsInput = {
@@ -4297,6 +4491,9 @@ export type UserUncheckedUpdateWithoutHandoverRecordsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutThanksSentInput = {
@@ -4357,6 +4554,9 @@ export type UserCreateWithoutThanksSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutThanksSentInput = {
@@ -4417,6 +4617,9 @@ export type UserUncheckedCreateWithoutThanksSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutThanksSentInput = {
@@ -4482,6 +4685,9 @@ export type UserCreateWithoutThanksReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutThanksReceivedInput = {
@@ -4542,6 +4748,9 @@ export type UserUncheckedCreateWithoutThanksReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutThanksReceivedInput = {
@@ -4618,6 +4827,9 @@ export type UserUpdateWithoutThanksSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutThanksSentInput = {
@@ -4678,6 +4890,9 @@ export type UserUncheckedUpdateWithoutThanksSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutThanksReceivedInput = {
@@ -4749,6 +4964,9 @@ export type UserUpdateWithoutThanksReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutThanksReceivedInput = {
@@ -4809,6 +5027,9 @@ export type UserUncheckedUpdateWithoutThanksReceivedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutContributionEventsInput = {
@@ -4869,6 +5090,9 @@ export type UserCreateWithoutContributionEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutContributionEventsInput = {
@@ -4929,6 +5153,9 @@ export type UserUncheckedCreateWithoutContributionEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutContributionEventsInput = {
@@ -5005,6 +5232,9 @@ export type UserUpdateWithoutContributionEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContributionEventsInput = {
@@ -5065,6 +5295,9 @@ export type UserUncheckedUpdateWithoutContributionEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -5125,6 +5358,9 @@ export type UserCreateWithoutNotificationsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -5185,6 +5421,9 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -5261,6 +5500,9 @@ export type UserUpdateWithoutNotificationsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -5321,6 +5563,9 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutConversationMembershipsInput = {
@@ -5381,6 +5626,9 @@ export type UserCreateWithoutConversationMembershipsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutConversationMembershipsInput = {
@@ -5441,6 +5689,9 @@ export type UserUncheckedCreateWithoutConversationMembershipsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutConversationMembershipsInput = {
@@ -5517,6 +5768,9 @@ export type UserUpdateWithoutConversationMembershipsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationMembershipsInput = {
@@ -5577,6 +5831,9 @@ export type UserUncheckedUpdateWithoutConversationMembershipsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutMessagesSentInput = {
@@ -5637,6 +5894,9 @@ export type UserCreateWithoutMessagesSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutMessagesSentInput = {
@@ -5697,6 +5957,9 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutMessagesSentInput = {
@@ -5773,6 +6036,9 @@ export type UserUpdateWithoutMessagesSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesSentInput = {
@@ -5833,6 +6099,9 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutReportsSubmittedInput = {
@@ -5893,6 +6162,9 @@ export type UserCreateWithoutReportsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutReportsSubmittedInput = {
@@ -5953,6 +6225,9 @@ export type UserUncheckedCreateWithoutReportsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutReportsSubmittedInput = {
@@ -6018,6 +6293,9 @@ export type UserCreateWithoutReportsHandledInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutReportsHandledInput = {
@@ -6078,6 +6356,9 @@ export type UserUncheckedCreateWithoutReportsHandledInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutReportsHandledInput = {
@@ -6154,6 +6435,9 @@ export type UserUpdateWithoutReportsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportsSubmittedInput = {
@@ -6214,6 +6498,9 @@ export type UserUncheckedUpdateWithoutReportsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutReportsHandledInput = {
@@ -6285,6 +6572,9 @@ export type UserUpdateWithoutReportsHandledInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportsHandledInput = {
@@ -6345,6 +6635,9 @@ export type UserUncheckedUpdateWithoutReportsHandledInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutRestrictionsInput = {
@@ -6405,6 +6698,9 @@ export type UserCreateWithoutRestrictionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRestrictionsInput = {
@@ -6465,6 +6761,9 @@ export type UserUncheckedCreateWithoutRestrictionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRestrictionsInput = {
@@ -6530,6 +6829,9 @@ export type UserCreateWithoutRestrictionsCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRestrictionsCreatedInput = {
@@ -6590,6 +6892,9 @@ export type UserUncheckedCreateWithoutRestrictionsCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRestrictionsCreatedInput = {
@@ -6655,6 +6960,9 @@ export type UserCreateWithoutRestrictionsLiftedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutRestrictionsLiftedInput = {
@@ -6715,6 +7023,9 @@ export type UserUncheckedCreateWithoutRestrictionsLiftedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutRestrictionsLiftedInput = {
@@ -6791,6 +7102,9 @@ export type UserUpdateWithoutRestrictionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRestrictionsInput = {
@@ -6851,6 +7165,9 @@ export type UserUncheckedUpdateWithoutRestrictionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutRestrictionsCreatedInput = {
@@ -6922,6 +7239,9 @@ export type UserUpdateWithoutRestrictionsCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRestrictionsCreatedInput = {
@@ -6982,6 +7302,9 @@ export type UserUncheckedUpdateWithoutRestrictionsCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutRestrictionsLiftedInput = {
@@ -7053,6 +7376,9 @@ export type UserUpdateWithoutRestrictionsLiftedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRestrictionsLiftedInput = {
@@ -7113,6 +7439,9 @@ export type UserUncheckedUpdateWithoutRestrictionsLiftedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutItemRemovalsActedInput = {
@@ -7173,6 +7502,9 @@ export type UserCreateWithoutItemRemovalsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutItemRemovalsActedInput = {
@@ -7233,6 +7565,9 @@ export type UserUncheckedCreateWithoutItemRemovalsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutItemRemovalsActedInput = {
@@ -7309,6 +7644,9 @@ export type UserUpdateWithoutItemRemovalsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemRemovalsActedInput = {
@@ -7369,6 +7707,9 @@ export type UserUncheckedUpdateWithoutItemRemovalsActedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSupportTicketsInput = {
@@ -7429,6 +7770,9 @@ export type UserCreateWithoutSupportTicketsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -7489,6 +7833,9 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -7554,6 +7901,9 @@ export type UserCreateWithoutSupportTicketsAssignedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketsAssignedInput = {
@@ -7614,6 +7964,9 @@ export type UserUncheckedCreateWithoutSupportTicketsAssignedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketsAssignedInput = {
@@ -7690,6 +8043,9 @@ export type UserUpdateWithoutSupportTicketsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -7750,6 +8106,9 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutSupportTicketsAssignedInput = {
@@ -7821,6 +8180,9 @@ export type UserUpdateWithoutSupportTicketsAssignedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketsAssignedInput = {
@@ -7881,6 +8243,9 @@ export type UserUncheckedUpdateWithoutSupportTicketsAssignedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSupportTicketEventsInput = {
@@ -7941,6 +8306,9 @@ export type UserCreateWithoutSupportTicketEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketEventsInput = {
@@ -8001,6 +8369,9 @@ export type UserUncheckedCreateWithoutSupportTicketEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketEventsInput = {
@@ -8077,6 +8448,9 @@ export type UserUpdateWithoutSupportTicketEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketEventsInput = {
@@ -8137,6 +8511,9 @@ export type UserUncheckedUpdateWithoutSupportTicketEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutAppealsInput = {
@@ -8197,6 +8574,9 @@ export type UserCreateWithoutAppealsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAppealsInput = {
@@ -8257,6 +8637,9 @@ export type UserUncheckedCreateWithoutAppealsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAppealsInput = {
@@ -8322,6 +8705,9 @@ export type UserCreateWithoutAppealsReviewedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutAppealsReviewedInput = {
@@ -8382,6 +8768,9 @@ export type UserUncheckedCreateWithoutAppealsReviewedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutAppealsReviewedInput = {
@@ -8458,6 +8847,9 @@ export type UserUpdateWithoutAppealsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAppealsInput = {
@@ -8518,6 +8910,9 @@ export type UserUncheckedUpdateWithoutAppealsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutAppealsReviewedInput = {
@@ -8589,6 +8984,9 @@ export type UserUpdateWithoutAppealsReviewedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAppealsReviewedInput = {
@@ -8649,6 +9047,9 @@ export type UserUncheckedUpdateWithoutAppealsReviewedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutCouponRevealLogsInput = {
@@ -8709,6 +9110,9 @@ export type UserCreateWithoutCouponRevealLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutCouponRevealLogsInput = {
@@ -8769,6 +9173,9 @@ export type UserUncheckedCreateWithoutCouponRevealLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutCouponRevealLogsInput = {
@@ -8845,6 +9252,9 @@ export type UserUpdateWithoutCouponRevealLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCouponRevealLogsInput = {
@@ -8905,6 +9315,9 @@ export type UserUncheckedUpdateWithoutCouponRevealLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutNotificationPreferencesInput = {
@@ -8965,6 +9378,9 @@ export type UserCreateWithoutNotificationPreferencesInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutNotificationPreferencesInput = {
@@ -9025,6 +9441,9 @@ export type UserUncheckedCreateWithoutNotificationPreferencesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutNotificationPreferencesInput = {
@@ -9101,6 +9520,9 @@ export type UserUpdateWithoutNotificationPreferencesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationPreferencesInput = {
@@ -9161,6 +9583,9 @@ export type UserUncheckedUpdateWithoutNotificationPreferencesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutTelegramAccountInput = {
@@ -9221,6 +9646,9 @@ export type UserCreateWithoutTelegramAccountInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutTelegramAccountInput = {
@@ -9281,6 +9709,9 @@ export type UserUncheckedCreateWithoutTelegramAccountInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutTelegramAccountInput = {
@@ -9357,6 +9788,9 @@ export type UserUpdateWithoutTelegramAccountInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTelegramAccountInput = {
@@ -9417,6 +9851,9 @@ export type UserUncheckedUpdateWithoutTelegramAccountInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutTelegramLinkTokensInput = {
@@ -9477,6 +9914,9 @@ export type UserCreateWithoutTelegramLinkTokensInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutTelegramLinkTokensInput = {
@@ -9537,6 +9977,9 @@ export type UserUncheckedCreateWithoutTelegramLinkTokensInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutTelegramLinkTokensInput = {
@@ -9613,6 +10056,9 @@ export type UserUpdateWithoutTelegramLinkTokensInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTelegramLinkTokensInput = {
@@ -9673,6 +10119,9 @@ export type UserUncheckedUpdateWithoutTelegramLinkTokensInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLotteriesCreatedInput = {
@@ -9733,6 +10182,9 @@ export type UserCreateWithoutLotteriesCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLotteriesCreatedInput = {
@@ -9793,6 +10245,9 @@ export type UserUncheckedCreateWithoutLotteriesCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLotteriesCreatedInput = {
@@ -9869,6 +10324,9 @@ export type UserUpdateWithoutLotteriesCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLotteriesCreatedInput = {
@@ -9929,6 +10387,9 @@ export type UserUncheckedUpdateWithoutLotteriesCreatedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLotteryEntriesInput = {
@@ -9989,6 +10450,9 @@ export type UserCreateWithoutLotteryEntriesInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLotteryEntriesInput = {
@@ -10049,6 +10513,9 @@ export type UserUncheckedCreateWithoutLotteryEntriesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLotteryEntriesInput = {
@@ -10125,6 +10592,9 @@ export type UserUpdateWithoutLotteryEntriesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLotteryEntriesInput = {
@@ -10185,6 +10655,9 @@ export type UserUncheckedUpdateWithoutLotteryEntriesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLotteryResultsInput = {
@@ -10245,6 +10718,9 @@ export type UserCreateWithoutLotteryResultsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLotteryResultsInput = {
@@ -10305,6 +10781,9 @@ export type UserUncheckedCreateWithoutLotteryResultsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLotteryResultsInput = {
@@ -10381,6 +10860,9 @@ export type UserUpdateWithoutLotteryResultsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLotteryResultsInput = {
@@ -10441,6 +10923,9 @@ export type UserUncheckedUpdateWithoutLotteryResultsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLotteryAuditLogsInput = {
@@ -10501,6 +10986,9 @@ export type UserCreateWithoutLotteryAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLotteryAuditLogsInput = {
@@ -10561,6 +11049,9 @@ export type UserUncheckedCreateWithoutLotteryAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLotteryAuditLogsInput = {
@@ -10637,6 +11128,9 @@ export type UserUpdateWithoutLotteryAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLotteryAuditLogsInput = {
@@ -10697,6 +11191,9 @@ export type UserUncheckedUpdateWithoutLotteryAuditLogsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -10757,6 +11254,9 @@ export type UserCreateWithoutSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -10817,6 +11317,9 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -10893,6 +11396,9 @@ export type UserUpdateWithoutSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -10953,6 +11459,9 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutSubscriptionDigestJobsInput = {
@@ -11013,6 +11522,9 @@ export type UserCreateWithoutSubscriptionDigestJobsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionDigestJobsInput = {
@@ -11073,6 +11585,9 @@ export type UserUncheckedCreateWithoutSubscriptionDigestJobsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionDigestJobsInput = {
@@ -11149,6 +11664,9 @@ export type UserUpdateWithoutSubscriptionDigestJobsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionDigestJobsInput = {
@@ -11209,6 +11727,9 @@ export type UserUncheckedUpdateWithoutSubscriptionDigestJobsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutWebPushSubscriptionsInput = {
@@ -11269,6 +11790,9 @@ export type UserCreateWithoutWebPushSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutWebPushSubscriptionsInput = {
@@ -11329,6 +11853,9 @@ export type UserUncheckedCreateWithoutWebPushSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutWebPushSubscriptionsInput = {
@@ -11405,6 +11932,9 @@ export type UserUpdateWithoutWebPushSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWebPushSubscriptionsInput = {
@@ -11465,6 +11995,9 @@ export type UserUncheckedUpdateWithoutWebPushSubscriptionsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutPrivacyRequestsInput = {
@@ -11525,6 +12058,9 @@ export type UserCreateWithoutPrivacyRequestsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPrivacyRequestsInput = {
@@ -11585,6 +12121,9 @@ export type UserUncheckedCreateWithoutPrivacyRequestsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPrivacyRequestsInput = {
@@ -11650,6 +12189,9 @@ export type UserCreateWithoutPrivacyRequestsProcessedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutPrivacyRequestsProcessedInput = {
@@ -11710,6 +12252,9 @@ export type UserUncheckedCreateWithoutPrivacyRequestsProcessedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutPrivacyRequestsProcessedInput = {
@@ -11786,6 +12331,9 @@ export type UserUpdateWithoutPrivacyRequestsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPrivacyRequestsInput = {
@@ -11846,6 +12394,9 @@ export type UserUncheckedUpdateWithoutPrivacyRequestsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutPrivacyRequestsProcessedInput = {
@@ -11917,6 +12468,9 @@ export type UserUpdateWithoutPrivacyRequestsProcessedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPrivacyRequestsProcessedInput = {
@@ -11977,6 +12531,9 @@ export type UserUncheckedUpdateWithoutPrivacyRequestsProcessedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutDataExportsInput = {
@@ -12037,6 +12594,9 @@ export type UserCreateWithoutDataExportsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutDataExportsInput = {
@@ -12097,6 +12657,9 @@ export type UserUncheckedCreateWithoutDataExportsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutDataExportsInput = {
@@ -12173,6 +12736,9 @@ export type UserUpdateWithoutDataExportsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDataExportsInput = {
@@ -12233,6 +12799,9 @@ export type UserUncheckedUpdateWithoutDataExportsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutDataRetentionPolicyUpdatesInput = {
@@ -12293,6 +12862,9 @@ export type UserCreateWithoutDataRetentionPolicyUpdatesInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutDataRetentionPolicyUpdatesInput = {
@@ -12353,6 +12925,9 @@ export type UserUncheckedCreateWithoutDataRetentionPolicyUpdatesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutDataRetentionPolicyUpdatesInput = {
@@ -12429,6 +13004,9 @@ export type UserUpdateWithoutDataRetentionPolicyUpdatesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDataRetentionPolicyUpdatesInput = {
@@ -12489,6 +13067,9 @@ export type UserUncheckedUpdateWithoutDataRetentionPolicyUpdatesInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLawEnforcementRequestsSubmittedInput = {
@@ -12549,6 +13130,9 @@ export type UserCreateWithoutLawEnforcementRequestsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLawEnforcementRequestsSubmittedInput = {
@@ -12609,6 +13193,9 @@ export type UserUncheckedCreateWithoutLawEnforcementRequestsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLawEnforcementRequestsSubmittedInput = {
@@ -12674,6 +13261,9 @@ export type UserCreateWithoutLawEnforcementRequestsApprovedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLawEnforcementRequestsApprovedInput = {
@@ -12734,6 +13324,9 @@ export type UserUncheckedCreateWithoutLawEnforcementRequestsApprovedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLawEnforcementRequestsApprovedInput = {
@@ -12810,6 +13403,9 @@ export type UserUpdateWithoutLawEnforcementRequestsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLawEnforcementRequestsSubmittedInput = {
@@ -12870,6 +13466,9 @@ export type UserUncheckedUpdateWithoutLawEnforcementRequestsSubmittedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutLawEnforcementRequestsApprovedInput = {
@@ -12941,6 +13540,9 @@ export type UserUpdateWithoutLawEnforcementRequestsApprovedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLawEnforcementRequestsApprovedInput = {
@@ -13001,6 +13603,9 @@ export type UserUncheckedUpdateWithoutLawEnforcementRequestsApprovedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLawEnforcementRequestDocumentsUploadedInput = {
@@ -13061,6 +13666,9 @@ export type UserCreateWithoutLawEnforcementRequestDocumentsUploadedInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLawEnforcementRequestDocumentsUploadedInput = {
@@ -13121,6 +13729,9 @@ export type UserUncheckedCreateWithoutLawEnforcementRequestDocumentsUploadedInpu
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLawEnforcementRequestDocumentsUploadedInput = {
@@ -13197,6 +13808,9 @@ export type UserUpdateWithoutLawEnforcementRequestDocumentsUploadedInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLawEnforcementRequestDocumentsUploadedInput = {
@@ -13257,6 +13871,9 @@ export type UserUncheckedUpdateWithoutLawEnforcementRequestDocumentsUploadedInpu
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLawEnforcementRequestEventsInput = {
@@ -13317,6 +13934,9 @@ export type UserCreateWithoutLawEnforcementRequestEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLawEnforcementRequestEventsInput = {
@@ -13377,6 +13997,9 @@ export type UserUncheckedCreateWithoutLawEnforcementRequestEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLawEnforcementRequestEventsInput = {
@@ -13453,6 +14076,9 @@ export type UserUpdateWithoutLawEnforcementRequestEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLawEnforcementRequestEventsInput = {
@@ -13513,6 +14139,9 @@ export type UserUncheckedUpdateWithoutLawEnforcementRequestEventsInput = {
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLegalHoldsCreatedInput = {
@@ -13573,6 +14202,9 @@ export type UserCreateWithoutLegalHoldsCreatedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLegalHoldsCreatedInput = {
@@ -13633,6 +14265,9 @@ export type UserUncheckedCreateWithoutLegalHoldsCreatedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLegalHoldsCreatedInput = {
@@ -13698,6 +14333,9 @@ export type UserCreateWithoutLegalHoldsReleasedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLegalHoldsReleasedInput = {
@@ -13758,6 +14396,9 @@ export type UserUncheckedCreateWithoutLegalHoldsReleasedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLegalHoldsReleasedInput = {
@@ -13834,6 +14475,9 @@ export type UserUpdateWithoutLegalHoldsCreatedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLegalHoldsCreatedInput = {
@@ -13894,6 +14538,9 @@ export type UserUncheckedUpdateWithoutLegalHoldsCreatedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUpsertWithoutLegalHoldsReleasedInput = {
@@ -13965,6 +14612,9 @@ export type UserUpdateWithoutLegalHoldsReleasedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLegalHoldsReleasedInput = {
@@ -14025,6 +14675,9 @@ export type UserUncheckedUpdateWithoutLegalHoldsReleasedInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 export type UserCreateWithoutLegalHoldEventsInput = {
@@ -14085,6 +14738,9 @@ export type UserCreateWithoutLegalHoldEventsInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
   legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
 }
 
 export type UserUncheckedCreateWithoutLegalHoldEventsInput = {
@@ -14145,6 +14801,9 @@ export type UserUncheckedCreateWithoutLegalHoldEventsInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
   legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
 }
 
 export type UserCreateOrConnectWithoutLegalHoldEventsInput = {
@@ -14221,6 +14880,9 @@ export type UserUpdateWithoutLegalHoldEventsInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
   legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLegalHoldEventsInput = {
@@ -14281,6 +14943,813 @@ export type UserUncheckedUpdateWithoutLegalHoldEventsInput = {
   lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
   legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
   legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+export type UserCreateWithoutDealInfosSubmittedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
+}
+
+export type UserUncheckedCreateWithoutDealInfosSubmittedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryUncheckedCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultUncheckedCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportUncheckedCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
+}
+
+export type UserCreateOrConnectWithoutDealInfosSubmittedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedCreateWithoutDealInfosSubmittedInput>
+}
+
+export type UserUpsertWithoutDealInfosSubmittedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedUpdateWithoutDealInfosSubmittedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedCreateWithoutDealInfosSubmittedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDealInfosSubmittedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDealInfosSubmittedInput, Prisma.UserUncheckedUpdateWithoutDealInfosSubmittedInput>
+}
+
+export type UserUpdateWithoutDealInfosSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDealInfosSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUncheckedUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUncheckedUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUncheckedUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+export type UserCreateWithoutDealInfoReportsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutReporterInput
+}
+
+export type UserUncheckedCreateWithoutDealInfoReportsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryUncheckedCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultUncheckedCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportUncheckedCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutReporterInput
+}
+
+export type UserCreateOrConnectWithoutDealInfoReportsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDealInfoReportsInput, Prisma.UserUncheckedCreateWithoutDealInfoReportsInput>
+}
+
+export type UserUpsertWithoutDealInfoReportsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDealInfoReportsInput, Prisma.UserUncheckedUpdateWithoutDealInfoReportsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDealInfoReportsInput, Prisma.UserUncheckedCreateWithoutDealInfoReportsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDealInfoReportsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDealInfoReportsInput, Prisma.UserUncheckedUpdateWithoutDealInfoReportsInput>
+}
+
+export type UserUpdateWithoutDealInfoReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutReporterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDealInfoReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUncheckedUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUncheckedUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUncheckedUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+export type UserCreateWithoutCouponUsageReportsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportCreateNestedManyWithoutReporterInput
+}
+
+export type UserUncheckedCreateWithoutCouponUsageReportsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+  lotteriesCreated?: Prisma.LotteryUncheckedCreateNestedManyWithoutCreatorInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedCreateNestedManyWithoutUserInput
+  lotteryResults?: Prisma.LotteryResultUncheckedCreateNestedManyWithoutUserInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedCreateNestedManyWithoutActorInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedCreateNestedManyWithoutUserInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutUserInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedCreateNestedManyWithoutProcessorInput
+  dataExports?: Prisma.DataExportUncheckedCreateNestedManyWithoutUserInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedCreateNestedManyWithoutUpdatedByUserInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutSubmitterInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedCreateNestedManyWithoutApproverInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedCreateNestedManyWithoutUploaderInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedCreateNestedManyWithoutActorInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutCreatorInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedCreateNestedManyWithoutReleaserInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedCreateNestedManyWithoutActorInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedCreateNestedManyWithoutSubmitterInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedCreateNestedManyWithoutReporterInput
+}
+
+export type UserCreateOrConnectWithoutCouponUsageReportsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouponUsageReportsInput, Prisma.UserUncheckedCreateWithoutCouponUsageReportsInput>
+}
+
+export type UserUpsertWithoutCouponUsageReportsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCouponUsageReportsInput, Prisma.UserUncheckedUpdateWithoutCouponUsageReportsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouponUsageReportsInput, Prisma.UserUncheckedCreateWithoutCouponUsageReportsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCouponUsageReportsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCouponUsageReportsInput, Prisma.UserUncheckedUpdateWithoutCouponUsageReportsInput>
+}
+
+export type UserUpdateWithoutCouponUsageReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUpdateManyWithoutReporterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCouponUsageReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+  lotteriesCreated?: Prisma.LotteryUncheckedUpdateManyWithoutCreatorNestedInput
+  lotteryEntries?: Prisma.LotteryEntryUncheckedUpdateManyWithoutUserNestedInput
+  lotteryResults?: Prisma.LotteryResultUncheckedUpdateManyWithoutUserNestedInput
+  lotteryAuditLogs?: Prisma.LotteryAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  subscriptions?: Prisma.UserSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  webPushSubscriptions?: Prisma.WebPushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  subscriptionDigestJobs?: Prisma.SubscriptionDigestJobUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequests?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutUserNestedInput
+  privacyRequestsProcessed?: Prisma.PrivacyRequestUncheckedUpdateManyWithoutProcessorNestedInput
+  dataExports?: Prisma.DataExportUncheckedUpdateManyWithoutUserNestedInput
+  dataRetentionPolicyUpdates?: Prisma.DataRetentionPolicyUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+  lawEnforcementRequestsSubmitted?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutSubmitterNestedInput
+  lawEnforcementRequestsApproved?: Prisma.LawEnforcementRequestUncheckedUpdateManyWithoutApproverNestedInput
+  lawEnforcementRequestDocumentsUploaded?: Prisma.LawEnforcementRequestDocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  lawEnforcementRequestEvents?: Prisma.LawEnforcementRequestEventUncheckedUpdateManyWithoutActorNestedInput
+  legalHoldsCreated?: Prisma.LegalHoldUncheckedUpdateManyWithoutCreatorNestedInput
+  legalHoldsReleased?: Prisma.LegalHoldUncheckedUpdateManyWithoutReleaserNestedInput
+  legalHoldEvents?: Prisma.LegalHoldEventUncheckedUpdateManyWithoutActorNestedInput
+  dealInfosSubmitted?: Prisma.DealInfoUncheckedUpdateManyWithoutSubmitterNestedInput
+  dealInfoReports?: Prisma.DealInfoReportUncheckedUpdateManyWithoutReporterNestedInput
 }
 
 
@@ -14337,6 +15806,9 @@ export type UserCountOutputType = {
   legalHoldsCreated: number
   legalHoldsReleased: number
   legalHoldEvents: number
+  dealInfosSubmitted: number
+  dealInfoReports: number
+  couponUsageReports: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -14388,6 +15860,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   legalHoldsCreated?: boolean | UserCountOutputTypeCountLegalHoldsCreatedArgs
   legalHoldsReleased?: boolean | UserCountOutputTypeCountLegalHoldsReleasedArgs
   legalHoldEvents?: boolean | UserCountOutputTypeCountLegalHoldEventsArgs
+  dealInfosSubmitted?: boolean | UserCountOutputTypeCountDealInfosSubmittedArgs
+  dealInfoReports?: boolean | UserCountOutputTypeCountDealInfoReportsArgs
+  couponUsageReports?: boolean | UserCountOutputTypeCountCouponUsageReportsArgs
 }
 
 /**
@@ -14736,6 +16211,27 @@ export type UserCountOutputTypeCountLegalHoldEventsArgs<ExtArgs extends runtime.
   where?: Prisma.LegalHoldEventWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDealInfosSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DealInfoWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDealInfoReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DealInfoReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCouponUsageReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CouponUsageReportWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -14796,6 +16292,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   legalHoldsCreated?: boolean | Prisma.User$legalHoldsCreatedArgs<ExtArgs>
   legalHoldsReleased?: boolean | Prisma.User$legalHoldsReleasedArgs<ExtArgs>
   legalHoldEvents?: boolean | Prisma.User$legalHoldEventsArgs<ExtArgs>
+  dealInfosSubmitted?: boolean | Prisma.User$dealInfosSubmittedArgs<ExtArgs>
+  dealInfoReports?: boolean | Prisma.User$dealInfoReportsArgs<ExtArgs>
+  couponUsageReports?: boolean | Prisma.User$couponUsageReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -14884,6 +16383,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   legalHoldsCreated?: boolean | Prisma.User$legalHoldsCreatedArgs<ExtArgs>
   legalHoldsReleased?: boolean | Prisma.User$legalHoldsReleasedArgs<ExtArgs>
   legalHoldEvents?: boolean | Prisma.User$legalHoldEventsArgs<ExtArgs>
+  dealInfosSubmitted?: boolean | Prisma.User$dealInfosSubmittedArgs<ExtArgs>
+  dealInfoReports?: boolean | Prisma.User$dealInfoReportsArgs<ExtArgs>
+  couponUsageReports?: boolean | Prisma.User$couponUsageReportsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -14942,6 +16444,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     legalHoldsCreated: Prisma.$LegalHoldPayload<ExtArgs>[]
     legalHoldsReleased: Prisma.$LegalHoldPayload<ExtArgs>[]
     legalHoldEvents: Prisma.$LegalHoldEventPayload<ExtArgs>[]
+    dealInfosSubmitted: Prisma.$DealInfoPayload<ExtArgs>[]
+    dealInfoReports: Prisma.$DealInfoReportPayload<ExtArgs>[]
+    couponUsageReports: Prisma.$CouponUsageReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -15396,6 +16901,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   legalHoldsCreated<T extends Prisma.User$legalHoldsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$legalHoldsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LegalHoldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   legalHoldsReleased<T extends Prisma.User$legalHoldsReleasedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$legalHoldsReleasedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LegalHoldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   legalHoldEvents<T extends Prisma.User$legalHoldEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$legalHoldEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LegalHoldEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dealInfosSubmitted<T extends Prisma.User$dealInfosSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dealInfosSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealInfoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dealInfoReports<T extends Prisma.User$dealInfoReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$dealInfoReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealInfoReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  couponUsageReports<T extends Prisma.User$couponUsageReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$couponUsageReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CouponUsageReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17013,6 +18521,78 @@ export type User$legalHoldEventsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.LegalHoldEventScalarFieldEnum | Prisma.LegalHoldEventScalarFieldEnum[]
+}
+
+/**
+ * User.dealInfosSubmitted
+ */
+export type User$dealInfosSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DealInfo
+   */
+  select?: Prisma.DealInfoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DealInfo
+   */
+  omit?: Prisma.DealInfoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DealInfoInclude<ExtArgs> | null
+  where?: Prisma.DealInfoWhereInput
+  orderBy?: Prisma.DealInfoOrderByWithRelationInput | Prisma.DealInfoOrderByWithRelationInput[]
+  cursor?: Prisma.DealInfoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DealInfoScalarFieldEnum | Prisma.DealInfoScalarFieldEnum[]
+}
+
+/**
+ * User.dealInfoReports
+ */
+export type User$dealInfoReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DealInfoReport
+   */
+  select?: Prisma.DealInfoReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DealInfoReport
+   */
+  omit?: Prisma.DealInfoReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DealInfoReportInclude<ExtArgs> | null
+  where?: Prisma.DealInfoReportWhereInput
+  orderBy?: Prisma.DealInfoReportOrderByWithRelationInput | Prisma.DealInfoReportOrderByWithRelationInput[]
+  cursor?: Prisma.DealInfoReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DealInfoReportScalarFieldEnum | Prisma.DealInfoReportScalarFieldEnum[]
+}
+
+/**
+ * User.couponUsageReports
+ */
+export type User$couponUsageReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CouponUsageReport
+   */
+  select?: Prisma.CouponUsageReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CouponUsageReport
+   */
+  omit?: Prisma.CouponUsageReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CouponUsageReportInclude<ExtArgs> | null
+  where?: Prisma.CouponUsageReportWhereInput
+  orderBy?: Prisma.CouponUsageReportOrderByWithRelationInput | Prisma.CouponUsageReportOrderByWithRelationInput[]
+  cursor?: Prisma.CouponUsageReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CouponUsageReportScalarFieldEnum | Prisma.CouponUsageReportScalarFieldEnum[]
 }
 
 /**

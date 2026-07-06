@@ -121,7 +121,14 @@ export const ModelName = {
   HealthCheck: 'HealthCheck',
   ErrorLog: 'ErrorLog',
   PerformanceMetric: 'PerformanceMetric',
-  StorageUsageSnapshot: 'StorageUsageSnapshot'
+  StorageUsageSnapshot: 'StorageUsageSnapshot',
+  DealSource: 'DealSource',
+  DealInfo: 'DealInfo',
+  DealInfoCity: 'DealInfoCity',
+  DealInfoReport: 'DealInfoReport',
+  CouponUsageReport: 'CouponUsageReport',
+  TicketDetail: 'TicketDetail',
+  PointDetail: 'PointDetail'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1057,6 +1064,99 @@ export const StorageUsageSnapshotScalarFieldEnum = {
 } as const
 
 export type StorageUsageSnapshotScalarFieldEnum = (typeof StorageUsageSnapshotScalarFieldEnum)[keyof typeof StorageUsageSnapshotScalarFieldEnum]
+
+
+export const DealSourceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  officialUrl: 'officialUrl',
+  sourceGrade: 'sourceGrade',
+  lastCheckedAt: 'lastCheckedAt',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DealSourceScalarFieldEnum = (typeof DealSourceScalarFieldEnum)[keyof typeof DealSourceScalarFieldEnum]
+
+
+export const DealInfoScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  summary: 'summary',
+  sourceUrl: 'sourceUrl',
+  sourceType: 'sourceType',
+  dealSourceId: 'dealSourceId',
+  isNationwide: 'isNationwide',
+  submitterId: 'submitterId',
+  status: 'status',
+  verifiedAt: 'verifiedAt',
+  expiresAt: 'expiresAt',
+  staleReportedAt: 'staleReportedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DealInfoScalarFieldEnum = (typeof DealInfoScalarFieldEnum)[keyof typeof DealInfoScalarFieldEnum]
+
+
+export const DealInfoCityScalarFieldEnum = {
+  id: 'id',
+  dealInfoId: 'dealInfoId',
+  cityId: 'cityId',
+  createdAt: 'createdAt'
+} as const
+
+export type DealInfoCityScalarFieldEnum = (typeof DealInfoCityScalarFieldEnum)[keyof typeof DealInfoCityScalarFieldEnum]
+
+
+export const DealInfoReportScalarFieldEnum = {
+  id: 'id',
+  dealInfoId: 'dealInfoId',
+  reporterId: 'reporterId',
+  round: 'round',
+  createdAt: 'createdAt'
+} as const
+
+export type DealInfoReportScalarFieldEnum = (typeof DealInfoReportScalarFieldEnum)[keyof typeof DealInfoReportScalarFieldEnum]
+
+
+export const CouponUsageReportScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  reporterId: 'reporterId',
+  result: 'result',
+  createdAt: 'createdAt'
+} as const
+
+export type CouponUsageReportScalarFieldEnum = (typeof CouponUsageReportScalarFieldEnum)[keyof typeof CouponUsageReportScalarFieldEnum]
+
+
+export const TicketDetailScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  ticketType: 'ticketType',
+  originPlatform: 'originPlatform',
+  eventName: 'eventName',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TicketDetailScalarFieldEnum = (typeof TicketDetailScalarFieldEnum)[keyof typeof TicketDetailScalarFieldEnum]
+
+
+export const PointDetailScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  pointPlatform: 'pointPlatform',
+  pointAmount: 'pointAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PointDetailScalarFieldEnum = (typeof PointDetailScalarFieldEnum)[keyof typeof PointDetailScalarFieldEnum]
 
 
 export const SortOrder = {
