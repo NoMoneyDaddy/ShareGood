@@ -3,7 +3,13 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
-import { MAX_UPLOAD_BYTES, sniffImageMime, toWebpVariant, VARIANTS } from "@/lib/images";
+import {
+  MAX_UPLOAD_BYTES,
+  normalizeHeic,
+  sniffImageMime,
+  toWebpVariant,
+  VARIANTS,
+} from "@/lib/images";
 import { putObject } from "@/lib/storage";
 
 // POST /api/uploads — multipart form（欄位 file）。
@@ -22,7 +28,13 @@ export async function POST(req: NextRequest) {
   if (!(file instanceof File)) return jsonError("BAD_REQUEST", "缺少 file 欄位");
   if (file.size > MAX_UPLOAD_BYTES) return jsonError("UNPROCESSABLE", "檔案超過 5MB 上限");
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const rawBuffer = Buffer.from(await file.arrayBuffer());
+  let buffer: Buffer;
+  try {
+    buffer = await normalizeHeic(rawBuffer); // iPhone 相機預設 HEIC，先轉 JPEG 再走既有管線
+  } catch {
+    return jsonError("UNPROCESSABLE", "HEIC 檔案損毀或無法解析，請重新拍攝或改用 jpg/png");
+  }
   const mime = sniffImageMime(buffer);
   if (!mime) return jsonError("UNPROCESSABLE", "僅接受 jpg / png / webp 圖片");
 

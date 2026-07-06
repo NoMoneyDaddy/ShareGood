@@ -1,3 +1,4 @@
+import heicConvert from "heic-convert";
 import sharp from "sharp";
 
 // 圖片管線（master-plan §3.3）：驗 magic bytes → 去 EXIF → 壓縮 → thumb/medium
@@ -21,6 +22,39 @@ const MAGIC: Array<{
       b.subarray(8, 12).toString("ascii") === "WEBP",
   },
 ];
+
+// ISO base media file format：偏移 4-8 是 "ftyp"，偏移 8-12 是 major brand。
+// iPhone 相機（「高效率」設定）預設輸出這幾種 brand，Android 部分機種也會用 heic/heif。
+const HEIC_BRANDS = new Set([
+  "heic",
+  "heix",
+  "hevc",
+  "hevx",
+  "heim",
+  "heis",
+  "hevm",
+  "hevs",
+  "mif1",
+  "msf1",
+]);
+
+function isHeic(buffer: Buffer): boolean {
+  return (
+    buffer.length >= 12 &&
+    buffer.subarray(4, 8).toString("ascii") === "ftyp" &&
+    HEIC_BRANDS.has(buffer.subarray(8, 12).toString("ascii"))
+  );
+}
+
+/**
+ * HEIC/HEIF（iPhone 相機預設格式）不在支援清單內，magic bytes 檢查前先轉成 JPEG，
+ * 讓後續管線（sniff/壓縮/縮圖）統一處理，使用者端無感。非 HEIC 原樣回傳。
+ */
+export async function normalizeHeic(buffer: Buffer): Promise<Buffer> {
+  if (!isHeic(buffer)) return buffer;
+  const jpeg = await heicConvert({ buffer, format: "JPEG", quality: 0.92 });
+  return Buffer.from(jpeg);
+}
 
 /** 用 magic bytes 判斷實際格式；不合法回 null（副檔名不可信）。 */
 export function sniffImageMime(buffer: Buffer) {

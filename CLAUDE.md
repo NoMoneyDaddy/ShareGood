@@ -6,10 +6,12 @@
 ## 目前階段
 
 - [x] 制度與規格建立（本檔與 docs/ 全部檔案）
-- [ ] M0 Foundation：已部署 https://sharegood.nomoneydaddy.app（web/postgres/minio/redis 四服務、
-      migration＋seed 已在正式站跑過、health 綠）。**尚缺**：使用者填 Google OAuth 憑證
-      （AUTH_GOOGLE_ID/SECRET）→ 真人登入 onboarding 實測 → 登入後 MinIO 真實上傳實測。
-      三項補完即可勾選 M0、開工 M1。
+- [x] M0 Foundation：已部署 https://sharegood.nomoneydaddy.app（web/postgres/minio/redis 四服務、
+      migration＋seed 已在正式站跑過、health 綠、Google OAuth 登入與 MinIO 真實上傳皆已由
+      使用者在正式站實測通過）。
+- [ ] M1 核心共享主迴路（進行中）：範圍見 master-plan.md §6，規模遠超一個 session，採分段
+      commit／push，每個階段完成後在這裡更新進度。已知決策：圖片上傳要支援 iPhone 預設的
+      HEIC 格式，走後端 HEIC→JPEG 轉碼（不是前端轉檔、也不是純提示訊息了事）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
