@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth, signIn } from "@/auth";
 import { BottomTab } from "@/components/bottom-tab";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -290,12 +291,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-line bg-paper-2 pb-24 md:pb-8">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-ink-soft sm:px-6 md:flex-row md:items-center md:justify-between">
-          <span className="font-bold text-ink">好物共享 ShareGood</span>
-          <span>台灣縣市級免費共享平台。使用規範、服務條款、隱私權政策準備中。</span>
-        </div>
-      </footer>
+      <SiteFooter hasBottomTab />
 
       <BottomTab />
     </div>
