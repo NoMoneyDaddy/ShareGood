@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { SiteHeader } from "@/components/site-header";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
+import { ClaimsSection } from "./claims-section";
 
 async function getItem(id: string) {
   return db.item.findUnique({
@@ -97,6 +98,8 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
           分享者：{item.owner.profile?.nickname ?? "好物共享用戶"}
         </div>
+
+        <ClaimsSection itemId={item.id} itemStatus={item.status} />
       </main>
     </div>
   );
