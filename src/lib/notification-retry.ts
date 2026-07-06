@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { formatNotificationText } from "@/lib/notification-format";
 import {
   NOTIFICATION_MAX_ATTEMPTS,
   NOTIFICATION_RETRY_BATCH_LIMIT,
@@ -27,32 +28,9 @@ function isDueForRetry(
   return now.getTime() - delivery.lastAttemptAt.getTime() >= backoffMs;
 }
 
-/**
- * 把通知內容組成一句 Telegram 文字。刻意跟 `src/app/notifications/page.tsx` 的
- * `describeNotification`（站內顯示用）分開維護一份精簡版：外部推播不需要頁面版
- * mergedCount 聚合文案那些細節，兩邊各自獨立、簡單即可，不勉強共用。
- */
-function formatNotificationText(type: string, payload: unknown): string {
-  const p =
-    payload && typeof payload === "object" && !Array.isArray(payload)
-      ? (payload as Record<string, unknown>)
-      : {};
-  const itemTitle = typeof p.itemTitle === "string" && p.itemTitle ? p.itemTitle : "這個物品";
-  switch (type) {
-    case "new_comment":
-      return `【好物共享】有人在你的物品「${itemTitle}」留言了，登入網站查看`;
-    case "claim_accepted":
-      return `【好物共享】「${itemTitle}」已經確定給你了！`;
-    case "direct_share_received":
-      return `【好物共享】你收到一份直接贈與：「${itemTitle}」`;
-    case "handover_message":
-      return `【好物共享】「${itemTitle}」有新的交接訊息`;
-    case "completion_confirmed":
-      return `【好物共享】「${itemTitle}」有新的通知，登入網站查看`;
-    default:
-      return "【好物共享】你有一則新通知，登入網站查看";
-  }
-}
+// 外部推播文字組裝已抽出到 src/lib/notification-format.ts 的 formatNotificationText
+// （重送 job 與初次發送 job src/lib/notification-dispatch.ts 共用同一份，確保重試的
+// failed delivery 也拿得到 kind 感知文字，例如抽籤／訂閱／到期事件，不會退回保底文案）。
 
 /**
  * 規格明文要求的獨立判定：某個 `telegram_account` 最近連續 N 筆
