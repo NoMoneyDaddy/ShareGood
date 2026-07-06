@@ -14,7 +14,16 @@
       HEIC 格式，走後端 HEIC→JPEG 轉碼（不是前端轉檔、也不是純提示訊息了事）。
     - [x] 上架（建立好物）：`POST /api/items`、`/items/new`（表單）、`/items/[id]`（詳情頁），
           首頁與底部導覽 CTA 已串接（PR #9）。
-    - [ ] 剩餘：留言/認領、直贈、交接與私訊、感謝與貢獻值、站內通知、SEO/AEO 補完、E2E 測試。
+    - [x] 留言/認領（PR #13）：先到先得模式（M1 範圍簡化，不做物主手動挑人），
+          `POST/GET /api/items/[id]/claims`，併發搶佔已驗證。
+    - [x] 直贈（PR #10）：`POST/GET/PATCH /api/items/[id]/direct-shares[...]`，
+          email 指定收禮人、lazy expiry（不搭 cron）、單一 pending 限制。
+    - [x] 站內通知中心讀取端（PR #12）：`GET/PATCH /api/notifications[...]`、
+          `/notifications` 頁面、site-header 鈴鐺 badge；寫入端已在留言/直贈裡各自掛上。
+    - [x] SEO/AEO 補完（PR #11）：物品詳情頁 OG + JSON-LD（Product/Offer）、
+          動態 `/sitemap.xml`、`robots.txt` 補 Sitemap 欄位。
+    - [ ] 剩餘：交接與私訊（依賴留言/直贈的 accept 事件）、感謝與貢獻值（依賴交接完成）、
+          E2E 全流程測試。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
