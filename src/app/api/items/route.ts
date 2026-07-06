@@ -162,7 +162,7 @@ export async function GET(req: NextRequest) {
   const cityId = searchParams.get("cityId") || undefined;
   const categoryId = searchParams.get("categoryId") || undefined;
   const keyword = searchParams.get("q")?.trim() || undefined;
-  const cursor = searchParams.get("cursor");
+  const cursor = searchParams.get("cursor")?.trim() || undefined;
   const limitParam = Number.parseInt(searchParams.get("limit") ?? "", 10);
   const take =
     Number.isFinite(limitParam) && limitParam > 0
@@ -214,7 +214,7 @@ export async function GET(req: NextRequest) {
       createdAt: item.createdAt,
       city: item.city.name,
       category: item.category.name,
-      thumbObjectKey: item.images[0]?.thumbObject.objectKey ?? null,
+      thumbObjectKey: item.images[0]?.thumbObject?.objectKey ?? null,
     })),
     nextCursor: hasMore ? page[page.length - 1].id : null,
   });
