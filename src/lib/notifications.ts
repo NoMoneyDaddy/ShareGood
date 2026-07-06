@@ -86,10 +86,11 @@ export async function createOrMergeNotification(
 /** 台北曆日（UTC+8，無日光節約）當天 00:00 對應的 UTC 時間點，不依賴 process 本身的時區設定。 */
 function startOfTaipeiDay(date: Date): Date {
   const taipeiMs = date.getTime() + TAIPEI_OFFSET_MS;
+  const taipeiDate = new Date(taipeiMs);
   const taipeiMidnightUtcMs = Date.UTC(
-    new Date(taipeiMs).getUTCFullYear(),
-    new Date(taipeiMs).getUTCMonth(),
-    new Date(taipeiMs).getUTCDate(),
+    taipeiDate.getUTCFullYear(),
+    taipeiDate.getUTCMonth(),
+    taipeiDate.getUTCDate(),
   );
   return new Date(taipeiMidnightUtcMs - TAIPEI_OFFSET_MS);
 }

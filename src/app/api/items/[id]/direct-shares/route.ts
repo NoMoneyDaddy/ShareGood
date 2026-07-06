@@ -75,15 +75,23 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     throw e;
   }
 
-  await createOrMergeNotification(db, {
-    userId: receiver.id,
-    type: "direct_share_received",
-    payload: {
-      itemId: item.id,
-      itemTitle: item.title,
-      itemOwnerNickname: user.profile.nickname,
-    },
-  });
+  // 直贈邀請已經在上面的 transaction 裡成功建立並提交，通知只是附加效果：通知建立失敗
+  // （例如暫時性的資料庫連線問題）不該讓這支 API 回 500，否則物主會誤以為邀請沒建立成功
+  // 而重試，卻因為「同一物品同時最多一筆 pending 直贈」這條規則而收到衝突錯誤。
+  // 因此這裡刻意不讓錯誤往外拋，只記錄 log。
+  try {
+    await createOrMergeNotification(db, {
+      userId: receiver.id,
+      type: "direct_share_received",
+      payload: {
+        itemId: item.id,
+        itemTitle: item.title,
+        itemOwnerNickname: user.profile.nickname,
+      },
+    });
+  } catch (e) {
+    console.error("createOrMergeNotification failed for direct_share_received", e);
+  }
 
   return NextResponse.json({ id: created.id }, { status: 201 });
 }

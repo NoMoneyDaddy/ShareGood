@@ -107,17 +107,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   // （雙方你一言我一語聊交接細節），所以用 createOrMergeNotification：30 分鐘窗口內對
   // 同一物品的多則 handover_message 只會合併成一筆未讀通知（見 src/lib/notifications.ts），
   // 不會每傳一句話就轟炸對方一則新通知。
+  //
+  // 訊息本體已經成功寫入資料庫，通知只是附加效果：通知建立失敗（例如暫時性的資料庫連線
+  // 問題）不該讓這支 API 回 500，否則使用者會誤以為訊息沒送出而重試，造成重複訊息。
+  // 因此這裡刻意不讓錯誤往外拋，只記錄 log。
   const otherMember = conversation.members.find((m) => m.userId !== user.id);
   if (otherMember) {
-    await createOrMergeNotification(db, {
-      userId: otherMember.userId,
-      type: "handover_message",
-      payload: {
-        itemId: conversation.item.id,
-        itemTitle: conversation.item.title,
-        conversationId: conversation.id,
-      },
-    });
+    try {
+      await createOrMergeNotification(db, {
+        userId: otherMember.userId,
+        type: "handover_message",
+        payload: {
+          itemId: conversation.item.id,
+          itemTitle: conversation.item.title,
+          conversationId: conversation.id,
+        },
+      });
+    } catch (e) {
+      console.error("createOrMergeNotification failed for handover_message", e);
+    }
   }
 
   return NextResponse.json(created, { status: 201 });
