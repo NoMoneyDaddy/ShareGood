@@ -1895,6 +1895,22 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
 - 後移未排：badges/user_badges/leaderboard_*（徽章排行榜——等有活躍使用者再說）、
   sensitive_access_logs（M2 併入 audit_logs 加 `sensitive` 欄位起步，量大再拆表）
 
+### 11.5 未來功能參考（競品觀察，2026-07-06）
+
+使用者提供競品「CouponShare」（onshare.lazybearlife.com）11 張畫面截圖作為 UI/UX 參考，比較後歸類：
+
+- **低成本、值得排進未來 wave**（不佔用 M2-M8 現有排程，等主迴路穩定後再挑）：
+  1. 物品卡片社會證明數字（例如「已有 N 人留言/已分享 N 次」）——用既有 `claim_comments`/
+     `contribution_events` 聚合即可，不需新表。
+  2. 交接流程內嵌 3 步驟說明（約時間/地點 → 見面 → 雙方確認完成）——純文案/UI 調整，
+     呼應 `/guide` 頁已有的說明邏輯，可直接搬過去或在物品詳情頁交接區塊加提示。
+  3. 優惠券揭露畫面走「QR code 風格」視覺（不是真的 QR code 功能，是視覺呈現）——
+     純前端樣式調整 `coupon-section.tsx` 的揭露結果畫面。
+- **判斷後不排入**：競品的社群圈/好友系統、金流相關功能——違反 §1 non-goals（不做社區圈、
+  不做金流），不採納。
+- 這三項屬於錦上添花的 UX 優化，非核心迴路缺口，暫不派工，待 M2-M4 完整合併穩定、
+  且使用者確認優先順序後再排進 wave。
+
 ### 11.2 必備索引（建表時一併建）
 ```
 items(status, city_id, category_id, created_at)
