@@ -22,7 +22,7 @@ review-then-merge」模式。
    → merge」的既有流程。
 3. M5（抽籤）因為 master-plan §10 明文要求「開工前由當時的 session 先產出細部規格，經使用者確認後
    再實作」，**不能**直接進實作 wave——先派一個「規格草擬」agent 產出細部規格（交付內容＋驗收清單，
-   格式比照 M0–M4），寫回 master-plan.md §10.1，然後**停下來給使用者確認**，確認後才開實作 wave。
+   格式比照 M0–M4），寫回 master-plan.md，然後**停下來給使用者確認**，確認後才開實作 wave。
 
 **Tech Stack:** 沿用既有：Next.js App Router + PostgreSQL + Prisma + MinIO + Auth.js；測試用
 Vitest（整合）與既有的「本機 DB 直接跑 API/DB 驗證」模式；Prisma migration 走 `migrate deploy`
