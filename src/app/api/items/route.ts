@@ -5,6 +5,7 @@ import { COUPON_CATEGORY_SLUG, EXPIRING_FOOD_CATEGORY_SLUG } from "@/lib/categor
 import { encryptCouponCode } from "@/lib/coupon-crypto";
 import { db } from "@/lib/db";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
+import { checkIpThrottle, getClientIp, IpThrottleExceededError } from "@/lib/ip-throttle";
 import { listPublishedItems } from "@/lib/items";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
@@ -290,6 +291,19 @@ export async function POST(req: NextRequest) {
 // 區塊改為真實資料時，直接呼叫同一支函式（server component 內查 db，不自打這支 HTTP API），
 // 這裡只負責解析 query string 並轉呼叫，避免兩處重複維護同一段查詢/排序邏輯。
 export async function GET(req: NextRequest) {
+  // P1：公開匿名端點的 IP 級節流（見 src/lib/ip-throttle.ts）。放在最前面，超限的請求
+  // 不會進到後面的 DB 查詢，達到「擋掉高速抓取、保護 DB」的目的。取不到可識別 IP
+  // （無反向代理標頭）時跳過，不落入共用 bucket 誤傷正常流量。
+  const clientIp = getClientIp(req);
+  if (clientIp) {
+    try {
+      checkIpThrottle(clientIp, "items_list");
+    } catch (e) {
+      if (e instanceof IpThrottleExceededError) return jsonError("RATE_LIMITED", e.message);
+      throw e;
+    }
+  }
+
   const { searchParams } = new URL(req.url);
   const cityId = searchParams.get("cityId") || undefined;
   const categoryId = searchParams.get("categoryId") || undefined;
