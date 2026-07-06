@@ -24,8 +24,15 @@ export function buildTelegramDeepLink(token: string): string {
 
 // Telegram sendMessage 失敗時，若錯誤訊息符合這些特徵，代表使用者已經封鎖 bot 或刪除對話，
 // 判定帳號已失效、應自動解綁（master-plan §9 交付內容 3／§8a 交付內容 6 的精神，此處先落地
-// 「送訊息當下就判斷」的簡化版；完整的「連續失敗才解綁＋重送 job」留給 M8）。
-const DEACTIVATE_ON_ERROR_PATTERNS = [
+// 「送訊息當下就判斷」的簡化版——單次符合就立刻解綁，比 §8a 規格描述的「連續 3 筆都符合」
+// 更早出手，是既有邏輯的合理超集，不修改）。
+//
+// M8（`src/lib/notification-retry.ts`）另外實作規格明文要求的「連續 N 筆 delivery 都失敗
+// 且符合特徵」判定，當作這裡的備援：萬一某次失敗沒有經過 `sendTelegramMessage`（理論上
+// 不會發生，因為重送 job 就是呼叫這支函式）或未來新增其他發送路徑忘記接上這支即時判斷，
+// 重送 job 的獨立掃描仍能在下一輪把帳號解綁。兩者都是 idempotent 的
+// `updateMany({ where: { isActive: true } })`，重複觸發不會出錯，故意保留這層重疊。
+export const DEACTIVATE_ON_ERROR_PATTERNS = [
   /blocked/i,
   /chat not found/i,
   /user is deactivated/i,
