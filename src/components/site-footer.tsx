@@ -10,9 +10,14 @@ const FOOTER_LINKS = [
   { href: "/privacy", label: "隱私權政策" },
 ];
 
-export function SiteFooter() {
+// hasBottomTab：頁面若掛載了行動版 BottomTab（目前只有首頁），底部要留出額外空間避免
+// 內容被蓋住；其他沒有 BottomTab 的頁面（/guide、/rules、/terms、/privacy、物品詳情頁等）
+// 用標準頁尾留白即可，不需要多出這一大塊空白（Gemini review 指出的真實排版問題）。
+export function SiteFooter({ hasBottomTab = false }: { hasBottomTab?: boolean }) {
   return (
-    <footer className="border-t border-line bg-paper-2 pb-24 md:pb-8">
+    <footer
+      className={`border-t border-line bg-paper-2 pb-8 md:pb-8 ${hasBottomTab ? "pb-24" : ""}`}
+    >
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-ink-soft sm:px-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
           <span className="font-bold text-ink">好物共享 ShareGood</span>

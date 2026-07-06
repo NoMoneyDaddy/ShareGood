@@ -291,7 +291,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <SiteFooter />
+      <SiteFooter hasBottomTab />
 
       <BottomTab />
     </div>
