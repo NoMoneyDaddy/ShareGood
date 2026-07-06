@@ -1,7 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
-import { COUPON_CATEGORY_SLUG, EXPIRING_FOOD_CATEGORY_SLUG } from "@/lib/categories";
+import {
+  COUPON_CATEGORY_SLUG,
+  EXPIRING_FOOD_CATEGORY_SLUG,
+  POINT_CATEGORY_SLUG,
+  TICKET_CATEGORY_SLUG,
+} from "@/lib/categories";
 import { encryptCouponCode } from "@/lib/coupon-crypto";
 import { db } from "@/lib/db";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
@@ -9,8 +14,10 @@ import { checkIpThrottle, getClientIp, IpThrottleExceededError } from "@/lib/ip-
 import { listPublishedItems } from "@/lib/items";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkNonTransferableCouponType } from "@/lib/non-transferable-coupon-types";
+import { containsTaiwanMobileNumber } from "@/lib/phone-guard";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
+import { checkNonTransferableTicketType } from "@/lib/ticket-guard";
 
 const MIN_IMAGES = 1;
 const MAX_IMAGES = 5;
@@ -65,6 +72,46 @@ function parseCouponInput(value: unknown): CouponInput | null {
   if (notesRaw.length > MAX_FIELD_LENGTHS.notes) return null;
   if (!code || code.length > MAX_FIELD_LENGTHS.code) return null;
   return { faceValue, merchantName, notes: notesRaw || null, code };
+}
+
+// M9 §9a 交付內容 4：票券類型（資訊型無償轉贈媒合）。ticketType／originPlatform 必填，
+// eventName 選填；**刻意無任何金額欄位**（parseTicketInput 本身不解析、也不接受 amount/price
+// 這類欄位，即使前端誤傳也會被忽略）。
+const TICKET_FIELD_LENGTHS = { ticketType: 50, originPlatform: 50, eventName: 100 } as const;
+
+type TicketInput = { ticketType: string; originPlatform: string; eventName: string | null };
+
+function parseTicketInput(value: unknown): TicketInput | null {
+  const t = value as Record<string, unknown> | null | undefined;
+  const ticketType = typeof t?.ticketType === "string" ? t.ticketType.trim() : "";
+  const originPlatform = typeof t?.originPlatform === "string" ? t.originPlatform.trim() : "";
+  const eventNameRaw = typeof t?.eventName === "string" ? t.eventName.trim() : "";
+  if (!ticketType || ticketType.length > TICKET_FIELD_LENGTHS.ticketType) return null;
+  if (!originPlatform || originPlatform.length > TICKET_FIELD_LENGTHS.originPlatform) return null;
+  if (eventNameRaw.length > TICKET_FIELD_LENGTHS.eventName) return null;
+  return { ticketType, originPlatform, eventName: eventNameRaw || null };
+}
+
+// M9 §9a 交付內容 5：點數類型（無償贈與媒合＋引導官方閉環）。pointPlatform／pointAmount 必填，
+// **刻意無任何金額欄位**（pointAmount 是純數量，不是金額、不換算現金）。
+const POINT_FIELD_LENGTHS = { pointPlatform: 50 } as const;
+const MAX_POINT_AMOUNT = 1_000_000;
+
+type PointInput = { pointPlatform: string; pointAmount: number };
+
+function parsePointInput(value: unknown): PointInput | null {
+  const p = value as Record<string, unknown> | null | undefined;
+  const pointPlatform = typeof p?.pointPlatform === "string" ? p.pointPlatform.trim() : "";
+  const pointAmount = typeof p?.pointAmount === "number" ? p.pointAmount : Number.NaN;
+  if (!pointPlatform || pointPlatform.length > POINT_FIELD_LENGTHS.pointPlatform) return null;
+  if (
+    !Number.isInteger(pointAmount) ||
+    pointAmount <= 0 ||
+    pointAmount > MAX_POINT_AMOUNT
+  ) {
+    return null;
+  }
+  return { pointPlatform, pointAmount };
 }
 
 export async function POST(req: NextRequest) {
@@ -131,10 +178,13 @@ export async function POST(req: NextRequest) {
   if (!category?.isActive) return jsonError("UNPROCESSABLE", "無效的分類");
   if (!city) return jsonError("UNPROCESSABLE", "無效的縣市");
 
-  // M3（master-plan §8）：優惠券／即期食品各自的到期日與額外欄位規則靠分類 slug 判斷，
-  // 兩者共用 Item.expiresAt（schema 註解說明過，不重複存一份避免兩處日期不同步）。
+  // M3（master-plan §8）／M9（master-plan §9a）：優惠券／即期食品／票券／點數各自的到期日與
+  // 額外欄位規則靠分類 slug 判斷，皆共用 Item.expiresAt（schema 註解說明過，不重複存一份
+  // 避免兩處日期不同步）。
   const isCoupon = category.slug === COUPON_CATEGORY_SLUG;
   const isExpiringFood = category.slug === EXPIRING_FOOD_CATEGORY_SLUG;
+  const isTicket = category.slug === TICKET_CATEGORY_SLUG;
+  const isPoint = category.slug === POINT_CATEGORY_SLUG;
 
   const expiresAt = parseExpiresAtDate(body?.expiresAt);
   if (expiresAt === INVALID_DATE) {
@@ -174,6 +224,58 @@ export async function POST(req: NextRequest) {
     }
     if (!expiresAt) {
       return jsonError("UNPROCESSABLE", "即期食品需填寫到期日");
+    }
+  }
+
+  // M9 §9a 交付內容 4：票券類型——資訊型無償轉贈媒合，明確拒絕任何金額欄位或加價暗示。
+  let ticketInput: TicketInput | null = null;
+  if (isTicket) {
+    ticketInput = parseTicketInput(body?.ticket);
+    if (!ticketInput) {
+      return jsonError("UNPROCESSABLE", "請完整填寫票券資訊（券種／原平台）");
+    }
+    // 攔截層一：不可上架清單（官方明文禁轉贈／官方閉環類型），對「類型選擇＋標題」做正規化
+    // 子字串比對（見 src/lib/ticket-guard.ts）。攔截層二（自由文字：描述、留言）交給下面的
+    // keyword_blocklist 檢查（已涵蓋同一批詞條，見 prisma/seed.ts）。
+    if (
+      checkNonTransferableTicketType(title) ||
+      checkNonTransferableTicketType(ticketInput.ticketType)
+    ) {
+      return jsonError(
+        "UNPROCESSABLE",
+        "此類型為官方閉環／禁轉贈票券，請走官方 App 轉贈功能，本平台不受理上架",
+      );
+    }
+    // 券種／原平台／活動名稱都是自由文字欄位，跟標題/描述一樣要過關鍵字黑名單
+    // （加價詞／折現詞／不可上架券名，見 prisma/seed.ts 的 M9 詞庫）。
+    const ticketKeywordHit =
+      (await checkKeywordBlocklist(ticketInput.ticketType)) ??
+      (await checkKeywordBlocklist(ticketInput.originPlatform)) ??
+      (ticketInput.eventName ? await checkKeywordBlocklist(ticketInput.eventName) : null);
+    if (ticketKeywordHit) {
+      return jsonError("UNPROCESSABLE", "票券資訊包含不允許的內容，請修改後再送出");
+    }
+  }
+
+  // M9 §9a 交付內容 5：點數類型——無償贈與媒合＋引導官方閉環，個資最小化＋嚴禁對價（硬規則）。
+  let pointInput: PointInput | null = null;
+  if (isPoint) {
+    pointInput = parsePointInput(body?.point);
+    if (!pointInput) {
+      return jsonError("UNPROCESSABLE", "請完整填寫點數資訊（點數平台／數量須為正整數）");
+    }
+    // 固定詞（驗證碼／會員帳號／OTP、折現／換現金等）沿用既有 keyword_blocklist；
+    // 手機號格式另由獨立正則 helper 處理（keyword_blocklist 只做子字串比對，攔不了格式）。
+    const pointKeywordHit = await checkKeywordBlocklist(pointInput.pointPlatform);
+    if (pointKeywordHit) {
+      return jsonError("UNPROCESSABLE", "點數資訊包含不允許的內容，請修改後再送出");
+    }
+    if (
+      containsTaiwanMobileNumber(title) ||
+      containsTaiwanMobileNumber(description) ||
+      containsTaiwanMobileNumber(pointInput.pointPlatform)
+    ) {
+      return jsonError("UNPROCESSABLE", "請勿留下手機號碼等個人資料，本平台不經手點數與會員帳號");
     }
   }
 
@@ -274,6 +376,31 @@ export async function POST(req: NextRequest) {
             ciphertext: encrypted.ciphertext,
             iv: encrypted.iv,
             authTag: encrypted.authTag,
+          },
+        });
+      }
+
+      // M9 §9a 交付內容 4：票券——ticket_details 明確無金額欄位、無自己的效期欄位
+      // （效期沿用上面已寫入 Item.expiresAt，M3 既有 item-expiration job 直接生效）。
+      if (ticketInput) {
+        await tx.ticketDetail.create({
+          data: {
+            itemId: created.id,
+            ticketType: ticketInput.ticketType,
+            originPlatform: ticketInput.originPlatform,
+            eventName: ticketInput.eventName,
+          },
+        });
+      }
+
+      // M9 §9a 交付內容 5：點數——point_details 明確無金額欄位（pointAmount 是純數量），
+      // 平台不經手點數本身，交付沿用既有 claims/handover 流程。
+      if (pointInput) {
+        await tx.pointDetail.create({
+          data: {
+            itemId: created.id,
+            pointPlatform: pointInput.pointPlatform,
+            pointAmount: pointInput.pointAmount,
           },
         });
       }
