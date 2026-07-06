@@ -12,3 +12,5 @@
 | `20260705-stale-server-pkill-pattern.md` | pkill -f "a\|b" 不做 OR 比對，殺不掉背景 next-server；改用 port 精確 kill，並看啟動 log 的 Ready 訊息驗證 |
 | `20260705-skills-cli-agents-dir-is-real-content.md` | `npx skills add` 裝的 `.claude/skills/<name>` 常是 symlink，真身在 `.agents/`；刪 `.agents/` 前先確認沒有還在用的 skill 指向它 |
 | `20260706-env-example-gitignored.md` | `.gitignore` 的 `.env*` 連 `.env.example` 都擋掉，該檔案從 M0 起從未真正進版控；已加 `!.env.example` 例外並補回 |
+| `20260706-turbopack-stale-cache-fake-404.md` | 改 `.env` 後只 `fuser -k` 重啟 `next dev` 會讓某條深層巢狀 API route 回 Next 自己的 404 頁（誤判成我們的 JSON 404）；一律 `rm -rf .next` 再重啟，且用 `curl -i` 看 Content-Type 分辨 |
+| `20260706-playwright-cannot-import-prisma7-client.md` | Playwright Test 的 TS 轉譯器不支援 Prisma 7 產生的 client（`import.meta`）；db 相關邏輯要抽成獨立 `npx tsx` 腳本，spec 檔用 child_process 呼叫，不要直接 import |
