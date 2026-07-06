@@ -23,7 +23,8 @@ export function PreferenceToggle({
 
   async function handleToggle() {
     if (pending) return;
-    const next = !enabled;
+    const previousEnabled = enabled;
+    const next = !previousEnabled;
     setEnabled(next);
     setPending(true);
     try {
@@ -35,9 +36,9 @@ export function PreferenceToggle({
           [channel === "inApp" ? "inAppEnabled" : "externalEnabled"]: next,
         }),
       });
-      if (!res.ok) setEnabled(!next);
+      if (!res.ok) setEnabled(previousEnabled);
     } catch {
-      setEnabled(!next);
+      setEnabled(previousEnabled);
     } finally {
       setPending(false);
     }

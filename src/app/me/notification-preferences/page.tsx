@@ -12,10 +12,11 @@ export const metadata: Metadata = { title: "通知偏好設定" };
 // 外部通知目前僅 Telegram（M4）；「哪個外部管道」的綁定細節不在這支頁面處理。
 export default async function NotificationPreferencesPage() {
   const session = await auth();
-  if (!session?.user) redirect("/");
+  const userId = session?.user?.id;
+  if (!userId) redirect("/");
 
   const rows = await db.notificationPreference.findMany({
-    where: { userId: session.user.id },
+    where: { userId },
     select: { eventType: true, inAppEnabled: true, externalEnabled: true },
   });
   const preferences = mergeWithDefaults(rows);
