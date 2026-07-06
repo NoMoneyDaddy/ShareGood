@@ -242,6 +242,7 @@ function ThanksForm({ itemId }: { itemId: string }) {
     <form onSubmit={submit} className="space-y-2">
       <p className="text-sm text-ink-soft">跟物主留言感謝一下吧（限一次）。</p>
       <textarea
+        aria-label="感謝留言"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={300}

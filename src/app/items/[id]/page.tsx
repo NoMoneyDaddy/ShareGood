@@ -100,10 +100,10 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   }
 
   // 感謝留言：只有 completed 之後才可能存在（見 /api/items/[id]/thanks 的檢查），
-  // 其他狀態不用多查一次浪費一趟資料庫往返。
+  // 其他狀態不用多查一次浪費一趟資料庫往返。itemId 有 unique constraint，最多一筆。
   const thanksMessage =
     item.status === "completed"
-      ? await db.thanksMessage.findFirst({
+      ? await db.thanksMessage.findUnique({
           where: { itemId: item.id },
           include: { fromUser: { include: { profile: true } } },
         })

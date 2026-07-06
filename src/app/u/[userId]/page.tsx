@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { auth } from "@/auth";
 import { SiteHeader } from "@/components/site-header";
 import { db } from "@/lib/db";
 
-async function getProfile(userId: string) {
+// generateMetadata 與頁面本體都要查 profile；db.profile.findUnique 不是 fetch()，
+// Next.js 不會自動去重，用 React cache() 讓同一次請求內兩處呼叫共用一次查詢結果。
+const getProfile = cache(async (userId: string) => {
   return db.profile.findUnique({ where: { userId } });
-}
+});
 
 export async function generateMetadata({
   params,
@@ -23,12 +26,13 @@ export async function generateMetadata({
 export default async function UserProfilePage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params;
 
-  const [profile, session, contributionSum] = await Promise.all([
-    getProfile(userId),
+  const profile = await getProfile(userId);
+  if (!profile) notFound();
+
+  const [session, contributionSum] = await Promise.all([
     auth(),
     db.contributionEvent.aggregate({ where: { userId }, _sum: { points: true } }),
   ]);
-  if (!profile) notFound();
 
   const viewerProfile = session?.user
     ? await db.profile.findUnique({ where: { userId: session.user.id } })

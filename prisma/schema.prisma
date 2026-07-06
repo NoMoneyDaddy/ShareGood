@@ -356,7 +356,7 @@ model HandoverRecord {
 
 model ThanksMessage {
   id         String   @id @default(cuid())
-  itemId     String   @map("item_id")
+  itemId     String   @unique @map("item_id")
   fromUserId String   @map("from_user_id")
   toUserId   String   @map("to_user_id")
   message    String

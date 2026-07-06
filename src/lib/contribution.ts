@@ -4,3 +4,5 @@ export const CONTRIBUTION_POINTS = {
   receive_completed: 2,
   no_show: -5,
 } as const;
+
+export type ContributionEventType = keyof typeof CONTRIBUTION_POINTS;
