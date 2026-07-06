@@ -3,6 +3,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { CONTRIBUTION_POINTS } from "@/lib/contribution";
 import { db } from "@/lib/db";
+import { checkFullBlock } from "@/lib/restrictions";
 
 // PATCH /api/handover/[id]/no-show — 物主標記「被接受者沒有出現」。
 //
@@ -17,6 +18,12 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const { id: handoverId } = await params;

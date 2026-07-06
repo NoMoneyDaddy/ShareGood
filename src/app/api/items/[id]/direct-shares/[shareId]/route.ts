@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkFullBlock } from "@/lib/restrictions";
 
 // PATCH /api/items/[id]/direct-shares/[shareId] — receiver 接受或婉拒直贈邀請。
 export async function PATCH(
@@ -17,6 +18,12 @@ export async function PATCH(
   }
   if (!user.profile) {
     return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const { id: itemId, shareId } = await params;

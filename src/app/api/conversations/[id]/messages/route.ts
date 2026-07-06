@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkUserRestriction } from "@/lib/restrictions";
 
 const DEFAULT_PAGE_SIZE = 20;
 const MAX_PAGE_SIZE = 50;
@@ -89,6 +90,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   });
   if (!conversation?.members.some((m) => m.userId === user.id)) {
     return jsonError("NOT_FOUND", "找不到這個對話");
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被禁止私訊或被全站封鎖的使用者不能發送交接訊息。
+  const restriction = await checkUserRestriction(user.id, "messaging");
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const body = await req.json().catch(() => null);

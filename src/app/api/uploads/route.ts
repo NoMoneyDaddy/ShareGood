@@ -10,6 +10,7 @@ import {
   toWebpVariant,
   VARIANTS,
 } from "@/lib/images";
+import { checkFullBlock } from "@/lib/restrictions";
 import { putObject } from "@/lib/storage";
 
 // POST /api/uploads — multipart form（欄位 file）。
@@ -21,6 +22,12 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     if (e instanceof AuthzError) return jsonError(e.code, "請先登入");
     throw e;
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加檢查，被全站封鎖（full_block）的使用者不能操作任何 mutation。
+  const restriction = await checkFullBlock(user.id);
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const form = await req.formData().catch(() => null);

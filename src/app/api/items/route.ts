@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkUserRestriction } from "@/lib/restrictions";
 
 const MIN_IMAGES = 1;
 const MAX_IMAGES = 5;
@@ -41,6 +42,13 @@ export async function POST(req: NextRequest) {
   // 避免有人跳過表單直接打 API 建立物品。
   if (!user.profile) {
     return jsonError("FORBIDDEN", "請先完成基本資料設定");
+  }
+
+  // M2 治理底線 §7「功能限制」：疊加在既有 requireUser() 之後的一段新檢查，被禁止上架或被
+  // 全站封鎖的使用者不能建立新物品；不動上面 requireUser() 本身的呼叫方式。
+  const restriction = await checkUserRestriction(user.id, "posting");
+  if (restriction.blocked) {
+    return jsonError("FORBIDDEN", restriction.message);
   }
 
   const body = await req.json().catch(() => null);
