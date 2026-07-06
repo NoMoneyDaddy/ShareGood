@@ -1071,9 +1071,308 @@ M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格
   照 v1 §4.5 表執行、legal request/hold 流程。
 - 關鍵約束：legal hold 目標資料不得被任何清理 job 刪除。
 
-### M8 營運強化（v1.4）
-- 範圍：storage 用量儀表板、慢查詢紀錄、備份還原演練（runbook＋實際演練一次）、
-  健康檢查儀表板、通知失敗重送。
+## 8a. M8 — 營運強化（v1.4，細部規格）
+
+**目標**：站長目前只有一人、沒有維運團隊，正式站出事時（慢、掛、通知送不出去、storage 爆量）
+不能只靠「肉眼看 log」。M8 補齊最小可用的維運工具：storage 用量看得見、慢查詢抓得到、
+備份還原真的演練過而不是紙上談兵、健康狀態有歷史紀錄可查、通知失敗會自動重送而不是石沉大海。
+**依賴**：M0（既有 `/api/health` route、MinIO 接通、`storage_objects` 表與孤兒檔清理 job）、
+M2（`/admin` 後台最小集——本規格的儀表板頁面掛在其下，不新開一個獨立 admin 系統）、
+M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制——本規格新增數個 job key
+掛在同一套機制上，不重新發明）、M4（`notification_deliveries`——本規格的通知失敗重送直接操作
+這張既有表；`telegram_accounts.isActive`／`unlinkedAt`——失效自動解綁邏輯掛在這裡）。
+
+### 交付內容
+
+1. **資料表與欄位**（表名依 §11.1 定案：`health_checks`、`error_logs`、`performance_metrics`、
+   `storage_usage_snapshots`，不可更改；以下欄位為本規格新增設計，命名依 §3.1 慣例）。
+
+   `health_checks`（每次檢查、每個子系統各寫一筆，累積歷史紀錄）：
+   ```
+   id
+   subsystem   text            -- 字串 key（比照 NotificationPreference.eventType 的慣例，不用
+                                  enum，未來加子系統不必 migration）："database" | "storage" |
+                                  "background_jobs"
+   status      text            -- "up" | "degraded" | "down"
+   latencyMs   int, nullable   -- 該次檢查耗時，例如 DB `SELECT 1`、MinIO headBucket 的往返時間
+   detail      jsonb, nullable -- 例如 background_jobs 子系統記錄「距離上次 system_job_runs
+                                  成功結束幾分鐘」「近 N 次執行是否有 failed」
+   checkedAt   timestamptz (= createdAt)
+   ```
+   索引：`health_checks(subsystem, checkedAt)`（儀表板依子系統畫歷史趨勢用）。
+
+   `error_logs`（記錄「壞事發生」——與 `performance_metrics` 的分工見下方交付內容 3）：
+   ```
+   id
+   source      text            -- "api" | "background_job" | "webhook"
+   routeOrJob  text, nullable  -- 正規化後的 route path（例如 "/api/items/[id]/claims"，不含
+                                  動態 id）或 system_jobs.key
+   message     text
+   stack       text, nullable
+   context     jsonb, nullable -- userId、requestId 等排查用途；**禁止**塞入 §1 列出的敏感個資
+   occurredAt  timestamptz (= createdAt)
+   ```
+   索引：`error_logs(source, occurredAt)`。
+
+   `performance_metrics`（記錄「正常運作但耗時多少」，不論成功失敗，見下方交付內容 3）：
+   ```
+   id
+   metricType  text     -- 先只做 "db_query"，"api_request" 留給之後擴充（例如量測整個 route
+                            handler 耗時），本規格不實作 api_request
+   label       text     -- 正規化後的識別碼（例如 "Item.findMany"、"ClaimComment.create"），
+                            不含動態 id，方便依 label 分組統計
+   durationMs  int
+   isSlow      boolean  -- durationMs > 1000（見下方判定門檻）；即時旗標，不是統計量，P95 由
+                            查詢時對原始樣本即時聚合算出（見下方，不另建彙總表）
+   context     jsonb, nullable
+   recordedAt  timestamptz (= createdAt)
+   ```
+   索引：`performance_metrics(metricType, label, recordedAt)`（依 label 分組看趨勢）、
+   `performance_metrics(isSlow, recordedAt)`（儀表板快速撈「最近的慢查詢」列表）。
+
+   `storage_usage_snapshots`（每日快照，一次快照對每個 bucket 各寫一筆）：
+   ```
+   id
+   bucket         text
+   totalBytes     bigint
+   objectCount    int
+   orphanedBytes  bigint, nullable  -- 「孤兒用量」定義見下方交付內容 2，**不是**
+                                       `storage_objects.status='pending'` 那種（那種已有 M0 既有
+                                       的每日孤兒檔清理 job 在處理，見 §5 交付內容 6）
+   orphanedCount  int, nullable
+   byItemStatus   jsonb, nullable   -- 例如 `{"published": 12345678, "removed_by_moderator":
+                                       234000, "expired": 88000}`，依物品狀態分類的 bytes 加總
+   snapshotAt     timestamptz (= createdAt)
+   ```
+   索引：`storage_usage_snapshots(bucket, snapshotAt)`。
+
+2. **Storage 用量儀表板**：
+   - **快照頻率**：每日一次，沿用 M3 建立的排程觸發機制（`system_jobs` key =
+     `"storage_usage_snapshot"`，透過同一套 `CRON_SECRET` 保護 route 觸發；實際 cron
+     基礎設施仍是 M3 決議的 Cronicle／Crontab UI／cron-job.org／GitHub Actions 三選一，M8
+     只是在同一套機制上多掛一個 job，不重新選型）。
+   - **「孤兒用量」精確定義**：`storage_objects.status` 仍是 `linked`（已被 `item_images`
+     引用，不會被 M0 既有的每日孤兒檔清理 job 動到——那支 job 只處理 `status='pending'`
+     的「上傳了但從未被引用」的檔案），但透過 `item_images → items` 反查，該 `items.status`
+     已經是終態（`removed_by_user`、`removed_by_moderator`、`expired`）——這批圖片持續佔用
+     MinIO 空間卻沒有任何既有機制在清理，是 M0 孤兒檔清理範圍的盲區。**M8 快照 job 只負責
+     量測並在儀表板呈現**，不在本規格內新增自動清理（要不要清、要保留幾天當「反悔期」——
+     例如物品被強制下架後物主申訴成功要復原——是後續規格範圍或使用者決策，見「不做」）。
+   - **追蹤維度**：MinIO 總用量（依 bucket，呼叫既有圖片管線用的 S3 client 做
+     `ListObjectsV2` 加總 `sizeBytes` 與物件數）；依物品狀態分類的用量（`byItemStatus`，
+     資料來源是 DB 內 `storage_objects.sizeBytes` 依 `item_images → items.status` join
+     加總，**不必**額外呼叫 MinIO API——**注意 `ItemImage` 同時有 `thumbObjectId` 與
+     `mediumObjectId` 兩個各自指向不同 `StorageObject` 列的外鍵，join／加總時必須把這兩條關聯
+     都算進去（例如分別對 `thumbObject`／`mediumObject` 各 join 一次再加總，或用一次查詢把
+     `item_images` 的兩個 FK 都攤平成列再加總），只算其中一個會漏算一半用量**）；孤兒用量
+     （`orphanedBytes`／`orphanedCount`，同一組 join 篩出終態物品的部分，同樣要處理雙 FK）。
+   - **一致性交叉驗證**：同一次快照裡，「DB 加總的 `sizeBytes`」與「MinIO `ListObjectsV2`
+     實際加總」兩者的 bucket 總量若對不上（誤差超過例如 1%），代表資料有落差（可能是某次
+     上傳失敗但 DB 紀錄殘留、或 MinIO 端手動動過檔案），本身就該寫成一筆 `error_logs`
+     （`source="background_job"`、`routeOrJob="storage_usage_snapshot"`）讓 admin 注意，
+     不需要因此讓整個快照 job 失敗。
+   - **儀表板頁面**：`/admin/ops`（見交付內容 7）的 storage 分頁，呈現目前總用量、依
+     bucket／物品狀態分類的數字、孤兒用量特別標示（帶「待清理」提示）、以及
+     `storage_usage_snapshots` 歷史趨勢（用量隨時間變化）。
+
+3. **慢查詢紀錄**：
+   - **`error_logs` 與 `performance_metrics` 分工**：`error_logs` 記錄「壞事發生」——API
+     未捕捉例外、background job 執行失敗、webhook 驗證失敗，用途是除錯與異常追蹤；
+     `performance_metrics` 記錄「耗時多少」——不論成功或失敗都可以記，用途是效能分析與趨勢。
+     兩者不互斥：一個查詢逾時最終丟例外的情境，理論上兩邊各記一筆——`performance_metrics`
+     記下它跑了多久才失敗、`error_logs` 記下它為什麼失敗。
+   - **判定門檻**：呼應 §12 上線前檢查表「壓測煙霧測試：500 物品/50 使用者假資料下列表與查詢
+     P95 < 1s」，慢查詢定義為**單一 label 的 P95 > 1s**。P95 是統計量、不能對單一次呼叫即時
+     判定，所以拆成兩層：`isSlow` 欄位是**即時旗標**（單次 `durationMs > 1000` 就標記，
+     用於快速找出「這一筆特別慢」的個案）；真正的 P95 則由儀表板查詢時對 `performance_metrics`
+     原始樣本用 PostgreSQL 內建的 `percentile_cont(0.95) WITHIN GROUP (ORDER BY duration_ms)`
+     即時聚合算出（依 `label` 分組、依時間窗篩選，例如「過去 24 小時」），**不另建彙總表**——
+     原始樣本已經夠用，多維護一張彙總表只會多一份需要保持一致的衍生資料，MVP 不需要。
+   - **擷取機制選型：Prisma Client Extension（`$extends` 的 query 元件）而非
+     `pg_stat_statements`**。理由：
+     (a) 本專案用 Prisma 7，`$use` middleware 已在 Prisma 5 移除，`$extends` 是現行推薦做法，
+     與既有 `src/lib/db.ts`（`PrismaPg` adapter）完全相容，不需要額外依賴；
+     (b) `pg_stat_statements` 是 PostgreSQL extension，需要資料庫層級 `CREATE EXTENSION`
+     權限——Zeabur 的 managed PostgreSQL 服務**是否開放這個權限尚未查證**，屬外部依賴風險，
+     若屆時發現不可行會卡住整個功能；`$extends` 完全在應用層控制，不依賴平台權限，MVP 階段
+     風險更低；
+     (c) 取捨：`$extends` 量到的是「ORM 邊界的 wall time」（含網路往返），拿不到查詢計畫、
+     buffer 命中率等資料庫內部指標，若之後真的要深入診斷「為什麼慢」（而不只是「知道慢」），
+     `pg_stat_statements`（如果平台允許）或手動 `EXPLAIN ANALYZE` 仍是更好的**調查工具**——
+     但那是排查手段，不是儀表板的常態資料源，M8 儀表板的目的只是「知道慢，知道多慢，知道是
+     哪一類查詢」，不需要為了這個目的追求資料庫內部深度。
+   - **取樣範圍：全量記錄，不設寫入門檻**——曾經考慮「只記錄 `durationMs > 100ms` 的查詢」濾掉
+     健康查詢雜訊，但這個設計有統計學上的缺陷：`percentile_cont(0.95)` 是對**樣本庫**算百分位，
+     如果樣本庫本身就先過濾掉佔絕大多數的快查詢（5ms、10ms 這類），算出來的「P95」實際上會變成
+     「大於 100ms 的查詢裡的 P95」，嚴重偏高、無法反映真實效能，也無法驗證 §12「全體查詢
+     P95 < 1s」這個目標。MVP 階段流量不大，直接記錄全部查詢即可，資料量交給下面的「資料量控制」
+     （30 天保留期清理 job）處理，不做抽樣或門檻篩選。`error_logs` 同樣不受限，所有錯誤一律記錄。
+   - **資料量控制**：見交付內容 8 的保留期清理 job（`performance_metrics` 30 天、`error_logs`
+     90 天、`health_checks` 30 天；`storage_usage_snapshots` 資料量小且需要長期趨勢，不設
+     保留期）。
+   - 數值集中管理：慢查詢門檻（1000ms 即時旗標）、保留天數等數值，實作時
+     集中放進一個 config 檔（比照 M1 `src/lib/contribution.ts`「數值進 config 不寫死」的慣例），
+     不要分散寫死在各處。
+
+4. **備份還原演練（規格化為例行工作）**：
+   - **頻率**：每季一次（quarterly）例行演練；另外任何一次 schema 有重大變更（新增/修改核心表）
+     後，也要額外加演練一次（觸發式，不算進季度例行的計數）；任何一次因真實事故而執行的還原，
+     視同已完成當季演練，補寫紀錄即可不必再另外重演一次。
+   - **Runbook 檔案**：`docs/runbooks/backup-restore.md`（M8 實作時建立；本規格只定義它必須
+     包含的章節，這次規格 PR 依任務限制不建立該檔案本身）。必須包含：
+     1. **PostgreSQL 備份**：用 `pg_dump` 透過 `DATABASE_URL` 的對外連線字串執行
+        `pg_dump "$DATABASE_URL" -F c -f sharegood_$(date +%Y%m%d).dump`，由 admin 手動於
+        自己機器執行並下載保存（備份副本離開 Zeabur 主機本身，這是「資料要有異地副本」的
+        底線，與「不做多區域備援」的 scope guard 不衝突——後者講的是**服務**層級的容錯
+        failover，這裡只是**資料**要有一份不在同一台主機上的副本，是不同層次的規格）。
+     2. **PostgreSQL 還原**：`pg_restore --clean --if-exists -d "$TARGET_DATABASE_URL"
+        sharegood_YYYYMMDD.dump`；還原後驗證步驟：跑 `prisma migrate status` 確認 migration
+        對齊、跑幾條基本 `COUNT(*)` 確認關鍵表筆數與備份當下相符。
+     3. **MinIO 資料備份**：用 `mc mirror sharegood-minio/<bucket> ./minio-backup-YYYYMMDD/`
+        鏡像到本地磁碟或第二個 S3 相容目的地；還原時反向 `mc mirror` 回去。
+     4. **演練紀錄**：另建 `docs/runbooks/backup-drill-log.md`，每次演練追加一列（日期、
+        操作者、耗時、是否成功、遇到的問題與解法），格式為表格，方便日後稽核「真的有定期
+        演練」而不是紙上流程。
+   - 這條直接把 §12 上線前檢查表「備份：至少手動備份 runbook 寫好並實際演練還原一次」從
+     「上線前做一次」升級為「上線後仍要定期重做」的例行工作。
+
+5. **健康檢查儀表板**：
+   - **`health_checks` 與既有 `/api/health` 的關係**：M0 的 `/api/health`（`src/app/api/health/
+     route.ts`）目前只檢查 DB（`SELECT 1`），本規格把它擴充為分別檢查三個子系統——
+     `database`（既有邏輯不變）、`storage`（呼叫 MinIO 既有圖片管線用的 S3 client 做
+     `headBucket` 或輕量 `listBuckets`）、`background_jobs`（查 `system_job_runs` 最近一筆
+     的 `status` 與 `finishedAt`，判斷「有沒有 job 卡住很久沒跑」或「最近連續 failed」）；
+     每個子系統獨立回報 up/degraded/down，一個子系統掛掉不影響其他子系統的判定（例如 MinIO
+     斷線時 `database` 仍應正常回報 up）。**儀表板就是把這三個子系統的檢查結果視覺化＋存
+     歷史紀錄**：每次呼叫 `/api/health`（不論是外部監控平台打的，還是下面的定期 job）都把
+     三個子系統的結果各寫一筆進 `health_checks`。
+   - **定期探測**：`/api/health` 本身仍是 on-demand（給外部監控或 Zeabur 平台自己的健康檢查
+     呼叫），但外部呼叫頻率不受我們控制，也可能被平台用不穩定的頻率打，導致歷史資料時間間隔
+     不均勻。因此另加一個排程 job（`system_jobs` key = `"health_check_probe"`，建議每 5
+     分鐘一次）主動呼叫**同一套內部檢查函式**（不透過 HTTP 自打自己，避免不必要的網路
+     overhead 與潛在的循環依賴），確保 `health_checks` 有穩定、可預期的取樣頻率。
+   - **儀表板頁面**：`/admin/ops`（見交付內容 7）的總覽分頁，呈現三個子系統目前狀態（紅黃綠）
+     與過去 24 小時／7 天的歷史趨勢；`background_jobs` 子系統異常時列出是哪個 `system_jobs.key`
+     出問題，方便直接對應到 M3/M4/M8 各自的 job。
+
+6. **通知失敗重送**：
+   - **失敗判定**：呼叫 Telegram API 回傳非 2xx，或呼叫逾時（例如 5 秒）未回應，即判定失敗——
+     對應的 `notification_deliveries` 列寫入 `status="failed"`、`attempts += 1`、
+     `lastError` 記下錯誤訊息或逾時原因。
+   - **重送策略：指數退避**。第 N 次重試前需等待 `min(2^N × 60, 3600)` 秒（第 1 次失敗後
+     等 2 分鐘、第 2 次 4 分鐘、第 3 次 8 分鐘……上限封頂 60 分鐘），由重送 job（`system_jobs`
+     key = `"notification_retry"`，建議每 5–10 分鐘跑一次）判斷「這筆 delivery 現在該不該
+     重試」。**Schema 補充需求**：現有 `notification_deliveries`（M4 schema）欄位
+     `attempts`／`lastError`／`sentAt`／`status` 不足以算出「距離上次嘗試過了多久」——
+     `sentAt` 語意是「成功送達時間」，重試中的失敗紀錄這欄是 null；本規格因此需要新增一個
+     `lastAttemptAt`（timestamptz）欄位記錄「最近一次嘗試（不論成功失敗）的時間」，用它加上
+     `attempts` 算出的退避秒數來判斷是否已到重試時機。若 M4 的 schema 分支合併時尚未包含這個
+     欄位，實作 M4 時應一併加入；若 M4 已經先合併定案，M8 實作時再補一支小 migration 加這個
+     欄位（只新增欄位，不影響 M4 既有邏輯）。
+   - **最大重試次數**：5 次。達到上限後 `status` 維持 `failed`、不再被重送 job 挑中
+     （條件式查詢排除 `attempts >= 5`），並且要「標記給 admin 看」——不需要為此另建表，
+     `/admin/ops` 的通知分頁（見交付內容 7）直接查詢
+     `notification_deliveries WHERE status='failed' AND attempts >= 5` 即可列出。
+   - **失效自動解綁**（對應 M4 規格既有的「發送失敗重試＋失效自動解綁」一句話，本規格是把它
+     具體落地）：重送 job 每次執行時，若某個 `telegram_accounts` 底下最近連續（例如最近 3 筆）
+     的 `notification_deliveries` 都是 `failed` 且錯誤訊息符合「帳號已失效」特徵（例如
+     Telegram API 回傳 403 `bot was blocked by the user` 或 chat not found），代表使用者已經
+     封鎖 bot 或刪除對話，此時把該 `telegram_accounts.isActive` 設為 `false`、寫入
+     `unlinkedAt=now()`，之後不再嘗試對這個帳號送 Telegram 通知（站內通知不受影響，照常寫入）。
+
+7. **`/admin` 後台整合**：新增 `/admin/ops` 頁面（依賴 M2 admin 後台最小集的 RBAC 與版面骨架，
+   本規格只是在其下新增頁面，不新建獨立系統；非 admin/moderator 存取一律 403，沿用 M2 既有
+   權限檢查 helper）。分頁：
+   - **總覽**：三個子系統健康狀態＋歷史趨勢（交付內容 5）。
+   - **Storage**：用量儀表板（交付內容 2）。
+   - **慢查詢**：依 label 列出 P95、最近的慢查詢個案列表、`error_logs` 最新錯誤列表。
+   - **通知**：重送中／已達重試上限的 `notification_deliveries` 列表（交付內容 6）。
+
+8. **保留期清理 job**：`system_jobs` key = `"ops_retention_cleanup"`，每日執行一次，同時清理
+   `performance_metrics`（`recordedAt` 超過 30 天）、`error_logs`（`occurredAt` 超過 90 天）、
+   `health_checks`（`checkedAt` 超過 30 天）——三張表都是「僅供近期診斷用的高頻寫入表」，用
+   同一個 job 內聚處理，不必為此各自開一個 job key 增加 `system_jobs` 管理負擔；
+   `storage_usage_snapshots` 不在此 job 範圍內（見交付內容 3，不設保留期）。**必須分批刪除，
+   不能對這三張高頻表各自下一句單一的 `DELETE ... WHERE <時間欄位> < cutoff`**：這幾張表
+   跑一段時間後過期資料量可能很大，單一大型 DELETE 會長時間鎖表、WAL 暴增，影響線上即時寫入
+   與查詢。實作上對每張表迴圈執行「`DELETE ... WHERE id IN (SELECT id FROM <table> WHERE
+   <時間欄位> < cutoff LIMIT 5000)`，直到某次刪除筆數為 0」，每批次之間可以有意的短暫停頓
+   （例如數十毫秒）讓其他查詢有機會插隊，避免長時間佔用連線與鎖。
+
+9. **本規格新增的 `system_jobs` key 總覽**（附加於 M3/M4 既有 job 之外）：
+
+   | job key | 頻率 | 用途 |
+   |---|---|---|
+   | `storage_usage_snapshot` | 每日 | 交付內容 2 |
+   | `health_check_probe` | 每 5 分鐘 | 交付內容 5 |
+   | `notification_retry` | 每 5–10 分鐘 | 交付內容 6 |
+   | `ops_retention_cleanup` | 每日 | 交付內容 8 |
+
+10. **索引**（附加於 §11.2 既有定案索引之外，不與其衝突）：
+    ```
+    health_checks(subsystem, checked_at)
+    error_logs(source, occurred_at)
+    performance_metrics(metric_type, label, recorded_at)
+    performance_metrics(is_slow, recorded_at)
+    storage_usage_snapshots(bucket, snapshot_at)
+    ```
+
+### 不做（scope guard）
+
+- **不做自動化 auto-scaling**：Zeabur Free/單一方案的 MVP 規模不需要；出現容量問題先靠
+  storage 儀表板與慢查詢紀錄人工判斷再決定是否升級方案。
+- **不做多區域備援**：單一 Zeabur 部署，不做跨區域/跨雲的服務層 failover；備份演練（交付內容 4）
+  只保證「資料有異地副本、還原得回來」，不保證「服務不中斷」，兩者是不同層次的規格，此處刻意
+  只做前者。
+- **不做即時告警（alerting/pager）**：`health_checks`／`error_logs` 只是儀表板，不做
+  email/簡訊/Slack 等主動告警通知 admin；MVP 階段站長需要手動看 `/admin/ops`。若之後真的需要
+  主動告警，屬於獨立提案，不在 M8 範圍。
+- **不做對外公開的 status page**：儀表板只給 admin 看，不做類似 status.sharegood.app 這種公開
+  可用性頁面。
+- **不做 `pg_stat_statements`**：見交付內容 3 的選型理由，MVP 階段不引入資料庫層級 extension；
+  若之後證實 Zeabur 平台允許且確實需要更深的查詢診斷，屬於未來版本的獨立提案。
+- **不做效能自動優化**：不做自動建議加索引、自動重寫查詢等機制；`performance_metrics` 只負責
+  量測與呈現，優化動作仍由工程師人工判斷執行。
+- **不做 storage 孤兒用量自動清理**：交付內容 2 的「孤兒用量」只量測與呈現，不自動刪除 MinIO
+  檔案；是否清理、保留多久當「反悔期」，留給之後的獨立規格或使用者決策。
+- **不做全鏈路 tracing（APM/OpenTelemetry 等）**：本規格的 `performance_metrics` 只是應用層
+  簡易記錄，不是分散式追蹤系統；ShareGood 是 monolith，暫無跨服務追蹤的需求。
+
+### 驗收清單
+
+- [ ] 乾淨 DB 跑 `prisma migrate deploy` 後，`health_checks`／`error_logs`／
+      `performance_metrics`／`storage_usage_snapshots` 四張表皆存在，交付內容 10 的索引皆已建立；
+      直接查 DB schema 確認。
+- [ ] 手動觸發 `storage_usage_snapshot` job：`storage_usage_snapshots` 新增一筆，`totalBytes`
+      與依 bucket 分類的數字正確；故意製造一個「物品已下架但圖片未清」的測試情境（把某個測試
+      物品轉 `removed_by_moderator` 但不動它的 `item_images`），`orphanedBytes`／`orphanedCount`
+      正確抓到這筆用量；同一次快照若人為製造 DB 與 MinIO 用量不一致，`error_logs` 出現對應紀錄。
+- [ ] 故意執行一個耗時 > 1 秒的查詢（測試用途，例如故意不用索引的大表 join），
+      `performance_metrics` 出現一筆 `isSlow=true` 的紀錄；對該 `label` 用
+      `percentile_cont(0.95)` SQL 撈出的 P95 數值與手動計算相符。
+- [ ] 故意讓一支 API 丟出未捕捉例外，`error_logs` 出現對應紀錄，`message`／`stack` 完整、
+      不含敏感個資。
+- [ ] 手動觸發一次備份演練：照 `docs/runbooks/backup-restore.md` 步驟，`pg_dump` 出檔 →
+      在一個乾淨環境（例如另一個測試用 PostgreSQL 實例）`pg_restore` 成功 → `prisma migrate
+      status` 確認對齊 → 關鍵表筆數與備份當下相符；同一次也用 `mc mirror` 驗證 MinIO 圖片可
+      還原；演練結果寫入 `docs/runbooks/backup-drill-log.md`。
+- [ ] `/api/health` 擴充後同時回報 `database`／`storage`／`background_jobs` 三個子系統狀態；
+      刻意讓 MinIO 斷線（改錯 endpoint 或關掉服務）時，`storage` 回報 `down` 而
+      `database` 不受影響仍回報 `up`。
+- [ ] `health_check_probe` job 每次執行都在 `health_checks` 寫入三筆（各子系統一筆）。
+- [ ] 通知重送：故意讓 Telegram API 呼叫失敗（mock 或斷網），對應 `notification_deliveries`
+      轉 `failed`、`attempts+1`；`notification_retry` job 依指數退避規則，在正確的時間窗口
+      內才再次嘗試（提早觸發 job 驗證「還沒到重試時間，不重試」；把 `lastAttemptAt` 人為撥到
+      退避時間之前驗證「到時間了，重試」）；達到 `attempts>=5` 後不再被重送 job 挑中，且在
+      `/admin/ops` 通知分頁看得到這筆。
+- [ ] 連續 3 次失敗且錯誤訊息符合「帳號已失效」特徵的 `telegram_accounts`，重送 job 執行後
+      `isActive` 轉 `false` 且 `unlinkedAt` 有值，之後不再嘗試對其送 Telegram 通知。
+- [ ] `/admin/ops` 四個分頁（總覽／Storage／慢查詢／通知）皆能正常呈現資料；非
+      admin/moderator 帳號存取 `/admin/ops` 或其對應 API → 403。
+- [ ] `ops_retention_cleanup` job 執行後，`performance_metrics`（30 天）／`error_logs`
+      （90 天）／`health_checks`（30 天）超過保留期的資料被清除；`storage_usage_snapshots`
+      不受影響、持續累積不清除。
+- [ ] `docs/governance/judgment-rubrics.md` §5 三組底線逐條過（比照 M0–M5 驗收慣例）。
 
 ---
 
