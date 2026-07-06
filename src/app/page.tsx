@@ -260,15 +260,15 @@ export default async function HomePage() {
               <h2 className="text-2xl font-bold text-white">把用不到的好物，分享出去</h2>
               <p className="mt-1.5 text-sm text-white/70">
                 {ctaState === "active"
-                  ? "上架功能即將開放，敬請期待。"
+                  ? "拍張照，寫一句分享的理由，馬上就能上架。"
                   : ctaState === "pending"
                     ? "只差最後一步，設定暱稱與縣市就能開始分享。"
                     : "登入只需要一個 Google 帳號，設定暱稱與縣市就能開始。"}
               </p>
             </div>
             {ctaState === "active" ? (
-              <Button variant="brand" size="xl" disabled title="M1 起開放上架">
-                我要分享
+              <Button asChild variant="brand" size="xl">
+                <Link href="/items/new">我要分享</Link>
               </Button>
             ) : ctaState === "pending" ? (
               <Button asChild variant="brand" size="xl">

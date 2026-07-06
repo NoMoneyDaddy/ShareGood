@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 
 type UploadResult = {
   id: string;
-  variants: Record<string, { objectKey: string; width: number; height: number }>;
+  variants: Record<
+    string,
+    { storageObjectId: string; objectKey: string; width: number; height: number }
+  >;
 };
 
 export function TestUploadForm() {

@@ -67,3 +67,63 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type StorageObject = Prisma.StorageObjectModel
+/**
+ * Model Item
+ * 
+ */
+export type Item = Prisma.ItemModel
+/**
+ * Model ItemImage
+ * 
+ */
+export type ItemImage = Prisma.ItemImageModel
+/**
+ * Model ItemStatusLog
+ * 
+ */
+export type ItemStatusLog = Prisma.ItemStatusLogModel
+/**
+ * Model ClaimComment
+ * 
+ */
+export type ClaimComment = Prisma.ClaimCommentModel
+/**
+ * Model DirectShare
+ * 
+ */
+export type DirectShare = Prisma.DirectShareModel
+/**
+ * Model HandoverRecord
+ * 
+ */
+export type HandoverRecord = Prisma.HandoverRecordModel
+/**
+ * Model ThanksMessage
+ * 
+ */
+export type ThanksMessage = Prisma.ThanksMessageModel
+/**
+ * Model ContributionEvent
+ * 
+ */
+export type ContributionEvent = Prisma.ContributionEventModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model Conversation
+ * 
+ */
+export type Conversation = Prisma.ConversationModel
+/**
+ * Model ConversationMember
+ * 
+ */
+export type ConversationMember = Prisma.ConversationMemberModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

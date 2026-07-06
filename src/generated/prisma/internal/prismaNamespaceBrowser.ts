@@ -60,7 +60,19 @@ export const ModelName = {
   City: 'City',
   Category: 'Category',
   AuditLog: 'AuditLog',
-  StorageObject: 'StorageObject'
+  StorageObject: 'StorageObject',
+  Item: 'Item',
+  ItemImage: 'ItemImage',
+  ItemStatusLog: 'ItemStatusLog',
+  ClaimComment: 'ClaimComment',
+  DirectShare: 'DirectShare',
+  HandoverRecord: 'HandoverRecord',
+  ThanksMessage: 'ThanksMessage',
+  ContributionEvent: 'ContributionEvent',
+  Notification: 'Notification',
+  Conversation: 'Conversation',
+  ConversationMember: 'ConversationMember',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -207,6 +219,152 @@ export const StorageObjectScalarFieldEnum = {
 export type StorageObjectScalarFieldEnum = (typeof StorageObjectScalarFieldEnum)[keyof typeof StorageObjectScalarFieldEnum]
 
 
+export const ItemScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  description: 'description',
+  categoryId: 'categoryId',
+  cityId: 'cityId',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
+
+
+export const ItemImageScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  thumbObjectId: 'thumbObjectId',
+  mediumObjectId: 'mediumObjectId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemImageScalarFieldEnum = (typeof ItemImageScalarFieldEnum)[keyof typeof ItemImageScalarFieldEnum]
+
+
+export const ItemStatusLogScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  actorId: 'actorId',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemStatusLogScalarFieldEnum = (typeof ItemStatusLogScalarFieldEnum)[keyof typeof ItemStatusLogScalarFieldEnum]
+
+
+export const ClaimCommentScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  userId: 'userId',
+  message: 'message',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type ClaimCommentScalarFieldEnum = (typeof ClaimCommentScalarFieldEnum)[keyof typeof ClaimCommentScalarFieldEnum]
+
+
+export const DirectShareScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  receiverId: 'receiverId',
+  status: 'status',
+  respondedAt: 'respondedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DirectShareScalarFieldEnum = (typeof DirectShareScalarFieldEnum)[keyof typeof DirectShareScalarFieldEnum]
+
+
+export const HandoverRecordScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  receiverId: 'receiverId',
+  status: 'status',
+  ownerConfirmedAt: 'ownerConfirmedAt',
+  receiverConfirmedAt: 'receiverConfirmedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type HandoverRecordScalarFieldEnum = (typeof HandoverRecordScalarFieldEnum)[keyof typeof HandoverRecordScalarFieldEnum]
+
+
+export const ThanksMessageScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type ThanksMessageScalarFieldEnum = (typeof ThanksMessageScalarFieldEnum)[keyof typeof ThanksMessageScalarFieldEnum]
+
+
+export const ContributionEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  itemId: 'itemId',
+  type: 'type',
+  points: 'points',
+  createdAt: 'createdAt'
+} as const
+
+export type ContributionEventScalarFieldEnum = (typeof ContributionEventScalarFieldEnum)[keyof typeof ContributionEventScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  payload: 'payload',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const ConversationScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  createdAt: 'createdAt'
+} as const
+
+export type ConversationScalarFieldEnum = (typeof ConversationScalarFieldEnum)[keyof typeof ConversationScalarFieldEnum]
+
+
+export const ConversationMemberScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  userId: 'userId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type ConversationMemberScalarFieldEnum = (typeof ConversationMemberScalarFieldEnum)[keyof typeof ConversationMemberScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  body: 'body',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -221,6 +379,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
