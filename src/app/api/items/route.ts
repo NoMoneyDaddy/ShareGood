@@ -5,14 +5,13 @@ import { COUPON_CATEGORY_SLUG, EXPIRING_FOOD_CATEGORY_SLUG } from "@/lib/categor
 import { encryptCouponCode } from "@/lib/coupon-crypto";
 import { db } from "@/lib/db";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
+import { listPublishedItems } from "@/lib/items";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
 const MIN_IMAGES = 1;
 const MAX_IMAGES = 5;
-const LIST_DEFAULT_PAGE_SIZE = 20;
-const LIST_MAX_PAGE_SIZE = 50;
 
 type ImageInput = { thumbObjectId: string; mediumObjectId: string };
 
@@ -287,9 +286,9 @@ export async function POST(req: NextRequest) {
 // GET /api/items — 公開物品列表（縣市/分類/關鍵字篩選、cursor-based 分頁）。
 // 這是 master-plan §6 第 2 項「列表」在 E2E 驗收前補上的實作：先前幾個 PR 只做了
 // 上架／詳情頁，首頁目前仍是示範資料，還沒有真正查詢 published 物品的列表端點。
-// 篩選＋排序刻意只用 items(status, city_id, category_id, created_at) 這條複合索引
-// 涵蓋的欄位（見 master-plan §11.2），關鍵字用 title/description contains 屬於索引
-// 之外的額外過濾，不影響 status+city+category+createdAt 這段走索引。
+// 實際查詢邏輯集中在 src/lib/items.ts（listPublishedItems），/items 瀏覽頁與首頁「熱門好物」
+// 區塊改為真實資料時，直接呼叫同一支函式（server component 內查 db，不自打這支 HTTP API），
+// 這裡只負責解析 query string 並轉呼叫，避免兩處重複維護同一段查詢/排序邏輯。
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const cityId = searchParams.get("cityId") || undefined;
@@ -297,76 +296,16 @@ export async function GET(req: NextRequest) {
   const keyword = searchParams.get("q")?.trim() || undefined;
   const cursor = searchParams.get("cursor")?.trim() || undefined;
   const limitParam = Number.parseInt(searchParams.get("limit") ?? "", 10);
-  const take =
-    Number.isFinite(limitParam) && limitParam > 0
-      ? Math.min(limitParam, LIST_MAX_PAGE_SIZE)
-      : LIST_DEFAULT_PAGE_SIZE;
-
-  // M3（master-plan §8）「列表『即將到期』排序加權」：sort=expiring 時把有到期日、且快到期
-  // 的物品排到前面（expiresAt 由小到大，null 排最後），同分再用 createdAt/id 當 tie-breaker
-  // 維持 cursor 分頁的穩定排序。走 items(status, expiresAt) 這條既有複合索引（見
-  // prisma/schema.prisma Item.@@index([status, expiresAt])），不是臨時新增。預設仍是
-  // createdAt desc（沿用既有行為，不影響既有呼叫端）。
   const sort = searchParams.get("sort") === "expiring" ? "expiring" : "newest";
 
-  const where = {
-    status: "published" as const,
-    ...(cityId ? { cityId } : {}),
-    ...(categoryId ? { categoryId } : {}),
-    ...(keyword
-      ? {
-          OR: [
-            { title: { contains: keyword, mode: "insensitive" as const } },
-            { description: { contains: keyword, mode: "insensitive" as const } },
-          ],
-        }
-      : {}),
-  };
-
-  const orderBy =
-    sort === "expiring"
-      ? [
-          { expiresAt: { sort: "asc" as const, nulls: "last" as const } },
-          { createdAt: "desc" as const },
-          { id: "desc" as const },
-        ]
-      : [{ createdAt: "desc" as const }, { id: "desc" as const }];
-
-  const items = await db.item.findMany({
-    where,
-    orderBy,
-    take: take + 1,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-    select: {
-      id: true,
-      title: true,
-      status: true,
-      createdAt: true,
-      expiresAt: true,
-      city: { select: { name: true } },
-      category: { select: { name: true } },
-      images: {
-        take: 1,
-        orderBy: { sortOrder: "asc" },
-        select: { thumbObject: { select: { objectKey: true } } },
-      },
-    },
+  const result = await listPublishedItems({
+    cityId,
+    categoryId,
+    keyword,
+    cursor,
+    limit: Number.isFinite(limitParam) && limitParam > 0 ? limitParam : undefined,
+    sort,
   });
 
-  const hasMore = items.length > take;
-  const page = hasMore ? items.slice(0, take) : items;
-
-  return NextResponse.json({
-    items: page.map((item) => ({
-      id: item.id,
-      title: item.title,
-      status: item.status,
-      createdAt: item.createdAt,
-      expiresAt: item.expiresAt,
-      city: item.city.name,
-      category: item.category.name,
-      thumbObjectKey: item.images[0]?.thumbObject?.objectKey ?? null,
-    })),
-    nextCursor: hasMore ? page[page.length - 1].id : null,
-  });
+  return NextResponse.json(result);
 }
