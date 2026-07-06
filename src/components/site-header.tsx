@@ -12,12 +12,18 @@ type SiteHeaderProps = {
 };
 
 // session/profile 由呼叫端（HomePage）一次查好往下傳，避免和頁面主體重複查同一筆資料。
-// 未讀通知數則在這裡自己查（輕量 count，不影響呼叫端既有查詢），避免每個用到 SiteHeader
-// 的頁面都要多傳一個 prop。
+// 未讀通知數與是否為 moderator/admin 則在這裡自己查（輕量查詢，不影響呼叫端既有查詢），
+// 避免每個用到 SiteHeader 的頁面都要多傳一個 prop。
 export async function SiteHeader({ session, profile }: SiteHeaderProps) {
-  const unreadCount = session?.user
-    ? await db.notification.count({ where: { userId: session.user.id, readAt: null } })
-    : 0;
+  const [unreadCount, moderationRoleCount] = session?.user
+    ? await Promise.all([
+        db.notification.count({ where: { userId: session.user.id, readAt: null } }),
+        db.userRole.count({
+          where: { userId: session.user.id, role: { in: ["moderator", "admin"] } },
+        }),
+      ])
+    : [0, 0];
+  const canModerate = moderationRoleCount > 0;
 
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/90 backdrop-blur">
@@ -32,6 +38,14 @@ export async function SiteHeader({ session, profile }: SiteHeaderProps) {
         <nav className="flex items-center gap-2.5">
           {session?.user ? (
             <>
+              {canModerate && (
+                <Link
+                  href="/admin"
+                  className="hidden text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline sm:inline"
+                >
+                  後台管理
+                </Link>
+              )}
               <Link
                 href="/notifications"
                 aria-label={unreadCount > 0 ? `通知，${unreadCount} 則未讀` : "通知"}

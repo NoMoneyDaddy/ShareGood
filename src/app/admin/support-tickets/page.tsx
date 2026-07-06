@@ -10,6 +10,7 @@ import {
   SUPPORT_TICKET_STATUS_LABEL,
 } from "@/lib/support-tickets";
 import { cn } from "@/lib/utils";
+import { AdminNav } from "../admin-nav";
 
 export const metadata = { title: "使用者回報處理" };
 
@@ -41,9 +42,8 @@ function isValidStatusFilter(value: string | undefined): value is SupportTicketS
 }
 
 // 後台使用者回報處理列表（master-plan §7 交付內容 5＋7）：moderator/admin 才能看，其餘
-// 一律 404（不透露這個頁面存在，比照既有 API 慣例）。這是一個獨立自成一頁的最小可用介面
-// ——完整 `/admin` 殼（總覽、導覽、其餘治理功能）留給 Wave 1 任務 7 補上時再把這頁掛進去，
-// 不在這裡預先假設那個殼長什麼樣子。
+// 一律 404（不透露這個頁面存在，比照既有 API 慣例）。完整 `/admin` 殼（總覽、導覽、其餘
+// 治理功能）已經在任務 7 補上，這裡掛上共用的 AdminNav 讓這頁不再是自成一格的孤兒頁。
 export default async function AdminSupportTicketsPage({
   searchParams,
 }: {
@@ -104,6 +104,10 @@ export default async function AdminSupportTicketsPage({
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">使用者回報處理</h1>
       <p className="mt-1.5 text-sm text-ink-soft">bug 與帳號問題回報的後台處理列表。</p>
+
+      <div className="mt-6">
+        <AdminNav current="/admin/support-tickets" />
+      </div>
 
       <nav className="mt-6 flex flex-wrap gap-2" aria-label="依狀態篩選">
         {STATUS_TABS.map((tab) => (
