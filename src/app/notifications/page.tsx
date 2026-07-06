@@ -36,8 +36,16 @@ function itemIdOf(payload: Record<string, unknown>) {
 
 // M1 最小版通知中心：被留言、被接受、被直贈、交接訊息、完成確認，各自組成一句繁體中文。
 // 不認得的 type 就顯示保底文字，避免未來新增 type 忘記處理時整頁壞掉。
+//
+// M2 強制下架：master-plan §7 沒有替這個事件新增專屬 NotificationType（維持
+// prisma/schema.prisma 不動），寫入端（src/app/api/items/[id]/force-remove/route.ts）
+// 複用了既有的 handover_message type，但在 payload 帶 kind: "item_force_removed" 當
+// 判別欄位，這裡優先檢查它、蓋掉原本 handover_message 的文案。
 function describeNotification(type: string, payload: unknown): string {
   const p = asPayloadRecord(payload);
+  if (p.kind === "item_force_removed") {
+    return `你的物品「${itemTitleOf(p)}」已被管理員下架`;
+  }
   switch (type) {
     case "new_comment":
       return `有人在你的物品「${itemTitleOf(p)}」留言了`;
