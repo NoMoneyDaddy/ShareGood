@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -96,6 +97,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const restriction = await checkUserRestriction(user.id, "messaging");
   if (restriction.blocked) {
     return jsonError("FORBIDDEN", restriction.message);
+  }
+
+  // M2 治理底線：每小時/每日私訊次數上限，超過回 429（見 src/lib/rate-limit.ts）。
+  try {
+    await checkRateLimit(user.id, "message_create");
+  } catch (e) {
+    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
+    throw e;
   }
 
   const body = await req.json().catch(() => null);

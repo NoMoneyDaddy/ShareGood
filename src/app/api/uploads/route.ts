@@ -10,11 +10,16 @@ import {
   toWebpVariant,
   VARIANTS,
 } from "@/lib/images";
+import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkFullBlock } from "@/lib/restrictions";
 import { putObject } from "@/lib/storage";
 
 // POST /api/uploads — multipart form（欄位 file）。
-// 回傳 thumb/medium 兩個 storage object（status: pending，掛上實體時轉 linked）。
+// 預設（無 purpose 或 purpose=item）：回傳 thumb/medium 兩個 storage object，給物品圖片用
+// （status: pending，掛上實體時轉 linked）。
+// purpose=appeal：申訴附件（master-plan §7 第 6 項／§3.3 圖片管線）只需要單一尺寸給後台
+// 複審時檢視，不像物品圖片需要縮圖＋中圖兩種尺寸給列表/詳情頁分別使用，所以只產生一張
+// medium 尺寸的 webp、kind 為 appeal_attachment，回傳單一 storageObjectId（不是 variants 物件）。
 export async function POST(req: NextRequest) {
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {
@@ -29,6 +34,16 @@ export async function POST(req: NextRequest) {
   if (restriction.blocked) {
     return jsonError("FORBIDDEN", restriction.message);
   }
+
+  // M2 治理底線：每小時/每日上傳次數上限，超過回 429（見 src/lib/rate-limit.ts）。
+  try {
+    await checkRateLimit(user.id, "upload_create");
+  } catch (e) {
+    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
+    throw e;
+  }
+
+  const purpose = new URL(req.url).searchParams.get("purpose") === "appeal" ? "appeal" : "item";
 
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");
@@ -46,6 +61,38 @@ export async function POST(req: NextRequest) {
   if (!mime) return jsonError("UNPROCESSABLE", "僅接受 jpg / png / webp 圖片");
 
   const id = randomUUID();
+
+  if (purpose === "appeal") {
+    const processed = await toWebpVariant(
+      buffer,
+      VARIANTS.medium.maxWidth,
+      VARIANTS.medium.quality,
+    );
+    const objectKey = `appeals/${id}/evidence.webp`;
+    await putObject(objectKey, processed.buffer, "image/webp");
+    const storageObject = await db.storageObject.create({
+      data: {
+        objectKey,
+        kind: "appeal_attachment",
+        mimeType: "image/webp",
+        sizeBytes: processed.sizeBytes,
+        width: processed.width,
+        height: processed.height,
+        uploaderId: user.id,
+      },
+    });
+    return NextResponse.json(
+      {
+        id,
+        storageObjectId: storageObject.id,
+        objectKey,
+        width: processed.width,
+        height: processed.height,
+      },
+      { status: 201 },
+    );
+  }
+
   const results: Record<
     string,
     { storageObjectId: string; objectKey: string; width: number; height: number }

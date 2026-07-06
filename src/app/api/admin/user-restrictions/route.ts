@@ -75,53 +75,66 @@ export async function POST(req: NextRequest) {
   }
 
   // 同一使用者同類型不能疊加多筆生效中的限制：否則之後解除只會解除其中一筆，
-  // 其餘還在生效，違反直覺（見 PR review）。
+  // 其餘還在生效，違反直覺（見 PR review）。schema 已凍結不能加 unique constraint，
+  // 改用 Postgres advisory lock 鎖住「這個使用者＋這個限制類型」的組合，讓檢查與建立
+  // 在同一個 transaction 內對同一組 key 互斥，避免兩個管理員同時操作時都通過檢查、
+  // 各自建立一筆造成重複。
   const now = new Date();
-  const existing = await db.userRestriction.findFirst({
-    where: {
-      userId,
-      type: type as RestrictionType,
-      liftedAt: null,
-      OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
-    },
-    select: { id: true },
-  });
-  if (existing) {
-    return jsonError("CONFLICT", "該使用者目前已有生效中的同類型限制");
+  try {
+    const restriction = await db.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`${userId}:${type}`}))`;
+      const existing = await tx.userRestriction.findFirst({
+        where: {
+          userId,
+          type: type as RestrictionType,
+          liftedAt: null,
+          OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+        },
+        select: { id: true },
+      });
+      if (existing) {
+        throw new Error("DUPLICATE_RESTRICTION");
+      }
+
+      return tx.userRestriction.create({
+        data: {
+          userId,
+          type: type as RestrictionType,
+          reason,
+          expiresAt,
+          createdBy: actor.id,
+        },
+      });
+    });
+
+    await writeAudit({
+      actorId: actor.id,
+      action: "user_restriction.create",
+      targetType: "user",
+      targetId: userId,
+      detail: {
+        restrictionId: restriction.id,
+        type: restriction.type,
+        reason: restriction.reason,
+        expiresAt: restriction.expiresAt ? restriction.expiresAt.toISOString() : null,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        id: restriction.id,
+        userId: restriction.userId,
+        type: restriction.type,
+        reason: restriction.reason,
+        expiresAt: restriction.expiresAt,
+        createdAt: restriction.createdAt,
+      },
+      { status: 201 },
+    );
+  } catch (e) {
+    if (e instanceof Error && e.message === "DUPLICATE_RESTRICTION") {
+      return jsonError("CONFLICT", "該使用者目前已有生效中的同類型限制");
+    }
+    throw e;
   }
-
-  const restriction = await db.userRestriction.create({
-    data: {
-      userId,
-      type: type as RestrictionType,
-      reason,
-      expiresAt,
-      createdBy: actor.id,
-    },
-  });
-
-  await writeAudit({
-    actorId: actor.id,
-    action: "user_restriction.create",
-    targetType: "user",
-    targetId: userId,
-    detail: {
-      restrictionId: restriction.id,
-      type: restriction.type,
-      reason: restriction.reason,
-      expiresAt: restriction.expiresAt ? restriction.expiresAt.toISOString() : null,
-    },
-  });
-
-  return NextResponse.json(
-    {
-      id: restriction.id,
-      userId: restriction.userId,
-      type: restriction.type,
-      reason: restriction.reason,
-      expiresAt: restriction.expiresAt,
-      createdAt: restriction.createdAt,
-    },
-    { status: 201 },
-  );
 }

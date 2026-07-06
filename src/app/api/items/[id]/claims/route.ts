@@ -3,6 +3,8 @@ import { Prisma } from "@/generated/prisma/client";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -30,12 +32,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return jsonError("FORBIDDEN", restriction.message);
   }
 
+  // M2 治理底線：每小時/每日留言次數上限，超過回 429（見 src/lib/rate-limit.ts）。
+  try {
+    await checkRateLimit(user.id, "claim_create");
+  } catch (e) {
+    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
+    throw e;
+  }
+
   const { id: itemId } = await params;
 
   const body = await req.json().catch(() => null);
   const message = typeof body?.message === "string" ? body.message.trim() : "";
   if (message.length < 1 || message.length > 500) {
     return jsonError("UNPROCESSABLE", "留言需為 1–500 個字");
+  }
+
+  // M2 治理底線：關鍵字黑名單攔留言內容，命中就擋（見 src/lib/keyword-blocklist.ts）。
+  if (await checkKeywordBlocklist(message)) {
+    return jsonError("UNPROCESSABLE", "留言包含不允許的內容，請修改後再送出");
   }
 
   const item = await db.item.findUnique({ where: { id: itemId } });
@@ -139,6 +154,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     select: {
       id: true,
+      userId: true,
       message: true,
       status: true,
       createdAt: true,
@@ -152,6 +168,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   return NextResponse.json({
     claims: page.map((c) => ({
       id: c.id,
+      userId: c.userId,
       message: c.message,
       status: c.status,
       createdAt: c.createdAt,
