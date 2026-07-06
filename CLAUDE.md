@@ -22,8 +22,14 @@
           `/notifications` 頁面、site-header 鈴鐺 badge；寫入端已在留言/直贈裡各自掛上。
     - [x] SEO/AEO 補完（PR #11）：物品詳情頁 OG + JSON-LD（Product/Offer）、
           動態 `/sitemap.xml`、`robots.txt` 補 Sitemap 欄位。
-    - [ ] 剩餘：交接與私訊（依賴留言/直贈的 accept 事件）、感謝與貢獻值（依賴交接完成）、
-          E2E 全流程測試。
+    - [x] 交接與私訊（PR：feat/m1-handover）：懶建立模式 `POST /api/items/[id]/handover/ensure`
+          （不動 Wave 1 留言/直贈的 accept transaction）、雙人 conversation + polling 訊息
+          （`GET/POST /api/conversations/[id]/messages`）、雙方確認完成
+          （`PATCH /api/handover/[id]/complete`，idempotency 已併發測試）、
+          物主標記未出現（`PATCH /api/handover/[id]/no-show`，退回 published）。
+          `/conversations`（我的對話列表）與 `/conversations/[id]`（對話頁）已做；
+          bottom-tab 訊息分頁已接上。
+    - [ ] 剩餘：感謝與貢獻值（依賴交接完成）、E2E 全流程測試。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
