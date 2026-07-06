@@ -452,11 +452,10 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
    - `POST /api/items/[id]/lottery/entries`：登入使用者報名；僅允許 `lotteries.status='open'`
      且未過 `entryDeadline`；重複報名靠 `@@unique([lottery_id, user_id])` 擋下回 409。
    - `DELETE /api/items/[id]/lottery/entries`：取消報名；僅允許 `lotteries.status='open'` 時；
-     取消為單向終態（`status` 從 `entered` 轉 `cancelled` 後不可再轉回 `entered`，避免最後一刻
-     取消又重新報名之類的博弈行為，若想再參加需重新報名一筆——但因 unique 是 `(lottery_id,
-     user_id)` 且 Prisma unique 允許同一組合只存在一列，實作上「重新報名」等同把既有那列的
-     `status` 從 `cancelled` 改回 `entered` 並更新 `entered_at`，而不是新增一列；此設計等同「可以
-     取消也可以再報名，但不可能有兩筆同時有效」的直覺行為）。
+     取消後 `status` 轉為 `cancelled`。若使用者想重新報名，由於 `(lottery_id, user_id)` 的唯一性
+     約束，實作上「重新報名」等同於把既有那一列的 `status` 從 `cancelled` 改回 `entered` 並更新
+     `entered_at`，而不是新增一列。此設計等同「截止前可以取消也可以再報名，但不可能有兩筆同時
+     有效」的直覺行為。
    - `PATCH /api/lotteries/[id]/cancel`：物主取消整個抽籤；僅限 `status='open'` 時可取消（已開獎
      後不可取消，因為已經產生排名與時效性承諾，貿然取消對正在等待確認的候選人不公平）；非物主
      403，`status≠open` 時 409。取消後該物品**永久失去抽籤資格**（見下方「已知取捨」），但仍可
