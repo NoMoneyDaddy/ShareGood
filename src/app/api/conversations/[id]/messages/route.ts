@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
@@ -118,11 +119,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     select: { id: true, senderId: true, body: true, createdAt: true },
   });
 
-  // 通知「另一位成員」（不是自己）有新的交接訊息。
+  // 通知「另一位成員」（不是自己）有新的交接訊息。這是最容易短時間內連發好幾則的場景
+  // （雙方你一言我一語聊交接細節），所以用 createOrMergeNotification：30 分鐘窗口內對
+  // 同一物品的多則 handover_message 只會合併成一筆未讀通知（見 src/lib/notifications.ts），
+  // 不會每傳一句話就轟炸對方一則新通知。
+  //
+  // 訊息本體已經成功寫入資料庫，通知只是附加效果：通知建立失敗（例如暫時性的資料庫連線
+  // 問題）不該讓這支 API 回 500，否則使用者會誤以為訊息沒送出而重試，造成重複訊息。
+  // 因此這裡刻意不讓錯誤往外拋，只記錄 log。
   const otherMember = conversation.members.find((m) => m.userId !== user.id);
   if (otherMember) {
-    await db.notification.create({
-      data: {
+    try {
+      await createOrMergeNotification(db, {
         userId: otherMember.userId,
         type: "handover_message",
         payload: {
@@ -130,8 +138,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
           itemTitle: conversation.item.title,
           conversationId: conversation.id,
         },
-      },
-    });
+      });
+    } catch (e) {
+      console.error("createOrMergeNotification failed for handover_message", e);
+    }
   }
 
   return NextResponse.json(created, { status: 201 });

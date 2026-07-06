@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 import { checkFullBlock } from "@/lib/restrictions";
 
 // PATCH /api/items/[id]/direct-shares/[shareId] — receiver 接受或婉拒直贈邀請。
@@ -104,15 +105,13 @@ export async function PATCH(
     const item = await tx.item.findUniqueOrThrow({ where: { id: itemId } });
     // enum 沒有專門給「直贈被接受」用的 NotificationType，重用 claim_accepted
     // （PR 裡有說明這個重用理由）。
-    await tx.notification.create({
-      data: {
-        userId: item.ownerId,
-        type: "claim_accepted",
-        payload: {
-          itemId,
-          itemTitle: item.title,
-          receiverId: user.id,
-        },
+    await createOrMergeNotification(tx, {
+      userId: item.ownerId,
+      type: "claim_accepted",
+      payload: {
+        itemId,
+        itemTitle: item.title,
+        receiverId: user.id,
       },
     });
 

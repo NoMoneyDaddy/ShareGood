@@ -3,6 +3,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { createOrMergeNotification } from "@/lib/notifications";
 import { checkFullBlock } from "@/lib/restrictions";
 
 // POST /api/items/[id]/thanks — 接手者留感謝訊息給物主（單向，接手者 → 物主；一個
@@ -61,12 +62,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       // NotificationType 沒有專屬的「收到感謝」類型；重用 completion_confirmed——語意上都是
       // 「這筆分享圓滿收尾」的通知，額外在 payload 帶 thanksMessage，讓之後想做通知詳情頁時
       // 能分辨這則是連帶感謝訊息的完成通知。
-      await tx.notification.create({
-        data: {
-          userId: item.ownerId,
-          type: "completion_confirmed",
-          payload: { itemId: item.id, itemTitle: item.title, thanksMessage: message },
-        },
+      await createOrMergeNotification(tx, {
+        userId: item.ownerId,
+        type: "completion_confirmed",
+        payload: { itemId: item.id, itemTitle: item.title, thanksMessage: message },
       });
       return thanksMessage;
     });

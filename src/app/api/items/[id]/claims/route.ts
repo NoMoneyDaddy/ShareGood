@@ -4,6 +4,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { createOrMergeNotification } from "@/lib/notifications";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
@@ -101,19 +102,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             actorId: user.id,
           },
         });
-        await tx.notification.createMany({
-          data: [
-            {
-              userId: user.id,
-              type: "claim_accepted",
-              payload: { itemId, itemTitle: item.title },
-            },
-            {
-              userId: item.ownerId,
-              type: "new_comment",
-              payload: { itemId, itemTitle: item.title, claimerId: user.id },
-            },
-          ],
+        // 用 createOrMergeNotification 而不是 createMany：這兩則通知的 payload 都帶
+        // itemId，如果同一使用者對同一物品在 30 分鐘窗口內已經有同 type 的未讀通知，
+        // 會被合併成一筆而不是各自新增（M4 通知合併，見 src/lib/notifications.ts）。
+        await createOrMergeNotification(tx, {
+          userId: user.id,
+          type: "claim_accepted",
+          payload: { itemId, itemTitle: item.title },
+        });
+        await createOrMergeNotification(tx, {
+          userId: item.ownerId,
+          type: "new_comment",
+          payload: { itemId, itemTitle: item.title, claimerId: user.id },
         });
         return { id: claim.id, status: "accepted" as const };
       }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { mergedCountOf } from "@/lib/notifications";
 import { NotificationRow } from "./notification-row";
 
 export const metadata = { title: "通知" };
@@ -40,11 +41,18 @@ function itemIdOf(payload: Record<string, unknown>) {
 // M2 強制下架：master-plan §7 沒有替這個事件新增專屬 NotificationType（維持
 // prisma/schema.prisma 不動），寫入端（src/app/api/items/[id]/force-remove/route.ts）
 // 複用了既有的 handover_message type，但在 payload 帶 kind: "item_force_removed" 當
-// 判別欄位，這裡優先檢查它、蓋掉原本 handover_message 的文案。
+// 判別欄位，這裡優先檢查它、蓋掉原本 handover_message 的文案。force-remove 是低頻的
+// moderation 事件（沒有走 M4 合併 helper，也不會短時間連發），所以不需要 mergedCount 分支。
 //
 // M3 到期 job（master-plan §8）比照同一套做法：重用 completion_confirmed type，
 // payload 帶 kind: "item_expired" / "item_expiring_reminder"（見
 // src/app/api/jobs/item-expiration/route.ts），這裡一併優先檢查。
+//
+// M4 通知合併（見 src/lib/notifications.ts 的 createOrMergeNotification）：同一物品在
+// 30 分鐘窗口內的同類型事件會合併成一筆，payload.mergedCount 帶目前累積的筆數。這裡只有
+// 「短時間內容易連發」的 new_comment／handover_message 兩種特別組聚合文字（例如「有 3 則
+// 新留言」），其餘 type 目前現實中不會連發（一個物品只會有一次認領/直贈/完成事件），
+// mergedCount > 1 時沿用原本的單則文字即可，不需要特別處理。
 function describeNotification(type: string, payload: unknown): string {
   const p = asPayloadRecord(payload);
   if (p.kind === "item_force_removed") {
@@ -56,15 +64,20 @@ function describeNotification(type: string, payload: unknown): string {
   if (p.kind === "item_expiring_reminder") {
     return `「${itemTitleOf(p)}」即將到期，記得儘快促成分享`;
   }
+  const count = mergedCountOf(payload);
   switch (type) {
     case "new_comment":
-      return `有人在你的物品「${itemTitleOf(p)}」留言了`;
+      return count > 1
+        ? `你的物品「${itemTitleOf(p)}」收到了 ${count} 則新留言`
+        : `有人在你的物品「${itemTitleOf(p)}」留言了`;
     case "claim_accepted":
       return `「${itemTitleOf(p)}」已經確定給你了！`;
     case "direct_share_received":
       return `你收到一份直接贈與：「${itemTitleOf(p)}」`;
     case "handover_message":
-      return `「${itemTitleOf(p)}」有新的交接訊息`;
+      return count > 1
+        ? `「${itemTitleOf(p)}」有 ${count} 則新的交接訊息`
+        : `「${itemTitleOf(p)}」有新的交接訊息`;
     case "completion_confirmed":
       return `「${itemTitleOf(p)}」已完成分享，記得留言感謝對方！`;
     default:
