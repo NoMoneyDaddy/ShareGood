@@ -19,7 +19,10 @@ export const s3 = new S3Client({
   },
 });
 
-const BUCKET = process.env.S3_BUCKET!;
+// M8 storage 用量儀表板／健康檢查（`src/lib/storage-usage.ts`、`src/lib/health.ts`）需要
+// 直接呼叫 ListObjectsV2／HeadBucket，因此 export 出來給它們重用，避免各自重複讀
+// `process.env.S3_BUCKET!`。
+export const BUCKET = process.env.S3_BUCKET!;
 
 export async function putObject(key: string, body: Buffer, contentType: string) {
   await s3.send(
