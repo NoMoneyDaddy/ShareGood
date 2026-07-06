@@ -4,12 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { ReportButton } from "@/components/report-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { ItemStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
+import { CouponSection } from "./coupon-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
 import { ThanksSection } from "./thanks-section";
@@ -25,6 +27,9 @@ async function getItem(id: string) {
         orderBy: { sortOrder: "asc" },
         include: { thumbObject: true, mediumObject: true },
       },
+      // M3（master-plan §8）：只查 CouponDetail（面額／店家／備註，描述性文字非機密），
+      // 不 include 它底下的 CouponSecret——券碼密文完全不進這支查詢，也不會出現在這個頁面。
+      couponDetail: true,
     },
   });
 }
@@ -189,19 +194,48 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <h1 className="mt-2 text-2xl font-bold tracking-tight">{item.title}</h1>
         <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
-        <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
-          分享者：
-          <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
-            {item.owner.profile?.nickname ?? "好物共享用戶"}
-          </Link>
+        <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
+          <span>
+            分享者：
+            <Link
+              href={`/u/${item.ownerId}`}
+              className="text-ink underline-offset-2 hover:underline"
+            >
+              {item.owner.profile?.nickname ?? "好物共享用戶"}
+            </Link>
+          </span>
+          {session?.user && session.user.id !== item.ownerId && (
+            <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+          )}
         </div>
+
+        <CouponSection
+          itemId={item.id}
+          coupon={
+            item.couponDetail
+              ? {
+                  faceValue: item.couponDetail.faceValue,
+                  merchantName: item.couponDetail.merchantName,
+                  notes: item.couponDetail.notes,
+                  expiresAt: item.expiresAt,
+                }
+              : null
+          }
+          canReveal={
+            isReceiver && (item.status === "handover_pending" || item.status === "completed")
+          }
+        />
 
         <DirectShareSection
           itemId={item.id}
           itemStatus={item.status}
           isOwner={session?.user?.id === item.ownerId}
         />
-        <ClaimsSection itemId={item.id} itemStatus={item.status} />
+        <ClaimsSection
+          itemId={item.id}
+          itemStatus={item.status}
+          currentUserId={session?.user?.id}
+        />
         <HandoverSection
           itemId={item.id}
           itemStatus={item.status}

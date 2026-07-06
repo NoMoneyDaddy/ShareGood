@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
+import { COUPON_CATEGORY_SLUG, EXPIRING_FOOD_CATEGORY_SLUG } from "@/lib/categories";
+import { encryptCouponCode } from "@/lib/coupon-crypto";
 import { db } from "@/lib/db";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
@@ -33,6 +35,36 @@ function parseImages(value: unknown): ImageInput[] | null {
 
 // POST /api/items — 上架。M1 預設發布即公開；M2 起若 REQUIRE_REVIEW feature flag 開啟，
 // 改為先進 pending_review 等人工審核（見下方 requireReview 判斷）。
+// expiresAt 從表單傳來的是 "YYYY-MM-DD"（純日期，見 item-form.tsx 的 <input type="date">）；
+// 明確用 +08:00（台北時區，master-plan §3.4 全站時區慣例）當天結束時刻解讀，避免用
+// `new Date("YYYY-MM-DD")`（會解讀成 UTC 午夜）在伺服器時區不是 UTC+8 時，把日期往前推一天。
+const INVALID_DATE = Symbol("INVALID_DATE");
+
+function parseExpiresAtDate(value: unknown): Date | null | typeof INVALID_DATE {
+  if (value === undefined || value === null || value === "") return null;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return INVALID_DATE;
+  const parsed = new Date(`${value}T23:59:59.999+08:00`);
+  if (Number.isNaN(parsed.getTime())) return INVALID_DATE;
+  return parsed;
+}
+
+const MAX_FIELD_LENGTHS = { faceValue: 50, merchantName: 50, notes: 300, code: 200 } as const;
+
+type CouponInput = { faceValue: string; merchantName: string; notes: string | null; code: string };
+
+function parseCouponInput(value: unknown): CouponInput | null {
+  const c = value as Record<string, unknown> | null | undefined;
+  const faceValue = typeof c?.faceValue === "string" ? c.faceValue.trim() : "";
+  const merchantName = typeof c?.merchantName === "string" ? c.merchantName.trim() : "";
+  const notesRaw = typeof c?.notes === "string" ? c.notes.trim() : "";
+  const code = typeof c?.code === "string" ? c.code.trim() : "";
+  if (!faceValue || faceValue.length > MAX_FIELD_LENGTHS.faceValue) return null;
+  if (!merchantName || merchantName.length > MAX_FIELD_LENGTHS.merchantName) return null;
+  if (notesRaw.length > MAX_FIELD_LENGTHS.notes) return null;
+  if (!code || code.length > MAX_FIELD_LENGTHS.code) return null;
+  return { faceValue, merchantName, notes: notesRaw || null, code };
+}
+
 export async function POST(req: NextRequest) {
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {
@@ -55,6 +87,7 @@ export async function POST(req: NextRequest) {
     throw e;
   }
 
+  const now = new Date();
   const body = await req.json().catch(() => null);
   const title = typeof body?.title === "string" ? body.title.trim() : "";
   const description = typeof body?.description === "string" ? body.description.trim() : "";
@@ -88,6 +121,40 @@ export async function POST(req: NextRequest) {
   ]);
   if (!category?.isActive) return jsonError("UNPROCESSABLE", "無效的分類");
   if (!city) return jsonError("UNPROCESSABLE", "無效的縣市");
+
+  // M3（master-plan §8）：優惠券／即期食品各自的到期日與額外欄位規則靠分類 slug 判斷，
+  // 兩者共用 Item.expiresAt（schema 註解說明過，不重複存一份避免兩處日期不同步）。
+  const isCoupon = category.slug === COUPON_CATEGORY_SLUG;
+  const isExpiringFood = category.slug === EXPIRING_FOOD_CATEGORY_SLUG;
+
+  const expiresAt = parseExpiresAtDate(body?.expiresAt);
+  if (expiresAt === INVALID_DATE) {
+    return jsonError("UNPROCESSABLE", "到期日格式不正確");
+  }
+
+  let couponInput: CouponInput | null = null;
+  if (isCoupon) {
+    couponInput = parseCouponInput(body?.coupon);
+    if (!couponInput) {
+      return jsonError("UNPROCESSABLE", "請完整填寫優惠券資訊（面額／適用店家／券碼）");
+    }
+    if (!expiresAt) {
+      return jsonError("UNPROCESSABLE", "優惠券需填寫到期日");
+    }
+  }
+
+  if (isExpiringFood) {
+    if (body?.expiringFoodConfirmed !== true) {
+      return jsonError("UNPROCESSABLE", "即期食品需勾選確認：完整包裝、未開封、常溫保存、尚未過期");
+    }
+    if (!expiresAt) {
+      return jsonError("UNPROCESSABLE", "即期食品需填寫到期日");
+    }
+  }
+
+  if (expiresAt && expiresAt.getTime() <= now.getTime()) {
+    return jsonError("UNPROCESSABLE", "到期日需晚於現在");
+  }
 
   // 逐一驗證圖片：必須是這個使用者自己上傳、狀態還是 pending（沒被其他物品用掉）、
   // 種類跟宣稱的 thumb/medium 對得上、且 thumb/medium 來自同一次上傳（objectKey 開頭的
@@ -124,7 +191,6 @@ export async function POST(req: NextRequest) {
   const requireReview = await getFeatureFlag(FEATURE_FLAGS.REQUIRE_REVIEW);
   const initialStatus = requireReview ? ("pending_review" as const) : ("published" as const);
 
-  const now = new Date();
   try {
     const item = await db.$transaction(async (tx) => {
       const created = await tx.item.create({
@@ -136,6 +202,7 @@ export async function POST(req: NextRequest) {
           cityId,
           status: initialStatus,
           publishedAt: initialStatus === "published" ? now : null,
+          ...(expiresAt ? { expiresAt } : {}),
         },
       });
 
@@ -148,9 +215,43 @@ export async function POST(req: NextRequest) {
         })),
       });
 
+      // 即期食品確認欄位不落 schema 新欄位（限制不能動 prisma/schema.prisma），借用
+      // ItemStatusLog.reason（既有的自由文字欄位）留下稽核紀錄，之後若真的需要查詢用的
+      // 結構化欄位，M3 完整版可以再加。
       await tx.itemStatusLog.create({
-        data: { itemId: created.id, fromStatus: null, toStatus: initialStatus, actorId: user.id },
+        data: {
+          itemId: created.id,
+          fromStatus: null,
+          toStatus: initialStatus,
+          actorId: user.id,
+          ...(isExpiringFood
+            ? { reason: "即期食品確認：完整包裝／未開封／常溫保存／尚未過期" }
+            : {}),
+        },
       });
+
+      // M3 優惠券：面額／店家／備註存明文（描述性文字，非機密），券碼明文加密後才存
+      // CouponSecret；couponInput.code 只在這個 request 的記憶體裡短暫存在，離開這個
+      // transaction 之後就不再被引用，也不會出現在任何回傳值或 log 裡。
+      if (couponInput) {
+        const couponDetail = await tx.couponDetail.create({
+          data: {
+            itemId: created.id,
+            faceValue: couponInput.faceValue,
+            merchantName: couponInput.merchantName,
+            notes: couponInput.notes,
+          },
+        });
+        const encrypted = encryptCouponCode(couponInput.code);
+        await tx.couponSecret.create({
+          data: {
+            couponDetailId: couponDetail.id,
+            ciphertext: encrypted.ciphertext,
+            iv: encrypted.iv,
+            authTag: encrypted.authTag,
+          },
+        });
+      }
 
       // 狀態檢查跟這個 updateMany 之間有時間差：把 status: "pending" 跟 uploaderId 一併寫進
       // where 條件、事務內原子更新，兩個並行請求搶同一張圖片時只有一個能更新到全部筆數，
@@ -193,6 +294,13 @@ export async function GET(req: NextRequest) {
       ? Math.min(limitParam, LIST_MAX_PAGE_SIZE)
       : LIST_DEFAULT_PAGE_SIZE;
 
+  // M3（master-plan §8）「列表『即將到期』排序加權」：sort=expiring 時把有到期日、且快到期
+  // 的物品排到前面（expiresAt 由小到大，null 排最後），同分再用 createdAt/id 當 tie-breaker
+  // 維持 cursor 分頁的穩定排序。走 items(status, expiresAt) 這條既有複合索引（見
+  // prisma/schema.prisma Item.@@index([status, expiresAt])），不是臨時新增。預設仍是
+  // createdAt desc（沿用既有行為，不影響既有呼叫端）。
+  const sort = searchParams.get("sort") === "expiring" ? "expiring" : "newest";
+
   const where = {
     status: "published" as const,
     ...(cityId ? { cityId } : {}),
@@ -207,9 +315,18 @@ export async function GET(req: NextRequest) {
       : {}),
   };
 
+  const orderBy =
+    sort === "expiring"
+      ? [
+          { expiresAt: { sort: "asc" as const, nulls: "last" as const } },
+          { createdAt: "desc" as const },
+          { id: "desc" as const },
+        ]
+      : [{ createdAt: "desc" as const }, { id: "desc" as const }];
+
   const items = await db.item.findMany({
     where,
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    orderBy,
     take: take + 1,
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     select: {
@@ -217,6 +334,7 @@ export async function GET(req: NextRequest) {
       title: true,
       status: true,
       createdAt: true,
+      expiresAt: true,
       city: { select: { name: true } },
       category: { select: { name: true } },
       images: {
@@ -236,6 +354,7 @@ export async function GET(req: NextRequest) {
       title: item.title,
       status: item.status,
       createdAt: item.createdAt,
+      expiresAt: item.expiresAt,
       city: item.city.name,
       category: item.category.name,
       thumbObjectKey: item.images[0]?.thumbObject?.objectKey ?? null,

@@ -13,7 +13,7 @@ export const FEATURE_FLAGS = {
 
 export type FeatureFlagKey = (typeof FEATURE_FLAGS)[keyof typeof FEATURE_FLAGS];
 
-export async function getFeatureFlag(key: string): Promise<boolean> {
+export async function getFeatureFlag(key: FeatureFlagKey): Promise<boolean> {
   const flag = await db.featureFlag.findUnique({ where: { key } });
   return flag?.enabled ?? false;
 }
