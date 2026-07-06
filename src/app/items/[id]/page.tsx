@@ -29,7 +29,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const item = await getItem(id);
-  if (!item) return {};
+  if (!item || item.status === "removed_by_moderator") return {};
   return {
     title: `${item.title}｜${item.city.name}`,
     description: item.description.slice(0, 120),

@@ -49,6 +49,9 @@ export async function POST(req: NextRequest) {
   if (description.length < 1 || description.length > 1000) {
     return jsonError("UNPROCESSABLE", "分享的話需為 1–1000 個字");
   }
+  if (!categoryId || !cityId) {
+    return jsonError("UNPROCESSABLE", "請選擇分類與縣市");
+  }
   if (!images) {
     return jsonError("UNPROCESSABLE", `請上傳 ${MIN_IMAGES}–${MAX_IMAGES} 張圖片`);
   }
@@ -61,8 +64,12 @@ export async function POST(req: NextRequest) {
   if (!city) return jsonError("UNPROCESSABLE", "無效的縣市");
 
   // 逐一驗證圖片：必須是這個使用者自己上傳、狀態還是 pending（沒被其他物品用掉）、
-  // 種類跟宣稱的 thumb/medium 對得上——避免有人拿別人上傳的 storage object 亂掛。
+  // 種類跟宣稱的 thumb/medium 對得上、且 thumb/medium 來自同一次上傳（objectKey 開頭的
+  // uuid 相同）——避免有人拿別人上傳的 storage object 亂掛，或把不相干的縮圖/中圖亂湊對。
   const objectIds = images.flatMap((img) => [img.thumbObjectId, img.mediumObjectId]);
+  if (new Set(objectIds).size !== objectIds.length) {
+    return jsonError("UNPROCESSABLE", "圖片不能重複使用");
+  }
   const storageObjects = await db.storageObject.findMany({ where: { id: { in: objectIds } } });
   const byId = new Map(storageObjects.map((o) => [o.id, o]));
 
@@ -79,42 +86,60 @@ export async function POST(req: NextRequest) {
     if (thumb.kind !== "item_image_thumb" || medium.kind !== "item_image_medium") {
       return jsonError("UNPROCESSABLE", "圖片格式不正確");
     }
+    const thumbUploadId = thumb.objectKey.split("/")[1];
+    const mediumUploadId = medium.objectKey.split("/")[1];
+    if (!thumbUploadId || !mediumUploadId || thumbUploadId !== mediumUploadId) {
+      return jsonError("UNPROCESSABLE", "圖片配對不正確");
+    }
   }
 
   const now = new Date();
-  const item = await db.$transaction(async (tx) => {
-    const created = await tx.item.create({
-      data: {
-        ownerId: user.id,
-        title,
-        description,
-        categoryId,
-        cityId,
-        status: "published",
-        publishedAt: now,
-      },
+  try {
+    const item = await db.$transaction(async (tx) => {
+      const created = await tx.item.create({
+        data: {
+          ownerId: user.id,
+          title,
+          description,
+          categoryId,
+          cityId,
+          status: "published",
+          publishedAt: now,
+        },
+      });
+
+      await tx.itemImage.createMany({
+        data: images.map((img, index) => ({
+          itemId: created.id,
+          thumbObjectId: img.thumbObjectId,
+          mediumObjectId: img.mediumObjectId,
+          sortOrder: index,
+        })),
+      });
+
+      await tx.itemStatusLog.create({
+        data: { itemId: created.id, fromStatus: null, toStatus: "published", actorId: user.id },
+      });
+
+      // 狀態檢查跟這個 updateMany 之間有時間差：把 status: "pending" 跟 uploaderId 一併寫進
+      // where 條件、事務內原子更新，兩個並行請求搶同一張圖片時只有一個能更新到全部筆數，
+      // 另一個會在下面拋錯回滾，避免同一張圖片被綁到兩個不同的 Item 上。
+      const updated = await tx.storageObject.updateMany({
+        where: { id: { in: objectIds }, uploaderId: user.id, status: "pending" },
+        data: { status: "linked", linkedAt: now },
+      });
+      if (updated.count !== objectIds.length) {
+        throw new Error("IMAGE_ALREADY_USED");
+      }
+
+      return created;
     });
 
-    await tx.itemImage.createMany({
-      data: images.map((img, index) => ({
-        itemId: created.id,
-        thumbObjectId: img.thumbObjectId,
-        mediumObjectId: img.mediumObjectId,
-        sortOrder: index,
-      })),
-    });
-
-    await tx.itemStatusLog.create({
-      data: { itemId: created.id, fromStatus: null, toStatus: "published", actorId: user.id },
-    });
-
-    await tx.storageObject.updateMany({
-      where: { id: { in: objectIds } },
-      data: { status: "linked", linkedAt: now },
-    });
-
-    return created;
-  });
-
-  return NextResponse.json({ id: item.id }, { status: 201 });
+    return NextResponse.json({ id: item.id }, { status: 201 });
+  } catch (err) {
+    if (err instanceof Error && err.message === "IMAGE_ALREADY_USED") {
+      return jsonError("UNPROCESSABLE", "圖片已被使用，請重新上傳");
+    }
+    throw err;
+  }
 }

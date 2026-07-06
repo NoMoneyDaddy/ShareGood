@@ -2,7 +2,7 @@
 
 import { Loader2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,40 +36,65 @@ export function ItemForm({
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
+  // 追蹤本機選檔建立的 blob: 預覽連結，組件卸載時統一釋放，避免瀏覽器記憶體洩漏。
+  const previewUrlsRef = useRef<string[]>([]);
+  useEffect(() => {
+    return () => {
+      for (const url of previewUrlsRef.current) URL.revokeObjectURL(url);
+    };
+  }, []);
+
   async function addImages(files: FileList | null) {
     if (!files) return;
     const room = MAX_IMAGES - images.length;
     const picked = Array.from(files).slice(0, room);
 
-    for (const file of picked) {
+    const newSlots = picked.map((file) => {
       const key = `${file.name}-${Date.now()}-${Math.random()}`;
       const previewUrl = URL.createObjectURL(file);
-      setImages((prev) => [...prev, { key, previewUrl, status: "uploading" }]);
+      previewUrlsRef.current.push(previewUrl);
+      return { key, previewUrl, file };
+    });
 
-      const form = new FormData();
-      form.append("file", file);
-      const res = await fetch("/api/uploads", { method: "POST", body: form });
-      const data = await res.json().catch(() => null);
+    setImages((prev) => [
+      ...prev,
+      ...newSlots.map(({ key, previewUrl }) => ({ key, previewUrl, status: "uploading" as const })),
+    ]);
 
-      setImages((prev) =>
-        prev.map((img) =>
-          img.key !== key
-            ? img
-            : res.ok
-              ? {
-                  ...img,
-                  status: "done",
-                  thumbObjectId: data.variants.thumb.storageObjectId,
-                  mediumObjectId: data.variants.medium.storageObjectId,
-                }
-              : { ...img, status: "error", error: data?.error?.message ?? "上傳失敗" },
-        ),
-      );
-    }
+    await Promise.all(
+      newSlots.map(async ({ key, file }) => {
+        const form = new FormData();
+        form.append("file", file);
+        const res = await fetch("/api/uploads", { method: "POST", body: form });
+        const data = await res.json().catch(() => null);
+
+        setImages((prev) =>
+          prev.map((img) =>
+            img.key !== key
+              ? img
+              : res.ok
+                ? {
+                    ...img,
+                    status: "done",
+                    thumbObjectId: data.variants.thumb.storageObjectId,
+                    mediumObjectId: data.variants.medium.storageObjectId,
+                  }
+                : { ...img, status: "error", error: data?.error?.message ?? "上傳失敗" },
+          ),
+        );
+      }),
+    );
   }
 
   function removeImage(key: string) {
-    setImages((prev) => prev.filter((img) => img.key !== key));
+    setImages((prev) => {
+      const target = prev.find((img) => img.key === key);
+      if (target) {
+        URL.revokeObjectURL(target.previewUrl);
+        previewUrlsRef.current = previewUrlsRef.current.filter((url) => url !== target.previewUrl);
+      }
+      return prev.filter((img) => img.key !== key);
+    });
   }
 
   const readyImages = images.filter(
