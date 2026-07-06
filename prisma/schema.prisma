@@ -41,6 +41,27 @@ model User {
   conversationMemberships ConversationMember[]
   messagesSent            Message[]
 
+  // M2 治理底線
+  reportsSubmitted       Report[]             @relation("ReportReporter")
+  reportsHandled         Report[]             @relation("ReportHandler")
+  restrictions           UserRestriction[]    @relation("UserRestrictionTarget")
+  restrictionsCreated    UserRestriction[]    @relation("UserRestrictionCreatedBy")
+  restrictionsLifted     UserRestriction[]    @relation("UserRestrictionLiftedBy")
+  itemRemovalsActed      ItemRemoval[]        @relation("ItemRemovalModerator")
+  supportTickets         SupportTicket[]      @relation("SupportTicketUser")
+  supportTicketsAssigned SupportTicket[]      @relation("SupportTicketAssignee")
+  supportTicketEvents    SupportTicketEvent[] @relation("SupportTicketEventActor")
+  appeals                Appeal[]             @relation("AppealUser")
+  appealsReviewed        Appeal[]             @relation("AppealReviewer")
+
+  // M3 到期與優惠券
+  couponRevealLogs CouponRevealLog[]
+
+  // M4 通知強化
+  notificationPreferences NotificationPreference[]
+  telegramAccount         TelegramAccount?
+  telegramLinkTokens      TelegramLinkToken[]
+
   @@map("users")
 }
 
@@ -202,6 +223,10 @@ model StorageObject {
   itemImagesAsThumb  ItemImage[] @relation("ItemImageThumb")
   itemImagesAsMedium ItemImage[] @relation("ItemImageMedium")
 
+  reportEvidence           ReportEvidence[]
+  supportTicketAttachments SupportTicketAttachment[]
+  appealEvidence           AppealEvidence[]
+
   @@index([status, createdAt]) // 孤兒檔清理 job 用
   @@index([uploaderId, createdAt])
   @@map("storage_objects")
@@ -246,8 +271,19 @@ model Item {
   contributionEvents ContributionEvent[]
   conversation       Conversation?
 
+  // M2 治理底線
+  reports      Report[]
+  itemRemovals ItemRemoval[]
+
+  // M3 到期與優惠券（expiresAt 為通用到期時間戳，優惠券／即期食品共用同一欄位，
+  // 由到期 job 統一處理，見 master-plan.md §8）
+  expiresAt      DateTime?           @map("expires_at")
+  couponDetail   CouponDetail?
+  expirationLogs ItemExpirationLog[]
+
   @@index([status, cityId, categoryId, createdAt])
   @@index([status, ownerId, createdAt])
+  @@index([status, expiresAt])
   @@map("items")
 }
 
@@ -301,6 +337,8 @@ model ClaimComment {
 
   item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  reports Report[]
 
   @@unique([itemId, userId])
   @@index([itemId, status, createdAt])
@@ -409,6 +447,8 @@ model Notification {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  deliveries NotificationDelivery[]
+
   @@index([userId, readAt, createdAt])
   @@map("notifications")
 }
@@ -449,6 +489,456 @@ model Message {
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sender       User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
+  reports Report[]
+
   @@index([conversationId, createdAt])
   @@map("messages")
+}
+
+// ===== M2 治理底線（master-plan.md §7、§11.1）=====
+// Wave 0 schema 地基：本節只建表與索引，不含任何 API/業務邏輯（那些留給 M2 各 wave 的功能 agent）。
+
+enum ReportCategory {
+  fraud // 詐騙
+  private_payment // 私下收費
+  prohibited_item // 違禁品
+  food_safety // 食品疑慮
+  harassment // 騷擾
+  other
+}
+
+enum ReportStatus {
+  submitted
+  triaged
+  in_progress
+  resolved
+  rejected
+  closed
+}
+
+// 檢舉目標可能是物品／留言／私訊三者之一：用多個可為 null 的外鍵欄位表達，
+// 沿用本專案已有的「optional FK」風格（參考 ContributionEvent.itemId），
+// 不用多型關聯（polymorphic association），實作與查詢都更直接。
+model Report {
+  id             String         @id @default(cuid())
+  reporterId     String         @map("reporter_id")
+  itemId         String?        @map("item_id")
+  claimCommentId String?        @map("claim_comment_id")
+  messageId      String?        @map("message_id")
+  category       ReportCategory
+  status         ReportStatus   @default(submitted)
+  description    String
+  handledBy      String?        @map("handled_by")
+  resolutionNote String?        @map("resolution_note")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  resolvedAt     DateTime?      @map("resolved_at")
+
+  reporter     User          @relation("ReportReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  item         Item?         @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  claimComment ClaimComment? @relation(fields: [claimCommentId], references: [id], onDelete: Cascade)
+  message      Message?      @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  handler      User?         @relation("ReportHandler", fields: [handledBy], references: [id], onDelete: SetNull)
+
+  evidence ReportEvidence[]
+
+  @@index([status, createdAt])
+  @@index([reporterId, createdAt])
+  @@index([itemId])
+  @@index([claimCommentId])
+  @@index([messageId])
+  @@map("reports")
+}
+
+model ReportEvidence {
+  id              String   @id @default(cuid())
+  reportId        String   @map("report_id")
+  storageObjectId String   @map("storage_object_id")
+  sortOrder       Int      @map("sort_order")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  report        Report        @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  storageObject StorageObject @relation(fields: [storageObjectId], references: [id], onDelete: Restrict)
+
+  @@unique([reportId, sortOrder])
+  @@index([storageObjectId])
+  @@map("report_evidence")
+}
+
+// 禁上架/禁留言/禁私訊/全站封鎖，expiresAt 為 null 表示永久
+enum RestrictionType {
+  no_posting
+  no_claiming
+  no_messaging
+  full_block
+}
+
+model UserRestriction {
+  id        String          @id @default(cuid())
+  userId    String          @map("user_id")
+  type      RestrictionType
+  reason    String
+  expiresAt DateTime?       @map("expires_at") // null = 永久
+  createdBy String?         @map("created_by")
+  liftedAt  DateTime?       @map("lifted_at") // 提前解除
+  liftedBy  String?         @map("lifted_by")
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  user          User  @relation("UserRestrictionTarget", fields: [userId], references: [id], onDelete: Cascade)
+  createdByUser User? @relation("UserRestrictionCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  liftedByUser  User? @relation("UserRestrictionLiftedBy", fields: [liftedBy], references: [id], onDelete: SetNull)
+
+  appeal Appeal?
+
+  @@index([userId, type])
+  @@index([userId, expiresAt])
+  @@map("user_restrictions")
+}
+
+model ItemRemoval {
+  id          String   @id @default(cuid())
+  itemId      String   @map("item_id")
+  moderatorId String   @map("moderator_id")
+  reason      String
+  note        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  item      Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  moderator User @relation("ItemRemovalModerator", fields: [moderatorId], references: [id], onDelete: Cascade)
+
+  appeal Appeal?
+
+  @@index([itemId, createdAt])
+  @@index([moderatorId, createdAt])
+  @@map("item_removals")
+}
+
+enum SupportTicketCategory {
+  bug
+  account
+  other
+}
+
+enum SupportTicketStatus {
+  open
+  in_progress
+  resolved
+  closed
+}
+
+model SupportTicket {
+  id          String                @id @default(cuid())
+  userId      String                @map("user_id")
+  category    SupportTicketCategory
+  subject     String
+  description String
+  status      SupportTicketStatus   @default(open)
+  assignedTo  String?               @map("assigned_to")
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+
+  user     User  @relation("SupportTicketUser", fields: [userId], references: [id], onDelete: Cascade)
+  assignee User? @relation("SupportTicketAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
+
+  events      SupportTicketEvent[]
+  attachments SupportTicketAttachment[]
+
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+  @@map("support_tickets")
+}
+
+// 沿用 ItemStatusLog 的既有風格：fromStatus/toStatus 皆可為 null 代表純留言，
+// 不另外新增事件種類 enum。
+model SupportTicketEvent {
+  id         String               @id @default(cuid())
+  ticketId   String               @map("ticket_id")
+  actorId    String?              @map("actor_id")
+  fromStatus SupportTicketStatus? @map("from_status")
+  toStatus   SupportTicketStatus? @map("to_status")
+  message    String?
+  createdAt  DateTime             @default(now()) @map("created_at")
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  actor  User?         @relation("SupportTicketEventActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+  @@map("support_ticket_events")
+}
+
+model SupportTicketAttachment {
+  id              String   @id @default(cuid())
+  ticketId        String   @map("ticket_id")
+  storageObjectId String   @map("storage_object_id")
+  sortOrder       Int      @map("sort_order")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  ticket        SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  storageObject StorageObject @relation(fields: [storageObjectId], references: [id], onDelete: Restrict)
+
+  @@unique([ticketId, sortOrder])
+  @@index([storageObjectId])
+  @@map("support_ticket_attachments")
+}
+
+enum AppealStatus {
+  pending
+  approved
+  rejected
+}
+
+// 被下架/被限制者可申訴一次：userRestrictionId／itemRemovalId 各自加 @unique，
+// Postgres 的 unique index 允許多筆 NULL 但非 NULL 值不可重複，剛好表達
+// 「每個限制/下架事件最多一次申訴」。
+model Appeal {
+  id                String       @id @default(cuid())
+  userId            String       @map("user_id")
+  userRestrictionId String?      @unique @map("user_restriction_id")
+  itemRemovalId     String?      @unique @map("item_removal_id")
+  reason            String
+  status            AppealStatus @default(pending)
+  reviewedBy        String?      @map("reviewed_by")
+  reviewNote        String?      @map("review_note")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  reviewedAt        DateTime?    @map("reviewed_at")
+
+  user            User             @relation("AppealUser", fields: [userId], references: [id], onDelete: Cascade)
+  userRestriction UserRestriction? @relation(fields: [userRestrictionId], references: [id], onDelete: Cascade)
+  itemRemoval     ItemRemoval?     @relation(fields: [itemRemovalId], references: [id], onDelete: Cascade)
+  reviewer        User?            @relation("AppealReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  evidence AppealEvidence[]
+
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+  @@map("appeals")
+}
+
+model AppealEvidence {
+  id              String   @id @default(cuid())
+  appealId        String   @map("appeal_id")
+  storageObjectId String   @map("storage_object_id")
+  sortOrder       Int      @map("sort_order")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  appeal        Appeal        @relation(fields: [appealId], references: [id], onDelete: Cascade)
+  storageObject StorageObject @relation(fields: [storageObjectId], references: [id], onDelete: Restrict)
+
+  @@unique([appealId, sortOrder])
+  @@index([storageObjectId])
+  @@map("appeal_evidence")
+}
+
+// 關鍵字黑名單：攔上架標題與描述。keyword 存正規化後的字串（小寫、去空白，
+// 正規化邏輯留給寫 route 的 agent），isActive 讓後台可以軟停用而不必刪紀錄
+// （沿用 Category.isActive 的既有風格）。
+model KeywordBlocklist {
+  id        String   @id @default(cuid())
+  keyword   String   @unique
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("keyword_blocklist")
+}
+
+// MVP 起步：全站開關，不做百分比灰度或多環境。REQUIRE_REVIEW 等旗標即用此表。
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  enabled     Boolean  @default(false)
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("feature_flags")
+}
+
+// ===== M3 到期與優惠券（master-plan.md §8、§11.1）=====
+
+// 面額/店家為描述性文字而非金流欄位（專案不做金流）；到期日沿用 Item.expiresAt，
+// 不重複存一份避免兩處日期不同步。
+model CouponDetail {
+  id           String   @id @default(cuid())
+  itemId       String   @unique @map("item_id")
+  faceValue    String   @map("face_value") // 例：「$100 折價」「買一送一」
+  merchantName String   @map("merchant_name") // 適用店家
+  notes        String? // 使用限制等備註
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  item   Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  secret CouponSecret?
+
+  @@map("coupon_details")
+}
+
+// 券碼密文與明文欄位刻意分兩張表：加密資料獨立成表，方便未來做欄位級的存取控制
+// （例如只有特定 API 路徑能查詢 coupon_secrets，一般查詢 coupon_details 完全碰不到密文）。
+model CouponSecret {
+  id             String   @id @default(cuid())
+  couponDetailId String   @unique @map("coupon_detail_id")
+  ciphertext     String // AES-256-GCM 加密後券碼
+  iv             String // 初始向量（base64）
+  authTag        String   @map("auth_tag") // GCM 認證標籤（base64）
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  couponDetail CouponDetail      @relation(fields: [couponDetailId], references: [id], onDelete: Cascade)
+  revealLogs   CouponRevealLog[]
+
+  @@map("coupon_secrets")
+}
+
+model CouponRevealLog {
+  id             String   @id @default(cuid())
+  couponSecretId String   @map("coupon_secret_id")
+  revealedBy     String   @map("revealed_by")
+  revealedAt     DateTime @default(now()) @map("revealed_at")
+
+  couponSecret CouponSecret @relation(fields: [couponSecretId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [revealedBy], references: [id], onDelete: Cascade)
+
+  @@index([couponSecretId, revealedAt])
+  @@map("coupon_reveal_logs")
+}
+
+// 到期 job 的 idempotent 保護：unique(itemId, action) 讓「過期轉態」與「即將到期提醒」
+// 各自最多發生一次，job 重複觸發不會重複通知。
+enum ItemExpirationAction {
+  expired
+  reminder_sent
+}
+
+model ItemExpirationLog {
+  id        String               @id @default(cuid())
+  itemId    String               @map("item_id")
+  action    ItemExpirationAction
+  createdAt DateTime             @default(now()) @map("created_at")
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, action])
+  @@map("item_expiration_logs")
+}
+
+// 系統排程 job 的登記表＋每次執行紀錄，經典模式。job lock（防同一 job 併發執行）
+// 留給之後寫 route 邏輯的 agent 處理（例如 transaction + SystemJobRun 判斷是否有
+// status='running' 的紀錄），schema 層不做（沒有 partial unique index 這類額外約束）。
+enum SystemJobRunStatus {
+  running
+  success
+  failed
+}
+
+model SystemJob {
+  id          String   @id @default(cuid())
+  key         String   @unique // 例："item_expiration"
+  description String?
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  runs SystemJobRun[]
+
+  @@map("system_jobs")
+}
+
+model SystemJobRun {
+  id         String             @id @default(cuid())
+  jobId      String             @map("job_id")
+  status     SystemJobRunStatus @default(running)
+  startedAt  DateTime           @default(now()) @map("started_at")
+  finishedAt DateTime?          @map("finished_at")
+  detail     Json? // 記錄這次處理了幾筆等統計資訊
+  createdAt  DateTime           @default(now()) @map("created_at")
+
+  job SystemJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId, startedAt])
+  @@map("system_job_runs")
+}
+
+// ===== M4 通知強化（master-plan.md §9、§11.1）=====
+
+// eventType 用字串 key（不用 enum）：未來新增通知種類（例如到期提醒、檢舉處理結果）
+// 不必為了偏好設定再改一次 schema，跟 FeatureFlag 的「DB config」風格一致。
+model NotificationPreference {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  eventType       String   @map("event_type") // 例："claim_accepted"、"handover_message"、"expiring_soon"
+  inAppEnabled    Boolean  @default(true) @map("in_app_enabled")
+  externalEnabled Boolean  @default(false) @map("external_enabled") // 外部通知預設關，關鍵事件由 app 邏輯/seed 設預設值
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventType])
+  @@map("notification_preferences")
+}
+
+enum NotificationChannel {
+  telegram
+}
+
+enum NotificationDeliveryStatus {
+  pending
+  sent
+  failed
+}
+
+// 通知重複保護：unique(notificationId, channel) 讓同一則站內通知在同一管道
+// 最多只會有一筆外部送達紀錄（delivery idempotency，對照 master-plan §11.3）。
+model NotificationDelivery {
+  id             String                     @id @default(cuid())
+  notificationId String                     @map("notification_id")
+  channel        NotificationChannel        @default(telegram)
+  status         NotificationDeliveryStatus @default(pending)
+  attempts       Int                        @default(0)
+  lastError      String?                    @map("last_error")
+  sentAt         DateTime?                  @map("sent_at")
+  createdAt      DateTime                   @default(now()) @map("created_at")
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@unique([notificationId, channel])
+  @@index([status, createdAt])
+  @@map("notification_deliveries")
+}
+
+model TelegramAccount {
+  id               String    @id @default(cuid())
+  userId           String    @unique @map("user_id")
+  telegramChatId   String    @unique @map("telegram_chat_id")
+  telegramUsername String?   @map("telegram_username")
+  isActive         Boolean   @default(true) @map("is_active")
+  linkedAt         DateTime  @default(now()) @map("linked_at")
+  unlinkedAt       DateTime? @map("unlinked_at") // 失效自動解綁時記錄
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("telegram_accounts")
+}
+
+model TelegramLinkToken {
+  id         String    @id @default(cuid())
+  userId     String    @map("user_id")
+  token      String    @unique
+  expiresAt  DateTime  @map("expires_at")
+  consumedAt DateTime? @map("consumed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("telegram_link_tokens")
+}
+
+// webhook update_id 去重：只存 updateId + processedAt，不存整包 payload（M4 需求明文如此）。
+model TelegramUpdate {
+  id          String    @id @default(cuid())
+  updateId    BigInt    @unique @map("update_id")
+  processedAt DateTime? @map("processed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("telegram_updates")
 }

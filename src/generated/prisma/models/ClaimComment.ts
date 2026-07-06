@@ -192,6 +192,7 @@ export type ClaimCommentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ClaimComment"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reports?: Prisma.ReportListRelationFilter
 }
 
 export type ClaimCommentOrderByWithRelationInput = {
@@ -203,6 +204,7 @@ export type ClaimCommentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   item?: Prisma.ItemOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  reports?: Prisma.ReportOrderByRelationAggregateInput
 }
 
 export type ClaimCommentWhereUniqueInput = Prisma.AtLeast<{
@@ -218,6 +220,7 @@ export type ClaimCommentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ClaimComment"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reports?: Prisma.ReportListRelationFilter
 }, "id" | "itemId_userId">
 
 export type ClaimCommentOrderByWithAggregationInput = {
@@ -251,6 +254,7 @@ export type ClaimCommentCreateInput = {
   createdAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutClaimCommentsInput
   user: Prisma.UserCreateNestedOneWithoutClaimCommentsInput
+  reports?: Prisma.ReportCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentUncheckedCreateInput = {
@@ -260,6 +264,7 @@ export type ClaimCommentUncheckedCreateInput = {
   message: string
   status?: $Enums.ClaimStatus
   createdAt?: Date | string
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentUpdateInput = {
@@ -269,6 +274,7 @@ export type ClaimCommentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutClaimCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutClaimCommentsNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentUncheckedUpdateInput = {
@@ -278,6 +284,7 @@ export type ClaimCommentUncheckedUpdateInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentCreateManyInput = {
@@ -345,6 +352,11 @@ export type ClaimCommentMinOrderByAggregateInput = {
   message?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type ClaimCommentNullableScalarRelationFilter = {
+  is?: Prisma.ClaimCommentWhereInput | null
+  isNot?: Prisma.ClaimCommentWhereInput | null
 }
 
 export type ClaimCommentCreateNestedManyWithoutUserInput = {
@@ -435,12 +447,29 @@ export type EnumClaimStatusFieldUpdateOperationsInput = {
   set?: $Enums.ClaimStatus
 }
 
+export type ClaimCommentCreateNestedOneWithoutReportsInput = {
+  create?: Prisma.XOR<Prisma.ClaimCommentCreateWithoutReportsInput, Prisma.ClaimCommentUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.ClaimCommentCreateOrConnectWithoutReportsInput
+  connect?: Prisma.ClaimCommentWhereUniqueInput
+}
+
+export type ClaimCommentUpdateOneWithoutReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClaimCommentCreateWithoutReportsInput, Prisma.ClaimCommentUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.ClaimCommentCreateOrConnectWithoutReportsInput
+  upsert?: Prisma.ClaimCommentUpsertWithoutReportsInput
+  disconnect?: Prisma.ClaimCommentWhereInput | boolean
+  delete?: Prisma.ClaimCommentWhereInput | boolean
+  connect?: Prisma.ClaimCommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClaimCommentUpdateToOneWithWhereWithoutReportsInput, Prisma.ClaimCommentUpdateWithoutReportsInput>, Prisma.ClaimCommentUncheckedUpdateWithoutReportsInput>
+}
+
 export type ClaimCommentCreateWithoutUserInput = {
   id?: string
   message: string
   status?: $Enums.ClaimStatus
   createdAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutClaimCommentsInput
+  reports?: Prisma.ReportCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentUncheckedCreateWithoutUserInput = {
@@ -449,6 +478,7 @@ export type ClaimCommentUncheckedCreateWithoutUserInput = {
   message: string
   status?: $Enums.ClaimStatus
   createdAt?: Date | string
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentCreateOrConnectWithoutUserInput = {
@@ -495,6 +525,7 @@ export type ClaimCommentCreateWithoutItemInput = {
   status?: $Enums.ClaimStatus
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutClaimCommentsInput
+  reports?: Prisma.ReportCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentUncheckedCreateWithoutItemInput = {
@@ -503,6 +534,7 @@ export type ClaimCommentUncheckedCreateWithoutItemInput = {
   message: string
   status?: $Enums.ClaimStatus
   createdAt?: Date | string
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutClaimCommentInput
 }
 
 export type ClaimCommentCreateOrConnectWithoutItemInput = {
@@ -531,6 +563,58 @@ export type ClaimCommentUpdateManyWithWhereWithoutItemInput = {
   data: Prisma.XOR<Prisma.ClaimCommentUpdateManyMutationInput, Prisma.ClaimCommentUncheckedUpdateManyWithoutItemInput>
 }
 
+export type ClaimCommentCreateWithoutReportsInput = {
+  id?: string
+  message: string
+  status?: $Enums.ClaimStatus
+  createdAt?: Date | string
+  item: Prisma.ItemCreateNestedOneWithoutClaimCommentsInput
+  user: Prisma.UserCreateNestedOneWithoutClaimCommentsInput
+}
+
+export type ClaimCommentUncheckedCreateWithoutReportsInput = {
+  id?: string
+  itemId: string
+  userId: string
+  message: string
+  status?: $Enums.ClaimStatus
+  createdAt?: Date | string
+}
+
+export type ClaimCommentCreateOrConnectWithoutReportsInput = {
+  where: Prisma.ClaimCommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClaimCommentCreateWithoutReportsInput, Prisma.ClaimCommentUncheckedCreateWithoutReportsInput>
+}
+
+export type ClaimCommentUpsertWithoutReportsInput = {
+  update: Prisma.XOR<Prisma.ClaimCommentUpdateWithoutReportsInput, Prisma.ClaimCommentUncheckedUpdateWithoutReportsInput>
+  create: Prisma.XOR<Prisma.ClaimCommentCreateWithoutReportsInput, Prisma.ClaimCommentUncheckedCreateWithoutReportsInput>
+  where?: Prisma.ClaimCommentWhereInput
+}
+
+export type ClaimCommentUpdateToOneWithWhereWithoutReportsInput = {
+  where?: Prisma.ClaimCommentWhereInput
+  data: Prisma.XOR<Prisma.ClaimCommentUpdateWithoutReportsInput, Prisma.ClaimCommentUncheckedUpdateWithoutReportsInput>
+}
+
+export type ClaimCommentUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  item?: Prisma.ItemUpdateOneRequiredWithoutClaimCommentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutClaimCommentsNestedInput
+}
+
+export type ClaimCommentUncheckedUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ClaimCommentCreateManyUserInput = {
   id?: string
   itemId: string
@@ -545,6 +629,7 @@ export type ClaimCommentUpdateWithoutUserInput = {
   status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutClaimCommentsNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentUncheckedUpdateWithoutUserInput = {
@@ -553,6 +638,7 @@ export type ClaimCommentUncheckedUpdateWithoutUserInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentUncheckedUpdateManyWithoutUserInput = {
@@ -577,6 +663,7 @@ export type ClaimCommentUpdateWithoutItemInput = {
   status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutClaimCommentsNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentUncheckedUpdateWithoutItemInput = {
@@ -585,6 +672,7 @@ export type ClaimCommentUncheckedUpdateWithoutItemInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumClaimStatusFieldUpdateOperationsInput | $Enums.ClaimStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutClaimCommentNestedInput
 }
 
 export type ClaimCommentUncheckedUpdateManyWithoutItemInput = {
@@ -596,6 +684,35 @@ export type ClaimCommentUncheckedUpdateManyWithoutItemInput = {
 }
 
 
+/**
+ * Count Type ClaimCommentCountOutputType
+ */
+
+export type ClaimCommentCountOutputType = {
+  reports: number
+}
+
+export type ClaimCommentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  reports?: boolean | ClaimCommentCountOutputTypeCountReportsArgs
+}
+
+/**
+ * ClaimCommentCountOutputType without action
+ */
+export type ClaimCommentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClaimCommentCountOutputType
+   */
+  select?: Prisma.ClaimCommentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ClaimCommentCountOutputType without action
+ */
+export type ClaimCommentCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
 
 export type ClaimCommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -606,6 +723,8 @@ export type ClaimCommentSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reports?: boolean | Prisma.ClaimComment$reportsArgs<ExtArgs>
+  _count?: boolean | Prisma.ClaimCommentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["claimComment"]>
 
 export type ClaimCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -643,6 +762,8 @@ export type ClaimCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type ClaimCommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reports?: boolean | Prisma.ClaimComment$reportsArgs<ExtArgs>
+  _count?: boolean | Prisma.ClaimCommentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClaimCommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
@@ -658,6 +779,7 @@ export type $ClaimCommentPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     item: Prisma.$ItemPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
+    reports: Prisma.$ReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1062,6 +1184,7 @@ export interface Prisma__ClaimCommentClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reports<T extends Prisma.ClaimComment$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClaimComment$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1495,6 +1618,30 @@ export type ClaimCommentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many ClaimComments to delete.
    */
   limit?: number
+}
+
+/**
+ * ClaimComment.reports
+ */
+export type ClaimComment$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
 }
 
 /**

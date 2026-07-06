@@ -283,6 +283,9 @@ export type StorageObjectWhereInput = {
   uploader?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   itemImagesAsThumb?: Prisma.ItemImageListRelationFilter
   itemImagesAsMedium?: Prisma.ItemImageListRelationFilter
+  reportEvidence?: Prisma.ReportEvidenceListRelationFilter
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentListRelationFilter
+  appealEvidence?: Prisma.AppealEvidenceListRelationFilter
 }
 
 export type StorageObjectOrderByWithRelationInput = {
@@ -301,6 +304,9 @@ export type StorageObjectOrderByWithRelationInput = {
   uploader?: Prisma.UserOrderByWithRelationInput
   itemImagesAsThumb?: Prisma.ItemImageOrderByRelationAggregateInput
   itemImagesAsMedium?: Prisma.ItemImageOrderByRelationAggregateInput
+  reportEvidence?: Prisma.ReportEvidenceOrderByRelationAggregateInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentOrderByRelationAggregateInput
+  appealEvidence?: Prisma.AppealEvidenceOrderByRelationAggregateInput
 }
 
 export type StorageObjectWhereUniqueInput = Prisma.AtLeast<{
@@ -322,6 +328,9 @@ export type StorageObjectWhereUniqueInput = Prisma.AtLeast<{
   uploader?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   itemImagesAsThumb?: Prisma.ItemImageListRelationFilter
   itemImagesAsMedium?: Prisma.ItemImageListRelationFilter
+  reportEvidence?: Prisma.ReportEvidenceListRelationFilter
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentListRelationFilter
+  appealEvidence?: Prisma.AppealEvidenceListRelationFilter
 }, "id" | "objectKey">
 
 export type StorageObjectOrderByWithAggregationInput = {
@@ -377,6 +386,9 @@ export type StorageObjectCreateInput = {
   uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
   itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
   itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectUncheckedCreateInput = {
@@ -394,6 +406,9 @@ export type StorageObjectUncheckedCreateInput = {
   deletedAt?: Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
   itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectUpdateInput = {
@@ -411,6 +426,9 @@ export type StorageObjectUpdateInput = {
   uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
   itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
   itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUncheckedUpdateInput = {
@@ -428,6 +446,9 @@ export type StorageObjectUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
   itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectCreateManyInput = {
@@ -624,6 +645,48 @@ export type StorageObjectUpdateOneRequiredWithoutItemImagesAsMediumNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.StorageObjectUpdateToOneWithWhereWithoutItemImagesAsMediumInput, Prisma.StorageObjectUpdateWithoutItemImagesAsMediumInput>, Prisma.StorageObjectUncheckedUpdateWithoutItemImagesAsMediumInput>
 }
 
+export type StorageObjectCreateNestedOneWithoutReportEvidenceInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutReportEvidenceInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutReportEvidenceInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+}
+
+export type StorageObjectUpdateOneRequiredWithoutReportEvidenceNestedInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutReportEvidenceInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutReportEvidenceInput
+  upsert?: Prisma.StorageObjectUpsertWithoutReportEvidenceInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorageObjectUpdateToOneWithWhereWithoutReportEvidenceInput, Prisma.StorageObjectUpdateWithoutReportEvidenceInput>, Prisma.StorageObjectUncheckedUpdateWithoutReportEvidenceInput>
+}
+
+export type StorageObjectCreateNestedOneWithoutSupportTicketAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedCreateWithoutSupportTicketAttachmentsInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutSupportTicketAttachmentsInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+}
+
+export type StorageObjectUpdateOneRequiredWithoutSupportTicketAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedCreateWithoutSupportTicketAttachmentsInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutSupportTicketAttachmentsInput
+  upsert?: Prisma.StorageObjectUpsertWithoutSupportTicketAttachmentsInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorageObjectUpdateToOneWithWhereWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUpdateWithoutSupportTicketAttachmentsInput>, Prisma.StorageObjectUncheckedUpdateWithoutSupportTicketAttachmentsInput>
+}
+
+export type StorageObjectCreateNestedOneWithoutAppealEvidenceInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutAppealEvidenceInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutAppealEvidenceInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+}
+
+export type StorageObjectUpdateOneRequiredWithoutAppealEvidenceNestedInput = {
+  create?: Prisma.XOR<Prisma.StorageObjectCreateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutAppealEvidenceInput>
+  connectOrCreate?: Prisma.StorageObjectCreateOrConnectWithoutAppealEvidenceInput
+  upsert?: Prisma.StorageObjectUpsertWithoutAppealEvidenceInput
+  connect?: Prisma.StorageObjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StorageObjectUpdateToOneWithWhereWithoutAppealEvidenceInput, Prisma.StorageObjectUpdateWithoutAppealEvidenceInput>, Prisma.StorageObjectUncheckedUpdateWithoutAppealEvidenceInput>
+}
+
 export type StorageObjectCreateWithoutUploaderInput = {
   id?: string
   objectKey: string
@@ -638,6 +701,9 @@ export type StorageObjectCreateWithoutUploaderInput = {
   deletedAt?: Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
   itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectUncheckedCreateWithoutUploaderInput = {
@@ -654,6 +720,9 @@ export type StorageObjectUncheckedCreateWithoutUploaderInput = {
   deletedAt?: Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
   itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectCreateOrConnectWithoutUploaderInput = {
@@ -714,6 +783,9 @@ export type StorageObjectCreateWithoutItemImagesAsThumbInput = {
   deletedAt?: Date | string | null
   uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
   itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectUncheckedCreateWithoutItemImagesAsThumbInput = {
@@ -730,6 +802,9 @@ export type StorageObjectUncheckedCreateWithoutItemImagesAsThumbInput = {
   linkedAt?: Date | string | null
   deletedAt?: Date | string | null
   itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectCreateOrConnectWithoutItemImagesAsThumbInput = {
@@ -751,6 +826,9 @@ export type StorageObjectCreateWithoutItemImagesAsMediumInput = {
   deletedAt?: Date | string | null
   uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
   itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectUncheckedCreateWithoutItemImagesAsMediumInput = {
@@ -767,6 +845,9 @@ export type StorageObjectUncheckedCreateWithoutItemImagesAsMediumInput = {
   linkedAt?: Date | string | null
   deletedAt?: Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
 }
 
 export type StorageObjectCreateOrConnectWithoutItemImagesAsMediumInput = {
@@ -799,6 +880,9 @@ export type StorageObjectUpdateWithoutItemImagesAsThumbInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
   itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUncheckedUpdateWithoutItemImagesAsThumbInput = {
@@ -815,6 +899,9 @@ export type StorageObjectUncheckedUpdateWithoutItemImagesAsThumbInput = {
   linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUpsertWithoutItemImagesAsMediumInput = {
@@ -842,6 +929,9 @@ export type StorageObjectUpdateWithoutItemImagesAsMediumInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
   itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUncheckedUpdateWithoutItemImagesAsMediumInput = {
@@ -858,6 +948,285 @@ export type StorageObjectUncheckedUpdateWithoutItemImagesAsMediumInput = {
   linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectCreateWithoutReportEvidenceInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
+  itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectUncheckedCreateWithoutReportEvidenceInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  uploaderId?: string | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectCreateOrConnectWithoutReportEvidenceInput = {
+  where: Prisma.StorageObjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutReportEvidenceInput>
+}
+
+export type StorageObjectUpsertWithoutReportEvidenceInput = {
+  update: Prisma.XOR<Prisma.StorageObjectUpdateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedUpdateWithoutReportEvidenceInput>
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutReportEvidenceInput>
+  where?: Prisma.StorageObjectWhereInput
+}
+
+export type StorageObjectUpdateToOneWithWhereWithoutReportEvidenceInput = {
+  where?: Prisma.StorageObjectWhereInput
+  data: Prisma.XOR<Prisma.StorageObjectUpdateWithoutReportEvidenceInput, Prisma.StorageObjectUncheckedUpdateWithoutReportEvidenceInput>
+}
+
+export type StorageObjectUpdateWithoutReportEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
+  itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectUncheckedUpdateWithoutReportEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  uploaderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectCreateWithoutSupportTicketAttachmentsInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
+  itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectUncheckedCreateWithoutSupportTicketAttachmentsInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  uploaderId?: string | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectCreateOrConnectWithoutSupportTicketAttachmentsInput = {
+  where: Prisma.StorageObjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedCreateWithoutSupportTicketAttachmentsInput>
+}
+
+export type StorageObjectUpsertWithoutSupportTicketAttachmentsInput = {
+  update: Prisma.XOR<Prisma.StorageObjectUpdateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedUpdateWithoutSupportTicketAttachmentsInput>
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedCreateWithoutSupportTicketAttachmentsInput>
+  where?: Prisma.StorageObjectWhereInput
+}
+
+export type StorageObjectUpdateToOneWithWhereWithoutSupportTicketAttachmentsInput = {
+  where?: Prisma.StorageObjectWhereInput
+  data: Prisma.XOR<Prisma.StorageObjectUpdateWithoutSupportTicketAttachmentsInput, Prisma.StorageObjectUncheckedUpdateWithoutSupportTicketAttachmentsInput>
+}
+
+export type StorageObjectUpdateWithoutSupportTicketAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
+  itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectUncheckedUpdateWithoutSupportTicketAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  uploaderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectCreateWithoutAppealEvidenceInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  uploader?: Prisma.UserCreateNestedOneWithoutStorageObjectsInput
+  itemImagesAsThumb?: Prisma.ItemImageCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectUncheckedCreateWithoutAppealEvidenceInput = {
+  id?: string
+  objectKey: string
+  kind: $Enums.StorageKind
+  status?: $Enums.StorageStatus
+  mimeType: string
+  sizeBytes: number
+  width?: number | null
+  height?: number | null
+  uploaderId?: string | null
+  createdAt?: Date | string
+  linkedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedCreateNestedManyWithoutThumbObjectInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedCreateNestedManyWithoutMediumObjectInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedCreateNestedManyWithoutStorageObjectInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedCreateNestedManyWithoutStorageObjectInput
+}
+
+export type StorageObjectCreateOrConnectWithoutAppealEvidenceInput = {
+  where: Prisma.StorageObjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutAppealEvidenceInput>
+}
+
+export type StorageObjectUpsertWithoutAppealEvidenceInput = {
+  update: Prisma.XOR<Prisma.StorageObjectUpdateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedUpdateWithoutAppealEvidenceInput>
+  create: Prisma.XOR<Prisma.StorageObjectCreateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedCreateWithoutAppealEvidenceInput>
+  where?: Prisma.StorageObjectWhereInput
+}
+
+export type StorageObjectUpdateToOneWithWhereWithoutAppealEvidenceInput = {
+  where?: Prisma.StorageObjectWhereInput
+  data: Prisma.XOR<Prisma.StorageObjectUpdateWithoutAppealEvidenceInput, Prisma.StorageObjectUncheckedUpdateWithoutAppealEvidenceInput>
+}
+
+export type StorageObjectUpdateWithoutAppealEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploader?: Prisma.UserUpdateOneWithoutStorageObjectsNestedInput
+  itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+}
+
+export type StorageObjectUncheckedUpdateWithoutAppealEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumStorageKindFieldUpdateOperationsInput | $Enums.StorageKind
+  status?: Prisma.EnumStorageStatusFieldUpdateOperationsInput | $Enums.StorageStatus
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  uploaderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  linkedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
+  itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectCreateManyUploaderInput = {
@@ -888,6 +1257,9 @@ export type StorageObjectUpdateWithoutUploaderInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUpdateManyWithoutThumbObjectNestedInput
   itemImagesAsMedium?: Prisma.ItemImageUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUncheckedUpdateWithoutUploaderInput = {
@@ -904,6 +1276,9 @@ export type StorageObjectUncheckedUpdateWithoutUploaderInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   itemImagesAsThumb?: Prisma.ItemImageUncheckedUpdateManyWithoutThumbObjectNestedInput
   itemImagesAsMedium?: Prisma.ItemImageUncheckedUpdateManyWithoutMediumObjectNestedInput
+  reportEvidence?: Prisma.ReportEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
+  supportTicketAttachments?: Prisma.SupportTicketAttachmentUncheckedUpdateManyWithoutStorageObjectNestedInput
+  appealEvidence?: Prisma.AppealEvidenceUncheckedUpdateManyWithoutStorageObjectNestedInput
 }
 
 export type StorageObjectUncheckedUpdateManyWithoutUploaderInput = {
@@ -928,11 +1303,17 @@ export type StorageObjectUncheckedUpdateManyWithoutUploaderInput = {
 export type StorageObjectCountOutputType = {
   itemImagesAsThumb: number
   itemImagesAsMedium: number
+  reportEvidence: number
+  supportTicketAttachments: number
+  appealEvidence: number
 }
 
 export type StorageObjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   itemImagesAsThumb?: boolean | StorageObjectCountOutputTypeCountItemImagesAsThumbArgs
   itemImagesAsMedium?: boolean | StorageObjectCountOutputTypeCountItemImagesAsMediumArgs
+  reportEvidence?: boolean | StorageObjectCountOutputTypeCountReportEvidenceArgs
+  supportTicketAttachments?: boolean | StorageObjectCountOutputTypeCountSupportTicketAttachmentsArgs
+  appealEvidence?: boolean | StorageObjectCountOutputTypeCountAppealEvidenceArgs
 }
 
 /**
@@ -959,6 +1340,27 @@ export type StorageObjectCountOutputTypeCountItemImagesAsMediumArgs<ExtArgs exte
   where?: Prisma.ItemImageWhereInput
 }
 
+/**
+ * StorageObjectCountOutputType without action
+ */
+export type StorageObjectCountOutputTypeCountReportEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportEvidenceWhereInput
+}
+
+/**
+ * StorageObjectCountOutputType without action
+ */
+export type StorageObjectCountOutputTypeCountSupportTicketAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupportTicketAttachmentWhereInput
+}
+
+/**
+ * StorageObjectCountOutputType without action
+ */
+export type StorageObjectCountOutputTypeCountAppealEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealEvidenceWhereInput
+}
+
 
 export type StorageObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -976,6 +1378,9 @@ export type StorageObjectSelect<ExtArgs extends runtime.Types.Extensions.Interna
   uploader?: boolean | Prisma.StorageObject$uploaderArgs<ExtArgs>
   itemImagesAsThumb?: boolean | Prisma.StorageObject$itemImagesAsThumbArgs<ExtArgs>
   itemImagesAsMedium?: boolean | Prisma.StorageObject$itemImagesAsMediumArgs<ExtArgs>
+  reportEvidence?: boolean | Prisma.StorageObject$reportEvidenceArgs<ExtArgs>
+  supportTicketAttachments?: boolean | Prisma.StorageObject$supportTicketAttachmentsArgs<ExtArgs>
+  appealEvidence?: boolean | Prisma.StorageObject$appealEvidenceArgs<ExtArgs>
   _count?: boolean | Prisma.StorageObjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storageObject"]>
 
@@ -1031,6 +1436,9 @@ export type StorageObjectInclude<ExtArgs extends runtime.Types.Extensions.Intern
   uploader?: boolean | Prisma.StorageObject$uploaderArgs<ExtArgs>
   itemImagesAsThumb?: boolean | Prisma.StorageObject$itemImagesAsThumbArgs<ExtArgs>
   itemImagesAsMedium?: boolean | Prisma.StorageObject$itemImagesAsMediumArgs<ExtArgs>
+  reportEvidence?: boolean | Prisma.StorageObject$reportEvidenceArgs<ExtArgs>
+  supportTicketAttachments?: boolean | Prisma.StorageObject$supportTicketAttachmentsArgs<ExtArgs>
+  appealEvidence?: boolean | Prisma.StorageObject$appealEvidenceArgs<ExtArgs>
   _count?: boolean | Prisma.StorageObjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StorageObjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1046,6 +1454,9 @@ export type $StorageObjectPayload<ExtArgs extends runtime.Types.Extensions.Inter
     uploader: Prisma.$UserPayload<ExtArgs> | null
     itemImagesAsThumb: Prisma.$ItemImagePayload<ExtArgs>[]
     itemImagesAsMedium: Prisma.$ItemImagePayload<ExtArgs>[]
+    reportEvidence: Prisma.$ReportEvidencePayload<ExtArgs>[]
+    supportTicketAttachments: Prisma.$SupportTicketAttachmentPayload<ExtArgs>[]
+    appealEvidence: Prisma.$AppealEvidencePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1457,6 +1868,9 @@ export interface Prisma__StorageObjectClient<T, Null = never, ExtArgs extends ru
   uploader<T extends Prisma.StorageObject$uploaderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$uploaderArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   itemImagesAsThumb<T extends Prisma.StorageObject$itemImagesAsThumbArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$itemImagesAsThumbArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   itemImagesAsMedium<T extends Prisma.StorageObject$itemImagesAsMediumArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$itemImagesAsMediumArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportEvidence<T extends Prisma.StorageObject$reportEvidenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$reportEvidenceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportEvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supportTicketAttachments<T extends Prisma.StorageObject$supportTicketAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$supportTicketAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appealEvidence<T extends Prisma.StorageObject$appealEvidenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StorageObject$appealEvidenceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealEvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1963,6 +2377,78 @@ export type StorageObject$itemImagesAsMediumArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.ItemImageScalarFieldEnum | Prisma.ItemImageScalarFieldEnum[]
+}
+
+/**
+ * StorageObject.reportEvidence
+ */
+export type StorageObject$reportEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReportEvidence
+   */
+  select?: Prisma.ReportEvidenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReportEvidence
+   */
+  omit?: Prisma.ReportEvidenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportEvidenceInclude<ExtArgs> | null
+  where?: Prisma.ReportEvidenceWhereInput
+  orderBy?: Prisma.ReportEvidenceOrderByWithRelationInput | Prisma.ReportEvidenceOrderByWithRelationInput[]
+  cursor?: Prisma.ReportEvidenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportEvidenceScalarFieldEnum | Prisma.ReportEvidenceScalarFieldEnum[]
+}
+
+/**
+ * StorageObject.supportTicketAttachments
+ */
+export type StorageObject$supportTicketAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupportTicketAttachment
+   */
+  select?: Prisma.SupportTicketAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupportTicketAttachment
+   */
+  omit?: Prisma.SupportTicketAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupportTicketAttachmentInclude<ExtArgs> | null
+  where?: Prisma.SupportTicketAttachmentWhereInput
+  orderBy?: Prisma.SupportTicketAttachmentOrderByWithRelationInput | Prisma.SupportTicketAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.SupportTicketAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupportTicketAttachmentScalarFieldEnum | Prisma.SupportTicketAttachmentScalarFieldEnum[]
+}
+
+/**
+ * StorageObject.appealEvidence
+ */
+export type StorageObject$appealEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AppealEvidence
+   */
+  select?: Prisma.AppealEvidenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AppealEvidence
+   */
+  omit?: Prisma.AppealEvidenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealEvidenceInclude<ExtArgs> | null
+  where?: Prisma.AppealEvidenceWhereInput
+  orderBy?: Prisma.AppealEvidenceOrderByWithRelationInput | Prisma.AppealEvidenceOrderByWithRelationInput[]
+  cursor?: Prisma.AppealEvidenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealEvidenceScalarFieldEnum | Prisma.AppealEvidenceScalarFieldEnum[]
 }
 
 /**

@@ -127,3 +127,113 @@ export type ConversationMember = Prisma.ConversationMemberModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model Report
+ * 
+ */
+export type Report = Prisma.ReportModel
+/**
+ * Model ReportEvidence
+ * 
+ */
+export type ReportEvidence = Prisma.ReportEvidenceModel
+/**
+ * Model UserRestriction
+ * 
+ */
+export type UserRestriction = Prisma.UserRestrictionModel
+/**
+ * Model ItemRemoval
+ * 
+ */
+export type ItemRemoval = Prisma.ItemRemovalModel
+/**
+ * Model SupportTicket
+ * 
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportTicketEvent
+ * 
+ */
+export type SupportTicketEvent = Prisma.SupportTicketEventModel
+/**
+ * Model SupportTicketAttachment
+ * 
+ */
+export type SupportTicketAttachment = Prisma.SupportTicketAttachmentModel
+/**
+ * Model Appeal
+ * 
+ */
+export type Appeal = Prisma.AppealModel
+/**
+ * Model AppealEvidence
+ * 
+ */
+export type AppealEvidence = Prisma.AppealEvidenceModel
+/**
+ * Model KeywordBlocklist
+ * 
+ */
+export type KeywordBlocklist = Prisma.KeywordBlocklistModel
+/**
+ * Model FeatureFlag
+ * 
+ */
+export type FeatureFlag = Prisma.FeatureFlagModel
+/**
+ * Model CouponDetail
+ * 
+ */
+export type CouponDetail = Prisma.CouponDetailModel
+/**
+ * Model CouponSecret
+ * 
+ */
+export type CouponSecret = Prisma.CouponSecretModel
+/**
+ * Model CouponRevealLog
+ * 
+ */
+export type CouponRevealLog = Prisma.CouponRevealLogModel
+/**
+ * Model ItemExpirationLog
+ * 
+ */
+export type ItemExpirationLog = Prisma.ItemExpirationLogModel
+/**
+ * Model SystemJob
+ * 
+ */
+export type SystemJob = Prisma.SystemJobModel
+/**
+ * Model SystemJobRun
+ * 
+ */
+export type SystemJobRun = Prisma.SystemJobRunModel
+/**
+ * Model NotificationPreference
+ * 
+ */
+export type NotificationPreference = Prisma.NotificationPreferenceModel
+/**
+ * Model NotificationDelivery
+ * 
+ */
+export type NotificationDelivery = Prisma.NotificationDeliveryModel
+/**
+ * Model TelegramAccount
+ * 
+ */
+export type TelegramAccount = Prisma.TelegramAccountModel
+/**
+ * Model TelegramLinkToken
+ * 
+ */
+export type TelegramLinkToken = Prisma.TelegramLinkTokenModel
+/**
+ * Model TelegramUpdate
+ * 
+ */
+export type TelegramUpdate = Prisma.TelegramUpdateModel

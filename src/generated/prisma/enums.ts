@@ -100,3 +100,98 @@ export const NotificationType = {
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const ReportCategory = {
+  fraud: 'fraud',
+  private_payment: 'private_payment',
+  prohibited_item: 'prohibited_item',
+  food_safety: 'food_safety',
+  harassment: 'harassment',
+  other: 'other'
+} as const
+
+export type ReportCategory = (typeof ReportCategory)[keyof typeof ReportCategory]
+
+
+export const ReportStatus = {
+  submitted: 'submitted',
+  triaged: 'triaged',
+  in_progress: 'in_progress',
+  resolved: 'resolved',
+  rejected: 'rejected',
+  closed: 'closed'
+} as const
+
+export type ReportStatus = (typeof ReportStatus)[keyof typeof ReportStatus]
+
+
+export const RestrictionType = {
+  no_posting: 'no_posting',
+  no_claiming: 'no_claiming',
+  no_messaging: 'no_messaging',
+  full_block: 'full_block'
+} as const
+
+export type RestrictionType = (typeof RestrictionType)[keyof typeof RestrictionType]
+
+
+export const SupportTicketCategory = {
+  bug: 'bug',
+  account: 'account',
+  other: 'other'
+} as const
+
+export type SupportTicketCategory = (typeof SupportTicketCategory)[keyof typeof SupportTicketCategory]
+
+
+export const SupportTicketStatus = {
+  open: 'open',
+  in_progress: 'in_progress',
+  resolved: 'resolved',
+  closed: 'closed'
+} as const
+
+export type SupportTicketStatus = (typeof SupportTicketStatus)[keyof typeof SupportTicketStatus]
+
+
+export const AppealStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected'
+} as const
+
+export type AppealStatus = (typeof AppealStatus)[keyof typeof AppealStatus]
+
+
+export const ItemExpirationAction = {
+  expired: 'expired',
+  reminder_sent: 'reminder_sent'
+} as const
+
+export type ItemExpirationAction = (typeof ItemExpirationAction)[keyof typeof ItemExpirationAction]
+
+
+export const SystemJobRunStatus = {
+  running: 'running',
+  success: 'success',
+  failed: 'failed'
+} as const
+
+export type SystemJobRunStatus = (typeof SystemJobRunStatus)[keyof typeof SystemJobRunStatus]
+
+
+export const NotificationChannel = {
+  telegram: 'telegram'
+} as const
+
+export type NotificationChannel = (typeof NotificationChannel)[keyof typeof NotificationChannel]
+
+
+export const NotificationDeliveryStatus = {
+  pending: 'pending',
+  sent: 'sent',
+  failed: 'failed'
+} as const
+
+export type NotificationDeliveryStatus = (typeof NotificationDeliveryStatus)[keyof typeof NotificationDeliveryStatus]

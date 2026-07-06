@@ -215,6 +215,21 @@ export type UserWhereInput = {
   notifications?: Prisma.NotificationListRelationFilter
   conversationMemberships?: Prisma.ConversationMemberListRelationFilter
   messagesSent?: Prisma.MessageListRelationFilter
+  reportsSubmitted?: Prisma.ReportListRelationFilter
+  reportsHandled?: Prisma.ReportListRelationFilter
+  restrictions?: Prisma.UserRestrictionListRelationFilter
+  restrictionsCreated?: Prisma.UserRestrictionListRelationFilter
+  restrictionsLifted?: Prisma.UserRestrictionListRelationFilter
+  itemRemovalsActed?: Prisma.ItemRemovalListRelationFilter
+  supportTickets?: Prisma.SupportTicketListRelationFilter
+  supportTicketsAssigned?: Prisma.SupportTicketListRelationFilter
+  supportTicketEvents?: Prisma.SupportTicketEventListRelationFilter
+  appeals?: Prisma.AppealListRelationFilter
+  appealsReviewed?: Prisma.AppealListRelationFilter
+  couponRevealLogs?: Prisma.CouponRevealLogListRelationFilter
+  notificationPreferences?: Prisma.NotificationPreferenceListRelationFilter
+  telegramAccount?: Prisma.XOR<Prisma.TelegramAccountNullableScalarRelationFilter, Prisma.TelegramAccountWhereInput> | null
+  telegramLinkTokens?: Prisma.TelegramLinkTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -242,6 +257,21 @@ export type UserOrderByWithRelationInput = {
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   conversationMemberships?: Prisma.ConversationMemberOrderByRelationAggregateInput
   messagesSent?: Prisma.MessageOrderByRelationAggregateInput
+  reportsSubmitted?: Prisma.ReportOrderByRelationAggregateInput
+  reportsHandled?: Prisma.ReportOrderByRelationAggregateInput
+  restrictions?: Prisma.UserRestrictionOrderByRelationAggregateInput
+  restrictionsCreated?: Prisma.UserRestrictionOrderByRelationAggregateInput
+  restrictionsLifted?: Prisma.UserRestrictionOrderByRelationAggregateInput
+  itemRemovalsActed?: Prisma.ItemRemovalOrderByRelationAggregateInput
+  supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
+  supportTicketsAssigned?: Prisma.SupportTicketOrderByRelationAggregateInput
+  supportTicketEvents?: Prisma.SupportTicketEventOrderByRelationAggregateInput
+  appeals?: Prisma.AppealOrderByRelationAggregateInput
+  appealsReviewed?: Prisma.AppealOrderByRelationAggregateInput
+  couponRevealLogs?: Prisma.CouponRevealLogOrderByRelationAggregateInput
+  notificationPreferences?: Prisma.NotificationPreferenceOrderByRelationAggregateInput
+  telegramAccount?: Prisma.TelegramAccountOrderByWithRelationInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -272,6 +302,21 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   notifications?: Prisma.NotificationListRelationFilter
   conversationMemberships?: Prisma.ConversationMemberListRelationFilter
   messagesSent?: Prisma.MessageListRelationFilter
+  reportsSubmitted?: Prisma.ReportListRelationFilter
+  reportsHandled?: Prisma.ReportListRelationFilter
+  restrictions?: Prisma.UserRestrictionListRelationFilter
+  restrictionsCreated?: Prisma.UserRestrictionListRelationFilter
+  restrictionsLifted?: Prisma.UserRestrictionListRelationFilter
+  itemRemovalsActed?: Prisma.ItemRemovalListRelationFilter
+  supportTickets?: Prisma.SupportTicketListRelationFilter
+  supportTicketsAssigned?: Prisma.SupportTicketListRelationFilter
+  supportTicketEvents?: Prisma.SupportTicketEventListRelationFilter
+  appeals?: Prisma.AppealListRelationFilter
+  appealsReviewed?: Prisma.AppealListRelationFilter
+  couponRevealLogs?: Prisma.CouponRevealLogListRelationFilter
+  notificationPreferences?: Prisma.NotificationPreferenceListRelationFilter
+  telegramAccount?: Prisma.XOR<Prisma.TelegramAccountNullableScalarRelationFilter, Prisma.TelegramAccountWhereInput> | null
+  telegramLinkTokens?: Prisma.TelegramLinkTokenListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -325,6 +370,21 @@ export type UserCreateInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -352,6 +412,21 @@ export type UserUncheckedCreateInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -379,6 +454,21 @@ export type UserUpdateInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -406,6 +496,21 @@ export type UserUncheckedUpdateInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -738,6 +843,228 @@ export type UserUpdateOneRequiredWithoutMessagesSentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMessagesSentInput, Prisma.UserUpdateWithoutMessagesSentInput>, Prisma.UserUncheckedUpdateWithoutMessagesSentInput>
 }
 
+export type UserCreateNestedOneWithoutReportsSubmittedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsSubmittedInput, Prisma.UserUncheckedCreateWithoutReportsSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReportsHandledInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsHandledInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReportsSubmittedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsSubmittedInput, Prisma.UserUncheckedCreateWithoutReportsSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsSubmittedInput
+  upsert?: Prisma.UserUpsertWithoutReportsSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsSubmittedInput, Prisma.UserUpdateWithoutReportsSubmittedInput>, Prisma.UserUncheckedUpdateWithoutReportsSubmittedInput>
+}
+
+export type UserUpdateOneWithoutReportsHandledNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsHandledInput
+  upsert?: Prisma.UserUpsertWithoutReportsHandledInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsHandledInput, Prisma.UserUpdateWithoutReportsHandledInput>, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+}
+
+export type UserCreateNestedOneWithoutRestrictionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsInput, Prisma.UserUncheckedCreateWithoutRestrictionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutRestrictionsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedCreateWithoutRestrictionsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutRestrictionsLiftedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedCreateWithoutRestrictionsLiftedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsLiftedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRestrictionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsInput, Prisma.UserUncheckedCreateWithoutRestrictionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsInput
+  upsert?: Prisma.UserUpsertWithoutRestrictionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRestrictionsInput, Prisma.UserUpdateWithoutRestrictionsInput>, Prisma.UserUncheckedUpdateWithoutRestrictionsInput>
+}
+
+export type UserUpdateOneWithoutRestrictionsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedCreateWithoutRestrictionsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutRestrictionsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRestrictionsCreatedInput, Prisma.UserUpdateWithoutRestrictionsCreatedInput>, Prisma.UserUncheckedUpdateWithoutRestrictionsCreatedInput>
+}
+
+export type UserUpdateOneWithoutRestrictionsLiftedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedCreateWithoutRestrictionsLiftedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRestrictionsLiftedInput
+  upsert?: Prisma.UserUpsertWithoutRestrictionsLiftedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRestrictionsLiftedInput, Prisma.UserUpdateWithoutRestrictionsLiftedInput>, Prisma.UserUncheckedUpdateWithoutRestrictionsLiftedInput>
+}
+
+export type UserCreateNestedOneWithoutItemRemovalsActedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemRemovalsActedInput, Prisma.UserUncheckedCreateWithoutItemRemovalsActedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemRemovalsActedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutItemRemovalsActedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutItemRemovalsActedInput, Prisma.UserUncheckedCreateWithoutItemRemovalsActedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemRemovalsActedInput
+  upsert?: Prisma.UserUpsertWithoutItemRemovalsActedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutItemRemovalsActedInput, Prisma.UserUpdateWithoutItemRemovalsActedInput>, Prisma.UserUncheckedUpdateWithoutItemRemovalsActedInput>
+}
+
+export type UserCreateNestedOneWithoutSupportTicketsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsInput, Prisma.UserUncheckedCreateWithoutSupportTicketsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSupportTicketsAssignedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedCreateWithoutSupportTicketsAssignedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketsAssignedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSupportTicketsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsInput, Prisma.UserUncheckedCreateWithoutSupportTicketsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketsInput
+  upsert?: Prisma.UserUpsertWithoutSupportTicketsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSupportTicketsInput, Prisma.UserUpdateWithoutSupportTicketsInput>, Prisma.UserUncheckedUpdateWithoutSupportTicketsInput>
+}
+
+export type UserUpdateOneWithoutSupportTicketsAssignedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedCreateWithoutSupportTicketsAssignedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketsAssignedInput
+  upsert?: Prisma.UserUpsertWithoutSupportTicketsAssignedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSupportTicketsAssignedInput, Prisma.UserUpdateWithoutSupportTicketsAssignedInput>, Prisma.UserUncheckedUpdateWithoutSupportTicketsAssignedInput>
+}
+
+export type UserCreateNestedOneWithoutSupportTicketEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketEventsInput, Prisma.UserUncheckedCreateWithoutSupportTicketEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSupportTicketEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketEventsInput, Prisma.UserUncheckedCreateWithoutSupportTicketEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketEventsInput
+  upsert?: Prisma.UserUpsertWithoutSupportTicketEventsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSupportTicketEventsInput, Prisma.UserUpdateWithoutSupportTicketEventsInput>, Prisma.UserUncheckedUpdateWithoutSupportTicketEventsInput>
+}
+
+export type UserCreateNestedOneWithoutAppealsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppealsInput, Prisma.UserUncheckedCreateWithoutAppealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppealsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAppealsReviewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppealsReviewedInput, Prisma.UserUncheckedCreateWithoutAppealsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppealsReviewedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAppealsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppealsInput, Prisma.UserUncheckedCreateWithoutAppealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppealsInput
+  upsert?: Prisma.UserUpsertWithoutAppealsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAppealsInput, Prisma.UserUpdateWithoutAppealsInput>, Prisma.UserUncheckedUpdateWithoutAppealsInput>
+}
+
+export type UserUpdateOneWithoutAppealsReviewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAppealsReviewedInput, Prisma.UserUncheckedCreateWithoutAppealsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAppealsReviewedInput
+  upsert?: Prisma.UserUpsertWithoutAppealsReviewedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAppealsReviewedInput, Prisma.UserUpdateWithoutAppealsReviewedInput>, Prisma.UserUncheckedUpdateWithoutAppealsReviewedInput>
+}
+
+export type UserCreateNestedOneWithoutCouponRevealLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouponRevealLogsInput, Prisma.UserUncheckedCreateWithoutCouponRevealLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouponRevealLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCouponRevealLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCouponRevealLogsInput, Prisma.UserUncheckedCreateWithoutCouponRevealLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouponRevealLogsInput
+  upsert?: Prisma.UserUpsertWithoutCouponRevealLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouponRevealLogsInput, Prisma.UserUpdateWithoutCouponRevealLogsInput>, Prisma.UserUncheckedUpdateWithoutCouponRevealLogsInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationPreferencesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferencesInput, Prisma.UserUncheckedCreateWithoutNotificationPreferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationPreferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationPreferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferencesInput, Prisma.UserUncheckedCreateWithoutNotificationPreferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationPreferencesInput
+  upsert?: Prisma.UserUpsertWithoutNotificationPreferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationPreferencesInput, Prisma.UserUpdateWithoutNotificationPreferencesInput>, Prisma.UserUncheckedUpdateWithoutNotificationPreferencesInput>
+}
+
+export type UserCreateNestedOneWithoutTelegramAccountInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramAccountInput, Prisma.UserUncheckedCreateWithoutTelegramAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTelegramAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramAccountInput, Prisma.UserUncheckedCreateWithoutTelegramAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramAccountInput
+  upsert?: Prisma.UserUpsertWithoutTelegramAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTelegramAccountInput, Prisma.UserUpdateWithoutTelegramAccountInput>, Prisma.UserUncheckedUpdateWithoutTelegramAccountInput>
+}
+
+export type UserCreateNestedOneWithoutTelegramLinkTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedCreateWithoutTelegramLinkTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramLinkTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTelegramLinkTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedCreateWithoutTelegramLinkTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramLinkTokensInput
+  upsert?: Prisma.UserUpsertWithoutTelegramLinkTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTelegramLinkTokensInput, Prisma.UserUpdateWithoutTelegramLinkTokensInput>, Prisma.UserUncheckedUpdateWithoutTelegramLinkTokensInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
@@ -762,6 +1089,21 @@ export type UserCreateWithoutAccountsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -788,6 +1130,21 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -830,6 +1187,21 @@ export type UserUpdateWithoutAccountsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -856,6 +1228,21 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -882,6 +1269,21 @@ export type UserCreateWithoutSessionsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -908,6 +1310,21 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -950,6 +1367,21 @@ export type UserUpdateWithoutSessionsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -976,6 +1408,21 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfileInput = {
@@ -1002,6 +1449,21 @@ export type UserCreateWithoutProfileInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -1028,6 +1490,21 @@ export type UserUncheckedCreateWithoutProfileInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -1070,6 +1547,21 @@ export type UserUpdateWithoutProfileInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -1096,6 +1588,21 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRolesInput = {
@@ -1122,6 +1629,21 @@ export type UserCreateWithoutRolesInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -1148,6 +1670,21 @@ export type UserUncheckedCreateWithoutRolesInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -1190,6 +1727,21 @@ export type UserUpdateWithoutRolesInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -1216,6 +1768,21 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -1242,6 +1809,21 @@ export type UserCreateWithoutAuditLogsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -1268,6 +1850,21 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1310,6 +1907,21 @@ export type UserUpdateWithoutAuditLogsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1336,6 +1948,21 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStorageObjectsInput = {
@@ -1362,6 +1989,21 @@ export type UserCreateWithoutStorageObjectsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStorageObjectsInput = {
@@ -1388,6 +2030,21 @@ export type UserUncheckedCreateWithoutStorageObjectsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStorageObjectsInput = {
@@ -1430,6 +2087,21 @@ export type UserUpdateWithoutStorageObjectsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStorageObjectsInput = {
@@ -1456,6 +2128,21 @@ export type UserUncheckedUpdateWithoutStorageObjectsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutItemsInput = {
@@ -1482,6 +2169,21 @@ export type UserCreateWithoutItemsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutItemsInput = {
@@ -1508,6 +2210,21 @@ export type UserUncheckedCreateWithoutItemsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutItemsInput = {
@@ -1550,6 +2267,21 @@ export type UserUpdateWithoutItemsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemsInput = {
@@ -1576,6 +2308,21 @@ export type UserUncheckedUpdateWithoutItemsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutItemStatusLogsActedInput = {
@@ -1602,6 +2349,21 @@ export type UserCreateWithoutItemStatusLogsActedInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutItemStatusLogsActedInput = {
@@ -1628,6 +2390,21 @@ export type UserUncheckedCreateWithoutItemStatusLogsActedInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutItemStatusLogsActedInput = {
@@ -1670,6 +2447,21 @@ export type UserUpdateWithoutItemStatusLogsActedInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemStatusLogsActedInput = {
@@ -1696,6 +2488,21 @@ export type UserUncheckedUpdateWithoutItemStatusLogsActedInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutClaimCommentsInput = {
@@ -1722,6 +2529,21 @@ export type UserCreateWithoutClaimCommentsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutClaimCommentsInput = {
@@ -1748,6 +2570,21 @@ export type UserUncheckedCreateWithoutClaimCommentsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutClaimCommentsInput = {
@@ -1790,6 +2627,21 @@ export type UserUpdateWithoutClaimCommentsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClaimCommentsInput = {
@@ -1816,6 +2668,21 @@ export type UserUncheckedUpdateWithoutClaimCommentsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDirectSharesReceivedInput = {
@@ -1842,6 +2709,21 @@ export type UserCreateWithoutDirectSharesReceivedInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDirectSharesReceivedInput = {
@@ -1868,6 +2750,21 @@ export type UserUncheckedCreateWithoutDirectSharesReceivedInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDirectSharesReceivedInput = {
@@ -1910,6 +2807,21 @@ export type UserUpdateWithoutDirectSharesReceivedInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDirectSharesReceivedInput = {
@@ -1936,6 +2848,21 @@ export type UserUncheckedUpdateWithoutDirectSharesReceivedInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutHandoverRecordsInput = {
@@ -1962,6 +2889,21 @@ export type UserCreateWithoutHandoverRecordsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutHandoverRecordsInput = {
@@ -1988,6 +2930,21 @@ export type UserUncheckedCreateWithoutHandoverRecordsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutHandoverRecordsInput = {
@@ -2030,6 +2987,21 @@ export type UserUpdateWithoutHandoverRecordsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHandoverRecordsInput = {
@@ -2056,6 +3028,21 @@ export type UserUncheckedUpdateWithoutHandoverRecordsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutThanksSentInput = {
@@ -2082,6 +3069,21 @@ export type UserCreateWithoutThanksSentInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutThanksSentInput = {
@@ -2108,6 +3110,21 @@ export type UserUncheckedCreateWithoutThanksSentInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutThanksSentInput = {
@@ -2139,6 +3156,21 @@ export type UserCreateWithoutThanksReceivedInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutThanksReceivedInput = {
@@ -2165,6 +3197,21 @@ export type UserUncheckedCreateWithoutThanksReceivedInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutThanksReceivedInput = {
@@ -2207,6 +3254,21 @@ export type UserUpdateWithoutThanksSentInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutThanksSentInput = {
@@ -2233,6 +3295,21 @@ export type UserUncheckedUpdateWithoutThanksSentInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutThanksReceivedInput = {
@@ -2270,6 +3347,21 @@ export type UserUpdateWithoutThanksReceivedInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutThanksReceivedInput = {
@@ -2296,6 +3388,21 @@ export type UserUncheckedUpdateWithoutThanksReceivedInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutContributionEventsInput = {
@@ -2322,6 +3429,21 @@ export type UserCreateWithoutContributionEventsInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutContributionEventsInput = {
@@ -2348,6 +3470,21 @@ export type UserUncheckedCreateWithoutContributionEventsInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutContributionEventsInput = {
@@ -2390,6 +3527,21 @@ export type UserUpdateWithoutContributionEventsInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContributionEventsInput = {
@@ -2416,6 +3568,21 @@ export type UserUncheckedUpdateWithoutContributionEventsInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2442,6 +3609,21 @@ export type UserCreateWithoutNotificationsInput = {
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2468,6 +3650,21 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2510,6 +3707,21 @@ export type UserUpdateWithoutNotificationsInput = {
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2536,6 +3748,21 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationMembershipsInput = {
@@ -2562,6 +3789,21 @@ export type UserCreateWithoutConversationMembershipsInput = {
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationMembershipsInput = {
@@ -2588,6 +3830,21 @@ export type UserUncheckedCreateWithoutConversationMembershipsInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationMembershipsInput = {
@@ -2630,6 +3887,21 @@ export type UserUpdateWithoutConversationMembershipsInput = {
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationMembershipsInput = {
@@ -2656,6 +3928,21 @@ export type UserUncheckedUpdateWithoutConversationMembershipsInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessagesSentInput = {
@@ -2682,6 +3969,21 @@ export type UserCreateWithoutMessagesSentInput = {
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesSentInput = {
@@ -2708,6 +4010,21 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesSentInput = {
@@ -2750,6 +4067,21 @@ export type UserUpdateWithoutMessagesSentInput = {
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesSentInput = {
@@ -2776,6 +4108,2721 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutReportsSubmittedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutReportsSubmittedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutReportsSubmittedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsSubmittedInput, Prisma.UserUncheckedCreateWithoutReportsSubmittedInput>
+}
+
+export type UserCreateWithoutReportsHandledInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutReportsHandledInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutReportsHandledInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+}
+
+export type UserUpsertWithoutReportsSubmittedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsSubmittedInput, Prisma.UserUncheckedUpdateWithoutReportsSubmittedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsSubmittedInput, Prisma.UserUncheckedCreateWithoutReportsSubmittedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsSubmittedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsSubmittedInput, Prisma.UserUncheckedUpdateWithoutReportsSubmittedInput>
+}
+
+export type UserUpdateWithoutReportsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutReportsHandledInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsHandledInput, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsHandledInput, Prisma.UserUncheckedCreateWithoutReportsHandledInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsHandledInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsHandledInput, Prisma.UserUncheckedUpdateWithoutReportsHandledInput>
+}
+
+export type UserUpdateWithoutReportsHandledInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsHandledInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRestrictionsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRestrictionsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRestrictionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsInput, Prisma.UserUncheckedCreateWithoutRestrictionsInput>
+}
+
+export type UserCreateWithoutRestrictionsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRestrictionsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRestrictionsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedCreateWithoutRestrictionsCreatedInput>
+}
+
+export type UserCreateWithoutRestrictionsLiftedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRestrictionsLiftedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRestrictionsLiftedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedCreateWithoutRestrictionsLiftedInput>
+}
+
+export type UserUpsertWithoutRestrictionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsInput, Prisma.UserUncheckedUpdateWithoutRestrictionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsInput, Prisma.UserUncheckedCreateWithoutRestrictionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRestrictionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsInput, Prisma.UserUncheckedUpdateWithoutRestrictionsInput>
+}
+
+export type UserUpdateWithoutRestrictionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRestrictionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutRestrictionsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedUpdateWithoutRestrictionsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedCreateWithoutRestrictionsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRestrictionsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsCreatedInput, Prisma.UserUncheckedUpdateWithoutRestrictionsCreatedInput>
+}
+
+export type UserUpdateWithoutRestrictionsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRestrictionsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutRestrictionsLiftedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedUpdateWithoutRestrictionsLiftedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedCreateWithoutRestrictionsLiftedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRestrictionsLiftedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRestrictionsLiftedInput, Prisma.UserUncheckedUpdateWithoutRestrictionsLiftedInput>
+}
+
+export type UserUpdateWithoutRestrictionsLiftedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRestrictionsLiftedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutItemRemovalsActedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutItemRemovalsActedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutItemRemovalsActedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemRemovalsActedInput, Prisma.UserUncheckedCreateWithoutItemRemovalsActedInput>
+}
+
+export type UserUpsertWithoutItemRemovalsActedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutItemRemovalsActedInput, Prisma.UserUncheckedUpdateWithoutItemRemovalsActedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutItemRemovalsActedInput, Prisma.UserUncheckedCreateWithoutItemRemovalsActedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutItemRemovalsActedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutItemRemovalsActedInput, Prisma.UserUncheckedUpdateWithoutItemRemovalsActedInput>
+}
+
+export type UserUpdateWithoutItemRemovalsActedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutItemRemovalsActedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSupportTicketsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSupportTicketsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSupportTicketsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsInput, Prisma.UserUncheckedCreateWithoutSupportTicketsInput>
+}
+
+export type UserCreateWithoutSupportTicketsAssignedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSupportTicketsAssignedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSupportTicketsAssignedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedCreateWithoutSupportTicketsAssignedInput>
+}
+
+export type UserUpsertWithoutSupportTicketsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketsInput, Prisma.UserUncheckedUpdateWithoutSupportTicketsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsInput, Prisma.UserUncheckedCreateWithoutSupportTicketsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSupportTicketsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketsInput, Prisma.UserUncheckedUpdateWithoutSupportTicketsInput>
+}
+
+export type UserUpdateWithoutSupportTicketsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSupportTicketsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutSupportTicketsAssignedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedUpdateWithoutSupportTicketsAssignedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedCreateWithoutSupportTicketsAssignedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSupportTicketsAssignedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketsAssignedInput, Prisma.UserUncheckedUpdateWithoutSupportTicketsAssignedInput>
+}
+
+export type UserUpdateWithoutSupportTicketsAssignedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSupportTicketsAssignedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSupportTicketEventsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSupportTicketEventsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSupportTicketEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketEventsInput, Prisma.UserUncheckedCreateWithoutSupportTicketEventsInput>
+}
+
+export type UserUpsertWithoutSupportTicketEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketEventsInput, Prisma.UserUncheckedUpdateWithoutSupportTicketEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketEventsInput, Prisma.UserUncheckedCreateWithoutSupportTicketEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSupportTicketEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSupportTicketEventsInput, Prisma.UserUncheckedUpdateWithoutSupportTicketEventsInput>
+}
+
+export type UserUpdateWithoutSupportTicketEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSupportTicketEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAppealsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAppealsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAppealsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppealsInput, Prisma.UserUncheckedCreateWithoutAppealsInput>
+}
+
+export type UserCreateWithoutAppealsReviewedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAppealsReviewedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAppealsReviewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppealsReviewedInput, Prisma.UserUncheckedCreateWithoutAppealsReviewedInput>
+}
+
+export type UserUpsertWithoutAppealsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAppealsInput, Prisma.UserUncheckedUpdateWithoutAppealsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppealsInput, Prisma.UserUncheckedCreateWithoutAppealsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAppealsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAppealsInput, Prisma.UserUncheckedUpdateWithoutAppealsInput>
+}
+
+export type UserUpdateWithoutAppealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAppealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutAppealsReviewedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAppealsReviewedInput, Prisma.UserUncheckedUpdateWithoutAppealsReviewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAppealsReviewedInput, Prisma.UserUncheckedCreateWithoutAppealsReviewedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAppealsReviewedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAppealsReviewedInput, Prisma.UserUncheckedUpdateWithoutAppealsReviewedInput>
+}
+
+export type UserUpdateWithoutAppealsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAppealsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCouponRevealLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCouponRevealLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCouponRevealLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouponRevealLogsInput, Prisma.UserUncheckedCreateWithoutCouponRevealLogsInput>
+}
+
+export type UserUpsertWithoutCouponRevealLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCouponRevealLogsInput, Prisma.UserUncheckedUpdateWithoutCouponRevealLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCouponRevealLogsInput, Prisma.UserUncheckedCreateWithoutCouponRevealLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCouponRevealLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCouponRevealLogsInput, Prisma.UserUncheckedUpdateWithoutCouponRevealLogsInput>
+}
+
+export type UserUpdateWithoutCouponRevealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCouponRevealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationPreferencesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationPreferencesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationPreferencesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferencesInput, Prisma.UserUncheckedCreateWithoutNotificationPreferencesInput>
+}
+
+export type UserUpsertWithoutNotificationPreferencesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationPreferencesInput, Prisma.UserUncheckedUpdateWithoutNotificationPreferencesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationPreferencesInput, Prisma.UserUncheckedCreateWithoutNotificationPreferencesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationPreferencesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationPreferencesInput, Prisma.UserUncheckedUpdateWithoutNotificationPreferencesInput>
+}
+
+export type UserUpdateWithoutNotificationPreferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationPreferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTelegramAccountInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTelegramAccountInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTelegramAccountInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTelegramAccountInput, Prisma.UserUncheckedCreateWithoutTelegramAccountInput>
+}
+
+export type UserUpsertWithoutTelegramAccountInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTelegramAccountInput, Prisma.UserUncheckedUpdateWithoutTelegramAccountInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTelegramAccountInput, Prisma.UserUncheckedCreateWithoutTelegramAccountInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTelegramAccountInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTelegramAccountInput, Prisma.UserUncheckedUpdateWithoutTelegramAccountInput>
+}
+
+export type UserUpdateWithoutTelegramAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTelegramAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramLinkTokens?: Prisma.TelegramLinkTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTelegramLinkTokensInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTelegramLinkTokensInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  storageObjects?: Prisma.StorageObjectUncheckedCreateNestedManyWithoutUploaderInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutOwnerInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutActorInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutUserInput
+  directSharesReceived?: Prisma.DirectShareUncheckedCreateNestedManyWithoutReceiverInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedCreateNestedManyWithoutReceiverInput
+  thanksSent?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutFromUserInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutToUserInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsHandled?: Prisma.ReportUncheckedCreateNestedManyWithoutHandlerInput
+  restrictions?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutUserInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutCreatedByUserInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedCreateNestedManyWithoutLiftedByUserInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutModeratorInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssigneeInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedCreateNestedManyWithoutActorInput
+  appeals?: Prisma.AppealUncheckedCreateNestedManyWithoutUserInput
+  appealsReviewed?: Prisma.AppealUncheckedCreateNestedManyWithoutReviewerInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedCreateNestedManyWithoutUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutUserInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTelegramLinkTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedCreateWithoutTelegramLinkTokensInput>
+}
+
+export type UserUpsertWithoutTelegramLinkTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedUpdateWithoutTelegramLinkTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedCreateWithoutTelegramLinkTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTelegramLinkTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTelegramLinkTokensInput, Prisma.UserUncheckedUpdateWithoutTelegramLinkTokensInput>
+}
+
+export type UserUpdateWithoutTelegramLinkTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTelegramLinkTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  storageObjects?: Prisma.StorageObjectUncheckedUpdateManyWithoutUploaderNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutOwnerNestedInput
+  itemStatusLogsActed?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutActorNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutUserNestedInput
+  directSharesReceived?: Prisma.DirectShareUncheckedUpdateManyWithoutReceiverNestedInput
+  handoverRecords?: Prisma.HandoverRecordUncheckedUpdateManyWithoutReceiverNestedInput
+  thanksSent?: Prisma.ThanksMessageUncheckedUpdateManyWithoutFromUserNestedInput
+  thanksReceived?: Prisma.ThanksMessageUncheckedUpdateManyWithoutToUserNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  conversationMemberships?: Prisma.ConversationMemberUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsHandled?: Prisma.ReportUncheckedUpdateManyWithoutHandlerNestedInput
+  restrictions?: Prisma.UserRestrictionUncheckedUpdateManyWithoutUserNestedInput
+  restrictionsCreated?: Prisma.UserRestrictionUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  restrictionsLifted?: Prisma.UserRestrictionUncheckedUpdateManyWithoutLiftedByUserNestedInput
+  itemRemovalsActed?: Prisma.ItemRemovalUncheckedUpdateManyWithoutModeratorNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportTicketsAssigned?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssigneeNestedInput
+  supportTicketEvents?: Prisma.SupportTicketEventUncheckedUpdateManyWithoutActorNestedInput
+  appeals?: Prisma.AppealUncheckedUpdateManyWithoutUserNestedInput
+  appealsReviewed?: Prisma.AppealUncheckedUpdateManyWithoutReviewerNestedInput
+  couponRevealLogs?: Prisma.CouponRevealLogUncheckedUpdateManyWithoutUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  telegramAccount?: Prisma.TelegramAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -2800,6 +6847,20 @@ export type UserCountOutputType = {
   notifications: number
   conversationMemberships: number
   messagesSent: number
+  reportsSubmitted: number
+  reportsHandled: number
+  restrictions: number
+  restrictionsCreated: number
+  restrictionsLifted: number
+  itemRemovalsActed: number
+  supportTickets: number
+  supportTicketsAssigned: number
+  supportTicketEvents: number
+  appeals: number
+  appealsReviewed: number
+  couponRevealLogs: number
+  notificationPreferences: number
+  telegramLinkTokens: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2819,6 +6880,20 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   conversationMemberships?: boolean | UserCountOutputTypeCountConversationMembershipsArgs
   messagesSent?: boolean | UserCountOutputTypeCountMessagesSentArgs
+  reportsSubmitted?: boolean | UserCountOutputTypeCountReportsSubmittedArgs
+  reportsHandled?: boolean | UserCountOutputTypeCountReportsHandledArgs
+  restrictions?: boolean | UserCountOutputTypeCountRestrictionsArgs
+  restrictionsCreated?: boolean | UserCountOutputTypeCountRestrictionsCreatedArgs
+  restrictionsLifted?: boolean | UserCountOutputTypeCountRestrictionsLiftedArgs
+  itemRemovalsActed?: boolean | UserCountOutputTypeCountItemRemovalsActedArgs
+  supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs
+  supportTicketsAssigned?: boolean | UserCountOutputTypeCountSupportTicketsAssignedArgs
+  supportTicketEvents?: boolean | UserCountOutputTypeCountSupportTicketEventsArgs
+  appeals?: boolean | UserCountOutputTypeCountAppealsArgs
+  appealsReviewed?: boolean | UserCountOutputTypeCountAppealsReviewedArgs
+  couponRevealLogs?: boolean | UserCountOutputTypeCountCouponRevealLogsArgs
+  notificationPreferences?: boolean | UserCountOutputTypeCountNotificationPreferencesArgs
+  telegramLinkTokens?: boolean | UserCountOutputTypeCountTelegramLinkTokensArgs
 }
 
 /**
@@ -2943,6 +7018,104 @@ export type UserCountOutputTypeCountMessagesSentArgs<ExtArgs extends runtime.Typ
   where?: Prisma.MessageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsHandledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRestrictionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserRestrictionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRestrictionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserRestrictionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRestrictionsLiftedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserRestrictionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountItemRemovalsActedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemRemovalWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSupportTicketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupportTicketWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSupportTicketsAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupportTicketWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSupportTicketEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SupportTicketEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAppealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAppealsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppealWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCouponRevealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CouponRevealLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationPreferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationPreferenceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTelegramLinkTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TelegramLinkTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2969,6 +7142,21 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   conversationMemberships?: boolean | Prisma.User$conversationMembershipsArgs<ExtArgs>
   messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
+  reportsSubmitted?: boolean | Prisma.User$reportsSubmittedArgs<ExtArgs>
+  reportsHandled?: boolean | Prisma.User$reportsHandledArgs<ExtArgs>
+  restrictions?: boolean | Prisma.User$restrictionsArgs<ExtArgs>
+  restrictionsCreated?: boolean | Prisma.User$restrictionsCreatedArgs<ExtArgs>
+  restrictionsLifted?: boolean | Prisma.User$restrictionsLiftedArgs<ExtArgs>
+  itemRemovalsActed?: boolean | Prisma.User$itemRemovalsActedArgs<ExtArgs>
+  supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
+  supportTicketsAssigned?: boolean | Prisma.User$supportTicketsAssignedArgs<ExtArgs>
+  supportTicketEvents?: boolean | Prisma.User$supportTicketEventsArgs<ExtArgs>
+  appeals?: boolean | Prisma.User$appealsArgs<ExtArgs>
+  appealsReviewed?: boolean | Prisma.User$appealsReviewedArgs<ExtArgs>
+  couponRevealLogs?: boolean | Prisma.User$couponRevealLogsArgs<ExtArgs>
+  notificationPreferences?: boolean | Prisma.User$notificationPreferencesArgs<ExtArgs>
+  telegramAccount?: boolean | Prisma.User$telegramAccountArgs<ExtArgs>
+  telegramLinkTokens?: boolean | Prisma.User$telegramLinkTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3021,6 +7209,21 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   conversationMemberships?: boolean | Prisma.User$conversationMembershipsArgs<ExtArgs>
   messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
+  reportsSubmitted?: boolean | Prisma.User$reportsSubmittedArgs<ExtArgs>
+  reportsHandled?: boolean | Prisma.User$reportsHandledArgs<ExtArgs>
+  restrictions?: boolean | Prisma.User$restrictionsArgs<ExtArgs>
+  restrictionsCreated?: boolean | Prisma.User$restrictionsCreatedArgs<ExtArgs>
+  restrictionsLifted?: boolean | Prisma.User$restrictionsLiftedArgs<ExtArgs>
+  itemRemovalsActed?: boolean | Prisma.User$itemRemovalsActedArgs<ExtArgs>
+  supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
+  supportTicketsAssigned?: boolean | Prisma.User$supportTicketsAssignedArgs<ExtArgs>
+  supportTicketEvents?: boolean | Prisma.User$supportTicketEventsArgs<ExtArgs>
+  appeals?: boolean | Prisma.User$appealsArgs<ExtArgs>
+  appealsReviewed?: boolean | Prisma.User$appealsReviewedArgs<ExtArgs>
+  couponRevealLogs?: boolean | Prisma.User$couponRevealLogsArgs<ExtArgs>
+  notificationPreferences?: boolean | Prisma.User$notificationPreferencesArgs<ExtArgs>
+  telegramAccount?: boolean | Prisma.User$telegramAccountArgs<ExtArgs>
+  telegramLinkTokens?: boolean | Prisma.User$telegramLinkTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3046,6 +7249,21 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     conversationMemberships: Prisma.$ConversationMemberPayload<ExtArgs>[]
     messagesSent: Prisma.$MessagePayload<ExtArgs>[]
+    reportsSubmitted: Prisma.$ReportPayload<ExtArgs>[]
+    reportsHandled: Prisma.$ReportPayload<ExtArgs>[]
+    restrictions: Prisma.$UserRestrictionPayload<ExtArgs>[]
+    restrictionsCreated: Prisma.$UserRestrictionPayload<ExtArgs>[]
+    restrictionsLifted: Prisma.$UserRestrictionPayload<ExtArgs>[]
+    itemRemovalsActed: Prisma.$ItemRemovalPayload<ExtArgs>[]
+    supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
+    supportTicketsAssigned: Prisma.$SupportTicketPayload<ExtArgs>[]
+    supportTicketEvents: Prisma.$SupportTicketEventPayload<ExtArgs>[]
+    appeals: Prisma.$AppealPayload<ExtArgs>[]
+    appealsReviewed: Prisma.$AppealPayload<ExtArgs>[]
+    couponRevealLogs: Prisma.$CouponRevealLogPayload<ExtArgs>[]
+    notificationPreferences: Prisma.$NotificationPreferencePayload<ExtArgs>[]
+    telegramAccount: Prisma.$TelegramAccountPayload<ExtArgs> | null
+    telegramLinkTokens: Prisma.$TelegramLinkTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3466,6 +7684,21 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversationMemberships<T extends Prisma.User$conversationMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messagesSent<T extends Prisma.User$messagesSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsSubmitted<T extends Prisma.User$reportsSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsHandled<T extends Prisma.User$reportsHandledArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsHandledArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  restrictions<T extends Prisma.User$restrictionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$restrictionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRestrictionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  restrictionsCreated<T extends Prisma.User$restrictionsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$restrictionsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRestrictionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  restrictionsLifted<T extends Prisma.User$restrictionsLiftedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$restrictionsLiftedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRestrictionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  itemRemovalsActed<T extends Prisma.User$itemRemovalsActedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$itemRemovalsActedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemRemovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supportTicketsAssigned<T extends Prisma.User$supportTicketsAssignedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  supportTicketEvents<T extends Prisma.User$supportTicketEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appeals<T extends Prisma.User$appealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$appealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appealsReviewed<T extends Prisma.User$appealsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$appealsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  couponRevealLogs<T extends Prisma.User$couponRevealLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$couponRevealLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CouponRevealLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notificationPreferences<T extends Prisma.User$notificationPreferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  telegramAccount<T extends Prisma.User$telegramAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$telegramAccountArgs<ExtArgs>>): Prisma.Prisma__TelegramAccountClient<runtime.Types.Result.GetResult<Prisma.$TelegramAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  telegramLinkTokens<T extends Prisma.User$telegramLinkTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$telegramLinkTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TelegramLinkTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4295,6 +8528,361 @@ export type User$messagesSentArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * User.reportsSubmitted
+ */
+export type User$reportsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
+}
+
+/**
+ * User.reportsHandled
+ */
+export type User$reportsHandledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
+}
+
+/**
+ * User.restrictions
+ */
+export type User$restrictionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserRestriction
+   */
+  select?: Prisma.UserRestrictionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserRestriction
+   */
+  omit?: Prisma.UserRestrictionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRestrictionInclude<ExtArgs> | null
+  where?: Prisma.UserRestrictionWhereInput
+  orderBy?: Prisma.UserRestrictionOrderByWithRelationInput | Prisma.UserRestrictionOrderByWithRelationInput[]
+  cursor?: Prisma.UserRestrictionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserRestrictionScalarFieldEnum | Prisma.UserRestrictionScalarFieldEnum[]
+}
+
+/**
+ * User.restrictionsCreated
+ */
+export type User$restrictionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserRestriction
+   */
+  select?: Prisma.UserRestrictionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserRestriction
+   */
+  omit?: Prisma.UserRestrictionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRestrictionInclude<ExtArgs> | null
+  where?: Prisma.UserRestrictionWhereInput
+  orderBy?: Prisma.UserRestrictionOrderByWithRelationInput | Prisma.UserRestrictionOrderByWithRelationInput[]
+  cursor?: Prisma.UserRestrictionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserRestrictionScalarFieldEnum | Prisma.UserRestrictionScalarFieldEnum[]
+}
+
+/**
+ * User.restrictionsLifted
+ */
+export type User$restrictionsLiftedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserRestriction
+   */
+  select?: Prisma.UserRestrictionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserRestriction
+   */
+  omit?: Prisma.UserRestrictionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRestrictionInclude<ExtArgs> | null
+  where?: Prisma.UserRestrictionWhereInput
+  orderBy?: Prisma.UserRestrictionOrderByWithRelationInput | Prisma.UserRestrictionOrderByWithRelationInput[]
+  cursor?: Prisma.UserRestrictionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserRestrictionScalarFieldEnum | Prisma.UserRestrictionScalarFieldEnum[]
+}
+
+/**
+ * User.itemRemovalsActed
+ */
+export type User$itemRemovalsActedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemRemoval
+   */
+  select?: Prisma.ItemRemovalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemRemoval
+   */
+  omit?: Prisma.ItemRemovalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemRemovalInclude<ExtArgs> | null
+  where?: Prisma.ItemRemovalWhereInput
+  orderBy?: Prisma.ItemRemovalOrderByWithRelationInput | Prisma.ItemRemovalOrderByWithRelationInput[]
+  cursor?: Prisma.ItemRemovalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemRemovalScalarFieldEnum | Prisma.ItemRemovalScalarFieldEnum[]
+}
+
+/**
+ * User.supportTickets
+ */
+export type User$supportTicketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupportTicket
+   */
+  select?: Prisma.SupportTicketSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupportTicket
+   */
+  omit?: Prisma.SupportTicketOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupportTicketInclude<ExtArgs> | null
+  where?: Prisma.SupportTicketWhereInput
+  orderBy?: Prisma.SupportTicketOrderByWithRelationInput | Prisma.SupportTicketOrderByWithRelationInput[]
+  cursor?: Prisma.SupportTicketWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupportTicketScalarFieldEnum | Prisma.SupportTicketScalarFieldEnum[]
+}
+
+/**
+ * User.supportTicketsAssigned
+ */
+export type User$supportTicketsAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupportTicket
+   */
+  select?: Prisma.SupportTicketSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupportTicket
+   */
+  omit?: Prisma.SupportTicketOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupportTicketInclude<ExtArgs> | null
+  where?: Prisma.SupportTicketWhereInput
+  orderBy?: Prisma.SupportTicketOrderByWithRelationInput | Prisma.SupportTicketOrderByWithRelationInput[]
+  cursor?: Prisma.SupportTicketWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupportTicketScalarFieldEnum | Prisma.SupportTicketScalarFieldEnum[]
+}
+
+/**
+ * User.supportTicketEvents
+ */
+export type User$supportTicketEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SupportTicketEvent
+   */
+  select?: Prisma.SupportTicketEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SupportTicketEvent
+   */
+  omit?: Prisma.SupportTicketEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SupportTicketEventInclude<ExtArgs> | null
+  where?: Prisma.SupportTicketEventWhereInput
+  orderBy?: Prisma.SupportTicketEventOrderByWithRelationInput | Prisma.SupportTicketEventOrderByWithRelationInput[]
+  cursor?: Prisma.SupportTicketEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SupportTicketEventScalarFieldEnum | Prisma.SupportTicketEventScalarFieldEnum[]
+}
+
+/**
+ * User.appeals
+ */
+export type User$appealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appeal
+   */
+  select?: Prisma.AppealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appeal
+   */
+  omit?: Prisma.AppealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealInclude<ExtArgs> | null
+  where?: Prisma.AppealWhereInput
+  orderBy?: Prisma.AppealOrderByWithRelationInput | Prisma.AppealOrderByWithRelationInput[]
+  cursor?: Prisma.AppealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealScalarFieldEnum | Prisma.AppealScalarFieldEnum[]
+}
+
+/**
+ * User.appealsReviewed
+ */
+export type User$appealsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appeal
+   */
+  select?: Prisma.AppealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appeal
+   */
+  omit?: Prisma.AppealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppealInclude<ExtArgs> | null
+  where?: Prisma.AppealWhereInput
+  orderBy?: Prisma.AppealOrderByWithRelationInput | Prisma.AppealOrderByWithRelationInput[]
+  cursor?: Prisma.AppealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppealScalarFieldEnum | Prisma.AppealScalarFieldEnum[]
+}
+
+/**
+ * User.couponRevealLogs
+ */
+export type User$couponRevealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CouponRevealLog
+   */
+  select?: Prisma.CouponRevealLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CouponRevealLog
+   */
+  omit?: Prisma.CouponRevealLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CouponRevealLogInclude<ExtArgs> | null
+  where?: Prisma.CouponRevealLogWhereInput
+  orderBy?: Prisma.CouponRevealLogOrderByWithRelationInput | Prisma.CouponRevealLogOrderByWithRelationInput[]
+  cursor?: Prisma.CouponRevealLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CouponRevealLogScalarFieldEnum | Prisma.CouponRevealLogScalarFieldEnum[]
+}
+
+/**
+ * User.notificationPreferences
+ */
+export type User$notificationPreferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NotificationPreference
+   */
+  select?: Prisma.NotificationPreferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NotificationPreference
+   */
+  omit?: Prisma.NotificationPreferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationPreferenceInclude<ExtArgs> | null
+  where?: Prisma.NotificationPreferenceWhereInput
+  orderBy?: Prisma.NotificationPreferenceOrderByWithRelationInput | Prisma.NotificationPreferenceOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationPreferenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationPreferenceScalarFieldEnum | Prisma.NotificationPreferenceScalarFieldEnum[]
+}
+
+/**
+ * User.telegramAccount
+ */
+export type User$telegramAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TelegramAccount
+   */
+  select?: Prisma.TelegramAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TelegramAccount
+   */
+  omit?: Prisma.TelegramAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TelegramAccountInclude<ExtArgs> | null
+  where?: Prisma.TelegramAccountWhereInput
+}
+
+/**
+ * User.telegramLinkTokens
+ */
+export type User$telegramLinkTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TelegramLinkToken
+   */
+  select?: Prisma.TelegramLinkTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TelegramLinkToken
+   */
+  omit?: Prisma.TelegramLinkTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TelegramLinkTokenInclude<ExtArgs> | null
+  where?: Prisma.TelegramLinkTokenWhereInput
+  orderBy?: Prisma.TelegramLinkTokenOrderByWithRelationInput | Prisma.TelegramLinkTokenOrderByWithRelationInput[]
+  cursor?: Prisma.TelegramLinkTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TelegramLinkTokenScalarFieldEnum | Prisma.TelegramLinkTokenScalarFieldEnum[]
 }
 
 /**
