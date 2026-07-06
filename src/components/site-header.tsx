@@ -39,7 +39,10 @@ export async function SiteHeader({ session, profile }: SiteHeaderProps) {
               >
                 <Bell size={19} strokeWidth={2} aria-hidden="true" />
                 {unreadCount > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold leading-none text-white">
+                  <span
+                    aria-hidden="true"
+                    className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold leading-none text-white"
+                  >
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}

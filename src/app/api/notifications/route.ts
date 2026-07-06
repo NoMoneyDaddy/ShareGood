@@ -28,8 +28,8 @@ export async function GET(req: NextRequest) {
       where: { userId: user.id },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: limit + 1,
-      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
       select: { id: true, type: true, payload: true, readAt: true, createdAt: true },
+      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     }),
     db.notification.count({ where: { userId: user.id, readAt: null } }),
   ]);

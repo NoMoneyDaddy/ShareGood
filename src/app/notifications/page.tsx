@@ -119,11 +119,13 @@ export default async function NotificationsPage({
 
       {nextCursor && (
         <div className="mt-6 flex justify-center">
+          {/* 這是 server component 的整頁換頁（不是 client-side append），文字用「下一頁」
+              精確表達行為；瀏覽器上一頁鍵可以正確返回前一頁的通知列表。 */}
           <Link
             href={`/notifications?cursor=${nextCursor}`}
             className="rounded-lg border border-line bg-card px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-paper-2 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            載入更多
+            下一頁 →
           </Link>
         </div>
       )}
