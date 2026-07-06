@@ -9,6 +9,7 @@ import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
 import { DirectShareSection } from "./direct-share-section";
+import { HandoverSection } from "./handover-section";
 
 async function getItem(id: string) {
   return db.item.findUnique({
@@ -70,6 +71,31 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   const profile = session?.user
     ? await db.profile.findUnique({ where: { userId: session.user.id } })
     : null;
+
+  // 交接區塊需要知道「目前登入者是不是被接受的那個人」；reserved 狀態下接手者資訊在
+  // ClaimComment/DirectShare 裡（handover 還沒建立），handover_pending／completed 狀態下
+  // 則直接查 HandoverRecord（懶建立模式，見 handover/ensure route 的說明）。
+  let isReceiver = false;
+  let handoverId: string | null = null;
+  let conversationId: string | null = null;
+  if (session?.user) {
+    if (item.status === "reserved") {
+      const [acceptedClaim, acceptedDirectShare] = await Promise.all([
+        db.claimComment.findFirst({ where: { itemId: item.id, status: "accepted" } }),
+        db.directShare.findFirst({ where: { itemId: item.id, status: "accepted" } }),
+      ]);
+      const receiverId = acceptedClaim?.userId ?? acceptedDirectShare?.receiverId;
+      isReceiver = receiverId === session.user.id;
+    } else if (item.status === "handover_pending" || item.status === "completed") {
+      const [handover, conversation] = await Promise.all([
+        db.handoverRecord.findUnique({ where: { itemId: item.id } }),
+        db.conversation.findUnique({ where: { itemId: item.id } }),
+      ]);
+      isReceiver = handover?.receiverId === session.user.id;
+      handoverId = handover?.id ?? null;
+      conversationId = conversation?.id ?? null;
+    }
+  }
 
   // SEO/AEO（master-plan §3.7）：物品詳情頁的 Product + Offer 結構化資料。
   const firstImage = item.images[0];
@@ -153,6 +179,14 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           isOwner={session?.user?.id === item.ownerId}
         />
         <ClaimsSection itemId={item.id} itemStatus={item.status} />
+        <HandoverSection
+          itemId={item.id}
+          itemStatus={item.status}
+          isOwner={session?.user?.id === item.ownerId}
+          isReceiver={isReceiver}
+          handoverId={handoverId}
+          conversationId={conversationId}
+        />
       </main>
     </div>
   );

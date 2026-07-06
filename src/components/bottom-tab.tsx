@@ -31,7 +31,13 @@ export function BottomTab() {
           </span>
           <span className="font-semibold text-ink">分享</span>
         </Link>
-        <DisabledTab icon={MessageCircle} label="訊息" />
+        <Link
+          href="/conversations"
+          className="flex flex-col items-center gap-1 py-1 text-ink-soft transition-colors hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <MessageCircle size={20} strokeWidth={2} aria-hidden="true" />
+          訊息
+        </Link>
         <DisabledTab icon={User} label="我的" />
       </div>
     </nav>
