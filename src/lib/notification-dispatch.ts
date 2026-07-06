@@ -204,22 +204,53 @@ async function dispatchTelegram(
   }
 
   const text = formatNotificationText(notification.type, notification.payload);
-  const result = await sendTelegramMessage(account.telegramChatId, text);
 
-  if (result.ok) {
-    await db.notificationDelivery.update({
-      where: { id: deliveryId },
-      data: { status: "sent", attempts: 1, lastAttemptAt: now, sentAt: now, lastError: null },
-    });
-    summary.telegramSent++;
-  } else {
-    // 標記 failed 並留 lastError／attempts=1／lastAttemptAt——M8 的 notification-retry job
-    // 會依指數退避在之後把它撿起來重試（初次發送與重試就此無縫接上）。
-    await db.notificationDelivery.update({
-      where: { id: deliveryId },
-      data: { status: "failed", attempts: 1, lastAttemptAt: now, lastError: result.error },
-    });
-    summary.telegramFailed++;
+  // 發送與狀態更新包在同一個 try/catch：delivery 這時已經是 pending，若發送本身
+  // （sendTelegramMessage 例外，而非它回傳的 {ok:false}）或後續的狀態更新意外拋錯而不攔截，
+  // 這筆 delivery 會永遠卡在 pending——M8 的 notification-retry job 只會撿 status=failed
+  // 的 delivery，pending 永遠不會被重試機制看到。
+  try {
+    const result = await sendTelegramMessage(account.telegramChatId, text);
+
+    if (result.ok) {
+      await db.notificationDelivery.update({
+        where: { id: deliveryId },
+        data: { status: "sent", attempts: 1, lastAttemptAt: now, sentAt: now, lastError: null },
+      });
+      summary.telegramSent++;
+    } else {
+      // 標記 failed 並留 lastError／attempts=1／lastAttemptAt——M8 的 notification-retry job
+      // 會依指數退避在之後把它撿起來重試（初次發送與重試就此無縫接上）。
+      await db.notificationDelivery.update({
+        where: { id: deliveryId },
+        data: { status: "failed", attempts: 1, lastAttemptAt: now, lastError: result.error },
+      });
+      summary.telegramFailed++;
+    }
+  } catch (e) {
+    // 未預期錯誤（網路例外、DB 例外等，不是 sendTelegramMessage 正常回傳的失敗）：盡力把
+    // delivery 標成 failed，讓 M8 重試機制能接手。比照 system-jobs.ts 的既定模式——這個
+    // 「標成 failed」的 update 本身若又失敗（例如 DB 斷線），不能讓它蓋掉或吞掉原始錯誤，
+    // 只用 .catch(console.error) 留痕跡，原始錯誤照樣往外拋給外層
+    // dispatchPendingNotifications 的 per-notification try/catch（記 errors 計數、不中斷
+    // 整個 batch）。
+    db.notificationDelivery
+      .update({
+        where: { id: deliveryId },
+        data: {
+          status: "failed",
+          attempts: 1,
+          lastAttemptAt: now,
+          lastError: e instanceof Error ? e.message : String(e),
+        },
+      })
+      .catch((updateError) => {
+        console.error(
+          `dispatchTelegram: 標記 delivery（id=${deliveryId}）failed 狀態時發生錯誤，原始錯誤仍會照常往外拋`,
+          updateError,
+        );
+      });
+    throw e;
   }
 }
 
@@ -237,6 +268,14 @@ async function dispatchWebPush(
   // 已經有 web_push delivery（例如上一輪 outbox 已送過）就不重複送。outbox 是這些事件
   // web push 的唯一 producer，正常情況下不會有既有紀錄；這個檢查主要防同一則通知在極短
   // 時間內被兩輪 job 併發處理。
+  //
+  // 已知取捨：這個 findUnique 存在性檢查本身不是原子的（check-then-act），兩輪 job 真的
+  // 併發時理論上都會通過檢查、各自呼叫下面的 dispatchWebPushForNotification。但這不會
+  // 造成資料錯亂——dispatchWebPushForNotification 內部用 upsert（by @@unique
+  // ([notificationId, channel])）寫入，第二次呼叫只是把同一筆紀錄 update 一次，不會撞
+  // P2002 也不會產生兩筆紀錄。唯一殘留風險是使用者裝置端可能收到兩次實際的瀏覽器推播，
+  // 屬低風險（而且前提是本來就已知、暫不處理的「job route 可併發多個 running run」情境
+  // 才會發生），故先不修，只留這段紀錄。
   const existing = await db.notificationDelivery.findUnique({
     where: { notificationId_channel: { notificationId: notification.id, channel: "web_push" } },
     select: { id: true },

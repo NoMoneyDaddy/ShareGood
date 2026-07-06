@@ -32,8 +32,18 @@ const IP_HASH_SALT = "sharegood-ip-throttle-v1";
 
 /**
  * 取請求端 IP。Next.js 16 已移除 NextRequest.ip／geo（見官方 next-request 文件，此版本
- * 型別上不存在 .ip），官方建議改讀反向代理帶進來的標頭。Zeabur 在最前面的反向代理會設
- * X-Forwarded-For（逗號分隔，最左邊是原始 client），取最左一跳；退而求其次讀 X-Real-IP。
+ * 型別上不存在 .ip），官方建議改讀反向代理帶進來的標頭。
+ *
+ * X-Forwarded-For 取「最右一跳」而非最左：XFF 是客戶端可自行帶入任意值的請求標頭，最左邊
+ * 的值來源可以是偽造的（客戶端自己塞一個假 XFF 進來，最左跳就是攻擊者想讓你相信的任意
+ * IP，等於繞過整個節流）。在「單層受信代理」假設下（Zeabur 目前架構：客戶端 → Zeabur
+ * 反向代理 → 本服務，只有一層代理），代理只會把自己觀察到的真實來源位址「附加」在既有
+ * XFF 值之後，因此最右一跳必定是代理親眼看到、客戶端無法偽造的真實 client IP。
+ * 兩者皆無或 XFF 為空時退而求其次讀 X-Real-IP（Zeabur 是否會覆寫 X-Real-IP 未查證，故
+ * 僅作次要 fallback，不當首選）。
+ *
+ * 未來若架構加上 CDN 或多層代理（可信任跳數 > 1），這裡的「最右一跳＝真實 IP」假設就會
+ * failed——需改成依設定的可信任代理跳數，從右邊數第 N 個位置取值。
  *
  * 兩者皆無時回傳 null，呼叫端應「跳過節流」而不是把所有無標頭請求塞進同一個共用 bucket：
  * 正式站一律經 Zeabur 反向代理、XFF 必定存在，回 null 只會發生在「未經代理直打 origin」
@@ -42,8 +52,12 @@ const IP_HASH_SALT = "sharegood-ip-throttle-v1";
 export function getClientIp(req: NextRequest): string | null {
   const xff = req.headers.get("x-forwarded-for");
   if (xff) {
-    const first = xff.split(",")[0]?.trim();
-    if (first) return first;
+    const hops = xff
+      .split(",")
+      .map((hop) => hop.trim())
+      .filter((hop) => hop.length > 0);
+    const last = hops.length > 0 ? hops[hops.length - 1] : undefined;
+    if (last) return last;
   }
   const realIp = req.headers.get("x-real-ip")?.trim();
   if (realIp) return realIp;
@@ -63,7 +77,16 @@ const buckets = new Map<string, Bucket>();
 // 這是防「大量不同來源 IP 短時間打進來」把 Map 撐爆的保險。
 const MAX_BUCKETS = 50_000;
 
+// 清掃節流：一旦超過 MAX_BUCKETS，若每個請求都同步遍歷整個 Map 找過期項目，會在高流量時
+// 造成 event loop 阻塞（O(n) 掃描疊加在每個請求路徑上）。改成「每 10 秒最多清一次」：
+// 兩次清掃之間即使持續超過上限也直接略過本次清掃，代價是短暫超出 MAX_BUCKETS（記憶體上界
+// 保護本來就是保守的軟上限，不是硬性配額），換取「清掃頻率與請求量脫鉤」。
+const SWEEP_INTERVAL_MS = 10_000;
+let lastSweepTime = 0;
+
 function sweepExpired(now: number): void {
+  if (now - lastSweepTime < SWEEP_INTERVAL_MS) return;
+  lastSweepTime = now;
   for (const [key, bucket] of buckets) {
     // 用最長的時窗當清理門檻即可（目前各動作時窗相同）。
     if (now - bucket.windowStart >= 60_000) buckets.delete(key);

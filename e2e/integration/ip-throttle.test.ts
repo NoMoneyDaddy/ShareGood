@@ -15,11 +15,12 @@ describe("公開 GET 端點 IP 級節流", () => {
     __resetIpThrottleForTests();
   });
 
-  it("getClientIp：優先取 X-Forwarded-For 最左一跳，其次 X-Real-IP", () => {
+  it("getClientIp：優先取 X-Forwarded-For 最右一跳（單層受信代理實際附加的真實 IP），其次 X-Real-IP", () => {
     const xff = {
       headers: { get: (k: string) => (k === "x-forwarded-for" ? "203.0.113.1, 10.0.0.1" : null) },
     };
-    expect(getClientIp(xff as never)).toBe("203.0.113.1");
+    // 最右一跳 10.0.0.1 是（單層）受信代理實際觀察到的來源，才是不可偽造的真實 client IP。
+    expect(getClientIp(xff as never)).toBe("10.0.0.1");
 
     const realIp = {
       headers: { get: (k: string) => (k === "x-real-ip" ? "198.51.100.9" : null) },
@@ -28,6 +29,18 @@ describe("公開 GET 端點 IP 級節流", () => {
 
     const none = { headers: { get: () => null } };
     expect(getClientIp(none as never)).toBeNull();
+  });
+
+  it("getClientIp：客戶端偽造左側值時仍取最右真實 IP", () => {
+    // 客戶端自己在請求裡塞入的 X-Forwarded-For 值會被代理「附加」在後面，不會覆蓋掉。
+    // 攻擊者能控制的只有最左邊（自己塞的假值），代理附加的最右一跳才是無法偽造的真實來源。
+    const spoofed = {
+      headers: {
+        get: (k: string) => (k === "x-forwarded-for" ? "1.2.3.4, 9.9.9.9, 203.0.113.200" : null),
+      },
+    };
+    expect(getClientIp(spoofed as never)).toBe("203.0.113.200");
+    expect(getClientIp(spoofed as never)).not.toBe("1.2.3.4");
   });
 
   it("checkIpThrottle：時窗內未超限不丟，超過上限丟 IpThrottleExceededError", () => {
