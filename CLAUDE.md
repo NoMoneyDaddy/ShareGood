@@ -50,8 +50,9 @@
           `items_status_city_id_category_id_created_at_idx`（Index Scan，非 Seq Scan）；
           `npx biome check .`／`npx tsc --noEmit`／`NODE_ENV=production npx next build`
           全過。
-- [ ] M2 治理底線：範圍見 master-plan.md §7，跟 M1 一樣分段 commit／push。
-    - [x] 檢舉（PR：feat/m2-reports）：對物品/留言/私訊三選一檢舉＋最多 3 張證據圖片，
+- [ ] M2 治理底線：範圍見 master-plan.md §7，跟 M1 一樣分段 commit／push。7 個交付內容中
+      6 個已完成，只剩「Admin 後台最小集 `/admin`」（依賴以下全部資料，故意留到最後）。
+    - [x] 檢舉（PR #28）：對物品/留言/私訊三選一檢舉＋最多 3 張證據圖片，
           狀態機 `submitted→triaged→in_progress→resolved/rejected→closed`（跳過中間態或逆向
           轉換一律 409，resolved/rejected 結案必填處理備註）；`POST/GET /api/reports`、
           `PATCH /api/reports/[id]`（moderator/admin）、`POST /api/reports/attachments`
@@ -62,10 +63,48 @@
           `?scope=all` 限 moderator/admin。前端接上物品詳情頁（檢舉物品）、留言列表
           （檢舉他人留言，`claims-section.tsx` 順手把 `GET .../claims` 回應加了
           `userId` 欄位方便前端判斷是不是自己的留言）、私訊對話串（檢舉他人訊息）
-          共用的 `src/components/report-button.tsx`。已知範圍外：moderator 後台的檢舉
-          審核佇列 UI 留給 M2 任務 7「後台最小集」那一波再做，這波只做前台送出＋API 處理端。
-          （另外 main 上已有其他 wave 併入的強制下架 `PATCH /api/items/[id]/force-remove`
-          與 M4 通知偏好設定，不屬於本次 PR 範圍，未在此列出細節。）
+          共用的 `src/components/report-button.tsx`。
+    - [x] 強制下架（PR #24）：`PATCH /api/items/[id]/force-remove`（moderator/admin，必填原因，
+          寫 `ItemRemoval`／`ItemStatusLog`／`AuditLog`，通知物主）、`GET /api/items/[id]/removal`
+          （查詢下架紀錄，僅物主與 moderator/admin 可見，其他人 404）。
+    - [x] 功能限制（PR #29）：對使用者禁上架/禁留言/禁私訊（可設期限）、封鎖（全站唯讀，
+          擋所有 mutation API）；`checkUserRestriction`／`checkFullBlock` 疊加進既有
+          上架/留言/私訊/直贈/交接/感謝/通知偏好/上傳等全部 mutation 端點；
+          `POST/DELETE /api/admin/user-restrictions[...]`（moderator/admin 管理，RBAC 邊界、
+          audit log、同一使用者同類型限制不能重複建立——用 Postgres advisory lock 擋併發
+          建立的競態）。
+    - [x] 使用者回報 support tickets（PR #35）：`/support`（前台送出，bug/帳號問題/其他，
+          附最多 3 張截圖）、`/support/[id]`（本人與 moderator/admin 共用，含留言與狀態機）、
+          `/admin/support-tickets`（後台列表，依狀態/認領情形篩選）、
+          `POST/GET/PATCH /api/support-tickets[...]`。
+    - [x] 申訴（PR #26）：被下架/被限制者對自己名下的紀錄申訴一次（`Appeal.itemRemovalId`/
+          `userRestrictionId` 皆為 `@unique` 擋重複），admin 複審核准時原子復原
+          （物品轉回 `published` 或 `UserRestriction.liftedAt`），`GET /api/appeals?scope=all`
+          給 admin 查全站待複審佇列。
+    - [x] rate limit + 關鍵字黑名單 + feature flag（PR #31）：DB-based rate limit（上架/留言/
+          私訊/上傳/檢舉各自時窗上限，超過 429）、關鍵字黑名單攔上架標題/描述與留言內容
+          （422）、`REQUIRE_REVIEW` feature flag（開啟後新物品先進 `pending_review`，
+          物品詳情頁對非物主一律 404、不產生 SEO metadata）。
+- [x] M3 到期與優惠券（PR #34）：範圍見 master-plan.md §8。優惠券／即期食品子表單接在
+      `/items/new`，`POST /api/items` 驗證額外欄位並用 AES-256-GCM 加密券碼存
+      `CouponSecret`；`POST /api/items/[id]/coupon/reveal`（僅交接確定後的接手者能看明文，
+      每次揭露寫一筆 `CouponRevealLog`，刻意不去重）；`POST /api/jobs/item-expiration`
+      （`CRON_SECRET` 保護，`published` 且到期轉 `expired`／到期前 3 天提醒，
+      `ItemExpirationLog` 的 unique(itemId, action) 保 idempotent，物品若已離開
+      `published`（例如剛好被認領）不會被誤轉態）；`/me/wallet`（分列已分享/已接手的
+      優惠券）；`GET /api/items?sort=expiring` 排序加權。
+- [x] M4 通知強化：範圍見 master-plan.md §9，4 項交付內容全部完成。
+    - [x] 通知偏好頁（PR #25）：`GET/PATCH /api/notification-preferences`、
+          `/me/notification-preferences`（每類事件各自控制站內/外部通知開關）。
+    - [x] Telegram Bot 綁定 + webhook（PR #27）：`POST /api/telegram/link-token`（一次性
+          綁定 token）、`POST /api/telegram/webhook`（secret header 驗證 + update_id 去重
+          + `/start` 綁定）、`DELETE /api/telegram/account`（主動解綁）。實際「發送外部通知」
+          與通知偏好檢查串接留待之後接上 `shouldSendExternalNotification`（見下一項）。
+    - [x] 通知合併與每日外部通知上限（PR #33）：`createOrMergeNotification`（同一使用者/
+          物品/事件類型在 30 分鐘窗口內合併成一筆未讀通知，`payload.mergedCount` 累加，
+          已知限制：`findFirst`+`update` 非原子操作，極端併發下理論上可能各自建立一筆，
+          現階段流量下風險極低、暫不處理，見程式碼註解）、`shouldSendExternalNotification`
+          （每人每日外部通知上限預設 20，只影響外部發送判斷、不影響站內通知）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
