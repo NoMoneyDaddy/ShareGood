@@ -598,13 +598,13 @@ model UserRestriction {
 model ItemRemoval {
   id          String   @id @default(cuid())
   itemId      String   @map("item_id")
-  moderatorId String   @map("moderator_id")
+  moderatorId String?  @map("moderator_id")
   reason      String
   note        String?
   createdAt   DateTime @default(now()) @map("created_at")
 
-  item      Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  moderator User @relation("ItemRemovalModerator", fields: [moderatorId], references: [id], onDelete: Cascade)
+  item      Item  @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  moderator User? @relation("ItemRemovalModerator", fields: [moderatorId], references: [id], onDelete: SetNull)
 
   appeal Appeal?
 
@@ -791,11 +791,11 @@ model CouponSecret {
 model CouponRevealLog {
   id             String   @id @default(cuid())
   couponSecretId String   @map("coupon_secret_id")
-  revealedBy     String   @map("revealed_by")
+  revealedBy     String?  @map("revealed_by")
   revealedAt     DateTime @default(now()) @map("revealed_at")
 
   couponSecret CouponSecret @relation(fields: [couponSecretId], references: [id], onDelete: Cascade)
-  user         User         @relation(fields: [revealedBy], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [revealedBy], references: [id], onDelete: SetNull)
 
   @@index([couponSecretId, revealedAt])
   @@map("coupon_reveal_logs")
@@ -940,5 +940,6 @@ model TelegramUpdate {
   processedAt DateTime? @map("processed_at")
   createdAt   DateTime  @default(now()) @map("created_at")
 
+  @@index([createdAt])
   @@map("telegram_updates")
 }

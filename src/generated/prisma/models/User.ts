@@ -925,10 +925,12 @@ export type UserCreateNestedOneWithoutItemRemovalsActedInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutItemRemovalsActedNestedInput = {
+export type UserUpdateOneWithoutItemRemovalsActedNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutItemRemovalsActedInput, Prisma.UserUncheckedCreateWithoutItemRemovalsActedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutItemRemovalsActedInput
   upsert?: Prisma.UserUpsertWithoutItemRemovalsActedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutItemRemovalsActedInput, Prisma.UserUpdateWithoutItemRemovalsActedInput>, Prisma.UserUncheckedUpdateWithoutItemRemovalsActedInput>
 }
@@ -1015,10 +1017,12 @@ export type UserCreateNestedOneWithoutCouponRevealLogsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutCouponRevealLogsNestedInput = {
+export type UserUpdateOneWithoutCouponRevealLogsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCouponRevealLogsInput, Prisma.UserUncheckedCreateWithoutCouponRevealLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCouponRevealLogsInput
   upsert?: Prisma.UserUpsertWithoutCouponRevealLogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCouponRevealLogsInput, Prisma.UserUpdateWithoutCouponRevealLogsInput>, Prisma.UserUncheckedUpdateWithoutCouponRevealLogsInput>
 }

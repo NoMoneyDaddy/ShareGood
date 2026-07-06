@@ -156,7 +156,7 @@ export type ItemRemovalGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type ItemRemovalGroupByOutputType = {
   id: string
   itemId: string
-  moderatorId: string
+  moderatorId: string | null
   reason: string
   note: string | null
   createdAt: Date
@@ -186,19 +186,19 @@ export type ItemRemovalWhereInput = {
   NOT?: Prisma.ItemRemovalWhereInput | Prisma.ItemRemovalWhereInput[]
   id?: Prisma.StringFilter<"ItemRemoval"> | string
   itemId?: Prisma.StringFilter<"ItemRemoval"> | string
-  moderatorId?: Prisma.StringFilter<"ItemRemoval"> | string
+  moderatorId?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   reason?: Prisma.StringFilter<"ItemRemoval"> | string
   note?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ItemRemoval"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
-  moderator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  moderator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   appeal?: Prisma.XOR<Prisma.AppealNullableScalarRelationFilter, Prisma.AppealWhereInput> | null
 }
 
 export type ItemRemovalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
-  moderatorId?: Prisma.SortOrder
+  moderatorId?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -213,19 +213,19 @@ export type ItemRemovalWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ItemRemovalWhereInput[]
   NOT?: Prisma.ItemRemovalWhereInput | Prisma.ItemRemovalWhereInput[]
   itemId?: Prisma.StringFilter<"ItemRemoval"> | string
-  moderatorId?: Prisma.StringFilter<"ItemRemoval"> | string
+  moderatorId?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   reason?: Prisma.StringFilter<"ItemRemoval"> | string
   note?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ItemRemoval"> | Date | string
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
-  moderator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  moderator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   appeal?: Prisma.XOR<Prisma.AppealNullableScalarRelationFilter, Prisma.AppealWhereInput> | null
 }, "id">
 
 export type ItemRemovalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
-  moderatorId?: Prisma.SortOrder
+  moderatorId?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -240,7 +240,7 @@ export type ItemRemovalScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ItemRemovalScalarWhereWithAggregatesInput | Prisma.ItemRemovalScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ItemRemoval"> | string
   itemId?: Prisma.StringWithAggregatesFilter<"ItemRemoval"> | string
-  moderatorId?: Prisma.StringWithAggregatesFilter<"ItemRemoval"> | string
+  moderatorId?: Prisma.StringNullableWithAggregatesFilter<"ItemRemoval"> | string | null
   reason?: Prisma.StringWithAggregatesFilter<"ItemRemoval"> | string
   note?: Prisma.StringNullableWithAggregatesFilter<"ItemRemoval"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ItemRemoval"> | Date | string
@@ -252,14 +252,14 @@ export type ItemRemovalCreateInput = {
   note?: string | null
   createdAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutItemRemovalsInput
-  moderator: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
+  moderator?: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
   appeal?: Prisma.AppealCreateNestedOneWithoutItemRemovalInput
 }
 
 export type ItemRemovalUncheckedCreateInput = {
   id?: string
   itemId: string
-  moderatorId: string
+  moderatorId?: string | null
   reason: string
   note?: string | null
   createdAt?: Date | string
@@ -272,14 +272,14 @@ export type ItemRemovalUpdateInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutItemRemovalsNestedInput
-  moderator?: Prisma.UserUpdateOneRequiredWithoutItemRemovalsActedNestedInput
+  moderator?: Prisma.UserUpdateOneWithoutItemRemovalsActedNestedInput
   appeal?: Prisma.AppealUpdateOneWithoutItemRemovalNestedInput
 }
 
 export type ItemRemovalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  moderatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  moderatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -289,7 +289,7 @@ export type ItemRemovalUncheckedUpdateInput = {
 export type ItemRemovalCreateManyInput = {
   id?: string
   itemId: string
-  moderatorId: string
+  moderatorId?: string | null
   reason: string
   note?: string | null
   createdAt?: Date | string
@@ -305,7 +305,7 @@ export type ItemRemovalUpdateManyMutationInput = {
 export type ItemRemovalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  moderatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  moderatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -503,7 +503,7 @@ export type ItemRemovalScalarWhereInput = {
   NOT?: Prisma.ItemRemovalScalarWhereInput | Prisma.ItemRemovalScalarWhereInput[]
   id?: Prisma.StringFilter<"ItemRemoval"> | string
   itemId?: Prisma.StringFilter<"ItemRemoval"> | string
-  moderatorId?: Prisma.StringFilter<"ItemRemoval"> | string
+  moderatorId?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   reason?: Prisma.StringFilter<"ItemRemoval"> | string
   note?: Prisma.StringNullableFilter<"ItemRemoval"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ItemRemoval"> | Date | string
@@ -514,13 +514,13 @@ export type ItemRemovalCreateWithoutItemInput = {
   reason: string
   note?: string | null
   createdAt?: Date | string
-  moderator: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
+  moderator?: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
   appeal?: Prisma.AppealCreateNestedOneWithoutItemRemovalInput
 }
 
 export type ItemRemovalUncheckedCreateWithoutItemInput = {
   id?: string
-  moderatorId: string
+  moderatorId?: string | null
   reason: string
   note?: string | null
   createdAt?: Date | string
@@ -559,13 +559,13 @@ export type ItemRemovalCreateWithoutAppealInput = {
   note?: string | null
   createdAt?: Date | string
   item: Prisma.ItemCreateNestedOneWithoutItemRemovalsInput
-  moderator: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
+  moderator?: Prisma.UserCreateNestedOneWithoutItemRemovalsActedInput
 }
 
 export type ItemRemovalUncheckedCreateWithoutAppealInput = {
   id?: string
   itemId: string
-  moderatorId: string
+  moderatorId?: string | null
   reason: string
   note?: string | null
   createdAt?: Date | string
@@ -593,13 +593,13 @@ export type ItemRemovalUpdateWithoutAppealInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   item?: Prisma.ItemUpdateOneRequiredWithoutItemRemovalsNestedInput
-  moderator?: Prisma.UserUpdateOneRequiredWithoutItemRemovalsActedNestedInput
+  moderator?: Prisma.UserUpdateOneWithoutItemRemovalsActedNestedInput
 }
 
 export type ItemRemovalUncheckedUpdateWithoutAppealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  moderatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  moderatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -641,7 +641,7 @@ export type ItemRemovalUncheckedUpdateManyWithoutModeratorInput = {
 
 export type ItemRemovalCreateManyItemInput = {
   id?: string
-  moderatorId: string
+  moderatorId?: string | null
   reason: string
   note?: string | null
   createdAt?: Date | string
@@ -652,13 +652,13 @@ export type ItemRemovalUpdateWithoutItemInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  moderator?: Prisma.UserUpdateOneRequiredWithoutItemRemovalsActedNestedInput
+  moderator?: Prisma.UserUpdateOneWithoutItemRemovalsActedNestedInput
   appeal?: Prisma.AppealUpdateOneWithoutItemRemovalNestedInput
 }
 
 export type ItemRemovalUncheckedUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  moderatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  moderatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -667,7 +667,7 @@ export type ItemRemovalUncheckedUpdateWithoutItemInput = {
 
 export type ItemRemovalUncheckedUpdateManyWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  moderatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  moderatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -683,7 +683,7 @@ export type ItemRemovalSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   note?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
   appeal?: boolean | Prisma.ItemRemoval$appealArgs<ExtArgs>
 }, ExtArgs["result"]["itemRemoval"]>
 
@@ -695,7 +695,7 @@ export type ItemRemovalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   note?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
 }, ExtArgs["result"]["itemRemoval"]>
 
 export type ItemRemovalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -706,7 +706,7 @@ export type ItemRemovalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   note?: boolean
   createdAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
 }, ExtArgs["result"]["itemRemoval"]>
 
 export type ItemRemovalSelectScalar = {
@@ -721,29 +721,29 @@ export type ItemRemovalSelectScalar = {
 export type ItemRemovalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "moderatorId" | "reason" | "note" | "createdAt", ExtArgs["result"]["itemRemoval"]>
 export type ItemRemovalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
   appeal?: boolean | Prisma.ItemRemoval$appealArgs<ExtArgs>
 }
 export type ItemRemovalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
 }
 export type ItemRemovalIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
-  moderator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  moderator?: boolean | Prisma.ItemRemoval$moderatorArgs<ExtArgs>
 }
 
 export type $ItemRemovalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ItemRemoval"
   objects: {
     item: Prisma.$ItemPayload<ExtArgs>
-    moderator: Prisma.$UserPayload<ExtArgs>
+    moderator: Prisma.$UserPayload<ExtArgs> | null
     appeal: Prisma.$AppealPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     itemId: string
-    moderatorId: string
+    moderatorId: string | null
     reason: string
     note: string | null
     createdAt: Date
@@ -1142,7 +1142,7 @@ readonly fields: ItemRemovalFieldRefs;
 export interface Prisma__ItemRemovalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  moderator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  moderator<T extends Prisma.ItemRemoval$moderatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemRemoval$moderatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   appeal<T extends Prisma.ItemRemoval$appealArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemRemoval$appealArgs<ExtArgs>>): Prisma.Prisma__AppealClient<runtime.Types.Result.GetResult<Prisma.$AppealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1577,6 +1577,25 @@ export type ItemRemovalDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many ItemRemovals to delete.
    */
   limit?: number
+}
+
+/**
+ * ItemRemoval.moderator
+ */
+export type ItemRemoval$moderatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

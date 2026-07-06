@@ -144,7 +144,7 @@ export type CouponRevealLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type CouponRevealLogGroupByOutputType = {
   id: string
   couponSecretId: string
-  revealedBy: string
+  revealedBy: string | null
   revealedAt: Date
   _count: CouponRevealLogCountAggregateOutputType | null
   _min: CouponRevealLogMinAggregateOutputType | null
@@ -172,16 +172,16 @@ export type CouponRevealLogWhereInput = {
   NOT?: Prisma.CouponRevealLogWhereInput | Prisma.CouponRevealLogWhereInput[]
   id?: Prisma.StringFilter<"CouponRevealLog"> | string
   couponSecretId?: Prisma.StringFilter<"CouponRevealLog"> | string
-  revealedBy?: Prisma.StringFilter<"CouponRevealLog"> | string
+  revealedBy?: Prisma.StringNullableFilter<"CouponRevealLog"> | string | null
   revealedAt?: Prisma.DateTimeFilter<"CouponRevealLog"> | Date | string
   couponSecret?: Prisma.XOR<Prisma.CouponSecretScalarRelationFilter, Prisma.CouponSecretWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type CouponRevealLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   couponSecretId?: Prisma.SortOrder
-  revealedBy?: Prisma.SortOrder
+  revealedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   revealedAt?: Prisma.SortOrder
   couponSecret?: Prisma.CouponSecretOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
@@ -193,16 +193,16 @@ export type CouponRevealLogWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CouponRevealLogWhereInput[]
   NOT?: Prisma.CouponRevealLogWhereInput | Prisma.CouponRevealLogWhereInput[]
   couponSecretId?: Prisma.StringFilter<"CouponRevealLog"> | string
-  revealedBy?: Prisma.StringFilter<"CouponRevealLog"> | string
+  revealedBy?: Prisma.StringNullableFilter<"CouponRevealLog"> | string | null
   revealedAt?: Prisma.DateTimeFilter<"CouponRevealLog"> | Date | string
   couponSecret?: Prisma.XOR<Prisma.CouponSecretScalarRelationFilter, Prisma.CouponSecretWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type CouponRevealLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   couponSecretId?: Prisma.SortOrder
-  revealedBy?: Prisma.SortOrder
+  revealedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   revealedAt?: Prisma.SortOrder
   _count?: Prisma.CouponRevealLogCountOrderByAggregateInput
   _max?: Prisma.CouponRevealLogMaxOrderByAggregateInput
@@ -215,7 +215,7 @@ export type CouponRevealLogScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CouponRevealLogScalarWhereWithAggregatesInput | Prisma.CouponRevealLogScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"CouponRevealLog"> | string
   couponSecretId?: Prisma.StringWithAggregatesFilter<"CouponRevealLog"> | string
-  revealedBy?: Prisma.StringWithAggregatesFilter<"CouponRevealLog"> | string
+  revealedBy?: Prisma.StringNullableWithAggregatesFilter<"CouponRevealLog"> | string | null
   revealedAt?: Prisma.DateTimeWithAggregatesFilter<"CouponRevealLog"> | Date | string
 }
 
@@ -223,13 +223,13 @@ export type CouponRevealLogCreateInput = {
   id?: string
   revealedAt?: Date | string
   couponSecret: Prisma.CouponSecretCreateNestedOneWithoutRevealLogsInput
-  user: Prisma.UserCreateNestedOneWithoutCouponRevealLogsInput
+  user?: Prisma.UserCreateNestedOneWithoutCouponRevealLogsInput
 }
 
 export type CouponRevealLogUncheckedCreateInput = {
   id?: string
   couponSecretId: string
-  revealedBy: string
+  revealedBy?: string | null
   revealedAt?: Date | string
 }
 
@@ -237,20 +237,20 @@ export type CouponRevealLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   couponSecret?: Prisma.CouponSecretUpdateOneRequiredWithoutRevealLogsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutCouponRevealLogsNestedInput
+  user?: Prisma.UserUpdateOneWithoutCouponRevealLogsNestedInput
 }
 
 export type CouponRevealLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   couponSecretId?: Prisma.StringFieldUpdateOperationsInput | string
-  revealedBy?: Prisma.StringFieldUpdateOperationsInput | string
+  revealedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CouponRevealLogCreateManyInput = {
   id?: string
   couponSecretId: string
-  revealedBy: string
+  revealedBy?: string | null
   revealedAt?: Date | string
 }
 
@@ -262,7 +262,7 @@ export type CouponRevealLogUpdateManyMutationInput = {
 export type CouponRevealLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   couponSecretId?: Prisma.StringFieldUpdateOperationsInput | string
-  revealedBy?: Prisma.StringFieldUpdateOperationsInput | string
+  revealedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -425,19 +425,19 @@ export type CouponRevealLogScalarWhereInput = {
   NOT?: Prisma.CouponRevealLogScalarWhereInput | Prisma.CouponRevealLogScalarWhereInput[]
   id?: Prisma.StringFilter<"CouponRevealLog"> | string
   couponSecretId?: Prisma.StringFilter<"CouponRevealLog"> | string
-  revealedBy?: Prisma.StringFilter<"CouponRevealLog"> | string
+  revealedBy?: Prisma.StringNullableFilter<"CouponRevealLog"> | string | null
   revealedAt?: Prisma.DateTimeFilter<"CouponRevealLog"> | Date | string
 }
 
 export type CouponRevealLogCreateWithoutCouponSecretInput = {
   id?: string
   revealedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutCouponRevealLogsInput
+  user?: Prisma.UserCreateNestedOneWithoutCouponRevealLogsInput
 }
 
 export type CouponRevealLogUncheckedCreateWithoutCouponSecretInput = {
   id?: string
-  revealedBy: string
+  revealedBy?: string | null
   revealedAt?: Date | string
 }
 
@@ -493,25 +493,25 @@ export type CouponRevealLogUncheckedUpdateManyWithoutUserInput = {
 
 export type CouponRevealLogCreateManyCouponSecretInput = {
   id?: string
-  revealedBy: string
+  revealedBy?: string | null
   revealedAt?: Date | string
 }
 
 export type CouponRevealLogUpdateWithoutCouponSecretInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutCouponRevealLogsNestedInput
+  user?: Prisma.UserUpdateOneWithoutCouponRevealLogsNestedInput
 }
 
 export type CouponRevealLogUncheckedUpdateWithoutCouponSecretInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  revealedBy?: Prisma.StringFieldUpdateOperationsInput | string
+  revealedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CouponRevealLogUncheckedUpdateManyWithoutCouponSecretInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  revealedBy?: Prisma.StringFieldUpdateOperationsInput | string
+  revealedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revealedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -523,7 +523,7 @@ export type CouponRevealLogSelect<ExtArgs extends runtime.Types.Extensions.Inter
   revealedBy?: boolean
   revealedAt?: boolean
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["couponRevealLog"]>
 
 export type CouponRevealLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -532,7 +532,7 @@ export type CouponRevealLogSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   revealedBy?: boolean
   revealedAt?: boolean
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["couponRevealLog"]>
 
 export type CouponRevealLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -541,7 +541,7 @@ export type CouponRevealLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   revealedBy?: boolean
   revealedAt?: boolean
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["couponRevealLog"]>
 
 export type CouponRevealLogSelectScalar = {
@@ -554,27 +554,27 @@ export type CouponRevealLogSelectScalar = {
 export type CouponRevealLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "couponSecretId" | "revealedBy" | "revealedAt", ExtArgs["result"]["couponRevealLog"]>
 export type CouponRevealLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }
 export type CouponRevealLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }
 export type CouponRevealLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   couponSecret?: boolean | Prisma.CouponSecretDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.CouponRevealLog$userArgs<ExtArgs>
 }
 
 export type $CouponRevealLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CouponRevealLog"
   objects: {
     couponSecret: Prisma.$CouponSecretPayload<ExtArgs>
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     couponSecretId: string
-    revealedBy: string
+    revealedBy: string | null
     revealedAt: Date
   }, ExtArgs["result"]["couponRevealLog"]>
   composites: {}
@@ -971,7 +971,7 @@ readonly fields: CouponRevealLogFieldRefs;
 export interface Prisma__CouponRevealLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   couponSecret<T extends Prisma.CouponSecretDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CouponSecretDefaultArgs<ExtArgs>>): Prisma.Prisma__CouponSecretClient<runtime.Types.Result.GetResult<Prisma.$CouponSecretPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.CouponRevealLog$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CouponRevealLog$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1403,6 +1403,25 @@ export type CouponRevealLogDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many CouponRevealLogs to delete.
    */
   limit?: number
+}
+
+/**
+ * CouponRevealLog.user
+ */
+export type CouponRevealLog$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**
