@@ -88,6 +88,11 @@ model User {
   legalHoldsReleased                     LegalHold[]                     @relation("LegalHoldReleaser")
   legalHoldEvents                        LegalHoldEvent[]
 
+  // M9 好康資訊與券票點強化（schema 地基）
+  dealInfosSubmitted DealInfo[]
+  dealInfoReports    DealInfoReport[]
+  couponUsageReports CouponUsageReport[]
+
   @@map("users")
 }
 
@@ -180,6 +185,9 @@ model City {
 
   // M6 訂閱通知：訂閱可依縣市篩選
   subscriptionCities SubscriptionCity[]
+
+  // M9 好康資訊：DealInfo 縣市篩選
+  dealInfoCities DealInfoCity[]
 
   @@map("cities")
 }
@@ -325,6 +333,14 @@ model Item {
 
   // M6 訂閱通知：比對命中紀錄
   subscriptionMatches SubscriptionMatch[]
+
+  // M9 券類強化：使用結果回報（可用／已失效）
+  couponUsageReports CouponUsageReport[]
+
+  // M9 票券／點數類型（沿用「共通設計決策」：category slug 判別，不加 items.type 欄位；
+  // 效期沿用既有 expiresAt，兩張 detail 表皆不設自己的效期欄位）
+  ticketDetail TicketDetail?
+  pointDetail  PointDetail?
 
   @@index([status, cityId, categoryId, createdAt])
   @@index([status, ownerId, createdAt])
@@ -1569,4 +1585,157 @@ model StorageUsageSnapshot {
 
   @@index([bucket, snapshotAt])
   @@map("storage_usage_snapshots")
+}
+
+// ===== M9 好康資訊與券票點強化（master-plan.md §9a、§11.1；使用者已核准，本次為 schema 地基） =====
+//
+// 內容類型判別機制（§9a 共通設計決策，已拍板）：票券／點數沿用既有 category slug 模式
+// （`tickets`／`points`）＋ detail 表，比照 M3 CouponDetail，**不新增 items.type 欄位**。
+// DealInfo 是「純資訊、無實體交付」內容，不進 claims/handover 狀態機，獨立成表、與 Item 平行。
+
+enum DealSourceType {
+  user_submission // 使用者投稿（研究方案 B 的 S3）
+  editorial // 編輯人工收錄（研究方案 B 的 S1，見 DealSource）
+}
+
+// 審核狀態名對齊 ItemStatus 既有語意，用 pending_review，不另創 draft（§9a 已拍板）。
+// 轉換：pending_review→published／pending_review→rejected（終態）／published→stale／
+// stale→published（reactivate）／published→expired／stale→expired（終態）。expired／rejected
+// 為終態；跳態或逆向轉換由 API 層擋（比照 M2 檢舉狀態機慣例），schema 本身不限制轉換路徑。
+enum DealInfoStatus {
+  pending_review
+  published
+  stale
+  expired
+  rejected
+}
+
+// S1 官方來源主檔（方案 B：編輯人工收錄自寫摘要＋導流，全程排除自動爬取），
+// 由 moderator/admin 於後台維護；DealInfo（source_type=editorial）以 dealSourceId 關聯。
+model DealSource {
+  id            String    @id @default(cuid())
+  name          String // 來源顯示名稱
+  officialUrl   String    @map("official_url") // 官方固定頁 URL（導流目標）
+  sourceGrade   String    @map("source_grade") // 記錄 S 分級，本章一律 "S1"，保留欄位供未來 S0/S2
+  lastCheckedAt DateTime? @map("last_checked_at") // 「上次查證日期」，編輯每次人工查閱後更新
+  isActive      Boolean   @default(true) @map("is_active")
+  notes         String? // 收錄注意事項（如「JS SPA、活動 URL 生命週期短」）
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  dealInfos DealInfo[]
+
+  @@map("deal_sources")
+}
+
+// 純資訊、無實體交付的好康內容，與 Item 平行、不進 claims/handover 狀態機。
+model DealInfo {
+  id              String         @id @default(cuid())
+  title           String
+  summary         String // 自寫摘要（禁複製官方圖文，純事實轉述）
+  sourceUrl       String         @map("source_url") // 來源連結（原始官方 URL；短網址收錄時改存原始網址）
+  sourceType      DealSourceType @map("source_type")
+  dealSourceId    String?        @map("deal_source_id") // editorial 類關聯的 S1 來源；user_submission 為 null
+  isNationwide    Boolean        @map("is_nationwide") // true 時忽略 DealInfoCity
+  submitterId     String?        @map("submitter_id") // 使用者投稿者；editorial 收錄由編輯建立可為 null
+  status          DealInfoStatus @default(pending_review)
+  verifiedAt      DateTime       @map("verified_at") // 「查證日期」：建立/最近一次人工查證的時間
+  expiresAt       DateTime       @map("expires_at") // 硬性 TTL 到期日（必填）
+  staleReportedAt DateTime?      @map("stale_reported_at") // 最近一次被判定 stale 的時間
+  publishedAt     DateTime?      @map("published_at")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  dealSource DealSource? @relation(fields: [dealSourceId], references: [id], onDelete: SetNull)
+  submitter  User?       @relation(fields: [submitterId], references: [id], onDelete: SetNull)
+
+  cities  DealInfoCity[]
+  reports DealInfoReport[]
+
+  @@index([status, expiresAt]) // 硬性 TTL job 掃描
+  @@index([status, createdAt]) // 好康列表/瀏覽分頁（cursor）
+  @@map("deal_infos")
+}
+
+// 多選縣市 join；DealInfo.isNationwide=true 時不建列。
+model DealInfoCity {
+  id         String   @id @default(cuid())
+  dealInfoId String   @map("deal_info_id")
+  cityId     String   @map("city_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  dealInfo DealInfo @relation(fields: [dealInfoId], references: [id], onDelete: Cascade)
+  city     City     @relation(fields: [cityId], references: [id])
+
+  @@unique([dealInfoId, cityId])
+  @@index([cityId, dealInfoId]) // 縣市篩選（欄位順序與 unique 索引相反，服務「依縣市查好康」查詢形狀）
+  @@map("deal_info_cities")
+}
+
+// 失效回報（借鏡 hotukdeals：多人回報＋狀態可逆）。一人一物一輪一次；reactivate 後 round +1，
+// 讓同一人可跨輪再報，同時保留舊回報列做稽核歷史（不真的刪除）。
+model DealInfoReport {
+  id         String   @id @default(cuid())
+  dealInfoId String   @map("deal_info_id")
+  reporterId String   @map("reporter_id")
+  round      Int      @default(1) // 第幾輪回報，reactivate 後遞增
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  dealInfo DealInfo @relation(fields: [dealInfoId], references: [id], onDelete: Cascade)
+  reporter User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@unique([dealInfoId, reporterId, round]) // 擋同一人同一輪重複回報
+  @@map("deal_info_reports")
+}
+
+// 優惠券「使用結果回報」（研究 02 借鏡可用/失效閉環）。一人一券一次；詳情頁只顯示聚合統計，
+// 文案不得暗示平台保證有效。
+enum CouponUsageResult {
+  usable // 可用
+  expired_or_used // 已失效
+}
+
+model CouponUsageReport {
+  id         String            @id @default(cuid())
+  itemId     String            @map("item_id")
+  reporterId String            @map("reporter_id")
+  result     CouponUsageResult
+  createdAt  DateTime          @default(now()) @map("created_at")
+
+  item     Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  reporter User @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, reporterId]) // 一人一券一次
+  @@map("coupon_usage_reports")
+}
+
+// 票券類型：資訊型無償轉贈媒合，明確無金額欄位；使用期限沿用 Item.expiresAt（已拍板，
+// 不設自己的效期欄位，單一事實來源，M3 既有 item-expiration job 直接生效）。
+model TicketDetail {
+  id             String   @id @default(cuid())
+  itemId         String   @unique @map("item_id")
+  ticketType     String   @map("ticket_type") // 券種（如「紙本入場券」「序號券」；自由文字，不含金額）
+  originPlatform String   @map("origin_platform") // 原平台聲明（如「KKTIX」「主辦官網」）
+  eventName      String?  @map("event_name")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@map("ticket_details")
+}
+
+// 點數類型：無償贈與媒合＋引導官方 App 閉環完成轉移，平台不經手點數本身。明確無金額欄位、
+// 不記錄任何會員帳號／手機號／驗證碼（個資最小化，見 §9a 交付內容 5）。
+model PointDetail {
+  id            String   @id @default(cuid())
+  itemId        String   @unique @map("item_id")
+  pointPlatform String   @map("point_platform") // 點數平台聲明（FamiPoint / OPEN POINT / 其他自由文字）
+  pointAmount   Int      @map("point_amount") // 純數量，不是金額、不換算現金
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@map("point_details")
 }

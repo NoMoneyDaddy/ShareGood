@@ -454,7 +454,14 @@ export const ModelName = {
   HealthCheck: 'HealthCheck',
   ErrorLog: 'ErrorLog',
   PerformanceMetric: 'PerformanceMetric',
-  StorageUsageSnapshot: 'StorageUsageSnapshot'
+  StorageUsageSnapshot: 'StorageUsageSnapshot',
+  DealSource: 'DealSource',
+  DealInfo: 'DealInfo',
+  DealInfoCity: 'DealInfoCity',
+  DealInfoReport: 'DealInfoReport',
+  CouponUsageReport: 'CouponUsageReport',
+  TicketDetail: 'TicketDetail',
+  PointDetail: 'PointDetail'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -470,7 +477,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "userRole" | "city" | "category" | "auditLog" | "storageObject" | "item" | "itemImage" | "itemStatusLog" | "claimComment" | "directShare" | "handoverRecord" | "thanksMessage" | "contributionEvent" | "notification" | "conversation" | "conversationMember" | "message" | "report" | "reportEvidence" | "userRestriction" | "itemRemoval" | "supportTicket" | "supportTicketEvent" | "supportTicketAttachment" | "appeal" | "appealEvidence" | "keywordBlocklist" | "featureFlag" | "couponDetail" | "couponSecret" | "couponRevealLog" | "itemExpirationLog" | "systemJob" | "systemJobRun" | "notificationPreference" | "notificationDelivery" | "telegramAccount" | "telegramLinkToken" | "telegramUpdate" | "lottery" | "lotteryEntry" | "lotteryResult" | "lotteryAuditLog" | "userSubscription" | "subscriptionKeyword" | "subscriptionCategory" | "subscriptionCity" | "subscriptionMatch" | "subscriptionDigestJob" | "webPushSubscription" | "privacyRequest" | "dataExport" | "dataRetentionPolicy" | "dataPurgeLog" | "lawEnforcementRequest" | "lawEnforcementRequestTarget" | "lawEnforcementRequestDocument" | "lawEnforcementRequestEvent" | "lawEnforcementExport" | "legalHold" | "legalHoldTarget" | "legalHoldEvent" | "healthCheck" | "errorLog" | "performanceMetric" | "storageUsageSnapshot"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "userRole" | "city" | "category" | "auditLog" | "storageObject" | "item" | "itemImage" | "itemStatusLog" | "claimComment" | "directShare" | "handoverRecord" | "thanksMessage" | "contributionEvent" | "notification" | "conversation" | "conversationMember" | "message" | "report" | "reportEvidence" | "userRestriction" | "itemRemoval" | "supportTicket" | "supportTicketEvent" | "supportTicketAttachment" | "appeal" | "appealEvidence" | "keywordBlocklist" | "featureFlag" | "couponDetail" | "couponSecret" | "couponRevealLog" | "itemExpirationLog" | "systemJob" | "systemJobRun" | "notificationPreference" | "notificationDelivery" | "telegramAccount" | "telegramLinkToken" | "telegramUpdate" | "lottery" | "lotteryEntry" | "lotteryResult" | "lotteryAuditLog" | "userSubscription" | "subscriptionKeyword" | "subscriptionCategory" | "subscriptionCity" | "subscriptionMatch" | "subscriptionDigestJob" | "webPushSubscription" | "privacyRequest" | "dataExport" | "dataRetentionPolicy" | "dataPurgeLog" | "lawEnforcementRequest" | "lawEnforcementRequestTarget" | "lawEnforcementRequestDocument" | "lawEnforcementRequestEvent" | "lawEnforcementExport" | "legalHold" | "legalHoldTarget" | "legalHoldEvent" | "healthCheck" | "errorLog" | "performanceMetric" | "storageUsageSnapshot" | "dealSource" | "dealInfo" | "dealInfoCity" | "dealInfoReport" | "couponUsageReport" | "ticketDetail" | "pointDetail"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -5728,6 +5735,524 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DealSource: {
+      payload: Prisma.$DealSourcePayload<ExtArgs>
+      fields: Prisma.DealSourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DealSourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DealSourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        findFirst: {
+          args: Prisma.DealSourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DealSourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        findMany: {
+          args: Prisma.DealSourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>[]
+        }
+        create: {
+          args: Prisma.DealSourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        createMany: {
+          args: Prisma.DealSourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DealSourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>[]
+        }
+        delete: {
+          args: Prisma.DealSourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        update: {
+          args: Prisma.DealSourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.DealSourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DealSourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DealSourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.DealSourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealSourcePayload>
+        }
+        aggregate: {
+          args: Prisma.DealSourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDealSource>
+        }
+        groupBy: {
+          args: Prisma.DealSourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealSourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DealSourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealSourceCountAggregateOutputType> | number
+        }
+      }
+    }
+    DealInfo: {
+      payload: Prisma.$DealInfoPayload<ExtArgs>
+      fields: Prisma.DealInfoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DealInfoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DealInfoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        findFirst: {
+          args: Prisma.DealInfoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DealInfoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        findMany: {
+          args: Prisma.DealInfoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>[]
+        }
+        create: {
+          args: Prisma.DealInfoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        createMany: {
+          args: Prisma.DealInfoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DealInfoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>[]
+        }
+        delete: {
+          args: Prisma.DealInfoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        update: {
+          args: Prisma.DealInfoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        deleteMany: {
+          args: Prisma.DealInfoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DealInfoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DealInfoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>[]
+        }
+        upsert: {
+          args: Prisma.DealInfoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoPayload>
+        }
+        aggregate: {
+          args: Prisma.DealInfoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDealInfo>
+        }
+        groupBy: {
+          args: Prisma.DealInfoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DealInfoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoCountAggregateOutputType> | number
+        }
+      }
+    }
+    DealInfoCity: {
+      payload: Prisma.$DealInfoCityPayload<ExtArgs>
+      fields: Prisma.DealInfoCityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DealInfoCityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DealInfoCityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        findFirst: {
+          args: Prisma.DealInfoCityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DealInfoCityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        findMany: {
+          args: Prisma.DealInfoCityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>[]
+        }
+        create: {
+          args: Prisma.DealInfoCityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        createMany: {
+          args: Prisma.DealInfoCityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DealInfoCityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>[]
+        }
+        delete: {
+          args: Prisma.DealInfoCityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        update: {
+          args: Prisma.DealInfoCityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        deleteMany: {
+          args: Prisma.DealInfoCityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DealInfoCityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DealInfoCityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>[]
+        }
+        upsert: {
+          args: Prisma.DealInfoCityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoCityPayload>
+        }
+        aggregate: {
+          args: Prisma.DealInfoCityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDealInfoCity>
+        }
+        groupBy: {
+          args: Prisma.DealInfoCityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoCityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DealInfoCityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoCityCountAggregateOutputType> | number
+        }
+      }
+    }
+    DealInfoReport: {
+      payload: Prisma.$DealInfoReportPayload<ExtArgs>
+      fields: Prisma.DealInfoReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DealInfoReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DealInfoReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        findFirst: {
+          args: Prisma.DealInfoReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DealInfoReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        findMany: {
+          args: Prisma.DealInfoReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>[]
+        }
+        create: {
+          args: Prisma.DealInfoReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        createMany: {
+          args: Prisma.DealInfoReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DealInfoReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>[]
+        }
+        delete: {
+          args: Prisma.DealInfoReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        update: {
+          args: Prisma.DealInfoReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.DealInfoReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DealInfoReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DealInfoReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.DealInfoReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DealInfoReportPayload>
+        }
+        aggregate: {
+          args: Prisma.DealInfoReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDealInfoReport>
+        }
+        groupBy: {
+          args: Prisma.DealInfoReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DealInfoReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DealInfoReportCountAggregateOutputType> | number
+        }
+      }
+    }
+    CouponUsageReport: {
+      payload: Prisma.$CouponUsageReportPayload<ExtArgs>
+      fields: Prisma.CouponUsageReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CouponUsageReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CouponUsageReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        findFirst: {
+          args: Prisma.CouponUsageReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CouponUsageReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        findMany: {
+          args: Prisma.CouponUsageReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>[]
+        }
+        create: {
+          args: Prisma.CouponUsageReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        createMany: {
+          args: Prisma.CouponUsageReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CouponUsageReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>[]
+        }
+        delete: {
+          args: Prisma.CouponUsageReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        update: {
+          args: Prisma.CouponUsageReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.CouponUsageReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CouponUsageReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CouponUsageReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.CouponUsageReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CouponUsageReportPayload>
+        }
+        aggregate: {
+          args: Prisma.CouponUsageReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCouponUsageReport>
+        }
+        groupBy: {
+          args: Prisma.CouponUsageReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CouponUsageReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CouponUsageReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CouponUsageReportCountAggregateOutputType> | number
+        }
+      }
+    }
+    TicketDetail: {
+      payload: Prisma.$TicketDetailPayload<ExtArgs>
+      fields: Prisma.TicketDetailFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TicketDetailFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TicketDetailFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        findFirst: {
+          args: Prisma.TicketDetailFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TicketDetailFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        findMany: {
+          args: Prisma.TicketDetailFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>[]
+        }
+        create: {
+          args: Prisma.TicketDetailCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        createMany: {
+          args: Prisma.TicketDetailCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TicketDetailCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>[]
+        }
+        delete: {
+          args: Prisma.TicketDetailDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        update: {
+          args: Prisma.TicketDetailUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        deleteMany: {
+          args: Prisma.TicketDetailDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TicketDetailUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TicketDetailUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>[]
+        }
+        upsert: {
+          args: Prisma.TicketDetailUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TicketDetailPayload>
+        }
+        aggregate: {
+          args: Prisma.TicketDetailAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTicketDetail>
+        }
+        groupBy: {
+          args: Prisma.TicketDetailGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TicketDetailGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TicketDetailCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TicketDetailCountAggregateOutputType> | number
+        }
+      }
+    }
+    PointDetail: {
+      payload: Prisma.$PointDetailPayload<ExtArgs>
+      fields: Prisma.PointDetailFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PointDetailFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PointDetailFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        findFirst: {
+          args: Prisma.PointDetailFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PointDetailFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        findMany: {
+          args: Prisma.PointDetailFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>[]
+        }
+        create: {
+          args: Prisma.PointDetailCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        createMany: {
+          args: Prisma.PointDetailCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PointDetailCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>[]
+        }
+        delete: {
+          args: Prisma.PointDetailDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        update: {
+          args: Prisma.PointDetailUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        deleteMany: {
+          args: Prisma.PointDetailDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PointDetailUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PointDetailUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>[]
+        }
+        upsert: {
+          args: Prisma.PointDetailUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PointDetailPayload>
+        }
+        aggregate: {
+          args: Prisma.PointDetailAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePointDetail>
+        }
+        groupBy: {
+          args: Prisma.PointDetailGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PointDetailGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PointDetailCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PointDetailCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -6686,6 +7211,99 @@ export const StorageUsageSnapshotScalarFieldEnum = {
 export type StorageUsageSnapshotScalarFieldEnum = (typeof StorageUsageSnapshotScalarFieldEnum)[keyof typeof StorageUsageSnapshotScalarFieldEnum]
 
 
+export const DealSourceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  officialUrl: 'officialUrl',
+  sourceGrade: 'sourceGrade',
+  lastCheckedAt: 'lastCheckedAt',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DealSourceScalarFieldEnum = (typeof DealSourceScalarFieldEnum)[keyof typeof DealSourceScalarFieldEnum]
+
+
+export const DealInfoScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  summary: 'summary',
+  sourceUrl: 'sourceUrl',
+  sourceType: 'sourceType',
+  dealSourceId: 'dealSourceId',
+  isNationwide: 'isNationwide',
+  submitterId: 'submitterId',
+  status: 'status',
+  verifiedAt: 'verifiedAt',
+  expiresAt: 'expiresAt',
+  staleReportedAt: 'staleReportedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DealInfoScalarFieldEnum = (typeof DealInfoScalarFieldEnum)[keyof typeof DealInfoScalarFieldEnum]
+
+
+export const DealInfoCityScalarFieldEnum = {
+  id: 'id',
+  dealInfoId: 'dealInfoId',
+  cityId: 'cityId',
+  createdAt: 'createdAt'
+} as const
+
+export type DealInfoCityScalarFieldEnum = (typeof DealInfoCityScalarFieldEnum)[keyof typeof DealInfoCityScalarFieldEnum]
+
+
+export const DealInfoReportScalarFieldEnum = {
+  id: 'id',
+  dealInfoId: 'dealInfoId',
+  reporterId: 'reporterId',
+  round: 'round',
+  createdAt: 'createdAt'
+} as const
+
+export type DealInfoReportScalarFieldEnum = (typeof DealInfoReportScalarFieldEnum)[keyof typeof DealInfoReportScalarFieldEnum]
+
+
+export const CouponUsageReportScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  reporterId: 'reporterId',
+  result: 'result',
+  createdAt: 'createdAt'
+} as const
+
+export type CouponUsageReportScalarFieldEnum = (typeof CouponUsageReportScalarFieldEnum)[keyof typeof CouponUsageReportScalarFieldEnum]
+
+
+export const TicketDetailScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  ticketType: 'ticketType',
+  originPlatform: 'originPlatform',
+  eventName: 'eventName',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TicketDetailScalarFieldEnum = (typeof TicketDetailScalarFieldEnum)[keyof typeof TicketDetailScalarFieldEnum]
+
+
+export const PointDetailScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  pointPlatform: 'pointPlatform',
+  pointAmount: 'pointAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PointDetailScalarFieldEnum = (typeof PointDetailScalarFieldEnum)[keyof typeof PointDetailScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -7210,6 +7828,48 @@ export type ListEnumLegalHoldStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
+ * Reference to a field of type 'DealSourceType'
+ */
+export type EnumDealSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealSourceType'>
+    
+
+
+/**
+ * Reference to a field of type 'DealSourceType[]'
+ */
+export type ListEnumDealSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealSourceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DealInfoStatus'
+ */
+export type EnumDealInfoStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealInfoStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DealInfoStatus[]'
+ */
+export type ListEnumDealInfoStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealInfoStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CouponUsageResult'
+ */
+export type EnumCouponUsageResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CouponUsageResult'>
+    
+
+
+/**
+ * Reference to a field of type 'CouponUsageResult[]'
+ */
+export type ListEnumCouponUsageResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CouponUsageResult[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7403,6 +8063,13 @@ export type GlobalOmitConfig = {
   errorLog?: Prisma.ErrorLogOmit
   performanceMetric?: Prisma.PerformanceMetricOmit
   storageUsageSnapshot?: Prisma.StorageUsageSnapshotOmit
+  dealSource?: Prisma.DealSourceOmit
+  dealInfo?: Prisma.DealInfoOmit
+  dealInfoCity?: Prisma.DealInfoCityOmit
+  dealInfoReport?: Prisma.DealInfoReportOmit
+  couponUsageReport?: Prisma.CouponUsageReportOmit
+  ticketDetail?: Prisma.TicketDetailOmit
+  pointDetail?: Prisma.PointDetailOmit
 }
 
 /* Types for Logging */

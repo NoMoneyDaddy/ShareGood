@@ -372,3 +372,38 @@ export type PerformanceMetric = Prisma.PerformanceMetricModel
  * 
  */
 export type StorageUsageSnapshot = Prisma.StorageUsageSnapshotModel
+/**
+ * Model DealSource
+ * 
+ */
+export type DealSource = Prisma.DealSourceModel
+/**
+ * Model DealInfo
+ * 
+ */
+export type DealInfo = Prisma.DealInfoModel
+/**
+ * Model DealInfoCity
+ * 
+ */
+export type DealInfoCity = Prisma.DealInfoCityModel
+/**
+ * Model DealInfoReport
+ * 
+ */
+export type DealInfoReport = Prisma.DealInfoReportModel
+/**
+ * Model CouponUsageReport
+ * 
+ */
+export type CouponUsageReport = Prisma.CouponUsageReportModel
+/**
+ * Model TicketDetail
+ * 
+ */
+export type TicketDetail = Prisma.TicketDetailModel
+/**
+ * Model PointDetail
+ * 
+ */
+export type PointDetail = Prisma.PointDetailModel

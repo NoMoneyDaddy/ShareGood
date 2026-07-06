@@ -291,3 +291,30 @@ export const LegalHoldStatus = {
 } as const
 
 export type LegalHoldStatus = (typeof LegalHoldStatus)[keyof typeof LegalHoldStatus]
+
+
+export const DealSourceType = {
+  user_submission: 'user_submission',
+  editorial: 'editorial'
+} as const
+
+export type DealSourceType = (typeof DealSourceType)[keyof typeof DealSourceType]
+
+
+export const DealInfoStatus = {
+  pending_review: 'pending_review',
+  published: 'published',
+  stale: 'stale',
+  expired: 'expired',
+  rejected: 'rejected'
+} as const
+
+export type DealInfoStatus = (typeof DealInfoStatus)[keyof typeof DealInfoStatus]
+
+
+export const CouponUsageResult = {
+  usable: 'usable',
+  expired_or_used: 'expired_or_used'
+} as const
+
+export type CouponUsageResult = (typeof CouponUsageResult)[keyof typeof CouponUsageResult]
