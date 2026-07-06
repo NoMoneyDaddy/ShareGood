@@ -24,7 +24,9 @@ export const StorageKind = {
   report_attachment: 'report_attachment',
   appeal_attachment: 'appeal_attachment',
   support_attachment: 'support_attachment',
-  export_package: 'export_package'
+  export_package: 'export_package',
+  law_enforcement_document: 'law_enforcement_document',
+  law_enforcement_export: 'law_enforcement_export'
 } as const
 
 export type StorageKind = (typeof StorageKind)[keyof typeof StorageKind]
@@ -182,7 +184,8 @@ export type SystemJobRunStatus = (typeof SystemJobRunStatus)[keyof typeof System
 
 
 export const NotificationChannel = {
-  telegram: 'telegram'
+  telegram: 'telegram',
+  web_push: 'web_push'
 } as const
 
 export type NotificationChannel = (typeof NotificationChannel)[keyof typeof NotificationChannel]
@@ -195,3 +198,96 @@ export const NotificationDeliveryStatus = {
 } as const
 
 export type NotificationDeliveryStatus = (typeof NotificationDeliveryStatus)[keyof typeof NotificationDeliveryStatus]
+
+
+export const LotteryStatus = {
+  open: 'open',
+  drawing: 'drawing',
+  awaiting_confirmation: 'awaiting_confirmation',
+  completed: 'completed',
+  failed_no_entries: 'failed_no_entries',
+  cancelled: 'cancelled'
+} as const
+
+export type LotteryStatus = (typeof LotteryStatus)[keyof typeof LotteryStatus]
+
+
+export const LotteryEntryStatus = {
+  entered: 'entered',
+  cancelled: 'cancelled'
+} as const
+
+export type LotteryEntryStatus = (typeof LotteryEntryStatus)[keyof typeof LotteryEntryStatus]
+
+
+export const LotteryResultStatus = {
+  pending: 'pending',
+  offered: 'offered',
+  confirmed: 'confirmed',
+  expired: 'expired',
+  declined: 'declined'
+} as const
+
+export type LotteryResultStatus = (typeof LotteryResultStatus)[keyof typeof LotteryResultStatus]
+
+
+export const PrivacyRequestType = {
+  data_export: 'data_export',
+  account_deletion: 'account_deletion'
+} as const
+
+export type PrivacyRequestType = (typeof PrivacyRequestType)[keyof typeof PrivacyRequestType]
+
+
+export const PrivacyRequestStatus = {
+  submitted: 'submitted',
+  cooling_off: 'cooling_off',
+  confirmed: 'confirmed',
+  processing: 'processing',
+  completed: 'completed',
+  cancelled: 'cancelled',
+  rejected: 'rejected'
+} as const
+
+export type PrivacyRequestStatus = (typeof PrivacyRequestStatus)[keyof typeof PrivacyRequestStatus]
+
+
+export const DataExportStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  ready: 'ready',
+  expired: 'expired',
+  failed: 'failed'
+} as const
+
+export type DataExportStatus = (typeof DataExportStatus)[keyof typeof DataExportStatus]
+
+
+export const RetentionAction = {
+  purge: 'purge',
+  anonymize: 'anonymize',
+  downgrade: 'downgrade',
+  archive: 'archive'
+} as const
+
+export type RetentionAction = (typeof RetentionAction)[keyof typeof RetentionAction]
+
+
+export const LawEnforcementRequestStatus = {
+  submitted: 'submitted',
+  legal_review: 'legal_review',
+  approved: 'approved',
+  rejected: 'rejected',
+  fulfilled: 'fulfilled',
+  closed: 'closed'
+} as const
+
+export type LawEnforcementRequestStatus = (typeof LawEnforcementRequestStatus)[keyof typeof LawEnforcementRequestStatus]
+
+
+export const LegalHoldStatus = {
+  active: 'active',
+  released: 'released'
+} as const
+
+export type LegalHoldStatus = (typeof LegalHoldStatus)[keyof typeof LegalHoldStatus]

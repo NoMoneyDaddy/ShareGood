@@ -19,6 +19,8 @@ model User {
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+  deletedAt     DateTime? @map("deleted_at") // M7：帳號刪除去識別化執行時間；User 列本身永不真的
+  // DELETE（見 master-plan.md §7a 交付內容 3 設計決策），非 null 代表已去識別化
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
@@ -61,6 +63,30 @@ model User {
   notificationPreferences NotificationPreference[]
   telegramAccount         TelegramAccount?
   telegramLinkTokens      TelegramLinkToken[]
+
+  // M5 抽籤
+  lotteriesCreated Lottery[]
+  lotteryEntries   LotteryEntry[]
+  lotteryResults   LotteryResult[]
+  lotteryAuditLogs LotteryAuditLog[]
+
+  // M6 訂閱通知＋Web Push
+  subscriptions          UserSubscription[]
+  webPushSubscriptions   WebPushSubscription[]
+  subscriptionDigestJobs SubscriptionDigestJob[]
+
+  // M7 資料權利與法務
+  privacyRequests                        PrivacyRequest[]                @relation("PrivacyRequestUser")
+  privacyRequestsProcessed               PrivacyRequest[]                @relation("PrivacyRequestProcessor")
+  dataExports                            DataExport[]
+  dataRetentionPolicyUpdates             DataRetentionPolicy[]
+  lawEnforcementRequestsSubmitted        LawEnforcementRequest[]         @relation("LawEnforcementRequestSubmitter")
+  lawEnforcementRequestsApproved         LawEnforcementRequest[]         @relation("LawEnforcementRequestApprover")
+  lawEnforcementRequestDocumentsUploaded LawEnforcementRequestDocument[]
+  lawEnforcementRequestEvents            LawEnforcementRequestEvent[]
+  legalHoldsCreated                      LegalHold[]                     @relation("LegalHoldCreator")
+  legalHoldsReleased                     LegalHold[]                     @relation("LegalHoldReleaser")
+  legalHoldEvents                        LegalHoldEvent[]
 
   @@map("users")
 }
@@ -152,6 +178,9 @@ model City {
   profiles Profile[]
   items    Item[]
 
+  // M6 訂閱通知：訂閱可依縣市篩選
+  subscriptionCities SubscriptionCity[]
+
   @@map("cities")
 }
 
@@ -164,6 +193,9 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
 
   items Item[]
+
+  // M6 訂閱通知：訂閱可依分類篩選
+  subscriptionCategories SubscriptionCategory[]
 
   @@map("categories")
 }
@@ -196,6 +228,8 @@ enum StorageKind {
   appeal_attachment
   support_attachment
   export_package
+  law_enforcement_document // M7：警方/檢調調閱來文掃描檔
+  law_enforcement_export // M7：依調閱範圍產生的匯出包
 }
 
 enum StorageStatus {
@@ -226,6 +260,11 @@ model StorageObject {
   reportEvidence           ReportEvidence[]
   supportTicketAttachments SupportTicketAttachment[]
   appealEvidence           AppealEvidence[]
+
+  // M7 資料權利與法務
+  dataExports                    DataExport[]
+  lawEnforcementRequestDocuments LawEnforcementRequestDocument[]
+  lawEnforcementExports          LawEnforcementExport[]
 
   @@index([status, createdAt]) // 孤兒檔清理 job 用
   @@index([uploaderId, createdAt])
@@ -280,6 +319,12 @@ model Item {
   expiresAt      DateTime?           @map("expires_at")
   couponDetail   CouponDetail?
   expirationLogs ItemExpirationLog[]
+
+  // M5 抽籤（一物品終身最多一次抽籤，見 Lottery.itemId @unique）
+  lottery Lottery?
+
+  // M6 訂閱通知：比對命中紀錄
+  subscriptionMatches SubscriptionMatch[]
 
   @@index([status, cityId, categoryId, createdAt])
   @@index([status, ownerId, createdAt])
@@ -853,6 +898,9 @@ model SystemJobRun {
 
   job SystemJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
+  // M7：retention 清理 job 每次動手都可回指到觸發它的這次執行紀錄
+  dataPurgeLogs DataPurgeLog[]
+
   @@index([jobId, startedAt])
   @@map("system_job_runs")
 }
@@ -878,6 +926,7 @@ model NotificationPreference {
 
 enum NotificationChannel {
   telegram
+  web_push // M6 起
 }
 
 enum NotificationDeliveryStatus {
@@ -895,6 +944,9 @@ model NotificationDelivery {
   status         NotificationDeliveryStatus @default(pending)
   attempts       Int                        @default(0)
   lastError      String?                    @map("last_error")
+  lastAttemptAt  DateTime?                  @map("last_attempt_at") // M8：距離上次嘗試（不論成敗）
+  // 過了多久，供指數退避重送 job 判斷是否到重試時機（sentAt 語意是「成功送達時間」，
+  // 重試中失敗紀錄該欄是 null，故另立此欄，見 master-plan.md §8a 交付內容 6）
   sentAt         DateTime?                  @map("sent_at")
   createdAt      DateTime                   @default(now()) @map("created_at")
 
@@ -942,4 +994,579 @@ model TelegramUpdate {
 
   @@index([createdAt])
   @@map("telegram_updates")
+}
+
+// ===== M5 抽籤（master-plan.md §5a、§11.1）=====
+// 狀態機設計見規格文件：lotteries.status 是防重複開獎/遞補推進的樂觀鎖本體，
+// items.status 完全不新增任何值（見 §5a 交付內容 1、2）。
+
+enum LotteryStatus {
+  open
+  drawing
+  awaiting_confirmation
+  completed
+  failed_no_entries
+  cancelled
+}
+
+enum LotteryEntryStatus {
+  entered
+  cancelled
+}
+
+enum LotteryResultStatus {
+  pending
+  offered
+  confirmed
+  expired
+  declined
+}
+
+// 一物品終身最多一次抽籤：itemId @unique（見「不做多輪抽籤」scope guard）。
+model Lottery {
+  id            String        @id @default(cuid())
+  itemId        String        @unique @map("item_id")
+  creatorId     String        @map("creator_id") // = 物品 owner_id，冗餘存一份方便查詢
+  entryDeadline DateTime      @map("entry_deadline") // 建立後不可修改
+  status        LotteryStatus @default(open)
+  seed          String? // crypto.randomBytes(32).toString('hex')，開獎當下才寫入
+  entrySnapshot Json?         @map("entry_snapshot") // 開獎當下 canonical 排序後的 entry id 陣列
+  algoVersion   String?       @map("algo_version") // 例："hmac-sha256-fisher-yates-v1"
+  drawnAt       DateTime?     @map("drawn_at")
+  currentRank   Int?          @map("current_rank") // 目前正等待確認的順位
+  completedAt   DateTime?     @map("completed_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  item    Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  entries   LotteryEntry[]
+  results   LotteryResult[]
+  auditLogs LotteryAuditLog[]
+
+  @@index([status, entryDeadline]) // 開獎 job 撈到期未開獎的抽籤
+  @@map("lotteries")
+}
+
+model LotteryEntry {
+  id          String             @id @default(cuid())
+  lotteryId   String             @map("lottery_id")
+  userId      String             @map("user_id")
+  status      LotteryEntryStatus @default(entered)
+  enteredAt   DateTime           @default(now()) @map("entered_at")
+  cancelledAt DateTime?          @map("cancelled_at")
+
+  lottery Lottery @relation(fields: [lotteryId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  results LotteryResult[]
+
+  @@unique([lotteryId, userId])
+  @@index([lotteryId, status]) // 開獎時撈 status='entered' 名單
+  @@map("lottery_entries")
+}
+
+model LotteryResult {
+  id              String              @id @default(cuid())
+  lotteryId       String              @map("lottery_id")
+  entryId         String              @map("entry_id")
+  userId          String              @map("user_id") // 冗餘存一份，方便查詢不必 join entries
+  rank            Int
+  status          LotteryResultStatus @default(pending)
+  offeredAt       DateTime?           @map("offered_at")
+  confirmDeadline DateTime?           @map("confirm_deadline") // = offeredAt + 48h
+  respondedAt     DateTime?           @map("responded_at")
+  createdAt       DateTime            @default(now()) @map("created_at")
+
+  lottery Lottery      @relation(fields: [lotteryId], references: [id], onDelete: Cascade)
+  entry   LotteryEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([lotteryId, rank])
+  @@unique([lotteryId, entryId])
+  @@index([status, confirmDeadline]) // job 撈到期未確認的候選人
+  @@map("lottery_results")
+}
+
+// append-only 稽核紀錄；actorId 為 null 代表系統排程觸發。依 createdAt 排序讀出應能還原
+// 完整時間序（誰在何時報名/取消、何時開獎、每次遞補的前因後果、最終誰確認）。
+model LotteryAuditLog {
+  id        String   @id @default(cuid())
+  lotteryId String   @map("lottery_id")
+  action    String // entry_created / entry_cancelled / draw_started / draw_completed /
+  // draw_failed_no_entries / rank_offered / rank_confirmed / rank_expired /
+  // rank_declined / lottery_cancelled / item_reserved
+  actorId   String?  @map("actor_id")
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  lottery Lottery @relation(fields: [lotteryId], references: [id], onDelete: Cascade)
+  actor   User?   @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([lotteryId, createdAt])
+  @@map("lottery_audit_logs")
+}
+
+// ===== M6 訂閱通知＋Web Push（master-plan.md §6a、§11.1）=====
+// 訂閱（篩選條件）與 M4 NotificationPreference（管道與開關）是兩層獨立閘門，分工見
+// §6a 交付內容 2；本節不修改 NotificationPreference 既有語意（eventType 是自由字串，
+// 新增 subscription_match/subscription_digest 兩個事件類型不需要 migration）。
+// NotificationChannel 已於上方新增 web_push 值。
+
+model UserSubscription {
+  id                 String   @id @default(cuid())
+  userId             String   @map("user_id")
+  label              String? // 使用者自訂名稱，純顯示用，不參與比對邏輯
+  immediateEnabled   Boolean  @default(false) @map("immediate_enabled")
+  dailyDigestEnabled Boolean  @default(true) @map("daily_digest_enabled")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  keywords   SubscriptionKeyword[]
+  categories SubscriptionCategory[]
+  cities     SubscriptionCity[]
+  matches    SubscriptionMatch[]
+
+  @@index([userId])
+  @@map("user_subscriptions")
+}
+
+model SubscriptionKeyword {
+  id                String   @id @default(cuid())
+  subscriptionId    String   @map("subscription_id")
+  keyword           String // 使用者原始輸入，保留給 UI 顯示（可能是全形/大寫）
+  normalizedKeyword String   @map("normalized_keyword") // 正規化後的比對用字串
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  subscription UserSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@unique([subscriptionId, normalizedKeyword])
+  @@index([subscriptionId])
+  @@index([normalizedKeyword]) // 依關鍵字反查/除錯/濫用調查用（非熱路徑比對本身在用，見規格）
+  @@map("subscription_keywords")
+}
+
+model SubscriptionCategory {
+  id             String   @id @default(cuid())
+  subscriptionId String   @map("subscription_id")
+  categoryId     String   @map("category_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  subscription UserSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  category     Category         @relation(fields: [categoryId], references: [id])
+
+  @@unique([subscriptionId, categoryId])
+  @@map("subscription_categories")
+}
+
+model SubscriptionCity {
+  id             String   @id @default(cuid())
+  subscriptionId String   @map("subscription_id")
+  cityId         String   @map("city_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  subscription UserSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  city         City             @relation(fields: [cityId], references: [id])
+
+  @@unique([subscriptionId, cityId])
+  @@map("subscription_cities")
+}
+
+// 「同物品同訂閱只通知一次」的 idempotency 核心：unique(subscriptionId, itemId)。
+model SubscriptionMatch {
+  id             String    @id @default(cuid())
+  subscriptionId String    @map("subscription_id")
+  itemId         String    @map("item_id")
+  matchedAt      DateTime  @default(now()) @map("matched_at")
+  notifiedAt     DateTime? @map("notified_at") // null = 已比對成功但尚未通知，等每日摘要 job 撿走
+  notifiedVia    String?   @map("notified_via") // 'immediate' | 'digest'
+  digestJobId    String?   @map("digest_job_id")
+
+  subscription UserSubscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  item         Item                   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  digestJob    SubscriptionDigestJob? @relation(fields: [digestJobId], references: [id], onDelete: SetNull)
+
+  @@unique([subscriptionId, itemId])
+  @@index([notifiedAt]) // 每日摘要 job 撈 notifiedAt IS NULL 用
+  @@map("subscription_matches")
+}
+
+// 每人每個台北曆日最多一筆：這是每日摘要的「派送紀錄」，排程觸發沿用 M3 system_jobs。
+model SubscriptionDigestJob {
+  id         String    @id @default(cuid())
+  userId     String    @map("user_id")
+  digestDate DateTime  @map("digest_date") @db.Date // Asia/Taipei 曆日（不是 UTC 日期）
+  status     String // 'pending' | 'sent' | 'skipped_empty' | 'failed'
+  itemCount  Int       @default(0) @map("item_count")
+  sentAt     DateTime? @map("sent_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user    User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  matches SubscriptionMatch[]
+
+  @@unique([userId, digestDate])
+  @@map("subscription_digest_jobs")
+}
+
+// 欄位對應瀏覽器 Push API 標準的 PushSubscription 物件（endpoint／keys.p256dh／keys.auth），
+// 查證來源：MDN PushSubscription、web-push npm 套件文件。同一使用者可有多筆（多裝置/多瀏覽器）。
+model WebPushSubscription {
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  endpoint      String    @unique // push service 的推播端點 URL，瀏覽器端唯一
+  p256dhKey     String    @map("p256dh_key") // PushSubscription.keys.p256dh
+  authKey       String    @map("auth_key") // PushSubscription.keys.auth
+  userAgent     String?   @map("user_agent") // 除錯與清理用，非必要
+  isActive      Boolean   @default(true) @map("is_active")
+  failureCount  Int       @default(0) @map("failure_count")
+  lastSuccessAt DateTime? @map("last_success_at")
+  lastFailureAt DateTime? @map("last_failure_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deactivatedAt DateTime? @map("deactivated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("web_push_subscriptions")
+}
+
+// ===== M7 資料權利與法務（master-plan.md §7a、§11.1）=====
+// ⚠️ 法律免責聲明：本節資料保留期限／去識別化範圍／legal hold 認定／警方調閱流程
+// （尤其「是否通知當事人」）均為技術實作參考，不構成法律意見、不能替代律師意見；
+// 正式營運前需台灣律師與平台法務審閱（見 §7a 節首與節尾聲明）。
+
+enum PrivacyRequestType {
+  data_export
+  account_deletion
+}
+
+enum PrivacyRequestStatus {
+  submitted
+  cooling_off
+  confirmed
+  processing
+  completed
+  cancelled
+  rejected
+}
+
+enum DataExportStatus {
+  pending
+  processing
+  ready
+  expired
+  failed
+}
+
+enum RetentionAction {
+  purge
+  anonymize
+  downgrade
+  archive
+}
+
+enum LawEnforcementRequestStatus {
+  submitted
+  legal_review
+  approved
+  rejected
+  fulfilled
+  closed
+}
+
+enum LegalHoldStatus {
+  active
+  released
+}
+
+// 匯出與刪除共用一張表，用 type 區分；關聯方向刻意設計成「特定表指回通用表」
+// （DataExport.privacyRequestId → PrivacyRequest.id 而非反過來），理由見規格文件
+// §7a 交付內容 1：先建 PrivacyRequest 拿到 id，再建 DataExport 帶入這個 id，順序自然。
+model PrivacyRequest {
+  id              String               @id @default(cuid())
+  userId          String               @map("user_id")
+  type            PrivacyRequestType
+  status          PrivacyRequestStatus @default(submitted)
+  reason          String?
+  coolingOffUntil DateTime?            @map("cooling_off_until") // 僅 account_deletion 使用
+  processedBy     String?              @map("processed_by") // 系統自動執行為 null；人工介入才記錄 admin
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+  completedAt     DateTime?            @map("completed_at")
+
+  user       User        @relation("PrivacyRequestUser", fields: [userId], references: [id], onDelete: Cascade)
+  processor  User?       @relation("PrivacyRequestProcessor", fields: [processedBy], references: [id], onDelete: SetNull)
+  dataExport DataExport?
+
+  @@index([userId, type, createdAt])
+  @@index([status, coolingOffUntil]) // 冷卻期到期掃描用
+  @@map("privacy_requests")
+}
+
+model DataExport {
+  id               String           @id @default(cuid())
+  userId           String           @map("user_id")
+  privacyRequestId String           @unique @map("privacy_request_id") // 一個請求最多一筆匯出細節
+  status           DataExportStatus @default(pending)
+  storageObjectId  String?          @map("storage_object_id") // 打包完成才寫入，kind=export_package
+  requestedAt      DateTime         @default(now()) @map("requested_at")
+  readyAt          DateTime?        @map("ready_at")
+  expiresAt        DateTime?        @map("expires_at") // = readyAt + 7 天
+  downloadCount    Int              @default(0) @map("download_count") // 純觀察用，不限制下載次數
+  lastDownloadedAt DateTime?        @map("last_downloaded_at")
+  failureReason    String?          @map("failure_reason")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  privacyRequest PrivacyRequest @relation(fields: [privacyRequestId], references: [id], onDelete: Cascade)
+  storageObject  StorageObject? @relation(fields: [storageObjectId], references: [id], onDelete: SetNull)
+
+  @@index([status, expiresAt]) // 過期清除 job 用
+  @@index([userId, createdAt])
+  @@map("data_exports")
+}
+
+// 可設定的執行依據，不是純文件記錄表：retention 相關 job 執行前都要查這張表，
+// 天數/動作不寫死在程式碼常數裡（見 §7a 交付內容 4）。
+model DataRetentionPolicy {
+  id            String           @id @default(cuid())
+  policyKey     String           @unique @map("policy_key")
+  description   String
+  retentionDays Int?             @map("retention_days") // null = 不自動清理（長期保留，例如 audit_logs）
+  action        RetentionAction? // retentionDays 為 null 時 action 也必須是 null（見規格說明）
+  isActive      Boolean          @default(true) @map("is_active")
+  updatedBy     String?          @map("updated_by")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  updatedByUser User? @relation(fields: [updatedBy], references: [id], onDelete: SetNull)
+
+  @@map("data_retention_policies")
+}
+
+// 每次 retention job 對任一筆資料真的動手都寫一筆；本表比照 audit_logs 長期保留，
+// 不可被任何清理 job 清掉。
+model DataPurgeLog {
+  id               String          @id @default(cuid())
+  policyKey        String          @map("policy_key") // 快照當下的 policy_key，不設 FK
+  jobRunId         String?         @map("job_run_id")
+  targetType       String          @map("target_type") // 'item_image' | 'message' | 'notification' | ...
+  targetId         String          @map("target_id")
+  actionTaken      RetentionAction @map("action_taken")
+  skippedLegalHold Boolean         @default(false) @map("skipped_legal_hold")
+  createdAt        DateTime        @default(now()) @map("created_at")
+
+  jobRun SystemJobRun? @relation(fields: [jobRunId], references: [id], onDelete: SetNull)
+
+  @@index([policyKey, createdAt])
+  @@index([targetType, targetId])
+  @@map("data_purge_logs")
+}
+
+// 機關調閱請求：不對外開放 API，一律由客服/admin 手動建檔（見規格「誰能提出」）。
+// submittedBy 與 approvedBy 刻意分開且必須是不同人（雙人審核，防止單一 admin 濫權）。
+model LawEnforcementRequest {
+  id              String                      @id @default(cuid())
+  agencyName      String                      @map("agency_name")
+  caseReference   String                      @map("case_reference")
+  legalBasis      String                      @map("legal_basis") // 來文所附法源條文
+  requestScope    String                      @map("request_scope") // 例：「OO 使用者近 90 天私訊」
+  receivedAt      DateTime                    @map("received_at") // 公文實際到站日期，可能早於建檔時間
+  status          LawEnforcementRequestStatus @default(submitted)
+  submittedBy     String                      @map("submitted_by")
+  approvedBy      String?                     @map("approved_by")
+  approvedAt      DateTime?                   @map("approved_at")
+  rejectionReason String?                     @map("rejection_reason")
+  notifyUser      Boolean                     @default(true) @map("notify_user") // 是否通知當事人，例外需法律依據
+  notifiedAt      DateTime?                   @map("notified_at")
+  createdAt       DateTime                    @default(now()) @map("created_at")
+  updatedAt       DateTime                    @updatedAt @map("updated_at")
+
+  submitter User  @relation("LawEnforcementRequestSubmitter", fields: [submittedBy], references: [id], onDelete: Cascade)
+  approver  User? @relation("LawEnforcementRequestApprover", fields: [approvedBy], references: [id], onDelete: SetNull)
+
+  targets    LawEnforcementRequestTarget[]
+  documents  LawEnforcementRequestDocument[]
+  events     LawEnforcementRequestEvent[]
+  exports    LawEnforcementExport[]
+  legalHolds LegalHold[]
+
+  @@index([status, createdAt])
+  @@map("law_enforcement_requests")
+}
+
+model LawEnforcementRequestTarget {
+  id         String @id @default(cuid())
+  requestId  String @map("request_id")
+  targetType String @map("target_type") // user | item | conversation | message
+  targetId   String @map("target_id")
+
+  request LawEnforcementRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
+  @@index([requestId])
+  @@map("law_enforcement_request_targets")
+}
+
+model LawEnforcementRequestDocument {
+  id              String   @id @default(cuid())
+  requestId       String   @map("request_id")
+  storageObjectId String   @map("storage_object_id") // kind=law_enforcement_document
+  uploadedBy      String   @map("uploaded_by")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  request       LawEnforcementRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  storageObject StorageObject         @relation(fields: [storageObjectId], references: [id], onDelete: Restrict)
+  uploader      User                  @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@index([storageObjectId])
+  @@map("law_enforcement_request_documents")
+}
+
+// 稽核用，逐筆記錄狀態轉換與備註；依 createdAt 讀出要能還原完整處理時間序。
+model LawEnforcementRequestEvent {
+  id        String   @id @default(cuid())
+  requestId String   @map("request_id")
+  action    String
+  actorId   String?  @map("actor_id")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  request LawEnforcementRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  actor   User?                 @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([requestId, createdAt])
+  @@map("law_enforcement_request_events")
+}
+
+// 只有 admin 角色能取得下載連結，且每次下載寫入 LawEnforcementRequestEvent（應用層規則）。
+model LawEnforcementExport {
+  id              String    @id @default(cuid())
+  requestId       String    @map("request_id")
+  storageObjectId String    @map("storage_object_id") // kind=law_enforcement_export
+  generatedAt     DateTime  @default(now()) @map("generated_at")
+  expiresAt       DateTime? @map("expires_at") // 依案件，可能不設過期，由 legal_holds 保護避免誤刪
+
+  request       LawEnforcementRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  storageObject StorageObject         @relation(fields: [storageObjectId], references: [id], onDelete: Restrict)
+
+  @@index([requestId])
+  @@map("law_enforcement_exports")
+}
+
+// 也可能源自站內檢舉/內部訴訟而建立，不一定源自警方請求，故 relatedRequestId 允許 null。
+model LegalHold {
+  id               String          @id @default(cuid())
+  reason           String
+  relatedRequestId String?         @map("related_request_id")
+  status           LegalHoldStatus @default(active)
+  createdBy        String          @map("created_by")
+  releasedBy       String?         @map("released_by")
+  releasedAt       DateTime?       @map("released_at")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  relatedRequest LawEnforcementRequest? @relation(fields: [relatedRequestId], references: [id], onDelete: SetNull)
+  creator        User                   @relation("LegalHoldCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  releaser       User?                  @relation("LegalHoldReleaser", fields: [releasedBy], references: [id], onDelete: SetNull)
+
+  targets LegalHoldTarget[]
+  events  LegalHoldEvent[]
+
+  @@index([status])
+  @@map("legal_holds")
+}
+
+// isUnderLegalHold() 的核心查詢索引，必建（見 master-plan.md §7a 交付內容 5）。
+model LegalHoldTarget {
+  id          String @id @default(cuid())
+  legalHoldId String @map("legal_hold_id")
+  targetType  String @map("target_type") // user | item | conversation | message | handover_record |
+  // claim_comment | direct_share | thanks_message | coupon_reveal_log | report
+  targetId    String @map("target_id")
+
+  legalHold LegalHold @relation(fields: [legalHoldId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
+  @@index([legalHoldId])
+  @@map("legal_hold_targets")
+}
+
+model LegalHoldEvent {
+  id          String   @id @default(cuid())
+  legalHoldId String   @map("legal_hold_id")
+  action      String // created / target_added / target_removed / released
+  actorId     String?  @map("actor_id")
+  note        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  legalHold LegalHold @relation(fields: [legalHoldId], references: [id], onDelete: Cascade)
+  actor     User?     @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([legalHoldId, createdAt])
+  @@map("legal_hold_events")
+}
+
+// ===== M8 營運強化（master-plan.md §8a、§11.1）=====
+
+model HealthCheck {
+  id        String   @id @default(cuid())
+  subsystem String // "database" | "storage" | "background_jobs"（字串 key，未來加子系統不必 migration）
+  status    String // "up" | "degraded" | "down"
+  latencyMs Int?     @map("latency_ms") // 該次檢查耗時，例如 DB SELECT 1、MinIO headBucket 往返時間
+  detail    Json? // 例如 background_jobs 記錄「距離上次 system_job_runs 成功結束幾分鐘」
+  checkedAt DateTime @default(now()) @map("checked_at")
+
+  @@index([subsystem, checkedAt]) // 儀表板依子系統畫歷史趨勢用
+  @@map("health_checks")
+}
+
+// 記錄「壞事發生」，用途是除錯與異常追蹤；與 PerformanceMetric 的分工見 §8a 交付內容 3。
+model ErrorLog {
+  id         String   @id @default(cuid())
+  source     String // "api" | "background_job" | "webhook"
+  routeOrJob String?  @map("route_or_job") // 正規化後的 route path（不含動態 id）或 system_jobs.key
+  message    String
+  stack      String?
+  context    Json? // userId、requestId 等排查用途；禁止塞入敏感個資
+  occurredAt DateTime @default(now()) @map("occurred_at")
+
+  @@index([source, occurredAt])
+  @@map("error_logs")
+}
+
+// 記錄「正常運作但耗時多少」，不論成功失敗；全量記錄不設寫入門檻（見規格「取樣範圍」）。
+// P95 由查詢時對原始樣本用 percentile_cont(0.95) 即時聚合算出，不另建彙總表。
+model PerformanceMetric {
+  id         String   @id @default(cuid())
+  metricType String   @map("metric_type") // 先只做 "db_query"，"api_request" 留給之後擴充
+  label      String // 正規化後的識別碼，例如 "Item.findMany"、"ClaimComment.create"
+  durationMs Int      @map("duration_ms")
+  isSlow     Boolean  @map("is_slow") // durationMs > 1000，即時旗標，不是統計量
+  context    Json?
+  recordedAt DateTime @default(now()) @map("recorded_at")
+
+  @@index([metricType, label, recordedAt]) // 依 label 分組看趨勢
+  @@index([isSlow, recordedAt]) // 儀表板快速撈「最近的慢查詢」列表
+  @@map("performance_metrics")
+}
+
+// 每日快照，一次快照對每個 bucket 各寫一筆；不設保留期（需要長期趨勢，見 §8a 交付內容 3）。
+model StorageUsageSnapshot {
+  id            String   @id @default(cuid())
+  bucket        String
+  totalBytes    BigInt   @map("total_bytes")
+  objectCount   Int      @map("object_count")
+  orphanedBytes BigInt?  @map("orphaned_bytes") // 「孤兒用量」定義見 §8a 交付內容 2，不是 pending 那種
+  orphanedCount Int?     @map("orphaned_count")
+  byItemStatus  Json?    @map("by_item_status") // 例如 {"published": 12345678, "expired": 88000}
+  snapshotAt    DateTime @default(now()) @map("snapshot_at")
+
+  @@index([bucket, snapshotAt])
+  @@map("storage_usage_snapshots")
 }

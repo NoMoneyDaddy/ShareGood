@@ -41,6 +41,7 @@ export type NotificationDeliveryMinAggregateOutputType = {
   status: $Enums.NotificationDeliveryStatus | null
   attempts: number | null
   lastError: string | null
+  lastAttemptAt: Date | null
   sentAt: Date | null
   createdAt: Date | null
 }
@@ -52,6 +53,7 @@ export type NotificationDeliveryMaxAggregateOutputType = {
   status: $Enums.NotificationDeliveryStatus | null
   attempts: number | null
   lastError: string | null
+  lastAttemptAt: Date | null
   sentAt: Date | null
   createdAt: Date | null
 }
@@ -63,6 +65,7 @@ export type NotificationDeliveryCountAggregateOutputType = {
   status: number
   attempts: number
   lastError: number
+  lastAttemptAt: number
   sentAt: number
   createdAt: number
   _all: number
@@ -84,6 +87,7 @@ export type NotificationDeliveryMinAggregateInputType = {
   status?: true
   attempts?: true
   lastError?: true
+  lastAttemptAt?: true
   sentAt?: true
   createdAt?: true
 }
@@ -95,6 +99,7 @@ export type NotificationDeliveryMaxAggregateInputType = {
   status?: true
   attempts?: true
   lastError?: true
+  lastAttemptAt?: true
   sentAt?: true
   createdAt?: true
 }
@@ -106,6 +111,7 @@ export type NotificationDeliveryCountAggregateInputType = {
   status?: true
   attempts?: true
   lastError?: true
+  lastAttemptAt?: true
   sentAt?: true
   createdAt?: true
   _all?: true
@@ -204,6 +210,7 @@ export type NotificationDeliveryGroupByOutputType = {
   status: $Enums.NotificationDeliveryStatus
   attempts: number
   lastError: string | null
+  lastAttemptAt: Date | null
   sentAt: Date | null
   createdAt: Date
   _count: NotificationDeliveryCountAggregateOutputType | null
@@ -238,6 +245,7 @@ export type NotificationDeliveryWhereInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFilter<"NotificationDelivery"> | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFilter<"NotificationDelivery"> | number
   lastError?: Prisma.StringNullableFilter<"NotificationDelivery"> | string | null
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationDelivery"> | Date | string
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
@@ -250,6 +258,7 @@ export type NotificationDeliveryOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   notification?: Prisma.NotificationOrderByWithRelationInput
@@ -266,6 +275,7 @@ export type NotificationDeliveryWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumNotificationDeliveryStatusFilter<"NotificationDelivery"> | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFilter<"NotificationDelivery"> | number
   lastError?: Prisma.StringNullableFilter<"NotificationDelivery"> | string | null
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationDelivery"> | Date | string
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
@@ -278,6 +288,7 @@ export type NotificationDeliveryOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.NotificationDeliveryCountOrderByAggregateInput
@@ -297,6 +308,7 @@ export type NotificationDeliveryScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumNotificationDeliveryStatusWithAggregatesFilter<"NotificationDelivery"> | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntWithAggregatesFilter<"NotificationDelivery"> | number
   lastError?: Prisma.StringNullableWithAggregatesFilter<"NotificationDelivery"> | string | null
+  lastAttemptAt?: Prisma.DateTimeNullableWithAggregatesFilter<"NotificationDelivery"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"NotificationDelivery"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"NotificationDelivery"> | Date | string
 }
@@ -307,6 +319,7 @@ export type NotificationDeliveryCreateInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
   notification: Prisma.NotificationCreateNestedOneWithoutDeliveriesInput
@@ -319,6 +332,7 @@ export type NotificationDeliveryUncheckedCreateInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -329,6 +343,7 @@ export type NotificationDeliveryUpdateInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notification?: Prisma.NotificationUpdateOneRequiredWithoutDeliveriesNestedInput
@@ -341,6 +356,7 @@ export type NotificationDeliveryUncheckedUpdateInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -352,6 +368,7 @@ export type NotificationDeliveryCreateManyInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -362,6 +379,7 @@ export type NotificationDeliveryUpdateManyMutationInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -373,6 +391,7 @@ export type NotificationDeliveryUncheckedUpdateManyInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -399,6 +418,7 @@ export type NotificationDeliveryCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -414,6 +434,7 @@ export type NotificationDeliveryMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -425,6 +446,7 @@ export type NotificationDeliveryMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -489,6 +511,7 @@ export type NotificationDeliveryCreateWithoutNotificationInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -499,6 +522,7 @@ export type NotificationDeliveryUncheckedCreateWithoutNotificationInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -539,6 +563,7 @@ export type NotificationDeliveryScalarWhereInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFilter<"NotificationDelivery"> | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFilter<"NotificationDelivery"> | number
   lastError?: Prisma.StringNullableFilter<"NotificationDelivery"> | string | null
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"NotificationDelivery"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationDelivery"> | Date | string
 }
@@ -549,6 +574,7 @@ export type NotificationDeliveryCreateManyNotificationInput = {
   status?: $Enums.NotificationDeliveryStatus
   attempts?: number
   lastError?: string | null
+  lastAttemptAt?: Date | string | null
   sentAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -559,6 +585,7 @@ export type NotificationDeliveryUpdateWithoutNotificationInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -569,6 +596,7 @@ export type NotificationDeliveryUncheckedUpdateWithoutNotificationInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -579,6 +607,7 @@ export type NotificationDeliveryUncheckedUpdateManyWithoutNotificationInput = {
   status?: Prisma.EnumNotificationDeliveryStatusFieldUpdateOperationsInput | $Enums.NotificationDeliveryStatus
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -592,6 +621,7 @@ export type NotificationDeliverySelect<ExtArgs extends runtime.Types.Extensions.
   status?: boolean
   attempts?: boolean
   lastError?: boolean
+  lastAttemptAt?: boolean
   sentAt?: boolean
   createdAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
@@ -604,6 +634,7 @@ export type NotificationDeliverySelectCreateManyAndReturn<ExtArgs extends runtim
   status?: boolean
   attempts?: boolean
   lastError?: boolean
+  lastAttemptAt?: boolean
   sentAt?: boolean
   createdAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
@@ -616,6 +647,7 @@ export type NotificationDeliverySelectUpdateManyAndReturn<ExtArgs extends runtim
   status?: boolean
   attempts?: boolean
   lastError?: boolean
+  lastAttemptAt?: boolean
   sentAt?: boolean
   createdAt?: boolean
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
@@ -628,11 +660,12 @@ export type NotificationDeliverySelectScalar = {
   status?: boolean
   attempts?: boolean
   lastError?: boolean
+  lastAttemptAt?: boolean
   sentAt?: boolean
   createdAt?: boolean
 }
 
-export type NotificationDeliveryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "notificationId" | "channel" | "status" | "attempts" | "lastError" | "sentAt" | "createdAt", ExtArgs["result"]["notificationDelivery"]>
+export type NotificationDeliveryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "notificationId" | "channel" | "status" | "attempts" | "lastError" | "lastAttemptAt" | "sentAt" | "createdAt", ExtArgs["result"]["notificationDelivery"]>
 export type NotificationDeliveryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
 }
@@ -655,6 +688,7 @@ export type $NotificationDeliveryPayload<ExtArgs extends runtime.Types.Extension
     status: $Enums.NotificationDeliveryStatus
     attempts: number
     lastError: string | null
+    lastAttemptAt: Date | null
     sentAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["notificationDelivery"]>
@@ -1087,6 +1121,7 @@ export interface NotificationDeliveryFieldRefs {
   readonly status: Prisma.FieldRef<"NotificationDelivery", 'NotificationDeliveryStatus'>
   readonly attempts: Prisma.FieldRef<"NotificationDelivery", 'Int'>
   readonly lastError: Prisma.FieldRef<"NotificationDelivery", 'String'>
+  readonly lastAttemptAt: Prisma.FieldRef<"NotificationDelivery", 'DateTime'>
   readonly sentAt: Prisma.FieldRef<"NotificationDelivery", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"NotificationDelivery", 'DateTime'>
 }
