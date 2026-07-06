@@ -68,6 +68,10 @@ S3_ENDPOINT / S3_ACCESS_KEY / S3_SECRET_KEY / S3_BUCKET   # MinIO
 S3_PUBLIC_URL           # 圖片對外讀取的 base URL
 COUPON_SECRET_KEY       # M3 起：券碼加密（AES-256-GCM）
 TELEGRAM_BOT_TOKEN / TELEGRAM_WEBHOOK_SECRET              # M4 起
+WEB_PUSH_VAPID_PUBLIC_KEY / WEB_PUSH_VAPID_PRIVATE_KEY    # M6 起：Web Push VAPID 金鑰對，用
+                        # `npx web-push generate-vapid-keys` 產生；public key 前端可見，
+                        # private key 僅伺服器持有
+WEB_PUSH_VAPID_SUBJECT  # M6 起：VAPID subject，格式 mailto:<站方聯絡信箱>，Web Push 規範要求
 CRON_SECRET             # 保護 job 觸發 route
 TZ=Asia/Taipei          # 全站顯示台北時間（2026-07 已於正式站設定；本機開發也建議設）
 ```
@@ -664,9 +668,403 @@ M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent 執行機制—
 
 ---
 
-### M6 訂閱通知＋Web Push（v1.2）
-- 範圍：關鍵字/分類/縣市訂閱（每人 20 個上限、每訂閱 5 關鍵字）、每日摘要（預設）、即時（預設關）、
-  Web Push。同物品同訂閱只通知一次。
+M6 已依照上面的要求產出細部規格，見緊接在下面的 §6a（格式比照 M0–M5）；**這份細部規格需經使用者
+確認後才能進入實作**。其餘尚未細化的 milestone 比照本節開工前的原則，各自開工前再產出。
+
+## 6a. M6 — 訂閱通知＋Web Push（v1.2，細部規格）
+
+**目標**：使用者不必每天回站上滑列表，也能在符合自己興趣（關鍵字／分類／縣市）的新物品上架時被
+通知到——先天天收一封摘要（預設），想要更即時的人可自己打開即時通知；即時推播額外支援 Web Push，
+不必依賴 Telegram 或開著分頁。
+**依賴**：M1（`items` 的 `status`／`publishedAt`／`categoryId`／`cityId`，本規格只讀取，不新增
+欄位、不修改既有上架/列表 API）、M3（`system_jobs`／`system_job_runs` 排程觸發＋idempotent
+執行機制，本規格新增兩個 job kind 掛在同一套機制上）、M4（`notifications`／
+`notification_preferences`／`notification_deliveries`／`NotificationChannel` enum，本規格
+新增通知內容與一個新的 channel 值，沿用既有的建立通知、偏好檢查、派送重試機制，不重新發明）。
+
+### 交付內容
+
+1. **資料表與欄位**（表名依 §11.1 定案：`user_subscriptions`、`subscription_keywords`、
+   `subscription_categories`、`subscription_cities`、`subscription_matches`、
+   `subscription_digest_jobs`、`web_push_subscriptions`，不可更改；以下欄位為本規格新增設計，
+   命名依 §3.1 慣例）。
+
+   `user_subscriptions`（一個使用者最多 20 筆，見交付內容 3 的上限驗證）：
+   ```
+   id
+   userId              FK → users.id
+   label               text, nullable   -- 使用者自訂名稱（例：「台北的腳踏車」），純顯示用，不參
+                                         -- 與比對邏輯
+   immediateEnabled    boolean, default false  -- 即時通知（預設關）
+   dailyDigestEnabled  boolean, default true   -- 每日摘要（預設開）
+   createdAt / updatedAt
+   ```
+   **即時／每日摘要開關設計在「每一筆訂閱」上，不是使用者帳號層級的全域開關**：使用者可能對某個
+   稀有物品的訂閱想要即時通知，但對「所有居家生活類物品」這種寬鬆訂閱只想每天看一次摘要，兩者
+   顆粒度不同，故做成每筆訂閱各自的欄位。兩個開關互不排斥，可同時開（見交付內容 6 的通知去重
+   規則說明兩者如何互動）。
+
+   `subscription_keywords`（每筆訂閱最多 5 個，見交付內容 3 的上限驗證；`normalized_keyword` 索引
+   依 §11.2 定案）：
+   ```
+   id
+   subscriptionId     FK
+   keyword            text   -- 使用者原始輸入，保留給 UI 顯示（可能是全形/大寫）
+   normalizedKeyword  text   -- 正規化後的比對用字串，規則見交付內容 5
+   createdAt
+   @@unique([subscriptionId, normalizedKeyword])  -- 同一訂閱內防止「iPhone」「iphone」這種正規化
+                                                    -- 後其實同義的重複關鍵字
+   ```
+
+   `subscription_categories` / `subscription_cities`（多對多join表，皆無額外人為上限——見下方
+   「不設分類/縣市上限」的理由）：
+   ```
+   subscription_categories: id / subscriptionId FK / categoryId FK / createdAt
+     @@unique([subscriptionId, categoryId])
+   subscription_cities:     id / subscriptionId FK / cityId FK / createdAt
+     @@unique([subscriptionId, cityId])
+   ```
+   **不設分類/縣市上限**：關鍵字是自由文字，不設上限會被濫用塞成千上萬個關鍵字，因此設 5 個硬
+   上限；分類（9 種）與縣市（22 縣市）本身選項有限，全選等同「這個維度不篩選」，不會造成關鍵字
+   那種輸入濫用風險，`@@unique` 已經防止重複勾選同一項，故不需要額外的數量上限。
+
+   `subscription_matches`（本規格「同物品同訂閱只通知一次」的 idempotency 核心，見交付內容 7）：
+   ```
+   id
+   subscriptionId  FK
+   itemId          FK
+   matchedAt       timestamptz (= createdAt)  -- 比對 job 判定符合條件的當下
+   notifiedAt      timestamptz, nullable      -- 實際通知出去（不論走哪個管道）的時間；NULL 代表
+                                               -- 已比對成功但尚未通知（等每日摘要 job 撿走）
+   notifiedVia     text, nullable             -- 'immediate' | 'digest'
+   digestJobId     FK → subscription_digest_jobs.id, nullable  -- notifiedVia='digest' 時填
+   @@unique([subscriptionId, itemId])
+   ```
+
+   `subscription_digest_jobs`（每人每個台北曆日最多一筆，是每日摘要的「派送紀錄」而非排程本身
+   ——排程觸發沿用 M3 的 `system_jobs`／`system_job_runs`，這張表記錄的是「對某個使用者這一天
+   的摘要處理到哪」）：
+   ```
+   id
+   userId      FK
+   digestDate  date   -- Asia/Taipei 曆日（不是 UTC 日期，比照 §3.4 全站時區慣例）
+   status      text   -- 'pending' | 'sent' | 'skipped_empty' | 'failed'
+   itemCount   int, default 0
+   sentAt      timestamptz, nullable
+   createdAt
+   @@unique([userId, digestDate])
+   ```
+
+   `web_push_subscriptions`（同一使用者可有多筆——多裝置/多瀏覽器；欄位對應瀏覽器 Push API
+   標準的 `PushSubscription` 物件）：
+   ```
+   id
+   userId         FK
+   endpoint       text  @unique   -- push service 的推播端點 URL，瀏覽器端唯一
+   p256dhKey      text            -- PushSubscription.keys.p256dh
+   authKey        text            -- PushSubscription.keys.auth
+   userAgent      text, nullable  -- 除錯與清理用，非必要
+   isActive       boolean, default true
+   failureCount   int, default 0
+   lastSuccessAt  timestamptz, nullable
+   lastFailureAt  timestamptz, nullable
+   createdAt
+   deactivatedAt  timestamptz, nullable
+   ```
+
+2. **與 M4 通知偏好頁的分工（正交設計，不可混在同一套 UI/資料表裡）**：
+   - **訂閱**（`user_subscriptions` 及其 keywords/categories/cities）回答的問題是「我對什麼樣的
+     新物品感興趣」——這是內容篩選條件，使用者在 `/me/subscriptions`（見交付內容 9）管理。
+   - **通知偏好**（M4 既有 `notification_preferences`，`eventType` 為字串 key）回答的問題是
+     「我要不要收到某一類事件的通知、要不要外送到站外管道」——這是管道與開關，使用者在 M4
+     既有的通知偏好頁管理（確切路由由 M4 實作時定案，本規格不重新指定）。
+   - 兩者是**兩層獨立的閘門**，缺一都不會發送：訂閱的 `immediateEnabled` 只決定「符合條件時，是
+     要立刻通知還是併入明天的每日摘要」這個**時機**問題；不論選哪個時機，實際「站內通知要不要建立、
+     要不要外送到 Telegram／Web Push」仍然要另外查 M4 的 `notification_preferences`（本規格新增
+     兩個 `eventType` 值：`subscription_match`（即時比對命中）與 `subscription_digest`（每日摘要）
+     ——即使使用者把某訂閱設成 `immediateEnabled=true`，只要他在 M4 偏好頁把 `subscription_match`
+     這個事件類型的外部通知關掉，該訂閱仍然只會產生站內通知、不會發 Telegram/Web Push；這正是
+     「訂閱決定內容與時機、偏好頁決定管道」分工的具體體現。
+   - M4 通知偏好頁需要新增可勾選的兩列（`subscription_match`／`subscription_digest`），這是對 M4
+     既有 UI 的擴充項目，不修改 M4 既有 API 契約（`notification_preferences` 的 `eventType` 本來
+     就是自由字串，不是 enum，新增事件類型不需要 migration）。
+   - Web Push 的「啟用/停用瀏覽器推播」這個裝置層級開關，放在 `/me/subscriptions` 頁面頂端（見
+     交付內容 9），而不是放進 M4 通知偏好頁：因為 M6 v1 階段 Web Push 唯一的用途就是通知訂閱
+     比對結果，放在同一個頁面體驗上比較直覺；若之後有其他事件類型也想用 Web Push 管道，那會是
+     未來版本要把它搬到通用管道管理頁的決定，不在 M6 範圍內。
+
+3. **訂閱建立/編輯/刪除 API（上限一律 server-side 驗證，不能只靠前端）**：
+   - `POST /api/subscriptions`：建立一筆訂閱（`label`、`immediateEnabled`、`dailyDigestEnabled`、
+     `keywords[]`（≤5，每個做交付內容 5 的正規化）、`categoryIds[]`、`cityIds[]`）。寫入前對
+     `keywords`（正規化後）、`categoryIds`、`cityIds` 各自去重（例如 `Array.from(new Set(...))`），
+     避免輸入重複值觸發 `@@unique([subscriptionId, categoryId])`/`@@unique([subscriptionId,
+     cityId])` 拋出 500。三個篩選維度（關鍵字/分類/縣市）**至少要有一個非空**，否則回 422
+     （避免建立「什麼都比對」的訂閱，對比對 job 與使用者自己都是雜訊）。同一 transaction 內先數
+     使用者目前訂閱數，`>= 20` 回 422（`{"error":{"code":"VALIDATION_ERROR","message":"訂閱已達
+     上限（20 筆）"}}`）；
+     `keywords.length > 5` 回 422。
+     **已知取捨**：這個計數檢查與寫入不是同一個原子操作（Postgres 預設 READ COMMITTED 下，同一
+     使用者從兩個分頁同時快速連點「新增訂閱」有極小機率讓計數短暫超過 20），影響範圍僅止於這個
+     使用者自己多出 1 筆訂閱，不影響其他使用者也不是安全問題，MVP 先接受這個機率極低的邊界情況；
+     若要完全杜絕，可在 `users` 列上加 `SELECT ... FOR UPDATE` 或改用 serializable transaction，
+     留給之後如果真的觀察到濫用再加。
+   - `GET /api/subscriptions`：列出自己的訂閱（cursor 分頁，依 §3.2 慣例），每筆帶目前累積的
+     `subscription_matches` 總數與未通知數，方便使用者知道這個訂閱「有沒有在動」。
+   - `GET /api/subscriptions/[id]`：單筆詳情（含 keywords/categories/cities）；非本人 403。
+   - `PATCH /api/subscriptions/[id]`：整包替換語意——同一 transaction 內刪除舊的
+     `subscription_keywords`/`subscription_categories`/`subscription_cities`，依 request body
+     重新寫入，上限驗證同建立；非本人 403。
+   - `DELETE /api/subscriptions/[id]`：刪除訂閱；FK cascade 一併刪掉關聯的 keywords/categories/
+     cities/matches（`subscription_matches` 只是比對進度用的輔助表，不是稽核 log，刪除訂閱時
+     一併清掉沒有保留價值）；非本人 403。
+   - `POST /api/web-push/subscriptions`：前端把瀏覽器 `PushSubscription.toJSON()` 的
+     `endpoint`/`keys.p256dh`/`keys.auth` 傳進來，upsert（依 `endpoint` unique）一筆
+     `web_push_subscriptions`，`isActive` 重設為 true（同一裝置重新訂閱時復活舊紀錄而非產生
+     重複列）。
+   - `DELETE /api/web-push/subscriptions`：body 帶 `endpoint`，刪除/停用呼叫者名下對應那一筆
+     （多裝置時只解除當下這一支裝置，不影響其他裝置）；`endpoint` 不屬於呼叫者本人 → 404。
+
+4. **item 上架後怎麼觸發比對：排程掃描，不做上架當下同步比對**（沿用 M3 `system_jobs`／
+   `system_job_runs` 機制，新增 job kind `subscription_match_scan`，建議每 5 分鐘觸發一次）：
+   上架當下同步比對對高流量不友善（每次上架都要即時掃過所有使用者的所有訂閱，拖慢上架 API 的
+   回應時間，且上架 API 目前完全不知道訂閱系統存在，M6 不應該讓它多一個外部相依）；改採「新
+   `system_jobs` job kind + 週期性掃描」：
+   - **cursor 設計**：不新增額外的 cursor 表，直接沿用 `SystemJobRun.detail`（既有 `Json?` 欄位）
+     存 `{"cursor": {"publishedAt": "...", "id": "..."}}`；每次執行先讀該 job 最近一筆
+     `status='success'` 的 `SystemJobRun.detail.cursor`，撈
+     `items.status='published' AND (published_at, id) > cursor`（依 `published_at asc, id asc`
+     排序，一批最多 500 筆，避免單次執行時間過長，剩下的下次 tick 繼續處理），執行完把本次掃到
+     的最後一筆 `(publishedAt, id)` 寫進這次 run 的 `detail.cursor`。**關鍵前提**：物品從
+     `reserved`／`handover_pending` 等狀態退回 `published`（例如認領被取消、no-show 退回）時，
+     既有的狀態轉移邏輯必須把 `publishedAt` 更新為 `now()`，否則舊的 `publishedAt` 會小於 cursor
+     已經前進到的位置，導致這次「重新上架」永遠不會被掃描 job 撈到、訂閱者收不到通知——這點
+     順便也讓物品在前台列表重新置頂，符合使用者對「重新開放」的直覺預期。
+   - **這個 job 首次上線時，cursor 起點 = 上線當下的時間**，不回溯掃描既有已上架的物品（見「不做」
+     的「不做建立訂閱時回填比對存量物品」，理由相同：避免第一次跑就要處理全庫存量造成長時間
+     阻塞）。
+   - 每次執行同時把所有 `user_subscriptions`（含關聯 keywords/categories/cities）讀進記憶體，
+     對這批新物品逐一跑交付內容 5 的比對邏輯；命中就用 `ON CONFLICT (subscription_id, item_id)
+     DO NOTHING` 寫入一筆 `subscription_matches`（因為同一批掃描不會重複處理同一個物品，這裡的
+     `ON CONFLICT DO NOTHING` 主要防的是「job 因故被觸發兩次、cursor 還沒推進導致同一批物品被
+     掃兩次」這種情況，而不是防同一物品被兩個不同比對維度各命中一次——同一個 `(subscriptionId,
+     itemId)` 不管命中幾個維度都只會是一筆，因為比對函式對每個 `(subscription, item)` pair 只
+     判斷一次 true/false）。
+   - 對每筆**新插入成功**（代表這是這次 tick 才第一次命中，不是重複）且該訂閱
+     `immediateEnabled=true` 的 match，在同一個 transaction 裡立刻依交付內容 6 建立通知並把
+     `notifiedAt`/`notifiedVia='immediate'` 寫回同一列；`immediateEnabled=false` 的訂閱，這筆
+     match 先留著 `notifiedAt=NULL`，等交付內容 8 的每日摘要 job 撿走。
+
+5. **關鍵字/分類/縣市比對邏輯**：
+   - **正規化規則**（`normalizeKeyword`，建立/編輯訂閱時對每個關鍵字套用一次存進
+     `normalized_keyword`，比對 job 對每個物品的 title+description 也套用同一函式）：
+     ```
+     function normalizeKeyword(raw: string): string {
+       return raw
+         .normalize("NFKC")   // 全形→半形、相容字元正規化（含全形英數字/全形符號），
+                               // 「Ｉphone」「iPhone」正規化後一致
+         .trim()
+         .toLowerCase();       // 大小寫不敏感
+     }
+     ```
+     **建立/編輯訂閱的 API 必須拒絕正規化後長度為 0 的關鍵字**（例如只輸入空白字元）：若不擋，
+     `normalizedItemText.includes("")` 恆為 `true`，會讓該訂閱無條件命中所有新上架物品，形同
+     關鍵字篩選完全失效。驗證順序是先正規化、再檢查長度 > 0，不合格的關鍵字整批回 422。
+   - **比對規則**：三個維度內部用 OR，跨維度用 AND；某維度沒設定就視為該維度不篩選（永遠 true）：
+     ```
+     function isMatch(subscription, item, normalizedItemText): boolean {
+       const keywordOk = subscription.keywords.length === 0
+         || subscription.keywords.some(k => normalizedItemText.includes(k.normalizedKeyword));
+       const categoryOk = subscription.categories.length === 0
+         || subscription.categories.some(c => c.categoryId === item.categoryId);
+       const cityOk = subscription.cities.length === 0
+         || subscription.cities.some(c => c.cityId === item.cityId);
+       return keywordOk && categoryOk && cityOk;
+     }
+     // normalizedItemText = normalizeKeyword(item.title + " " + item.description)
+     ```
+     關鍵字採**子字串**比對（`includes`），不是整詞比對：中文沒有空白分詞，若採「整詞相等」會讓
+     「腳踏車」這種關鍵字幾乎比對不到任何自然語句，子字串比對雖然會有少量誤判（例如關鍵字「腳踏」
+     命中「腳踏車」也會命中「腳踏實地」這種罕見情境），但符合中文使用者對「關鍵字通知」的直覺
+     期待，且誤判成本低（頂多多收一則不相關通知，不是安全問題）。
+   - **效能已知限制（MVP 階段接受，非本規格要解決）**：目前設計是「每次 tick 把全部訂閱讀進
+     記憶體，對每個新物品逐一跑比對」，複雜度是 O(新物品數 × 總訂閱數)。§11.2 定案的
+     `subscription_keywords(normalized_keyword)` 索引在這個設計下主要用於「依關鍵字反查有哪些
+     訂閱／除錯／未來的濫用調查」，不是熱路徑比對本身在用；當活躍訂閱數成長到數千筆以上、
+     每次 tick 都要重新載入全部訂閱開始有感時，可以考慮改用 Postgres `pg_trgm` 或專用全文檢索
+     服務做關鍵字反查以降低複雜度，但這是超出 M6 範圍的未來優化，先用最簡單版本上線。
+
+6. **通知內容與 M4 整合**（沿用既有 `notifications` 站內通知機制與鈴鐺 UI，不新增資料表；新增
+   兩個 `NotificationType`／`eventType` 值 `subscription_match`、`subscription_digest`）：
+   - `subscription_match`：payload 帶 `subscriptionId`、`subscriptionLabel`、`itemId`、
+     `itemTitle`、`itemCityName` 等足夠 UI 顯示一則「你訂閱的『OO』有新物品：《XX》」的資訊。
+   - `subscription_digest`：payload 帶當天符合條件的物品清單（見交付內容 8），上限顯示前 10 筆
+     ＋「還有 N 筆，請至 `/me/subscriptions` 查看」。
+   - 依 M4 既有機制查詢 `notification_preferences`（`eventType='subscription_match'` 或
+     `'subscription_digest'`）決定是否建立站內通知、是否嘗試外部管道派送，沿用 M4 既有邏輯與
+     `notification_deliveries` 的 idempotency／重試機制，本規格不重新定義這兩個欄位的語意。
+   - 需要在 M4 的 `NotificationChannel` enum 新增 `web_push` 值（目前只有 `telegram`），
+     `notification_deliveries` 既有的 `@@unique([notificationId, channel])` 天然適用於
+     `web_push` channel，不需要新增欄位。
+
+7. **「同物品同訂閱只通知一次」的 idempotency 設計**：核心就是 `subscription_matches` 的
+   `@@unique([subscriptionId, itemId])`——**「比對命中」這個事實本身只會被記錄一次**，不管是
+   即時比對 job 還是每日摘要 job 先發現的都一樣，因為兩者都走同一張表、同一個 unique constraint、
+   同一個 `ON CONFLICT DO NOTHING` 語意。「要不要通知、通過哪個管道」是這筆已經去重過的 match
+   列的**後續狀態**（`notifiedAt`/`notifiedVia`），不是另一層去重機制：
+   - 若訂閱 `immediateEnabled=true`：比對 job 一發現新 match 就立刻通知並蓋章
+     `notifiedAt`/`notifiedVia='immediate'`——之後不管每日摘要 job 怎麼跑，都只會撈
+     `notifiedAt IS NULL` 的列，這筆已經蓋章的列永遠不會被摘要 job 撿到，達成「不會又發一次」。
+   - 若訂閱只開 `dailyDigestEnabled=true`（`immediateEnabled=false`）：比對 job 一樣會插入
+     match 列，但**不**在當下通知，`notifiedAt` 留 `NULL`，等每日摘要 job 撿走並蓋章
+     `notifiedVia='digest'`。
+   - 這與 M1 handover 用 `updateMany` + 影響列數判斷完成狀態的精神一致：都是「用一個資料庫層級
+     的唯一性/條件式寫入來保證同一件事只會發生一次」，差別只在於這裡去重的是「比對命中」這個
+     事件，不是「使用者的一個動作」。
+
+8. **每日摘要 job（沿用 M3 `system_jobs`／`system_job_runs`，新增 job kind
+   `subscription_daily_digest`，建議每天 08:00 Asia/Taipei 觸發一次，避免半夜打擾使用者）**：
+   - 找出所有 `subscription_matches.notifiedAt IS NULL` 且其所屬 `subscription.
+     dailyDigestEnabled=true` 的列，依 `subscription.userId` 分組。
+   - 對每個 `userId`：先用 `INSERT ... ON CONFLICT (user_id, digest_date) DO NOTHING` 嘗試建立
+     今天（Asia/Taipei 曆日）的 `subscription_digest_jobs` 列（`status='pending'`）；若撞到
+     unique，要看既有那筆的狀態：`status IN ('sent', 'skipped_empty')` 代表今天已經成功處理過
+     這個使用者，直接跳過；`status IN ('failed', 'pending')`（暫時性錯誤失敗、或前一次執行中途
+     崩潰留下的半成品）則**允許重新處理**，沿用同一列繼續走完流程——否則使用者會因為一次偶發的
+     網路錯誤或 Web Push 服務暫時不通，當天永遠收不到摘要通知。這是「同一天不重複\*成功\*發送
+     摘要」的 idempotency 機制，即使 job 因故被重複觸發，也不會對已成功處理的使用者重發。
+   - 過濾掉物品目前狀態已經不是 `published` 的 match（例如被搶先接手、下架、過期——避免摘要裡
+     出現點進去是死連結的物品）；這些被過濾掉的列仍然蓋章 `notifiedAt=now()`／
+     `notifiedVia='digest'`／`digestJobId`（代表「已處理，不會再被下次摘要 job 重複檢視」），
+     只是不放進通知內容裡顯示。
+   - 過濾後若剩餘 0 筆，`subscription_digest_jobs.status='skipped_empty'`，不建立通知（避免
+     每天發一封「今天沒有符合條件的新物品」這種空摘要打擾使用者）。
+   - 否則依交付內容 6 建立一則 `subscription_digest` 通知，把本次涉及的所有 match 列蓋章
+     `notifiedAt=now()`／`notifiedVia='digest'`／`digestJobId=`本次 `subscription_digest_jobs.id`，
+     `subscription_digest_jobs.status='sent'`／`itemCount`／`sentAt` 一併寫入，全部包在同一個
+     transaction 裡。
+
+9. **Web Push 技術細節**：
+   - **VAPID**：用 `web-push` npm 套件的 `webpush.generateVAPIDKeys()`（或 CLI
+     `npx web-push generate-vapid-keys`）產生一組金鑰對，寫入 §3.4 新增的
+     `WEB_PUSH_VAPID_PUBLIC_KEY`/`WEB_PUSH_VAPID_PRIVATE_KEY`/`WEB_PUSH_VAPID_SUBJECT`
+     三個環境變數（subject 是 Web Push 規範要求的聯絡方式，格式 `mailto:<站方聯絡信箱>`）。
+   - **Service Worker**：新增 `public/sw.js`，監聽 `push` 事件呼叫
+     `self.registration.showNotification(title, {body, icon, data:{itemUrl}})`；監聽
+     `notificationclick` 事件時，**`clients.openWindow()` 本身沒有「找既有分頁」的語意，一定是
+     開新分頁**——要做到「優先 focus 既有分頁」必須自己用 `clients.matchAll({type:'window'})`
+     取得所有已開啟的視窗、比對 URL 是否吻合，找到就呼叫該 `client.focus()`，都沒找到才呼叫
+     `clients.openWindow(event.notification.data.itemUrl)`。
+   - **前端註冊流程**：`/me/subscriptions` 頁頂端提供「啟用瀏覽器推播通知」開關 →
+     `navigator.serviceWorker.register('/sw.js')` → 使用者同意瀏覽器通知權限提示 →
+     `registration.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:
+     <WEB_PUSH_VAPID_PUBLIC_KEY 轉成的 Uint8Array>})` → 拿到的 `PushSubscription` 呼叫
+     `POST /api/web-push/subscriptions` 存進 `web_push_subscriptions`。
+   - **失效偵測與自動清理**（比照 M4 Telegram「發送失敗重試＋失效自動解綁」的精神，Web Push 的
+     失效訊號比 Telegram 更明確——是標準化的 HTTP 狀態碼，不需要額外偵測邏輯）：`web-push` 套件的
+     `sendNotification` 在推播服務回應非 2xx 時是**用 throw 一個帶 `statusCode` 的 Error 表達失敗**，
+     不是回傳值，所以呼叫時必須包 `try/catch`：`try { await webpush.sendNotification(subscription,
+     payload, {vapidDetails}) } catch (err) { ...依 err.statusCode 判斷... }`，沒有這層
+     try/catch，失敗會直接讓派送 job 整個中斷。**`err.statusCode` 為 404/410（Gone）代表該裝置的
+     推播訂閱已在瀏覽器端失效**（使用者關閉了通知權限、清除瀏覽器
+     資料、或解除安裝），立刻把該筆 `web_push_subscriptions.isActive=false`／
+     `deactivatedAt=now()`，之後派送直接跳過這筆；其他錯誤（逾時、5xx）視為暫時性失敗，沿用
+     `notification_deliveries` 既有的 `attempts`/`lastError` 重試機制，不動
+     `web_push_subscriptions.isActive`。使用者名下若沒有任何 `isActive=true` 的裝置，代表尚未
+     啟用或已全部失效，直接跳過 web push 這個管道（不建立失敗紀錄），行為比照「使用者沒綁定
+     Telegram 就跳過 Telegram 管道」。
+   - 一個使用者可能有多台裝置各自訂閱；派送時對每個 `isActive=true` 的裝置各發一次，
+     `notification_deliveries` 這筆 `channel='web_push'` 的紀錄只要有任一裝置成功即視為
+     `sent`；全部裝置都失敗（且都不是 410/404 那種立即判定失效的情況）才視為這次派送 `failed`，
+     交給既有重試機制下次再試。
+
+10. **頁面**：新增 `/me/subscriptions`（我的訂閱），列出目前訂閱（label／篩選條件摘要／
+    即時開關／每日摘要開關／累積命中數）、新增/編輯/刪除訂閱的表單、頁頂「啟用瀏覽器推播通知」
+    開關（見交付內容 9）。bottom-tab／個人頁需有入口連到這個頁面（放在既有「我的分享」/「我的
+    需要」附近，具體視當時前台導覽結構而定，由實作 session 判斷）。
+
+11. **索引**（附加於 §11.2 既有定案索引之外，不與其衝突；`subscription_keywords
+    (normalized_keyword)` 沿用 §11.2 原定索引，其用途見交付內容 5 的效能限制說明）：
+    ```
+    user_subscriptions(user_id)
+    subscription_keywords(subscription_id)
+    subscription_keywords @@unique([subscription_id, normalized_keyword])
+    subscription_categories @@unique([subscription_id, category_id])
+    subscription_cities @@unique([subscription_id, city_id])
+    subscription_matches @@unique([subscription_id, item_id])
+    subscription_matches(notified_at)        -- 每日摘要 job 撈 notifiedAt IS NULL 用
+    subscription_digest_jobs @@unique([user_id, digest_date])
+    web_push_subscriptions(user_id)
+    web_push_subscriptions @@unique([endpoint])
+    items(status, published_at, id)          -- 比對 job 掃描新上架物品的 cursor 查詢用
+    ```
+
+### 不做（scope guard）
+
+- **不做「訂閱物主」**：訂閱的篩選條件只有關鍵字/分類/縣市，不支援「追蹤某個分享者，他一上架就
+  通知我」這種對特定使用者的社交追蹤功能——這偏向社群/粉絲機制，不是「找到需要的物品」，也可能
+  讓使用者感覺被特定人「盯上」，不符合平台調性。
+- **不做即時 SSE/WebSocket 推播**：即時通知的「即時」上限是比對 job 的 tick 頻率（建議 5 分鐘），
+  不是秒級真即時；使用者需要重新整理頁面或等下一次 job tick／Web Push 送達，與 M1 私訊 polling
+  的精神一致，不為了「更即時」引入常駐連線的維運複雜度。
+- **不做手機 APP push**：本平台沒有原生 iOS/Android app（§2 技術棧定案是 Next.js web），
+  Web Push 只送達已安裝/開啟過該瀏覽器 PWA 權限的裝置，不做 Apple Push Notification service／
+  Firebase Cloud Messaging 這類原生推播整合。
+- **不做進階查詢語法**：關鍵字只支援簡單子字串 OR 比對（見交付內容 5），不支援 AND／排除詞／
+  萬用字元／正規表示式這類進階語法。
+- **不做建立訂閱時回填比對存量物品**：新建立的訂閱只比對「之後」新上架的物品，不會在建立當下
+  對現有 `published` 物品做一次性全庫掃描比對——這與比對 job 首次上線時 cursor 起點設在上線
+  當下（見交付內容 4）是同一個理由：避免任意時刻觸發一次全庫規模的掃描。
+- **不做訂閱管理後台**：M2 治理後台與 M8 營運強化都還沒有訂閱相關的管理介面（例如看某個訂閱被
+  濫用塞了什麼關鍵字、強制停用某使用者的訂閱），出問題時工程師需直接查 DB 手動處理，待 M2/M8
+  之後視需要再補。
+- **不做電子郵件送達**：每日摘要與即時通知都走既有站內通知＋ Telegram／Web Push 管道，不是一封
+  獨立的 email newsletter——本平台目前沒有 SMTP/郵件發送基礎設施（§3.4 環境變數清單裡沒有郵件
+  相關變數），若之後要加 email 管道，屬於獨立提案，不在 M6 範圍。
+- **不做退訂免登入連結**（例如 email 裡常見的一鍵取消訂閱連結）：既然不透過 email 送達，這個
+  常見的 email 退訂機制在本規格下不適用；使用者透過 `/me/subscriptions` 頁面管理訂閱即可。
+
+### 驗收清單
+
+- [ ] 乾淨 DB `prisma migrate deploy` 後 `user_subscriptions`／`subscription_keywords`／
+      `subscription_categories`／`subscription_cities`／`subscription_matches`／
+      `subscription_digest_jobs`／`web_push_subscriptions` 七張表皆存在；直接查 DB schema 確認
+      `subscription_matches` 有 `unique(subscription_id, item_id)`、`subscription_keywords`
+      有 `unique(subscription_id, normalized_keyword)`、`subscription_digest_jobs` 有
+      `unique(user_id, digest_date)`、`web_push_subscriptions.endpoint` 有 unique 索引。
+- [ ] 一個使用者已有 20 筆訂閱時，`POST /api/subscriptions` 回 422；一筆訂閱嘗試帶 6 個關鍵字
+      → 422；三個篩選維度皆空 → 422。
+- [ ] 正規化測試：關鍵字 `"ｉＰhone"`（全形）與 `"iphone"`（半形小寫）正規化後結果相同；一個
+      物品標題為「二手 iPhone 13 出售」，訂閱關鍵字 `"iPhone"` 應該命中（子字串比對，不受
+      大小寫/全形半形影響）。
+- [ ] 建立一筆 `immediateEnabled=true` 的訂閱後上架一個符合條件的新物品，手動觸發
+      `subscription_match_scan` job → `subscription_matches` 出現一筆 `notifiedAt` 非 null、
+      `notifiedVia='immediate'`，該使用者的 `notifications` 出現一則 `subscription_match`
+      通知。
+- [ ] 建立一筆只開 `dailyDigestEnabled=true`（`immediateEnabled=false`）的訂閱，同樣情境下觸發
+      `subscription_match_scan` → `subscription_matches` 出現一筆但 `notifiedAt` 仍是 NULL、
+      當下**不**產生任何通知；再手動觸發 `subscription_daily_digest` job → 這筆才被蓋章
+      `notifiedAt`/`notifiedVia='digest'`，使用者收到一則 `subscription_digest` 通知。
+- [ ] Idempotency：對同一個 `(subscription, item)` 配對重複觸發 `subscription_match_scan`
+      （模擬 cursor 未推進被重複觸發）→ `subscription_matches` 只有一筆（`ON CONFLICT DO
+      NOTHING` 生效），不重複發通知。
+- [ ] Idempotency：對同一使用者同一天重複觸發 `subscription_daily_digest` job 兩次 →
+      `subscription_digest_jobs` 該 `(user_id, digest_date)` 只有一筆，第二次觸發是 no-op，
+      使用者不會收到兩封當天摘要。
+- [ ] 每日摘要撈到的 match 中，若對應物品已經被別人接手（`items.status` 不再是 `published`）→
+      該筆仍被蓋章 `notifiedAt`（不會下次又被撈到），但不出現在摘要通知內容裡。
+- [ ] 一個訂閱 `immediateEnabled=true` 且 `dailyDigestEnabled=true` 同時開啟，命中一次 match →
+      只收到一次通知（即時那次），該筆 match 之後不會再被每日摘要 job 當成待通知處理。
+- [ ] 通知偏好整合：使用者把 `notification_preferences` 裡 `eventType='subscription_match'`
+      的 `externalEnabled` 設為關閉 → 即時比對命中時仍有站內通知，但不嘗試 Telegram/Web Push
+      派送（`notification_deliveries` 不新增該筆的外部管道紀錄）。
+- [ ] Web Push 端到端：前端註冊 service worker → 訂閱瀏覽器推播 → `web_push_subscriptions`
+      出現一筆 `isActive=true`；觸發一次通知派送 → 該裝置實際收到系統推播通知（瀏覽器彈出）。
+- [ ] 模擬 `webpush.sendNotification` 回應 410 Gone → 對應 `web_push_subscriptions` 那一筆
+      立刻 `isActive=false`／`deactivatedAt` 有值；之後再次派送該使用者的通知不會再嘗試這個
+      失效端點。
+- [ ] 非本人對他人的 `user_subscriptions`／`web_push_subscriptions` 呼叫 `PATCH`/`DELETE` →
+      403 或 404（不洩漏該筆資源是否存在）。
+- [ ] `judgment-rubrics.md` §5 三組底線逐條過（比照 M1/M5 驗收慣例）。
 
 ### M7 資料權利與法務（v1.3）
 - 範圍：資料匯出（打包到 MinIO、7 天自動刪）、帳號刪除（去識別化保留必要紀錄）、retention 政策
