@@ -35,6 +35,7 @@ export type ItemMinAggregateOutputType = {
   publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  expiresAt: Date | null
 }
 
 export type ItemMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type ItemMaxAggregateOutputType = {
   publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  expiresAt: Date | null
 }
 
 export type ItemCountAggregateOutputType = {
@@ -61,6 +63,7 @@ export type ItemCountAggregateOutputType = {
   publishedAt: number
   createdAt: number
   updatedAt: number
+  expiresAt: number
   _all: number
 }
 
@@ -76,6 +79,7 @@ export type ItemMinAggregateInputType = {
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
+  expiresAt?: true
 }
 
 export type ItemMaxAggregateInputType = {
@@ -89,6 +93,7 @@ export type ItemMaxAggregateInputType = {
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
+  expiresAt?: true
 }
 
 export type ItemCountAggregateInputType = {
@@ -102,6 +107,7 @@ export type ItemCountAggregateInputType = {
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
+  expiresAt?: true
   _all?: true
 }
 
@@ -188,6 +194,7 @@ export type ItemGroupByOutputType = {
   publishedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  expiresAt: Date | null
   _count: ItemCountAggregateOutputType | null
   _min: ItemMinAggregateOutputType | null
   _max: ItemMaxAggregateOutputType | null
@@ -222,6 +229,7 @@ export type ItemWhereInput = {
   publishedAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   city?: Prisma.XOR<Prisma.CityScalarRelationFilter, Prisma.CityWhereInput>
@@ -233,6 +241,10 @@ export type ItemWhereInput = {
   thanksMessages?: Prisma.ThanksMessageListRelationFilter
   contributionEvents?: Prisma.ContributionEventListRelationFilter
   conversation?: Prisma.XOR<Prisma.ConversationNullableScalarRelationFilter, Prisma.ConversationWhereInput> | null
+  reports?: Prisma.ReportListRelationFilter
+  itemRemovals?: Prisma.ItemRemovalListRelationFilter
+  couponDetail?: Prisma.XOR<Prisma.CouponDetailNullableScalarRelationFilter, Prisma.CouponDetailWhereInput> | null
+  expirationLogs?: Prisma.ItemExpirationLogListRelationFilter
 }
 
 export type ItemOrderByWithRelationInput = {
@@ -246,6 +258,7 @@ export type ItemOrderByWithRelationInput = {
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
   city?: Prisma.CityOrderByWithRelationInput
@@ -257,6 +270,10 @@ export type ItemOrderByWithRelationInput = {
   thanksMessages?: Prisma.ThanksMessageOrderByRelationAggregateInput
   contributionEvents?: Prisma.ContributionEventOrderByRelationAggregateInput
   conversation?: Prisma.ConversationOrderByWithRelationInput
+  reports?: Prisma.ReportOrderByRelationAggregateInput
+  itemRemovals?: Prisma.ItemRemovalOrderByRelationAggregateInput
+  couponDetail?: Prisma.CouponDetailOrderByWithRelationInput
+  expirationLogs?: Prisma.ItemExpirationLogOrderByRelationAggregateInput
 }
 
 export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -273,6 +290,7 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   publishedAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   city?: Prisma.XOR<Prisma.CityScalarRelationFilter, Prisma.CityWhereInput>
@@ -284,6 +302,10 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   thanksMessages?: Prisma.ThanksMessageListRelationFilter
   contributionEvents?: Prisma.ContributionEventListRelationFilter
   conversation?: Prisma.XOR<Prisma.ConversationNullableScalarRelationFilter, Prisma.ConversationWhereInput> | null
+  reports?: Prisma.ReportListRelationFilter
+  itemRemovals?: Prisma.ItemRemovalListRelationFilter
+  couponDetail?: Prisma.XOR<Prisma.CouponDetailNullableScalarRelationFilter, Prisma.CouponDetailWhereInput> | null
+  expirationLogs?: Prisma.ItemExpirationLogListRelationFilter
 }, "id">
 
 export type ItemOrderByWithAggregationInput = {
@@ -297,6 +319,7 @@ export type ItemOrderByWithAggregationInput = {
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ItemCountOrderByAggregateInput
   _max?: Prisma.ItemMaxOrderByAggregateInput
   _min?: Prisma.ItemMinOrderByAggregateInput
@@ -316,6 +339,7 @@ export type ItemScalarWhereWithAggregatesInput = {
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Item"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Item"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Item"> | Date | string | null
 }
 
 export type ItemCreateInput = {
@@ -326,6 +350,7 @@ export type ItemCreateInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -337,6 +362,10 @@ export type ItemCreateInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateInput = {
@@ -350,6 +379,7 @@ export type ItemUncheckedCreateInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -358,6 +388,10 @@ export type ItemUncheckedCreateInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemUpdateInput = {
@@ -368,6 +402,7 @@ export type ItemUpdateInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -379,6 +414,10 @@ export type ItemUpdateInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateInput = {
@@ -392,6 +431,7 @@ export type ItemUncheckedUpdateInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -400,6 +440,10 @@ export type ItemUncheckedUpdateInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateManyInput = {
@@ -413,6 +457,7 @@ export type ItemCreateManyInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
 }
 
 export type ItemUpdateManyMutationInput = {
@@ -423,6 +468,7 @@ export type ItemUpdateManyMutationInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ItemUncheckedUpdateManyInput = {
@@ -436,6 +482,7 @@ export type ItemUncheckedUpdateManyInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ItemListRelationFilter = {
@@ -459,6 +506,7 @@ export type ItemCountOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
 }
 
 export type ItemMaxOrderByAggregateInput = {
@@ -472,6 +520,7 @@ export type ItemMaxOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
 }
 
 export type ItemMinOrderByAggregateInput = {
@@ -485,6 +534,7 @@ export type ItemMinOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
 }
 
 export type ItemScalarRelationFilter = {
@@ -741,6 +791,64 @@ export type ItemUpdateOneRequiredWithoutConversationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutConversationInput, Prisma.ItemUpdateWithoutConversationInput>, Prisma.ItemUncheckedUpdateWithoutConversationInput>
 }
 
+export type ItemCreateNestedOneWithoutReportsInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutReportsInput, Prisma.ItemUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutReportsInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneWithoutReportsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutReportsInput, Prisma.ItemUncheckedCreateWithoutReportsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutReportsInput
+  upsert?: Prisma.ItemUpsertWithoutReportsInput
+  disconnect?: Prisma.ItemWhereInput | boolean
+  delete?: Prisma.ItemWhereInput | boolean
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutReportsInput, Prisma.ItemUpdateWithoutReportsInput>, Prisma.ItemUncheckedUpdateWithoutReportsInput>
+}
+
+export type ItemCreateNestedOneWithoutItemRemovalsInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutItemRemovalsInput, Prisma.ItemUncheckedCreateWithoutItemRemovalsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutItemRemovalsInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutItemRemovalsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutItemRemovalsInput, Prisma.ItemUncheckedCreateWithoutItemRemovalsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutItemRemovalsInput
+  upsert?: Prisma.ItemUpsertWithoutItemRemovalsInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutItemRemovalsInput, Prisma.ItemUpdateWithoutItemRemovalsInput>, Prisma.ItemUncheckedUpdateWithoutItemRemovalsInput>
+}
+
+export type ItemCreateNestedOneWithoutCouponDetailInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCouponDetailInput, Prisma.ItemUncheckedCreateWithoutCouponDetailInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCouponDetailInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutCouponDetailNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCouponDetailInput, Prisma.ItemUncheckedCreateWithoutCouponDetailInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCouponDetailInput
+  upsert?: Prisma.ItemUpsertWithoutCouponDetailInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutCouponDetailInput, Prisma.ItemUpdateWithoutCouponDetailInput>, Prisma.ItemUncheckedUpdateWithoutCouponDetailInput>
+}
+
+export type ItemCreateNestedOneWithoutExpirationLogsInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutExpirationLogsInput, Prisma.ItemUncheckedCreateWithoutExpirationLogsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutExpirationLogsInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutExpirationLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutExpirationLogsInput, Prisma.ItemUncheckedCreateWithoutExpirationLogsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutExpirationLogsInput
+  upsert?: Prisma.ItemUpsertWithoutExpirationLogsInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutExpirationLogsInput, Prisma.ItemUpdateWithoutExpirationLogsInput>, Prisma.ItemUncheckedUpdateWithoutExpirationLogsInput>
+}
+
 export type ItemCreateWithoutOwnerInput = {
   id?: string
   title: string
@@ -749,6 +857,7 @@ export type ItemCreateWithoutOwnerInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
   images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
@@ -759,6 +868,10 @@ export type ItemCreateWithoutOwnerInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutOwnerInput = {
@@ -771,6 +884,7 @@ export type ItemUncheckedCreateWithoutOwnerInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -779,6 +893,10 @@ export type ItemUncheckedCreateWithoutOwnerInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutOwnerInput = {
@@ -821,6 +939,7 @@ export type ItemScalarWhereInput = {
   publishedAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Item"> | Date | string | null
 }
 
 export type ItemCreateWithoutCityInput = {
@@ -831,6 +950,7 @@ export type ItemCreateWithoutCityInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
@@ -841,6 +961,10 @@ export type ItemCreateWithoutCityInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCityInput = {
@@ -853,6 +977,7 @@ export type ItemUncheckedCreateWithoutCityInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -861,6 +986,10 @@ export type ItemUncheckedCreateWithoutCityInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCityInput = {
@@ -897,6 +1026,7 @@ export type ItemCreateWithoutCategoryInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
   images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
@@ -907,6 +1037,10 @@ export type ItemCreateWithoutCategoryInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -919,6 +1053,7 @@ export type ItemUncheckedCreateWithoutCategoryInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -927,6 +1062,10 @@ export type ItemUncheckedCreateWithoutCategoryInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -963,6 +1102,7 @@ export type ItemCreateWithoutImagesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -973,6 +1113,10 @@ export type ItemCreateWithoutImagesInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutImagesInput = {
@@ -986,6 +1130,7 @@ export type ItemUncheckedCreateWithoutImagesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
   directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
@@ -993,6 +1138,10 @@ export type ItemUncheckedCreateWithoutImagesInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutImagesInput = {
@@ -1019,6 +1168,7 @@ export type ItemUpdateWithoutImagesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1029,6 +1179,10 @@ export type ItemUpdateWithoutImagesInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutImagesInput = {
@@ -1042,6 +1196,7 @@ export type ItemUncheckedUpdateWithoutImagesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
   directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
@@ -1049,6 +1204,10 @@ export type ItemUncheckedUpdateWithoutImagesInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutStatusLogsInput = {
@@ -1059,6 +1218,7 @@ export type ItemCreateWithoutStatusLogsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1069,6 +1229,10 @@ export type ItemCreateWithoutStatusLogsInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutStatusLogsInput = {
@@ -1082,6 +1246,7 @@ export type ItemUncheckedCreateWithoutStatusLogsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
   directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
@@ -1089,6 +1254,10 @@ export type ItemUncheckedCreateWithoutStatusLogsInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutStatusLogsInput = {
@@ -1115,6 +1284,7 @@ export type ItemUpdateWithoutStatusLogsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1125,6 +1295,10 @@ export type ItemUpdateWithoutStatusLogsInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutStatusLogsInput = {
@@ -1138,6 +1312,7 @@ export type ItemUncheckedUpdateWithoutStatusLogsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
   directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
@@ -1145,6 +1320,10 @@ export type ItemUncheckedUpdateWithoutStatusLogsInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutClaimCommentsInput = {
@@ -1155,6 +1334,7 @@ export type ItemCreateWithoutClaimCommentsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1165,6 +1345,10 @@ export type ItemCreateWithoutClaimCommentsInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutClaimCommentsInput = {
@@ -1178,6 +1362,7 @@ export type ItemUncheckedCreateWithoutClaimCommentsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
@@ -1185,6 +1370,10 @@ export type ItemUncheckedCreateWithoutClaimCommentsInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutClaimCommentsInput = {
@@ -1211,6 +1400,7 @@ export type ItemUpdateWithoutClaimCommentsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1221,6 +1411,10 @@ export type ItemUpdateWithoutClaimCommentsInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutClaimCommentsInput = {
@@ -1234,6 +1428,7 @@ export type ItemUncheckedUpdateWithoutClaimCommentsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
@@ -1241,6 +1436,10 @@ export type ItemUncheckedUpdateWithoutClaimCommentsInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutDirectSharesInput = {
@@ -1251,6 +1450,7 @@ export type ItemCreateWithoutDirectSharesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1261,6 +1461,10 @@ export type ItemCreateWithoutDirectSharesInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutDirectSharesInput = {
@@ -1274,6 +1478,7 @@ export type ItemUncheckedCreateWithoutDirectSharesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -1281,6 +1486,10 @@ export type ItemUncheckedCreateWithoutDirectSharesInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutDirectSharesInput = {
@@ -1307,6 +1516,7 @@ export type ItemUpdateWithoutDirectSharesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1317,6 +1527,10 @@ export type ItemUpdateWithoutDirectSharesInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutDirectSharesInput = {
@@ -1330,6 +1544,7 @@ export type ItemUncheckedUpdateWithoutDirectSharesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1337,6 +1552,10 @@ export type ItemUncheckedUpdateWithoutDirectSharesInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutHandoverRecordInput = {
@@ -1347,6 +1566,7 @@ export type ItemCreateWithoutHandoverRecordInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1357,6 +1577,10 @@ export type ItemCreateWithoutHandoverRecordInput = {
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutHandoverRecordInput = {
@@ -1370,6 +1594,7 @@ export type ItemUncheckedCreateWithoutHandoverRecordInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -1377,6 +1602,10 @@ export type ItemUncheckedCreateWithoutHandoverRecordInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutHandoverRecordInput = {
@@ -1403,6 +1632,7 @@ export type ItemUpdateWithoutHandoverRecordInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1413,6 +1643,10 @@ export type ItemUpdateWithoutHandoverRecordInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutHandoverRecordInput = {
@@ -1426,6 +1660,7 @@ export type ItemUncheckedUpdateWithoutHandoverRecordInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1433,6 +1668,10 @@ export type ItemUncheckedUpdateWithoutHandoverRecordInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutThanksMessagesInput = {
@@ -1443,6 +1682,7 @@ export type ItemCreateWithoutThanksMessagesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1453,6 +1693,10 @@ export type ItemCreateWithoutThanksMessagesInput = {
   handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutThanksMessagesInput = {
@@ -1466,6 +1710,7 @@ export type ItemUncheckedCreateWithoutThanksMessagesInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -1473,6 +1718,10 @@ export type ItemUncheckedCreateWithoutThanksMessagesInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutThanksMessagesInput = {
@@ -1499,6 +1748,7 @@ export type ItemUpdateWithoutThanksMessagesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1509,6 +1759,10 @@ export type ItemUpdateWithoutThanksMessagesInput = {
   handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutThanksMessagesInput = {
@@ -1522,6 +1776,7 @@ export type ItemUncheckedUpdateWithoutThanksMessagesInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1529,6 +1784,10 @@ export type ItemUncheckedUpdateWithoutThanksMessagesInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutContributionEventsInput = {
@@ -1539,6 +1798,7 @@ export type ItemCreateWithoutContributionEventsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1549,6 +1809,10 @@ export type ItemCreateWithoutContributionEventsInput = {
   handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutContributionEventsInput = {
@@ -1562,6 +1826,7 @@ export type ItemUncheckedCreateWithoutContributionEventsInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -1569,6 +1834,10 @@ export type ItemUncheckedCreateWithoutContributionEventsInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutContributionEventsInput = {
@@ -1595,6 +1864,7 @@ export type ItemUpdateWithoutContributionEventsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1605,6 +1875,10 @@ export type ItemUpdateWithoutContributionEventsInput = {
   handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutContributionEventsInput = {
@@ -1618,6 +1892,7 @@ export type ItemUncheckedUpdateWithoutContributionEventsInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1625,6 +1900,10 @@ export type ItemUncheckedUpdateWithoutContributionEventsInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutConversationInput = {
@@ -1635,6 +1914,7 @@ export type ItemCreateWithoutConversationInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutItemsInput
   category: Prisma.CategoryCreateNestedOneWithoutItemsInput
   city: Prisma.CityCreateNestedOneWithoutItemsInput
@@ -1645,6 +1925,10 @@ export type ItemCreateWithoutConversationInput = {
   handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
   thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutConversationInput = {
@@ -1658,6 +1942,7 @@ export type ItemUncheckedCreateWithoutConversationInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
   images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
   statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
   claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
@@ -1665,6 +1950,10 @@ export type ItemUncheckedCreateWithoutConversationInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
   thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
   contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutConversationInput = {
@@ -1691,6 +1980,7 @@ export type ItemUpdateWithoutConversationInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
@@ -1701,6 +1991,10 @@ export type ItemUpdateWithoutConversationInput = {
   handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutConversationInput = {
@@ -1714,6 +2008,7 @@ export type ItemUncheckedUpdateWithoutConversationInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1721,6 +2016,474 @@ export type ItemUncheckedUpdateWithoutConversationInput = {
   handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutReportsInput = {
+  id?: string
+  title: string
+  description: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutItemsInput
+  category: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  city: Prisma.CityCreateNestedOneWithoutItemsInput
+  images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutReportsInput = {
+  id?: string
+  ownerId: string
+  title: string
+  description: string
+  categoryId: string
+  cityId: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutReportsInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutReportsInput, Prisma.ItemUncheckedCreateWithoutReportsInput>
+}
+
+export type ItemUpsertWithoutReportsInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutReportsInput, Prisma.ItemUncheckedUpdateWithoutReportsInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutReportsInput, Prisma.ItemUncheckedCreateWithoutReportsInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutReportsInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutReportsInput, Prisma.ItemUncheckedUpdateWithoutReportsInput>
+}
+
+export type ItemUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
+  images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  cityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutItemRemovalsInput = {
+  id?: string
+  title: string
+  description: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutItemsInput
+  category: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  city: Prisma.CityCreateNestedOneWithoutItemsInput
+  images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutItemRemovalsInput = {
+  id?: string
+  ownerId: string
+  title: string
+  description: string
+  categoryId: string
+  cityId: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutItemRemovalsInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutItemRemovalsInput, Prisma.ItemUncheckedCreateWithoutItemRemovalsInput>
+}
+
+export type ItemUpsertWithoutItemRemovalsInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutItemRemovalsInput, Prisma.ItemUncheckedUpdateWithoutItemRemovalsInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutItemRemovalsInput, Prisma.ItemUncheckedCreateWithoutItemRemovalsInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutItemRemovalsInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutItemRemovalsInput, Prisma.ItemUncheckedUpdateWithoutItemRemovalsInput>
+}
+
+export type ItemUpdateWithoutItemRemovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
+  images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutItemRemovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  cityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutCouponDetailInput = {
+  id?: string
+  title: string
+  description: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutItemsInput
+  category: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  city: Prisma.CityCreateNestedOneWithoutItemsInput
+  images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutCouponDetailInput = {
+  id?: string
+  ownerId: string
+  title: string
+  description: string
+  categoryId: string
+  cityId: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutCouponDetailInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCouponDetailInput, Prisma.ItemUncheckedCreateWithoutCouponDetailInput>
+}
+
+export type ItemUpsertWithoutCouponDetailInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutCouponDetailInput, Prisma.ItemUncheckedUpdateWithoutCouponDetailInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCouponDetailInput, Prisma.ItemUncheckedCreateWithoutCouponDetailInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutCouponDetailInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutCouponDetailInput, Prisma.ItemUncheckedUpdateWithoutCouponDetailInput>
+}
+
+export type ItemUpdateWithoutCouponDetailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
+  images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutCouponDetailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  cityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutExpirationLogsInput = {
+  id?: string
+  title: string
+  description: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutItemsInput
+  category: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  city: Prisma.CityCreateNestedOneWithoutItemsInput
+  images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutExpirationLogsInput = {
+  id?: string
+  ownerId: string
+  title: string
+  description: string
+  categoryId: string
+  cityId: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutExpirationLogsInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutExpirationLogsInput, Prisma.ItemUncheckedCreateWithoutExpirationLogsInput>
+}
+
+export type ItemUpsertWithoutExpirationLogsInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutExpirationLogsInput, Prisma.ItemUncheckedUpdateWithoutExpirationLogsInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutExpirationLogsInput, Prisma.ItemUncheckedCreateWithoutExpirationLogsInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutExpirationLogsInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutExpirationLogsInput, Prisma.ItemUncheckedUpdateWithoutExpirationLogsInput>
+}
+
+export type ItemUpdateWithoutExpirationLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
+  images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutExpirationLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  cityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
 }
 
 export type ItemCreateManyOwnerInput = {
@@ -1733,6 +2496,7 @@ export type ItemCreateManyOwnerInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
 }
 
 export type ItemUpdateWithoutOwnerInput = {
@@ -1743,6 +2507,7 @@ export type ItemUpdateWithoutOwnerInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
   images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
@@ -1753,6 +2518,10 @@ export type ItemUpdateWithoutOwnerInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutOwnerInput = {
@@ -1765,6 +2534,7 @@ export type ItemUncheckedUpdateWithoutOwnerInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1773,6 +2543,10 @@ export type ItemUncheckedUpdateWithoutOwnerInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutOwnerInput = {
@@ -1785,6 +2559,7 @@ export type ItemUncheckedUpdateManyWithoutOwnerInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ItemCreateManyCityInput = {
@@ -1797,6 +2572,7 @@ export type ItemCreateManyCityInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
 }
 
 export type ItemUpdateWithoutCityInput = {
@@ -1807,6 +2583,7 @@ export type ItemUpdateWithoutCityInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
   images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
@@ -1817,6 +2594,10 @@ export type ItemUpdateWithoutCityInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCityInput = {
@@ -1829,6 +2610,7 @@ export type ItemUncheckedUpdateWithoutCityInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1837,6 +2619,10 @@ export type ItemUncheckedUpdateWithoutCityInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutCityInput = {
@@ -1849,6 +2635,7 @@ export type ItemUncheckedUpdateManyWithoutCityInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ItemCreateManyCategoryInput = {
@@ -1861,6 +2648,7 @@ export type ItemCreateManyCategoryInput = {
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  expiresAt?: Date | string | null
 }
 
 export type ItemUpdateWithoutCategoryInput = {
@@ -1871,6 +2659,7 @@ export type ItemUpdateWithoutCategoryInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
   city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
   images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
@@ -1881,6 +2670,10 @@ export type ItemUpdateWithoutCategoryInput = {
   thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -1893,6 +2686,7 @@ export type ItemUncheckedUpdateWithoutCategoryInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
   statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
   claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
@@ -1901,6 +2695,10 @@ export type ItemUncheckedUpdateWithoutCategoryInput = {
   thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
   contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
   conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -1913,6 +2711,7 @@ export type ItemUncheckedUpdateManyWithoutCategoryInput = {
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1927,6 +2726,9 @@ export type ItemCountOutputType = {
   directShares: number
   thanksMessages: number
   contributionEvents: number
+  reports: number
+  itemRemovals: number
+  expirationLogs: number
 }
 
 export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1936,6 +2738,9 @@ export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   directShares?: boolean | ItemCountOutputTypeCountDirectSharesArgs
   thanksMessages?: boolean | ItemCountOutputTypeCountThanksMessagesArgs
   contributionEvents?: boolean | ItemCountOutputTypeCountContributionEventsArgs
+  reports?: boolean | ItemCountOutputTypeCountReportsArgs
+  itemRemovals?: boolean | ItemCountOutputTypeCountItemRemovalsArgs
+  expirationLogs?: boolean | ItemCountOutputTypeCountExpirationLogsArgs
 }
 
 /**
@@ -1990,6 +2795,27 @@ export type ItemCountOutputTypeCountContributionEventsArgs<ExtArgs extends runti
   where?: Prisma.ContributionEventWhereInput
 }
 
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeCountItemRemovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemRemovalWhereInput
+}
+
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeCountExpirationLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemExpirationLogWhereInput
+}
+
 
 export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2002,6 +2828,7 @@ export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  expiresAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   city?: boolean | Prisma.CityDefaultArgs<ExtArgs>
@@ -2013,6 +2840,10 @@ export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   thanksMessages?: boolean | Prisma.Item$thanksMessagesArgs<ExtArgs>
   contributionEvents?: boolean | Prisma.Item$contributionEventsArgs<ExtArgs>
   conversation?: boolean | Prisma.Item$conversationArgs<ExtArgs>
+  reports?: boolean | Prisma.Item$reportsArgs<ExtArgs>
+  itemRemovals?: boolean | Prisma.Item$itemRemovalsArgs<ExtArgs>
+  couponDetail?: boolean | Prisma.Item$couponDetailArgs<ExtArgs>
+  expirationLogs?: boolean | Prisma.Item$expirationLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
@@ -2027,6 +2858,7 @@ export type ItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  expiresAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   city?: boolean | Prisma.CityDefaultArgs<ExtArgs>
@@ -2043,6 +2875,7 @@ export type ItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  expiresAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   city?: boolean | Prisma.CityDefaultArgs<ExtArgs>
@@ -2059,9 +2892,10 @@ export type ItemSelectScalar = {
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  expiresAt?: boolean
 }
 
-export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "description" | "categoryId" | "cityId" | "status" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
+export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "description" | "categoryId" | "cityId" | "status" | "publishedAt" | "createdAt" | "updatedAt" | "expiresAt", ExtArgs["result"]["item"]>
 export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -2074,6 +2908,10 @@ export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   thanksMessages?: boolean | Prisma.Item$thanksMessagesArgs<ExtArgs>
   contributionEvents?: boolean | Prisma.Item$contributionEventsArgs<ExtArgs>
   conversation?: boolean | Prisma.Item$conversationArgs<ExtArgs>
+  reports?: boolean | Prisma.Item$reportsArgs<ExtArgs>
+  itemRemovals?: boolean | Prisma.Item$itemRemovalsArgs<ExtArgs>
+  couponDetail?: boolean | Prisma.Item$couponDetailArgs<ExtArgs>
+  expirationLogs?: boolean | Prisma.Item$expirationLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2101,6 +2939,10 @@ export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     thanksMessages: Prisma.$ThanksMessagePayload<ExtArgs>[]
     contributionEvents: Prisma.$ContributionEventPayload<ExtArgs>[]
     conversation: Prisma.$ConversationPayload<ExtArgs> | null
+    reports: Prisma.$ReportPayload<ExtArgs>[]
+    itemRemovals: Prisma.$ItemRemovalPayload<ExtArgs>[]
+    couponDetail: Prisma.$CouponDetailPayload<ExtArgs> | null
+    expirationLogs: Prisma.$ItemExpirationLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2113,6 +2955,7 @@ export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     publishedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    expiresAt: Date | null
   }, ExtArgs["result"]["item"]>
   composites: {}
 }
@@ -2518,6 +3361,10 @@ export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Typ
   thanksMessages<T extends Prisma.Item$thanksMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$thanksMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ThanksMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contributionEvents<T extends Prisma.Item$contributionEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$contributionEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContributionEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversation<T extends Prisma.Item$conversationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$conversationArgs<ExtArgs>>): Prisma.Prisma__ConversationClient<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  reports<T extends Prisma.Item$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  itemRemovals<T extends Prisma.Item$itemRemovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$itemRemovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemRemovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  couponDetail<T extends Prisma.Item$couponDetailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$couponDetailArgs<ExtArgs>>): Prisma.Prisma__CouponDetailClient<runtime.Types.Result.GetResult<Prisma.$CouponDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  expirationLogs<T extends Prisma.Item$expirationLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$expirationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemExpirationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2557,6 +3404,7 @@ export interface ItemFieldRefs {
   readonly publishedAt: Prisma.FieldRef<"Item", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Item", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Item", 'DateTime'>
+  readonly expiresAt: Prisma.FieldRef<"Item", 'DateTime'>
 }
     
 
@@ -3137,6 +3985,97 @@ export type Item$conversationArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.ConversationInclude<ExtArgs> | null
   where?: Prisma.ConversationWhereInput
+}
+
+/**
+ * Item.reports
+ */
+export type Item$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
+}
+
+/**
+ * Item.itemRemovals
+ */
+export type Item$itemRemovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemRemoval
+   */
+  select?: Prisma.ItemRemovalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemRemoval
+   */
+  omit?: Prisma.ItemRemovalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemRemovalInclude<ExtArgs> | null
+  where?: Prisma.ItemRemovalWhereInput
+  orderBy?: Prisma.ItemRemovalOrderByWithRelationInput | Prisma.ItemRemovalOrderByWithRelationInput[]
+  cursor?: Prisma.ItemRemovalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemRemovalScalarFieldEnum | Prisma.ItemRemovalScalarFieldEnum[]
+}
+
+/**
+ * Item.couponDetail
+ */
+export type Item$couponDetailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CouponDetail
+   */
+  select?: Prisma.CouponDetailSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CouponDetail
+   */
+  omit?: Prisma.CouponDetailOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CouponDetailInclude<ExtArgs> | null
+  where?: Prisma.CouponDetailWhereInput
+}
+
+/**
+ * Item.expirationLogs
+ */
+export type Item$expirationLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemExpirationLog
+   */
+  select?: Prisma.ItemExpirationLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemExpirationLog
+   */
+  omit?: Prisma.ItemExpirationLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemExpirationLogInclude<ExtArgs> | null
+  where?: Prisma.ItemExpirationLogWhereInput
+  orderBy?: Prisma.ItemExpirationLogOrderByWithRelationInput | Prisma.ItemExpirationLogOrderByWithRelationInput[]
+  cursor?: Prisma.ItemExpirationLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemExpirationLogScalarFieldEnum | Prisma.ItemExpirationLogScalarFieldEnum[]
 }
 
 /**

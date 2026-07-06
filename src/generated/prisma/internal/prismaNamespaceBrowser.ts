@@ -72,7 +72,29 @@ export const ModelName = {
   Notification: 'Notification',
   Conversation: 'Conversation',
   ConversationMember: 'ConversationMember',
-  Message: 'Message'
+  Message: 'Message',
+  Report: 'Report',
+  ReportEvidence: 'ReportEvidence',
+  UserRestriction: 'UserRestriction',
+  ItemRemoval: 'ItemRemoval',
+  SupportTicket: 'SupportTicket',
+  SupportTicketEvent: 'SupportTicketEvent',
+  SupportTicketAttachment: 'SupportTicketAttachment',
+  Appeal: 'Appeal',
+  AppealEvidence: 'AppealEvidence',
+  KeywordBlocklist: 'KeywordBlocklist',
+  FeatureFlag: 'FeatureFlag',
+  CouponDetail: 'CouponDetail',
+  CouponSecret: 'CouponSecret',
+  CouponRevealLog: 'CouponRevealLog',
+  ItemExpirationLog: 'ItemExpirationLog',
+  SystemJob: 'SystemJob',
+  SystemJobRun: 'SystemJobRun',
+  NotificationPreference: 'NotificationPreference',
+  NotificationDelivery: 'NotificationDelivery',
+  TelegramAccount: 'TelegramAccount',
+  TelegramLinkToken: 'TelegramLinkToken',
+  TelegramUpdate: 'TelegramUpdate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -229,7 +251,8 @@ export const ItemScalarFieldEnum = {
   status: 'status',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  expiresAt: 'expiresAt'
 } as const
 
 export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
@@ -363,6 +386,283 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const ReportScalarFieldEnum = {
+  id: 'id',
+  reporterId: 'reporterId',
+  itemId: 'itemId',
+  claimCommentId: 'claimCommentId',
+  messageId: 'messageId',
+  category: 'category',
+  status: 'status',
+  description: 'description',
+  handledBy: 'handledBy',
+  resolutionNote: 'resolutionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const ReportEvidenceScalarFieldEnum = {
+  id: 'id',
+  reportId: 'reportId',
+  storageObjectId: 'storageObjectId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type ReportEvidenceScalarFieldEnum = (typeof ReportEvidenceScalarFieldEnum)[keyof typeof ReportEvidenceScalarFieldEnum]
+
+
+export const UserRestrictionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  reason: 'reason',
+  expiresAt: 'expiresAt',
+  createdBy: 'createdBy',
+  liftedAt: 'liftedAt',
+  liftedBy: 'liftedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type UserRestrictionScalarFieldEnum = (typeof UserRestrictionScalarFieldEnum)[keyof typeof UserRestrictionScalarFieldEnum]
+
+
+export const ItemRemovalScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  moderatorId: 'moderatorId',
+  reason: 'reason',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemRemovalScalarFieldEnum = (typeof ItemRemovalScalarFieldEnum)[keyof typeof ItemRemovalScalarFieldEnum]
+
+
+export const SupportTicketScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  subject: 'subject',
+  description: 'description',
+  status: 'status',
+  assignedTo: 'assignedTo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
+export const SupportTicketEventScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  actorId: 'actorId',
+  fromStatus: 'fromStatus',
+  toStatus: 'toStatus',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type SupportTicketEventScalarFieldEnum = (typeof SupportTicketEventScalarFieldEnum)[keyof typeof SupportTicketEventScalarFieldEnum]
+
+
+export const SupportTicketAttachmentScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  storageObjectId: 'storageObjectId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type SupportTicketAttachmentScalarFieldEnum = (typeof SupportTicketAttachmentScalarFieldEnum)[keyof typeof SupportTicketAttachmentScalarFieldEnum]
+
+
+export const AppealScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  userRestrictionId: 'userRestrictionId',
+  itemRemovalId: 'itemRemovalId',
+  reason: 'reason',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNote: 'reviewNote',
+  createdAt: 'createdAt',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type AppealScalarFieldEnum = (typeof AppealScalarFieldEnum)[keyof typeof AppealScalarFieldEnum]
+
+
+export const AppealEvidenceScalarFieldEnum = {
+  id: 'id',
+  appealId: 'appealId',
+  storageObjectId: 'storageObjectId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type AppealEvidenceScalarFieldEnum = (typeof AppealEvidenceScalarFieldEnum)[keyof typeof AppealEvidenceScalarFieldEnum]
+
+
+export const KeywordBlocklistScalarFieldEnum = {
+  id: 'id',
+  keyword: 'keyword',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type KeywordBlocklistScalarFieldEnum = (typeof KeywordBlocklistScalarFieldEnum)[keyof typeof KeywordBlocklistScalarFieldEnum]
+
+
+export const FeatureFlagScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  enabled: 'enabled',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeatureFlagScalarFieldEnum = (typeof FeatureFlagScalarFieldEnum)[keyof typeof FeatureFlagScalarFieldEnum]
+
+
+export const CouponDetailScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  faceValue: 'faceValue',
+  merchantName: 'merchantName',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CouponDetailScalarFieldEnum = (typeof CouponDetailScalarFieldEnum)[keyof typeof CouponDetailScalarFieldEnum]
+
+
+export const CouponSecretScalarFieldEnum = {
+  id: 'id',
+  couponDetailId: 'couponDetailId',
+  ciphertext: 'ciphertext',
+  iv: 'iv',
+  authTag: 'authTag',
+  createdAt: 'createdAt'
+} as const
+
+export type CouponSecretScalarFieldEnum = (typeof CouponSecretScalarFieldEnum)[keyof typeof CouponSecretScalarFieldEnum]
+
+
+export const CouponRevealLogScalarFieldEnum = {
+  id: 'id',
+  couponSecretId: 'couponSecretId',
+  revealedBy: 'revealedBy',
+  revealedAt: 'revealedAt'
+} as const
+
+export type CouponRevealLogScalarFieldEnum = (typeof CouponRevealLogScalarFieldEnum)[keyof typeof CouponRevealLogScalarFieldEnum]
+
+
+export const ItemExpirationLogScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  action: 'action',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemExpirationLogScalarFieldEnum = (typeof ItemExpirationLogScalarFieldEnum)[keyof typeof ItemExpirationLogScalarFieldEnum]
+
+
+export const SystemJobScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  description: 'description',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemJobScalarFieldEnum = (typeof SystemJobScalarFieldEnum)[keyof typeof SystemJobScalarFieldEnum]
+
+
+export const SystemJobRunScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  status: 'status',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  detail: 'detail',
+  createdAt: 'createdAt'
+} as const
+
+export type SystemJobRunScalarFieldEnum = (typeof SystemJobRunScalarFieldEnum)[keyof typeof SystemJobRunScalarFieldEnum]
+
+
+export const NotificationPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventType: 'eventType',
+  inAppEnabled: 'inAppEnabled',
+  externalEnabled: 'externalEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
+
+
+export const NotificationDeliveryScalarFieldEnum = {
+  id: 'id',
+  notificationId: 'notificationId',
+  channel: 'channel',
+  status: 'status',
+  attempts: 'attempts',
+  lastError: 'lastError',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationDeliveryScalarFieldEnum = (typeof NotificationDeliveryScalarFieldEnum)[keyof typeof NotificationDeliveryScalarFieldEnum]
+
+
+export const TelegramAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  telegramChatId: 'telegramChatId',
+  telegramUsername: 'telegramUsername',
+  isActive: 'isActive',
+  linkedAt: 'linkedAt',
+  unlinkedAt: 'unlinkedAt'
+} as const
+
+export type TelegramAccountScalarFieldEnum = (typeof TelegramAccountScalarFieldEnum)[keyof typeof TelegramAccountScalarFieldEnum]
+
+
+export const TelegramLinkTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TelegramLinkTokenScalarFieldEnum = (typeof TelegramLinkTokenScalarFieldEnum)[keyof typeof TelegramLinkTokenScalarFieldEnum]
+
+
+export const TelegramUpdateScalarFieldEnum = {
+  id: 'id',
+  updateId: 'updateId',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TelegramUpdateScalarFieldEnum = (typeof TelegramUpdateScalarFieldEnum)[keyof typeof TelegramUpdateScalarFieldEnum]
 
 
 export const SortOrder = {
