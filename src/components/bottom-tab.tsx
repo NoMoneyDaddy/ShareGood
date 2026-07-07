@@ -1,39 +1,37 @@
-import type { LucideIcon } from "lucide-react";
-import { Compass, Heart, LayoutGrid, MessageCircle, Plus, User } from "lucide-react";
+import { Home, LayoutGrid, MessageCircle, Plus, User } from "lucide-react";
 import Link from "next/link";
 
-// 行動版底部導覽（使用者指定必備）。M1 前，逛好物以外的分頁先以停用態呈現。
-// 停用分頁一律用原生 disabled <button>（而非 span+title）：disabled 語意會被輔助
-// 科技辨識，title 提示不可靠（觸控裝置無 hover、部分螢幕閱讀器不朗讀）。
+// 行動版底部導覽（使用者指定必備）。
 //
-// 「探索」分頁（master-plan §6 第 2 項「列表」補上 /items 瀏覽頁時新增）：「我的需要」
-// 這個既有停用分頁依 docs/plan/original-master-plan-v1.md §「我的需要」的原意對應
-// `/me/claims`（留言／抽籤／直贈／交接紀錄），語意是「我參與過的接手活動」，不是「瀏覽
-// 好物列表」，兩者不是同一件事，所以不能把它直接接到 /items；那個功能本身還沒有對應頁面，
-// 繼續維持停用。改為新增一個獨立的「探索」分頁接 /items（縣市／分類／關鍵字篩選＋排序），
-// 圖示故意用 LayoutGrid（而非 Compass）避免跟「逛好物」（首頁）視覺上混淆。
+// M11 改版（使用者實測回饋第 2 項）：原本 6 格裡有兩個停用態佔位分頁（「我的需要」
+// 「我的」，M1 前的暫時安排，見 git 歷史），加上「逛好物」（首頁）與「探索」
+// （/items）語意重疊，使用者實測時分不清兩者差異、也點不動停用分頁——這裡整組
+// 換成使用者拍板的 5 格設計，全部可點，不留任何 disabled 佔位：
+//   首頁 `/`｜逛好物 `/items`｜分享 `/items/new`（中央主行動）｜訊息 `/conversations`｜
+//   我的 `/me`。
+// 原本停用的「我的需要」概念併入 `/me/subscriptions`（訂閱通知，見 /me 中心頁），
+// 不再保留獨立分頁；「我的」現在指向新的 `/me` 中心頁（本次新增），不再是空按鈕。
 export function BottomTab() {
   return (
     <nav
       aria-label="主選單"
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <div className="mx-auto grid max-w-lg grid-cols-6 items-end px-2 pb-2 pt-1.5 text-[11px]">
+      <div className="mx-auto grid max-w-lg grid-cols-5 items-end px-2 pb-2 pt-1.5 text-[11px]">
         <Link
           href="/"
-          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="flex flex-col items-center gap-1 py-1 text-ink-soft transition-colors hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          <Compass size={20} strokeWidth={2} aria-hidden="true" />
-          逛好物
+          <Home size={20} strokeWidth={2} aria-hidden="true" />
+          首頁
         </Link>
         <Link
           href="/items"
           className="flex flex-col items-center gap-1 py-1 text-ink-soft transition-colors hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <LayoutGrid size={20} strokeWidth={2} aria-hidden="true" />
-          探索
+          逛好物
         </Link>
-        <DisabledTab icon={Heart} label="我的需要" />
         <Link
           href="/items/new"
           className="flex flex-col items-center gap-1 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
@@ -52,22 +50,14 @@ export function BottomTab() {
           <MessageCircle size={20} strokeWidth={2} aria-hidden="true" />
           訊息
         </Link>
-        <DisabledTab icon={User} label="我的" />
+        <Link
+          href="/me"
+          className="flex flex-col items-center gap-1 py-1 text-ink-soft transition-colors hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <User size={20} strokeWidth={2} aria-hidden="true" />
+          我的
+        </Link>
       </div>
     </nav>
-  );
-}
-
-function DisabledTab({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
-  return (
-    <button
-      type="button"
-      disabled
-      aria-label={`${label}（即將開放）`}
-      className="flex flex-col items-center gap-1 border-0 bg-transparent py-1 text-ink-disabled disabled:cursor-not-allowed"
-    >
-      <Icon size={20} strokeWidth={2} aria-hidden="true" />
-      {label}
-    </button>
   );
 }

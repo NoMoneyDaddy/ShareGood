@@ -2,6 +2,7 @@ import { Bell } from "lucide-react";
 import Link from "next/link";
 import type { Session } from "next-auth";
 import { signIn, signOut } from "@/auth";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import type { Profile } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
@@ -28,14 +29,24 @@ export async function SiteHeader({ session, profile }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-xl font-extrabold tracking-tight text-ink">
+        {/* M11：中英文標題字級調和（使用者實測回饋第 6 項：「標題中英文字級不一致觀感
+            突兀」）。原本「好物共享」用 text-xl font-extrabold、「ShareGood」用 text-sm
+            font-medium 水平並排，兩者字重與字級差距過大導致視覺上像兩個不相關的標籤而非
+            一體品牌。改成直式雙行 lockup：中文維持主視覺份量（略降一階到 text-lg 讓兩行
+            整體高度貼近原本單行高度，避免 header 變高），英文改成大寫、加寬字距、用品牌色
+            （靛青）當作中文的輔助說明而非平行的第二個標題，兩行共用同一個 leading-none
+            垂直節奏，讀起來是一體的 lockup 而不是兩個字級衝突的元素。 */}
+        <Link href="/" className="flex flex-col leading-none">
+          <span className="font-display text-lg font-extrabold tracking-tight text-ink">
             好物共享
           </span>
-          <span className="text-sm font-medium text-ink-soft">ShareGood</span>
+          <span className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-brand-ink">
+            SHAREGOOD
+          </span>
         </Link>
 
-        <nav className="flex items-center gap-2.5">
+        <nav className="flex items-center gap-1.5 sm:gap-2.5">
+          <ThemeToggle />
           {session?.user ? (
             <>
               {canModerate && (
