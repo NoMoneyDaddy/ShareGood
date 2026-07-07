@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, ShieldCheck } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ReportButton } from "@/components/report-button";
 import { RoleBadge } from "@/components/user-badge";
@@ -151,6 +151,12 @@ export function ConversationThread({
         })}
       </div>
 
+      {/* 面交安全提示（正式上線衝刺 A1）：固定在輸入框上方的低調小字，約時間地點時
+          剛好看得到；平台不做金流，任何金錢或個資要求都不該出現在這裡。 */}
+      <p className="flex items-start gap-1.5 border-t border-line bg-paper-2/60 px-3 py-2 text-xs text-ink-soft">
+        <ShieldCheck size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
+        面交建議約在人多的公共場所；平台全程免費，不需要提供金錢或個人資料。
+      </p>
       <form onSubmit={submit} className="flex items-center gap-2 border-t border-line p-3">
         <label htmlFor="conversation-message" className="sr-only">
           輸入訊息
