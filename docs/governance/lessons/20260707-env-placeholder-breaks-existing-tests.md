@@ -34,3 +34,30 @@
   程式碼裡搜尋 `process.env.<NAME>` 確認「空字串」與「填了值」兩種狀態各自觸發什麼行為，
   再決定要留空還是要填、填什麼格式。改完 `.env` 後即使沒有新增功能程式碼，也要重跑一次全套
   整合測試比對已知 baseline（失敗數與失敗案例是否一致），不能只看「有沒有噴錯」。
+
+## 追加（2026-07-07，M9 券類強化派工）：另外兩個變數的具體症狀
+
+同一根本原因（worktree `.env` 只複製六個核心變數）在 M9 券類強化派工又踩到兩個新變數，
+症狀跟原因記錄如下，省得下一個 session 重新從頭排查：
+
+- `COUPON_SECRET_KEY` 完全缺漏：任何 `POST /api/items` 建立優惠券物品都會 500（
+  `src/lib/coupon-crypto.ts` 的 `loadKey()` 直接 throw
+  `"COUPON_SECRET_KEY 未設定，無法加密／解密券碼"`）。修法：用
+  `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+  產生一組 64 個 hex 字元（32 bytes）的假金鑰即可，不需要對照其他 worktree（每個 worktree
+  各自產生獨立金鑰完全沒問題，這個值不需要跨環境一致）。
+- `S3_PUBLIC_URL`（連同 `S3_ENDPOINT`／`S3_ACCESS_KEY`／`S3_SECRET_KEY`／`S3_BUCKET`）缺漏：
+  **不影響需要真的呼叫 MinIO 的功能以外的頁面**，但只要頁面用 `next/image` 渲染任何物品圖片
+  （首頁、`/items` 列表、物品詳情頁），`src/lib/storage.ts` 的 `publicUrl()` 會組出
+  `"undefined/images/<uuid>/thumb.webp"` 這種字串，`next/image` 解析失敗直接讓整支
+  server component 500（不是圖片本身破圖，是整頁掛掉）。症狀在 dev log 裡是
+  `TypeError: Invalid URL` + `Failed to parse src "undefined/images/..." on next/image`。
+  這個 500 **只在頁面剛好查到有圖片的物品時才會觸發**，所以一開始測 `curl /` 兩次可能都是
+  200（如果那兩次查到的物品剛好還沒有圖片，或剛好還沒有任何測試建立物品），要等整合測試
+  實際建立帶圖片的物品、又剛好命中首頁/列表查詢範圍時才會冒出來——不要以為「開工前手動點兩次
+  200」就代表這條路徑沒問題，跑完整合測試套件後還是要重看一次失敗清單。修法：不需要真的
+  MinIO 在跑，只要五個 `S3_*` 變數都填非空字串（值本身可以是假的，例如
+  `S3_PUBLIC_URL="http://localhost:9200/sharegood"`，照抄 `agent-m6-subscriptions`／
+  `agent-gap-browse` 等已跑通 worktree 的格式即可），`publicUrl()` 組出的字串能通過
+  `next/image` 的 URL 解析就不會 500（實際圖片會 404，但那是預期中「本機無 MinIO」的
+  限制，不影響頁面本身渲染）。

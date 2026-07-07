@@ -8,6 +8,7 @@ import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
 import { checkIpThrottle, getClientIp, IpThrottleExceededError } from "@/lib/ip-throttle";
 import { listPublishedItems } from "@/lib/items";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { checkNonTransferableCouponType } from "@/lib/non-transferable-coupon-types";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 
@@ -148,6 +149,22 @@ export async function POST(req: NextRequest) {
     }
     if (!expiresAt) {
       return jsonError("UNPROCESSABLE", "優惠券需填寫到期日");
+    }
+
+    // M9（master-plan §9a 交付內容 3）不可上架清單「攔截層一」：官方明文禁轉贈／官方
+    // 閉環券種（LINE 即享券／LINE 禮物、行動隨時取、隨買跨店取）不能在本平台上架，
+    // 正確做法是走官方 App 的轉贈功能。標題／店家／備註任一命中即擋（見
+    // src/lib/non-transferable-coupon-types.ts）；自由文字的加價/折現詞則交給下面的
+    // keyword_blocklist（攔截層二）負責，兩者分工不重複。
+    const hitNonTransferable =
+      checkNonTransferableCouponType(title) ??
+      checkNonTransferableCouponType(couponInput.merchantName) ??
+      checkNonTransferableCouponType(couponInput.notes ?? "");
+    if (hitNonTransferable) {
+      return jsonError(
+        "UNPROCESSABLE",
+        `「${hitNonTransferable}」為官方閉環／禁轉贈券種，請走官方 App 的轉贈功能，不能在本平台上架`,
+      );
     }
   }
 

@@ -12,6 +12,7 @@ import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
 import { CouponSection } from "./coupon-section";
+import { CouponUsageSection } from "./coupon-usage-section";
 import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
 import { LotterySection } from "./lottery-section";
@@ -134,6 +135,27 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         })
       : null;
 
+  // M9（master-plan §9a 交付內容 3）：優惠券使用結果回報聚合統計，只有優惠券物品才查詢。
+  const couponUsageCounts = { usable: 0, expired_or_used: 0 };
+  let alreadyReportedUsage = false;
+  if (item.couponDetail) {
+    const grouped = await db.couponUsageReport.groupBy({
+      by: ["result"],
+      where: { itemId: item.id },
+      _count: { _all: true },
+    });
+    for (const row of grouped) {
+      couponUsageCounts[row.result] = row._count._all;
+    }
+    if (session?.user) {
+      const existing = await db.couponUsageReport.findUnique({
+        where: { itemId_reporterId: { itemId: item.id, reporterId: session.user.id } },
+        select: { id: true },
+      });
+      alreadyReportedUsage = existing !== null;
+    }
+  }
+
   // SEO/AEO（master-plan §3.7）：物品詳情頁的 Product + Offer 結構化資料。
   const firstImage = item.images[0];
   const jsonLd = {
@@ -237,6 +259,17 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
             isReceiver && (item.status === "handover_pending" || item.status === "completed")
           }
         />
+        {item.couponDetail && (
+          <CouponUsageSection
+            itemId={item.id}
+            usableCount={couponUsageCounts.usable}
+            expiredCount={couponUsageCounts.expired_or_used}
+            canReport={
+              isReceiver && (item.status === "handover_pending" || item.status === "completed")
+            }
+            alreadyReported={alreadyReportedUsage}
+          />
+        )}
 
         <DirectShareSection
           itemId={item.id}
