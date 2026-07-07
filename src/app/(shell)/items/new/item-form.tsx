@@ -509,17 +509,19 @@ export function ItemForm({
           {images.map((img) => (
             <div
               key={img.key}
-              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-paper-2"
+              className="relative h-20 w-20 shrink-0 rounded-lg border border-line bg-paper-2"
             >
+              {/* 圓角改套在 img 與遮罩上、父容器不用 overflow-hidden：
+                  overflow-hidden 會把刻意突出邊角的移除按鈕與其觸控熱區一起裁掉（含命中測試）。 */}
               {/* biome-ignore lint/performance/noImgElement: 本機選檔的暫時預覽（blob: URL），不是可最佳化的遠端圖片 */}
-              <img src={img.previewUrl} alt="" className="h-full w-full object-cover" />
+              <img src={img.previewUrl} alt="" className="h-full w-full rounded-lg object-cover" />
               {img.status === "uploading" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-ink/40">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-ink/40">
                   <Loader2 size={20} className="animate-spin text-white" aria-hidden="true" />
                 </div>
               )}
               {img.status === "error" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-destructive/80 p-1 text-center text-[10px] text-white">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-destructive/80 p-1 text-center text-[10px] text-white">
                   {img.error}
                 </div>
               )}

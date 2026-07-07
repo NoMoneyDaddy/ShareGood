@@ -206,17 +206,19 @@ export function TicketForm() {
           {attachments.map((att) => (
             <div
               key={att.key}
-              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-paper-2"
+              className="relative h-20 w-20 shrink-0 rounded-lg border border-line bg-paper-2"
             >
+              {/* 圓角改套在 img 與遮罩上、父容器不用 overflow-hidden：
+                  overflow-hidden 會連移除按鈕超出邊界的觸控熱區一起裁掉（含命中測試）。 */}
               {/* biome-ignore lint/performance/noImgElement: 本機選檔的暫時預覽（blob: URL） */}
-              <img src={att.previewUrl} alt="" className="h-full w-full object-cover" />
+              <img src={att.previewUrl} alt="" className="h-full w-full rounded-lg object-cover" />
               {att.status === "uploading" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-ink/40">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-ink/40">
                   <Loader2 size={20} className="animate-spin text-white" aria-hidden="true" />
                 </div>
               )}
               {att.status === "error" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-destructive/80 p-1 text-center text-[10px] text-white">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-destructive/80 p-1 text-center text-[10px] text-white">
                   {att.error}
                 </div>
               )}
