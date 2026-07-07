@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { isModeratorOrAdmin } from "@/lib/support-tickets";
+import { PwaInstallCard } from "./pwa-install-card";
 import { RestartTourButton } from "./restart-tour-button";
 
 export const metadata: Metadata = { title: "我的" };
@@ -81,6 +82,8 @@ export default async function MePage() {
       )}
 
       <div className="mt-6 flex flex-col gap-3">
+        <PwaInstallCard />
+
         {cards.map((card) => (
           <Link
             key={card.href}
