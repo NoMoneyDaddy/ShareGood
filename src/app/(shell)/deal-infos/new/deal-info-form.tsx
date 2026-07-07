@@ -95,6 +95,7 @@ export function DealInfoForm({
         <Label htmlFor="deal-title">標題（2–{TITLE_MAX} 字）</Label>
         <Input
           id="deal-title"
+          className="h-11"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           minLength={2}
@@ -123,6 +124,8 @@ export function DealInfoForm({
         <Input
           id="deal-source-url"
           type="url"
+          inputMode="url"
+          className="h-11"
           value={sourceUrl}
           onChange={(e) => setSourceUrl(e.target.value)}
           placeholder="https://..."
@@ -135,6 +138,7 @@ export function DealInfoForm({
         <Input
           id="deal-expires-at"
           type="date"
+          className="h-11"
           value={expiresAt}
           onChange={(e) => setExpiresAt(e.target.value)}
           required
@@ -142,7 +146,7 @@ export function DealInfoForm({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="flex items-center gap-2 text-sm text-ink">
+        <label className="-mx-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm text-ink">
           <input
             type="checkbox"
             checked={isNationwide}
@@ -162,7 +166,7 @@ export function DealInfoForm({
                   aria-pressed={cityIds.includes(c.id)}
                   onClick={() => toggleCity(c.id)}
                   className={cn(
-                    "rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
+                    "min-h-8 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                     cityIds.includes(c.id)
                       ? "border-brand bg-brand-soft/50 text-ink"
                       : "border-line bg-paper text-ink-soft hover:bg-paper-2",
@@ -178,7 +182,7 @@ export function DealInfoForm({
 
       {isModerator && (
         <div className="space-y-3 rounded-xl border border-line bg-card p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-ink">
+          <label className="-mx-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-ink">
             <input
               type="checkbox"
               checked={isEditorial}
@@ -195,7 +199,7 @@ export function DealInfoForm({
                 value={dealSourceId}
                 onChange={(e) => setDealSourceId(e.target.value)}
                 required
-                className="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+                className="flex h-11 w-full items-center rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
               >
                 <option value="">請選擇</option>
                 {dealSources.map((s) => (

@@ -218,7 +218,7 @@ function CheckboxChip({
       aria-pressed={checked}
       onClick={onClick}
       className={cn(
-        "rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
+        "min-h-8 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
         checked
           ? "border-brand bg-brand-soft/50 text-ink"
           : "border-line bg-paper text-ink-soft hover:bg-paper-2",
