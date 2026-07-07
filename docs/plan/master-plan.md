@@ -2307,6 +2307,39 @@ claims/handover 交付；類型判別依上方「共通設計決策」採 catego
 
 ---
 
+## 10a. M10 — 前端重構（使用者 2026-07-07 指示開工）
+
+> 規格基礎：`docs/research/2026-07-07-frontend-refactor/01-external-skills-digest.md`
+> （25 條可執行設計守則，實作與審查一律遵循）＋`02-current-state-design-audit.md`
+> （現況診斷與逐頁範圍）。實作與審查使用本地已載入技能：impeccable、
+> web-design-guidelines、ui-ux-pro-max、emil-design-eng、motion-design、dataviz。
+
+**設計方向（已由現況延續，不重新發明）**：沿用首頁既有品牌語言——暖白紙感底＋琥珀橘
+主色＋近黑墨字，WCAG AA 對比；視覺密度中低、寬敞排版（面向一般民眾）；動效低強度、
+Lottie 僅限高價值互動；行動優先（375px 起）。**不採納**紫藍漸層等 AI 陳詞濫調。
+
+**交付批次**：
+1. **殼層強制化＋設計系統補完**（結構性最高槓桿）：
+   - 建立共用 layout（App Router route group），讓 SiteHeader＋BottomTab＋SiteFooter
+     **由 layout 強制套用**，一次修復 18+ 個裸頁面（`/items/new`、`/conversations`、
+     `/notifications`、`/me/*`、`/support`、`/deal-infos` 系列、`/u/*`、`/onboarding`…）；
+     admin 與法務頁維持既有樣式，**排除在外**。
+   - 深色模式補完：品牌 token（paper/ink/brand 系）補 `.dark` 覆寫，跟隨
+     `prefers-color-scheme`；手動切換開關為選配（實作簡單才做）。
+   - 個別頁面內容樣式**這一批不動**（只包殼），避免與批次 2/3 衝突。
+2. **P0 頁面深度重設計**：`/items/[id]` 詳情頁把 9 個功能模組的「卡片牆」改為單一
+   狀態導向時間軸/分區層級；`/items` 行動版篩選列擁擠修正；`/deal-infos` 列表與詳情
+   （含空狀態留白比例）。首頁與 `/items` 桌面版已到位，只套 token 微調。
+3. **P1 頁面清單樣式＋空狀態**：conversations/notifications/me 系列在殼層之上的
+   清單密度與空狀態設計（樸素插畫或純文字排版皆可，不強制 Lottie）；表單頁
+   （`/items/new`、`/deal-infos/new`）觸控目標 ≥44px 與行動版鍵盤行為。
+4. （已完成，先行合併）PWA manifest（PR #49）、`/admin/ops` 儀表板圖表（獨立進行）。
+
+**驗收（每批 PR 皆須）**：`biome`／`tsc`／`production build`／全套 vitest（M7 MinIO
+5 個既有失敗為基準）；Playwright 對改動頁面截 375/768/1280 三寬度前後對照圖；
+web-design-guidelines 檢查清單過一輪（觸控目標、對比、focus ring、空/載入狀態）；
+既有 E2E 主迴路測試不得壞。
+
 ## 11. 參考附錄（設計已定案的細節，實作該 milestone 時查閱）
 
 ### 11.1 完整資料表清單（依 milestone 標注）
