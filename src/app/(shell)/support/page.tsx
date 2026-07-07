@@ -1,6 +1,8 @@
+import { LifeBuoy } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { TicketForm } from "./ticket-form";
@@ -58,15 +60,21 @@ export default async function SupportPage() {
         <TicketForm />
       </div>
 
-      {tickets.length > 0 && (
-        <section className="mt-10 border-t border-line pt-6">
-          <h2 className="text-lg font-bold tracking-tight">我的回報紀錄</h2>
+      <section className="mt-10 border-t border-line pt-6">
+        <h2 className="text-lg font-bold tracking-tight">我的回報紀錄</h2>
+        {tickets.length === 0 ? (
+          <EmptyState
+            icon={LifeBuoy}
+            title="目前沒有回報紀錄"
+            description="你送出的問題回報都會顯示在這裡，可以隨時回來查看處理進度。"
+          />
+        ) : (
           <ul className="mt-4 space-y-2">
             {tickets.map((t) => (
               <li key={t.id}>
                 <Link
                   href={`/support/${t.id}`}
-                  className="flex items-center justify-between gap-3 rounded-lg border border-line bg-card px-4 py-3 transition-colors hover:bg-paper-2"
+                  className="flex min-h-[44px] items-center justify-between gap-3 rounded-lg border border-line bg-card px-4 py-3 transition-colors hover:bg-paper-2"
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-ink">{t.subject}</p>
@@ -82,8 +90,8 @@ export default async function SupportPage() {
               </li>
             ))}
           </ul>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 }

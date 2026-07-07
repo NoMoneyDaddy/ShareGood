@@ -1,7 +1,9 @@
 "use client";
 
+import { Rss } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 
 type IdName = { id: string; name: string };
@@ -24,7 +26,13 @@ export function SubscriptionList({ subscriptions }: { subscriptions: Subscriptio
   const router = useRouter();
 
   if (subscriptions.length === 0) {
-    return <p className="mt-3 text-sm text-ink-soft">還沒有任何訂閱，新增一筆試試看吧。</p>;
+    return (
+      <EmptyState
+        icon={Rss}
+        title="還沒有任何訂閱"
+        description="用上面的表單設定關鍵字、分類或縣市，符合的新物品上架後會通知你。"
+      />
+    );
   }
 
   return (
@@ -125,8 +133,8 @@ function SubscriptionCard({
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-ink-soft">
-        <label className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-soft">
+        <label className="-mx-2 flex min-h-11 items-center gap-1.5 rounded-lg px-2">
           <input
             type="checkbox"
             checked={immediateEnabled}
@@ -135,11 +143,11 @@ function SubscriptionCard({
               setImmediateEnabled(e.target.checked);
               patch({ immediateEnabled: e.target.checked });
             }}
-            className="size-3.5 rounded border-line"
+            className="size-4 rounded border-line"
           />
           即時通知
         </label>
-        <label className="flex items-center gap-1.5">
+        <label className="-mx-2 flex min-h-11 items-center gap-1.5 rounded-lg px-2">
           <input
             type="checkbox"
             checked={dailyDigestEnabled}
@@ -148,11 +156,11 @@ function SubscriptionCard({
               setDailyDigestEnabled(e.target.checked);
               patch({ dailyDigestEnabled: e.target.checked });
             }}
-            className="size-3.5 rounded border-line"
+            className="size-4 rounded border-line"
           />
           每日摘要
         </label>
-        <span>
+        <span className="px-2">
           累積命中 {subscription.matchCount} 筆（{subscription.pendingMatchCount} 筆待通知）
         </span>
       </div>

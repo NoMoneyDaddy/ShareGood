@@ -45,6 +45,8 @@ export function PreferenceToggle({
   }
 
   return (
+    // 開關本身視覺尺寸維持 24×40px（比照原本設計），但按鈕本身撐到 44×44px 觸控目標
+    // （WCAG 2.5.5），track 只是置中在按鈕內的視覺呈現，不是實際的可點擊邊界。
     <button
       type="button"
       role="switch"
@@ -52,18 +54,22 @@ export function PreferenceToggle({
       aria-label={label}
       disabled={pending}
       onClick={handleToggle}
-      className={cn(
-        "relative inline-flex h-6 w-10 shrink-0 items-center rounded-full transition-colors focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-70",
-        enabled ? "bg-brand" : "bg-line",
-      )}
+      className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-70"
     >
       <span
         aria-hidden="true"
         className={cn(
-          "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
-          enabled ? "translate-x-[18px]" : "translate-x-0.5",
+          "flex h-6 w-10 items-center rounded-full transition-colors",
+          enabled ? "bg-brand" : "bg-line",
         )}
-      />
+      >
+        <span
+          className={cn(
+            "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
+            enabled ? "translate-x-[18px]" : "translate-x-0.5",
+          )}
+        />
+      </span>
     </button>
   );
 }

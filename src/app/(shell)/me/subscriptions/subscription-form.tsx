@@ -173,8 +173,8 @@ export function SubscriptionForm({ categories, cities }: SubscriptionFormProps) 
         </div>
       </fieldset>
 
-      <div className="flex flex-col gap-2">
-        <label className="flex items-center gap-2 text-sm text-ink">
+      <div className="flex flex-col gap-1">
+        <label className="-mx-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm text-ink">
           <input
             type="checkbox"
             checked={immediateEnabled}
@@ -183,7 +183,7 @@ export function SubscriptionForm({ categories, cities }: SubscriptionFormProps) 
           />
           即時通知（符合條件時立刻通知，預設關）
         </label>
-        <label className="flex items-center gap-2 text-sm text-ink">
+        <label className="-mx-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm text-ink">
           <input
             type="checkbox"
             checked={dailyDigestEnabled}
@@ -218,7 +218,7 @@ function CheckboxChip({
       aria-pressed={checked}
       onClick={onClick}
       className={cn(
-        "rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
+        "min-h-8 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
         checked
           ? "border-brand bg-brand-soft/50 text-ink"
           : "border-line bg-paper text-ink-soft hover:bg-paper-2",

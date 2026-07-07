@@ -1,6 +1,8 @@
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { EmptyState } from "@/components/empty-state";
 import { db } from "@/lib/db";
 
 export const metadata = { title: "我的對話", robots: { index: false, follow: false } };
@@ -49,7 +51,12 @@ export default async function ConversationsPage() {
       <p className="mt-1.5 text-sm text-ink-soft">交接時跟對方的私訊都在這裡。</p>
 
       {memberships.length === 0 ? (
-        <p className="mt-10 text-center text-sm text-ink-soft">目前還沒有交接對話。</p>
+        <EmptyState
+          icon={MessageCircle}
+          title="目前還沒有交接對話"
+          description="認領或收到直贈的物品後，跟對方的交接私訊會顯示在這裡。"
+          action={{ href: "/items", label: "去逛逛好物" }}
+        />
       ) : (
         <ul className="mt-6 flex flex-col gap-2">
           {memberships.map(({ conversation }) => {

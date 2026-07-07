@@ -231,6 +231,7 @@ export function ItemForm({
         <Label htmlFor="title">標題（2–60 字）</Label>
         <Input
           id="title"
+          className="h-11"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           minLength={2}
@@ -262,7 +263,7 @@ export function ItemForm({
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
-            className="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+            className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
           >
             <option value="">請選擇</option>
             {categories.map((c) => (
@@ -279,7 +280,7 @@ export function ItemForm({
             value={cityId}
             onChange={(e) => setCityId(e.target.value)}
             required
-            className="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+            className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
           >
             <option value="">請選擇</option>
             {cities.map((c) => (
@@ -299,6 +300,7 @@ export function ItemForm({
               <Label htmlFor="coupon-face-value">面額</Label>
               <Input
                 id="coupon-face-value"
+                className="h-11"
                 value={couponFaceValue}
                 onChange={(e) => setCouponFaceValue(e.target.value)}
                 maxLength={50}
@@ -310,6 +312,7 @@ export function ItemForm({
               <Label htmlFor="coupon-merchant">適用店家</Label>
               <Input
                 id="coupon-merchant"
+                className="h-11"
                 value={couponMerchantName}
                 onChange={(e) => setCouponMerchantName(e.target.value)}
                 maxLength={50}
@@ -323,6 +326,7 @@ export function ItemForm({
             <Input
               id="coupon-expires-at"
               type="date"
+              className="h-11"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}
               required
@@ -332,6 +336,7 @@ export function ItemForm({
             <Label htmlFor="coupon-code">券碼</Label>
             <Input
               id="coupon-code"
+              className="h-11"
               value={couponCode}
               onChange={(e) => setCouponCode(e.target.value)}
               maxLength={200}
@@ -365,18 +370,22 @@ export function ItemForm({
             <Input
               id="food-expires-at"
               type="date"
+              className="h-11"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}
               required
             />
           </div>
-          <label htmlFor="food-confirm" className="flex items-start gap-2 text-sm text-ink-soft">
+          <label
+            htmlFor="food-confirm"
+            className="-mx-2 flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm text-ink-soft"
+          >
             <input
               id="food-confirm"
               type="checkbox"
               checked={expiringFoodConfirmed}
               onChange={(e) => setExpiringFoodConfirmed(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 rounded border-line text-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+              className="h-5 w-5 shrink-0 rounded border-line text-brand focus-visible:ring-3 focus-visible:ring-brand/20"
               required
             />
             我確認這項食品完整包裝、未開封、常溫保存、尚未過期。
@@ -396,6 +405,7 @@ export function ItemForm({
               <Label htmlFor="ticket-type">券種</Label>
               <Input
                 id="ticket-type"
+                className="h-11"
                 value={ticketType}
                 onChange={(e) => setTicketType(e.target.value)}
                 maxLength={50}
@@ -407,6 +417,7 @@ export function ItemForm({
               <Label htmlFor="ticket-origin-platform">原平台</Label>
               <Input
                 id="ticket-origin-platform"
+                className="h-11"
                 value={ticketOriginPlatform}
                 onChange={(e) => setTicketOriginPlatform(e.target.value)}
                 maxLength={50}
@@ -419,6 +430,7 @@ export function ItemForm({
             <Label htmlFor="ticket-event-name">活動名稱（選填）</Label>
             <Input
               id="ticket-event-name"
+              className="h-11"
               value={ticketEventName}
               onChange={(e) => setTicketEventName(e.target.value)}
               maxLength={100}
@@ -430,6 +442,7 @@ export function ItemForm({
             <Input
               id="ticket-expires-at"
               type="date"
+              className="h-11"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}
             />
@@ -454,6 +467,7 @@ export function ItemForm({
               <Label htmlFor="point-platform">點數平台</Label>
               <Input
                 id="point-platform"
+                className="h-11"
                 value={pointPlatform}
                 onChange={(e) => setPointPlatform(e.target.value)}
                 maxLength={50}
@@ -466,8 +480,10 @@ export function ItemForm({
               <Input
                 id="point-amount"
                 type="number"
+                inputMode="numeric"
                 min={1}
                 step={1}
+                className="h-11"
                 value={pointAmount}
                 onChange={(e) => setPointAmount(e.target.value)}
                 placeholder="例：100"
@@ -511,9 +527,9 @@ export function ItemForm({
                 type="button"
                 onClick={() => removeImage(img.key)}
                 aria-label="移除這張圖片"
-                className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-white"
+                className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-white ring-2 ring-paper after:absolute after:-inset-2 after:content-['']"
               >
-                <X size={12} aria-hidden="true" />
+                <X size={14} aria-hidden="true" />
               </button>
             </div>
           ))}

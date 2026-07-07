@@ -93,12 +93,17 @@ export function ExportDataSection({ latest }: { latest: DataExportInfo }) {
       )}
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <Button variant="outline" disabled={pending || !!isNonTerminal} onClick={handleRequest}>
+        <Button
+          variant="outline"
+          size="xl"
+          disabled={pending || !!isNonTerminal}
+          onClick={handleRequest}
+        >
           {pending && <Loader2 className="animate-spin" size={14} aria-hidden="true" />}
           匯出我的資料
         </Button>
         {latest?.status === "ready" && (
-          <Button variant="brand" disabled={pending} onClick={handleDownload}>
+          <Button variant="brand" size="xl" disabled={pending} onClick={handleDownload}>
             下載匯出包
           </Button>
         )}

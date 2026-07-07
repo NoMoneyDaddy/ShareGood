@@ -82,7 +82,13 @@ export function DeleteAccountSection({ latest }: { latest: PrivacyRequestInfo })
           </strong>{" "}
           完成刪除。冷卻期內可以隨時撤銷。
         </p>
-        <Button className="mt-3" variant="outline" disabled={pending} onClick={handleCancel}>
+        <Button
+          className="mt-3"
+          variant="outline"
+          size="xl"
+          disabled={pending}
+          onClick={handleCancel}
+        >
           {pending && <Loader2 className="animate-spin" size={14} aria-hidden="true" />}
           撤銷刪除申請
         </Button>
@@ -113,7 +119,12 @@ export function DeleteAccountSection({ latest }: { latest: PrivacyRequestInfo })
           留下的物品、留言、感謝訊息、貢獻值等紀錄會保留（顯示為「已刪除的使用者」），以維持其他
           使用者看得到的歷史紀錄完整性。送出後有 7 天冷卻期，期間可以撤銷。
         </p>
-        <Button className="mt-3" variant="destructive" onClick={() => setConfirmOpen(true)}>
+        <Button
+          className="mt-3"
+          variant="destructive"
+          size="xl"
+          onClick={() => setConfirmOpen(true)}
+        >
           刪除我的帳號
         </Button>
       </div>
@@ -129,7 +140,7 @@ export function DeleteAccountSection({ latest }: { latest: PrivacyRequestInfo })
         天冷卻期滿後即無法復原。
       </p>
       <Input
-        className="mt-3"
+        className="mt-3 h-11"
         value={confirmText}
         onChange={(e) => setConfirmText(e.target.value)}
         placeholder={CONFIRM_PHRASE}
@@ -142,13 +153,14 @@ export function DeleteAccountSection({ latest }: { latest: PrivacyRequestInfo })
         placeholder="想告訴我們刪除的原因嗎？（選填）"
         rows={3}
       />
-      <div className="mt-3 flex gap-2">
-        <Button variant="destructive" disabled={!canSubmit} onClick={handleSubmit}>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Button variant="destructive" size="xl" disabled={!canSubmit} onClick={handleSubmit}>
           {pending && <Loader2 className="animate-spin" size={14} aria-hidden="true" />}
           確認刪除帳號
         </Button>
         <Button
           variant="outline"
+          size="xl"
           disabled={pending}
           onClick={() => {
             setConfirmOpen(false);
