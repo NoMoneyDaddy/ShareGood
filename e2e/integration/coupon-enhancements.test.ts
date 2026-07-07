@@ -11,7 +11,7 @@ import { createPublishedItem, pickCityAndCategory } from "../support/items";
 //   分享過券提高額度後可繼續；實體物品的認領完全不受配額影響。」
 // 「券使用結果回報：同一使用者對同一券回報兩次 → 第二次被 unique 擋下；聚合統計正確；
 //   文案無「保證有效/保證可兌換」字樣。」
-// 「不可上架清單：以「LINE 即享券」「隨買跨店取」為標題/券種上架 → 422。」
+// 「不可上架清單：已依使用者 2026-07-07 決策全面清空——所有券種皆可上架，不硬擋。」
 // 「/admin/keyword-blocklist：moderator/admin 可 CRUD 詞條、異動寫 audit_logs；
 //   非 moderator/admin 存取 → 404/403。」
 //
@@ -299,29 +299,6 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
     return new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   }
 
-  it("標題含「LINE 即享券」→ 422（各種空白/半形變體皆被正規化攔截）", async () => {
-    const owner = await user("blocklist-title-owner");
-    const { cityId } = await pickCityAndCategory();
-    const images = await createImagePair(owner.id);
-
-    for (const title of ["LINE 即享券", "line即享券"]) {
-      const res = await api("/api/items", {
-        method: "POST",
-        user: owner,
-        body: {
-          title,
-          description: "不應該建立成功",
-          categoryId: couponCategoryId,
-          cityId,
-          images: [images],
-          expiresAt: tomorrow(),
-          coupon: { faceValue: "$50", merchantName: "測試商店", code: `CODE-${Date.now()}` },
-        },
-      });
-      expect(res.status).toBe(422);
-    }
-  });
-
   it("通用「即享券」（無 LINE 前綴）不被誤殺：麥當勞即享券可正常上架", async () => {
     // 回歸防護：裸詞「即享券」是 Edenred 通用票券品牌，多數可自由轉贈，
     // 只有 LINE 即享券官方禁轉贈（研究 04）。層一常數清單與層二 seed 詞庫都不得收裸詞。
@@ -345,36 +322,13 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
     expect(res.status).toBe(201);
   });
 
-  it("店家欄位命中不可上架清單也會被擋（不只檢查標題）", async () => {
-    const owner = await user("blocklist-merchant-owner");
-    const { cityId } = await pickCityAndCategory();
-    const images = await createImagePair(owner.id);
-
-    const res = await api("/api/items", {
-      method: "POST",
-      user: owner,
-      body: {
-        title: "普通優惠券分享",
-        description: "店家欄位含禁止券種",
-        categoryId: couponCategoryId,
-        cityId,
-        images: [images],
-        expiresAt: tomorrow(),
-        coupon: {
-          faceValue: "$50",
-          merchantName: "LINE 即享券",
-          code: `CODE-${Date.now()}`,
-        },
-      },
-    });
-    expect(res.status).toBe(422);
-  });
-
-  it("「隨買跨店取」「行動隨時取」「LINE 禮物」不攔截（使用者拍板：官方閉環類以文案引導，不硬擋）", async () => {
+  it("不可上架清單已全面清空：LINE 即享券／隨買跨店取／行動隨時取／LINE 禮物皆可上架（使用者拍板）", async () => {
     const owner = await user("blocklist-allowed-owner");
     const { cityId } = await pickCityAndCategory();
 
     for (const title of [
+      "LINE 即享券轉贈",
+      "line即享券 星巴克",
       "全家隨買跨店取咖啡寄杯",
       "7-ELEVEN 行動隨時取拿鐵",
       "LINE 禮物星巴克券",
