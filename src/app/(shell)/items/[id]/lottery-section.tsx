@@ -85,8 +85,8 @@ export function LotterySection({
   }
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">抽籤</h2>
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-lg font-semibold tracking-tight text-ink">抽籤</h2>
 
       {state.status === "open" && (
         <OpenLottery
@@ -181,8 +181,8 @@ function CreateLotteryForm({ itemId, onCreated }: { itemId: string; onCreated: (
   }
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">開一場抽籤</h2>
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-lg font-semibold tracking-tight text-ink">開一場抽籤</h2>
       <p className="mt-1 text-sm text-ink-soft">
         設定報名截止時間，截止後系統會公平抽出 1 位得主；
         <span className="font-medium text-ink">報名截止時間建立後不能修改，設錯只能整個取消</span>

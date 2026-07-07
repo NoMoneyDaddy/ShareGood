@@ -86,7 +86,7 @@ function OwnerDirectShareForm({ itemId }: { itemId: string }) {
   }
 
   return (
-    <div className="mt-6 rounded-xl border border-line bg-card p-4">
+    <div className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
       <h2 className="text-sm font-semibold text-ink">直接贈與給指定的人</h2>
       <p className="mt-1 text-sm text-ink-soft">
         輸入對方的 email，對方會收到通知，72 小時內可接受或婉拒。
@@ -157,50 +157,52 @@ function ReceiverDirectShareCard({
 
   if (result === "accepted") {
     return (
-      <div className="mt-6 rounded-xl border border-brand/40 bg-brand/10 p-4 text-sm text-ink">
+      <div className="border-t border-line/70 pt-5 text-sm text-ink first:border-t-0 first:pt-0">
         你已經接受這份直接贈與，接下來請跟分享者約時間交接。
       </div>
     );
   }
   if (result === "declined") {
     return (
-      <div className="mt-6 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
+      <div className="border-t border-line/70 pt-5 text-sm text-ink-soft first:border-t-0 first:pt-0">
         你已經婉拒這份直接贈與。
       </div>
     );
   }
 
   return (
-    <div className="mt-6 rounded-xl border border-brand/40 bg-brand/10 p-4">
-      <h2 className="text-sm font-semibold text-ink">你收到一份直接贈與</h2>
-      <p className="mt-1 text-sm text-ink-soft">分享者指定要把這件好物贈與給你，要接受嗎？</p>
-      <div className="mt-3 flex gap-2">
-        <Button
-          type="button"
-          variant="brand"
-          disabled={submitting !== null}
-          onClick={() => respond("accept")}
-        >
-          {submitting === "accept" ? (
-            <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-          ) : (
-            "接受"
-          )}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          disabled={submitting !== null}
-          onClick={() => respond("decline")}
-        >
-          {submitting === "decline" ? (
-            <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-          ) : (
-            "婉拒"
-          )}
-        </Button>
+    <div className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <div className="rounded-xl border border-brand/40 bg-brand-soft/60 p-4">
+        <h2 className="text-sm font-semibold text-brand-ink">你收到一份直接贈與</h2>
+        <p className="mt-1 text-sm text-ink-soft">分享者指定要把這件好物贈與給你，要接受嗎？</p>
+        <div className="mt-3 flex gap-2">
+          <Button
+            type="button"
+            variant="brand"
+            disabled={submitting !== null}
+            onClick={() => respond("accept")}
+          >
+            {submitting === "accept" ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+            ) : (
+              "接受"
+            )}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={submitting !== null}
+            onClick={() => respond("decline")}
+          >
+            {submitting === "decline" ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+            ) : (
+              "婉拒"
+            )}
+          </Button>
+        </div>
+        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
       </div>
-      {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
     </div>
   );
 }

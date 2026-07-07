@@ -60,8 +60,8 @@ export function CouponUsageSection({
   if (usableCount === 0 && expiredCount === 0 && !canReport) return null;
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">使用結果回報</h2>
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-sm font-semibold text-ink-soft uppercase tracking-wide">使用結果回報</h2>
       <p className="mt-1.5 text-xs text-ink-soft">
         以下統計為接手者自行回報，僅供參考，平台不保證券碼實際可兌換。
       </p>

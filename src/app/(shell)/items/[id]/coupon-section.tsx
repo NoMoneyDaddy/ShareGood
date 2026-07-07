@@ -54,8 +54,8 @@ export function CouponSection({ itemId, coupon, canReveal }: CouponSectionProps)
   }
 
   return (
-    <section id="coupon" className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">優惠券資訊</h2>
+    <section id="coupon" className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-sm font-semibold text-ink-soft uppercase tracking-wide">優惠券資訊</h2>
       <div className="mt-4 space-y-2 rounded-xl border border-line bg-card p-4 text-sm">
         <p className="text-ink">
           面額：<span className="font-medium">{coupon.faceValue}</span>

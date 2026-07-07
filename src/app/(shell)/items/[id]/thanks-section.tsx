@@ -14,9 +14,9 @@ export function ThanksSection({ thanks }: ThanksSectionProps) {
   if (!thanks) return null;
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">感謝留言</h2>
-      <div className="mt-4 rounded-xl border border-line bg-card p-4">
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-sm font-semibold text-ink-disabled uppercase tracking-wide">感謝留言</h2>
+      <div className="mt-3">
         <p className="whitespace-pre-wrap text-sm text-ink">{thanks.message}</p>
         <p className="mt-2 text-xs text-ink-soft">
           {thanks.fromNickname}・{formatTime(thanks.createdAt)}
