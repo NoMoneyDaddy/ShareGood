@@ -80,7 +80,7 @@ export default async function AdminDealReviewsPage({
                   : dealInfo.cities.map((c) => c.city.name).join("、"),
                 expiresAt: dealInfo.expiresAt.toISOString(),
                 createdAt: dealInfo.createdAt.toISOString(),
-                submitterNickname: dealInfo.submitter?.profile?.nickname ?? "好物共享用戶",
+                submitterNickname: dealInfo.submitter?.profile?.nickname ?? "好物共享使用者",
               }}
             />
           ))

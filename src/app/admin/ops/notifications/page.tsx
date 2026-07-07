@@ -178,7 +178,7 @@ export default async function AdminOpsNotificationsPage({
                   <div className="flex items-center justify-between gap-3">
                     <span className="flex items-center gap-2">
                       <span className="font-medium text-ink">
-                        {d.notification.user.profile?.nickname ?? "好物共享用戶"}
+                        {d.notification.user.profile?.nickname ?? "好物共享使用者"}
                       </span>
                       <Badge variant="outline">{d.notification.type}</Badge>
                       <Badge variant={maxed ? "destructive" : "secondary"}>

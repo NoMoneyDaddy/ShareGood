@@ -236,7 +236,7 @@ export async function GET(req: NextRequest) {
       createdAt: r.createdAt,
       resolvedAt: r.resolvedAt,
       resolutionNote: r.resolutionNote,
-      reporter: { id: r.reporter.id, nickname: r.reporter.profile?.nickname ?? "好物共享用戶" },
+      reporter: { id: r.reporter.id, nickname: r.reporter.profile?.nickname ?? "好物共享使用者" },
       target: {
         itemId: r.itemId,
         claimCommentId: r.claimCommentId,

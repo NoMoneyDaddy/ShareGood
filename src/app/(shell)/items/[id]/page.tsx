@@ -247,7 +247,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <span>
           分享者：
           <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
-            {item.owner.profile?.nickname ?? "好物共享用戶"}
+            {item.owner.profile?.nickname ?? "好物共享使用者"}
           </Link>
         </span>
         {session?.user && session.user.id !== item.ownerId && (
@@ -375,7 +375,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
                   ? {
                       message: thanksMessage.message,
                       createdAt: thanksMessage.createdAt,
-                      fromNickname: thanksMessage.fromUser.profile?.nickname ?? "好物共享用戶",
+                      fromNickname: thanksMessage.fromUser.profile?.nickname ?? "好物共享使用者",
                     }
                   : null
               }

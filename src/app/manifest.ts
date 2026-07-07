@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "ShareGood 好物共享",
     short_name: "ShareGood",
     description:
-      "把用不到但還能用的好物免費分享出去，讓剛好需要的人接手。台灣縣市級免費共享平台，不買賣、不交換。",
+      "把用不到但還能用的好物免費分享出去，剛好需要的人就能接手。台灣在地免費共享平台，不買賣、不交換。",
     start_url: "/",
     scope: "/",
     display: "standalone",

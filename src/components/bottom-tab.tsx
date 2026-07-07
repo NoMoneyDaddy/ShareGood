@@ -10,7 +10,7 @@ import Link from "next/link";
 // 這個既有停用分頁依 docs/plan/original-master-plan-v1.md §「我的需要」的原意對應
 // `/me/claims`（留言／抽籤／直贈／交接紀錄），語意是「我參與過的接手活動」，不是「瀏覽
 // 好物列表」，兩者不是同一件事，所以不能把它直接接到 /items；那個功能本身還沒有對應頁面，
-// 繼續維持停用。改為新增一個獨立的「探索」分頁接 /items（縣市/分類/關鍵字篩選＋排序），
+// 繼續維持停用。改為新增一個獨立的「探索」分頁接 /items（縣市／分類／關鍵字篩選＋排序），
 // 圖示故意用 LayoutGrid（而非 Compass）避免跟「逛好物」（首頁）視覺上混淆。
 export function BottomTab() {
   return (

@@ -39,10 +39,10 @@ export default async function HomePage() {
           <h1 className="max-w-[14ch] text-4xl font-extrabold leading-[1.15] tracking-tight text-ink md:text-5xl">
             用不到的好物，
             <br />
-            交給剛好需要的人
+            剛好有人在找
           </h1>
           <p className="mt-4 max-w-[38ch] text-base text-ink-soft md:text-lg">
-            台灣縣市級免費共享。不買賣、不交換，留言就有機會接手。
+            台灣在地免費共享，留言就有機會接手，不買賣、不交換。
           </p>
 
           <form method="get" action="/items" className="mt-7">

@@ -33,7 +33,7 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
     where: { lotteryId_rank: { lotteryId, rank: lottery.currentRank } },
   });
   if (!result || result.userId !== user.id) {
-    return jsonError("FORBIDDEN", "現在不是輪到您回應");
+    return jsonError("FORBIDDEN", "現在不是輪到你回應");
   }
   if (result.status !== "offered") {
     return jsonError("CONFLICT", "這個名額已經被處理過了");

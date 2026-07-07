@@ -61,7 +61,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     );
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return jsonError("CONFLICT", "您已經回報過這張券的使用結果了");
+      return jsonError("CONFLICT", "你已經回報過這張券的使用結果了");
     }
     throw e;
   }

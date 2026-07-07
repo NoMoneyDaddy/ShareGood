@@ -54,7 +54,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     let entryId: string;
     if (existing) {
       if (existing.status === "entered") {
-        return jsonError("CONFLICT", "您已經報名過了");
+        return jsonError("CONFLICT", "你已經報名過了");
       }
       // 取消過又想重新報名：因為 (lotteryId, userId) 唯一，重新報名等同於把既有那一列從
       // cancelled 改回 entered（見規格「報名與取消報名 API」）。
@@ -86,7 +86,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     // 兩個併發請求同時幫同一使用者建立第一筆報名：只有一個能 create 成功，
     // 另一個撞 (lotteryId, userId) 的 unique constraint。
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return jsonError("CONFLICT", "您已經報名過了");
+      return jsonError("CONFLICT", "你已經報名過了");
     }
     throw e;
   }
@@ -118,7 +118,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
     data: { status: "cancelled", cancelledAt: now },
   });
   if (updated.count === 0) {
-    return jsonError("NOT_FOUND", "找不到您在這場抽籤的報名紀錄");
+    return jsonError("NOT_FOUND", "找不到你在這場抽籤的報名紀錄");
   }
 
   await db.lotteryAuditLog.create({

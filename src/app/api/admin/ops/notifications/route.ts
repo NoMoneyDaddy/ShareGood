@@ -74,7 +74,7 @@ export async function GET(req: Request) {
       createdAt: d.createdAt,
       notification: {
         userId: d.notification.userId,
-        nickname: d.notification.user.profile?.nickname ?? "好物共享用戶",
+        nickname: d.notification.user.profile?.nickname ?? "好物共享使用者",
         type: d.notification.type,
         payload: d.notification.payload,
       },

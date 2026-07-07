@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");
   if (!(file instanceof File)) return jsonError("BAD_REQUEST", "缺少 file 欄位");
-  if (file.size > MAX_UPLOAD_BYTES) return jsonError("UNPROCESSABLE", "檔案超過 5MB 上限");
+  if (file.size > MAX_UPLOAD_BYTES) return jsonError("UNPROCESSABLE", "檔案超過 5 MB 上限");
 
   const rawBuffer = Buffer.from(await file.arrayBuffer());
   let buffer: Buffer;

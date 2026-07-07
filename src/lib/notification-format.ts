@@ -38,7 +38,7 @@ export function formatNotificationText(type: string, payload: unknown): string {
     case "item_expiring_reminder":
       return `${PREFIX}「${title}」即將到期，記得儘快促成分享`;
     case "lottery_won":
-      return `${PREFIX}恭喜！你在「${title}」的抽籤中中選了，請於 48 小時內登入網站確認`;
+      return `${PREFIX}恭喜！你在「${title}」的抽籤中獲選了，請於 48 小時內登入網站確認`;
     case "lottery_drawn":
       return `${PREFIX}「${title}」已完成開獎，正在等待中選者確認`;
     case "lottery_backup_offered":

@@ -87,7 +87,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路，
   // 避免三種選人方式互相打架；抽籤流標/取消/完成之後這個檢查自然放行。
   if (await hasActiveLottery(itemId)) {
-    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言/直贈");
+    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言／直贈");
   }
 
   // M9（master-plan §9a 交付內容 3）：give-to-get 領取配額，只套用在券票點三類物品，
@@ -167,7 +167,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json(result, { status: 201 });
   } catch (err) {
     if (err instanceof Error && err.message === "ALREADY_CLAIMED") {
-      return jsonError("CONFLICT", "您已經留言過了");
+      return jsonError("CONFLICT", "你已經留言過了");
     }
     throw err;
   }
@@ -210,7 +210,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       message: c.message,
       status: c.status,
       createdAt: c.createdAt,
-      user: { nickname: c.user.profile?.nickname ?? "好物共享用戶" },
+      user: { nickname: c.user.profile?.nickname ?? "好物共享使用者" },
     })),
     nextCursor: hasMore ? page[page.length - 1].id : null,
   });

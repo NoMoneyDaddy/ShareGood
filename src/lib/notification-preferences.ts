@@ -19,7 +19,7 @@ export const NOTIFICATION_EVENT_TYPES = [
   },
   {
     eventType: "direct_share_received",
-    label: "收到直接贈送邀請",
+    label: "收到直贈邀請",
     defaultInAppEnabled: true,
     defaultExternalEnabled: false,
   },
@@ -49,7 +49,7 @@ export const NOTIFICATION_EVENT_TYPES = [
     // 要不要建立、要不要外送到 Telegram／Web Push」都要另外查這裡的偏好設定，是正交的兩層
     // 閘門。即時比對命中算是比較即時、使用者主動選擇要收即時通知的情境，預設連外部通知也開。
     eventType: "subscription_match",
-    label: "訂閱條件即時命中新物品",
+    label: "有符合我訂閱條件的新物品",
     defaultInAppEnabled: true,
     defaultExternalEnabled: true,
   },

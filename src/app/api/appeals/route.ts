@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: appeal.id, status: appeal.status }, { status: 201 });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-      return jsonError("CONFLICT", "您已經對這筆紀錄申訴過了");
+      return jsonError("CONFLICT", "你已經對這筆紀錄申訴過了");
     }
     if (err instanceof Error && err.message === "EVIDENCE_ALREADY_USED") {
       return jsonError("UNPROCESSABLE", "附件已被使用，請重新上傳");

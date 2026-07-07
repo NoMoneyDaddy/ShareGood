@@ -53,9 +53,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     status: ticket.status,
     createdAt: ticket.createdAt,
     updatedAt: ticket.updatedAt,
-    user: { id: ticket.user.id, nickname: ticket.user.profile?.nickname ?? "好物共享用戶" },
+    user: { id: ticket.user.id, nickname: ticket.user.profile?.nickname ?? "好物共享使用者" },
     assignee: ticket.assignee
-      ? { id: ticket.assignee.id, nickname: ticket.assignee.profile?.nickname ?? "好物共享用戶" }
+      ? { id: ticket.assignee.id, nickname: ticket.assignee.profile?.nickname ?? "好物共享使用者" }
       : null,
     attachments: ticket.attachments.map((a) => ({
       id: a.id,
@@ -69,7 +69,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       message: e.message,
       createdAt: e.createdAt,
       actor: e.actor
-        ? { id: e.actor.id, nickname: e.actor.profile?.nickname ?? "好物共享用戶" }
+        ? { id: e.actor.id, nickname: e.actor.profile?.nickname ?? "好物共享使用者" }
         : null,
     })),
   });
@@ -112,7 +112,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     if (!assignee || !isModeratorOrAdmin(assignee)) {
       return jsonError("UNPROCESSABLE", "只能指派給 moderator 或 admin 帳號");
     }
-    assigneeNickname = assignee.profile?.nickname ?? "好物共享用戶";
+    assigneeNickname = assignee.profile?.nickname ?? "好物共享使用者";
   }
 
   const message = assigneeId
