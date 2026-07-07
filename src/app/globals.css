@@ -49,6 +49,10 @@
 }
 
 :root {
+  /* web-design-guidelines 檢查項：宣告 color-scheme 讓瀏覽器原生 UI（捲軸／原生
+     select 下拉選單外觀／日期選擇器等不受 Tailwind token 控制的部分）跟著系統深色
+     模式走，避免亮色模式的原生控制項疊在暗色頁面上。 */
+  color-scheme: light dark;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

@@ -61,12 +61,13 @@ export default async function DealInfosPage({
         </Link>
       </div>
 
+      {/* min-h-11（44px）符合觸控目標，比照 /items 列表頁篩選列的同一批修正 */}
       <form method="get" action="/deal-infos" className="mt-6 flex flex-wrap gap-2">
         <select
           name="cityId"
           defaultValue={cityId ?? ""}
           aria-label="依縣市篩選"
-          className="rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="min-h-11 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         >
           <option value="">全部縣市（含全台適用）</option>
           {cities.map((city) => (
@@ -77,7 +78,7 @@ export default async function DealInfosPage({
         </select>
         <button
           type="submit"
-          className="rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper"
+          className="min-h-11 rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper"
         >
           篩選
         </button>
