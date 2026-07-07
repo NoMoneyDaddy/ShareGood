@@ -210,6 +210,55 @@
       `e2e/integration/ops-{permissions,storage-usage,notification-retry}.test.ts`，
       連同既有套件共 210 個案例中 205 個通過（5 個失敗集中在 M7 自己需要 MinIO/S3 的資料
       匯出測試，本機環境限制，非本次改動造成）。
+- [x] 好康聚合總控第一輪（研究，不改碼）：使用者上傳新總控 prompt 後的四路平行研究，
+      成果落檔 `docs/research/2026-07-06-deal-aggregation/`（現況盤點/市場/資料來源 S0–S5
+      分級/法務，每項結論附 file:line 或來源 URL＋查證日期）。關鍵結論：自動爬蟲因
+      Lawsnote 案高風險排除於所有方案；採方案 B（使用者投稿＋編輯人工收錄自寫摘要＋導流）；
+      無償票券轉贈在黃牛條款文義之外；點數依使用者拍板做「無償媒合＋引導官方閉環」。
+      規格產出 master-plan.md §9a（M9），法務文案全數標註需律師審閱。
+- [x] 缺口修正 wave（M9 前置）：主動線接通（PR #42：首頁真實資料取代 DEMO_ITEMS、
+      `/items` 瀏覽頁、bottom-tab 探索分頁、admin-nav 補 4 個 M7/M8 孤兒頁、頁尾非官方
+      合作聲明）；Telegram 初次發送管線（PR #43：`src/lib/notification-dispatch.ts` outbox
+      掃描 job＋`@@unique(notificationId,channel)` create-to-claim 冪等＋watermark 防首跑
+      灌爆，補上 M4/M8 遺留的「綁定成功卻永遠收不到通知」缺口；`src/lib/ip-throttle.ts`
+      公開列表 API 的 IP 級節流，XFF 取最右跳、SHA-256 雜湊、含防偽測試）。
+- [x] M9 好康資訊與券票點強化：範圍見 master-plan.md §9a，四路分段（schema 地基→三路平行
+      功能）全部完成。
+    - [x] schema 地基（PR #44）：`deal_infos`／`deal_info_cities`／`deal_info_reports`
+          （`round` 欄位＋unique(deal_info_id,reporter_id,round)）／`deal_sources`／
+          `coupon_usage_reports`（unique(item_id,reporter_id)）／`ticket_details`／
+          `point_details`（皆 item_id @unique、**刻意無金額欄位**）七表＋migration；seed 補
+          「電子票券」「點數好康」分類、關鍵字黑名單詞庫、10 個 S1 官方來源。
+    - [x] 券類強化（PR #45）：give-to-get 每日領取配額掛累計貢獻值
+          （`src/lib/give-to-get-quota.ts`，級距 0分/1次、10分/3次、50分/10次為工程預設
+          草案；**排除 declined**——先到先得搶輸不佔額度）；優惠券使用結果回報
+          `POST/GET /api/items/[id]/coupon-usage-reports`＋詳情頁聚合統計（文案無「保證
+          有效」）；`/admin/keyword-blocklist` CRUD 後台。
+    - [x] 電子票券＋點數類型＋文案食安（PR #46）：`tickets`／`points` 分類 slug 判斷沿用
+          M3 優惠券慣例（`src/lib/categories.ts`），子表單＋`POST /api/items` slug 驗證、
+          detail 表寫入；防加價（keyword_blocklist 加價/折現詞）＋點數個資最小化
+          （`src/lib/phone-guard.ts` 台灣手機號正則**前後皆有數字邊界斷言**，套用在點數類
+          表單/留言/私訊）；詳情頁法定警示（文創法 10-1／運動產業條例 24-1）與轉贈風險
+          提示、即期食品食安提示，法務文案全掛 LegalDraftNotice 待律師審閱。
+    - [x] 資訊型好康 DealInfo＋編輯收錄（PR #47）：`deal_infos` 不走 claims/handover 的新
+          內容類型，`POST/GET /api/deal-infos[...]`（投稿/人工收錄雙路徑、cursor 分頁＋
+          縣市篩選）、狀態機 `pending_review→published↔stale→expired/rejected`（條件式
+          updateMany 樂觀鎖，跳態 409）、失效回報多人門檻（`DEAL_STALE_THRESHOLD` 預設 3、
+          ≥2 才生效）＋reactivate 輪次（**由 audit_logs 的 reactivate 筆數反推**，故
+          `writeAudit` 支援 transaction client、狀態轉換的 audit 必走 tx）、硬性 TTL job
+          `deal-info-expiration`（M3 模式）；前台 `/deal-infos[...]`（詳情頁 SEO 用
+          Article 型 JSON-LD、非 Product/Offer，必顯示來源＋查證日期＋免責）；後台
+          `/admin/deal-sources`（來源管理，關聯時檢查 isActive）＋`/admin/deal-reviews`
+          （審核佇列）。editorial 收錄 submitterId 為 null、operator 軌跡靠 audit_logs、
+          頻率限制明確只套用使用者投稿。EXPLAIN ANALYZE（20,000 筆）走 Index Scan。
+    - [x] 不可上架清單決策收斂（PR #48）：使用者 2026-07-07 兩階段拍板最終**全面清空**——
+          LINE 即享券/LINE 禮物/隨買跨店取/行動隨時取皆不硬擋，改以詳情頁文案引導官方
+          轉贈；攔截機制程式邏輯保留（清單為空），seed 一次性清理舊詞條；加價/折現/個資
+          徵求詞攔截不受影響。
+    - 整合測試累計 28 檔 268 案例，263 通過（5 個失敗為 M7 需 MinIO 的既有本機基準）；
+      每個 PR 皆過 `biome`／`tsc`／`NODE_ENV=production next build`。**已知遺留**：
+      M9 規格「選配」未做——stale 逾期自動轉 expired、DealInfo 到期前提醒投稿者；
+      give-to-get 級距數字待真實數據調整；法務文案上線前需律師審閱（研究 04 共 8 項）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
