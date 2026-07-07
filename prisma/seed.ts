@@ -53,9 +53,8 @@ const CATEGORIES: Array<[string, string]> = [
 const KEYWORD_BLOCKLIST_MARKUP: string[] = ["+300", "小補", "私訊出價", "補差價", "加價"];
 // 折現詞：防止點數/券類「折現/換現金/交換」變相金流（§1 non-goals：不做金流、不做交換）。
 const KEYWORD_BLOCKLIST_CASH_OUT: string[] = ["折現", "換現金", "交換", "面交補"];
-// 不可上架券名：官方明文禁轉贈/官方閉環類型（LINE 即享券/禮物、7-ELEVEN 行動隨時取、
-// 全家隨買跨店取），攔截層二負責擋自由文字（描述、留言），攔截層一（表單/API 常數清單）
-// 另有獨立實作，不在本表範圍。
+// 不可上架券名：官方明文禁轉贈類型（LINE 即享券），攔截層二負責擋自由文字（描述、留言），
+// 攔截層一（表單/API 常數清單）另有獨立實作，不在本表範圍。
 // 注意一：只擋「LINE 即享券」而非裸詞「即享券」——「即享券」是 Edenred 的通用電子票券
 // 品牌（麥當勞/SOGO/家樂福即享券等），多數為可自由轉贈的序號券，正是本平台利基；
 // 研究 04 查證到的「官方明文禁轉贈」僅限 LINE 即享券。本表比對無空白正規化
@@ -67,12 +66,24 @@ const KEYWORD_BLOCKLIST_NON_TRANSFERABLE: string[] = ["LINE即享券", "LINE 即
 // 個資徵求詞：點數類型個資最小化（硬規則），固定詞攔截；手機號格式另由獨立正則 helper 處理
 // （非本表範圍，見 §9a 交付內容 5）。
 const KEYWORD_BLOCKLIST_PII: string[] = ["驗證碼", "會員帳號", "OTP"];
+// M9 §9a 交付內容 6：研究 04 文案「絕對不能寫」清單裡可行者建為攔截規則（子字串比對）。
+// 「點數可折現」「換現金」已被 KEYWORD_BLOCKLIST_CASH_OUT 的「折現」「換現金」子字串涵蓋，
+// 這裡只補尚未涵蓋的禁句：保證可兌換/保證有效（平台非發行人無履約能力）、官方授權（未經授權
+// 不得宣稱）、代購費/手續費（票券收費暗示，文創法 10-1／運動條例 24-1）。
+const KEYWORD_BLOCKLIST_PROHIBITED_CLAIMS: string[] = [
+  "保證可兌換",
+  "保證有效",
+  "官方授權",
+  "代購費",
+  "手續費",
+];
 
 const KEYWORD_BLOCKLIST_SEED: string[] = [
   ...KEYWORD_BLOCKLIST_MARKUP,
   ...KEYWORD_BLOCKLIST_CASH_OUT,
   ...KEYWORD_BLOCKLIST_NON_TRANSFERABLE,
   ...KEYWORD_BLOCKLIST_PII,
+  ...KEYWORD_BLOCKLIST_PROHIBITED_CLAIMS,
 ];
 
 // M9 交付內容 2：方案 B 的 10 個 S1 官方來源種子（研究 03 選定 #1,3,4,5,6,7,9,10,12,13）。
