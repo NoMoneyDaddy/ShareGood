@@ -26,19 +26,7 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
     ],
-    screenshots: [
-      {
-        src: "/icon-192.png",
-        sizes: "192x192",
-        type: "image/png",
-        form_factor: "narrow",
-      },
-      {
-        src: "/icon-512.png",
-        sizes: "512x512",
-        type: "image/png",
-        form_factor: "wide",
-      },
-    ],
+    // 刻意不放 screenshots：該欄位語意是「應用程式 UI 預覽截圖」，拿圖示充數是誤用；
+    // 等前端重構完成、有值得展示的畫面後再補真正的截圖。
   };
 }
