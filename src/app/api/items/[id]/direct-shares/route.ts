@@ -39,7 +39,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   // M5 抽籤（master-plan §5a 交付內容 2）：物品存在非終態抽籤時，留言與直贈必須讓路。
   if (await hasActiveLottery(itemId)) {
-    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言/直贈");
+    return jsonError("CONFLICT", "物品目前為抽籤模式，無法留言／直贈");
   }
 
   const body = await req.json().catch(() => null);

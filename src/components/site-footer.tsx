@@ -38,7 +38,7 @@ export function SiteFooter({ hasBottomTab = false }: { hasBottomTab?: boolean })
         </nav>
       </div>
       {/* 非官方合作聲明：物品標題／描述由使用者自行填寫，可能提到店家或品牌名稱
-          （例如優惠券的「適用店家」），這裡明確聲明平台與這些品牌無合作/授權關係，
+          （例如優惠券的「適用店家」），這裡明確聲明平台與這些品牌無合作／授權關係，
           避免使用者或品牌方誤以為是官方合作內容。 */}
       <div className="mx-auto max-w-6xl px-4 pb-2 sm:px-6">
         <p className="border-t border-line/70 pt-4 text-xs text-ink-soft/80">

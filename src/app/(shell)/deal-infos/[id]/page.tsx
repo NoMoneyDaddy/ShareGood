@@ -118,7 +118,7 @@ export default async function DealInfoDetailPage({ params }: { params: Promise<{
               href={`/u/${dealInfo.submitter.id}`}
               className="text-ink underline-offset-2 hover:underline"
             >
-              {dealInfo.submitter.profile?.nickname ?? "好物共享用戶"}
+              {dealInfo.submitter.profile?.nickname ?? "好物共享使用者"}
             </Link>
           </p>
         )}

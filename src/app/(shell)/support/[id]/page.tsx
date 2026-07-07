@@ -123,7 +123,7 @@ export default async function SupportTicketDetailPage({
       )}
 
       <p className="mt-4 text-xs text-ink-soft">
-        由 {ticket.user.profile?.nickname ?? "好物共享用戶"} 於{" "}
+        由 {ticket.user.profile?.nickname ?? "好物共享使用者"} 於{" "}
         {TAIPEI_FORMATTER.format(ticket.createdAt)} 提出
       </p>
 
@@ -131,7 +131,7 @@ export default async function SupportTicketDetailPage({
         <div className="mt-4 flex items-center gap-3 rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">
           <span>
             目前負責人：
-            {ticket.assignee ? (ticket.assignee.profile?.nickname ?? "好物共享用戶") : "尚未認領"}
+            {ticket.assignee ? (ticket.assignee.profile?.nickname ?? "好物共享使用者") : "尚未認領"}
           </span>
           <AssignButton
             ticketId={ticket.id}
@@ -152,7 +152,7 @@ export default async function SupportTicketDetailPage({
               <li key={e.id} className="rounded-xl border border-line bg-card p-3">
                 <div className="flex items-center justify-between gap-2 text-sm">
                   <span className="font-medium">
-                    {e.actor?.profile?.nickname ?? "好物共享用戶"}
+                    {e.actor?.profile?.nickname ?? "好物共享使用者"}
                   </span>
                   <span className="text-xs text-ink-soft">
                     {TAIPEI_FORMATTER.format(e.createdAt)}

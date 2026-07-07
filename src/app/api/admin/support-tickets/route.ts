@@ -98,9 +98,9 @@ export async function GET(req: Request) {
       status: t.status,
       createdAt: t.createdAt,
       updatedAt: t.updatedAt,
-      user: { id: t.user.id, nickname: t.user.profile?.nickname ?? "好物共享用戶" },
+      user: { id: t.user.id, nickname: t.user.profile?.nickname ?? "好物共享使用者" },
       assignee: t.assignee
-        ? { id: t.assignee.id, nickname: t.assignee.profile?.nickname ?? "好物共享用戶" }
+        ? { id: t.assignee.id, nickname: t.assignee.profile?.nickname ?? "好物共享使用者" }
         : null,
     })),
     nextCursor: hasMore ? page[page.length - 1].id : null,

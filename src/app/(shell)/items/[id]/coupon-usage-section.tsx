@@ -73,7 +73,7 @@ export function CouponUsageSection({
       {canReport && (
         <div className="mt-3 border-t border-line pt-3">
           {submitted ? (
-            <p className="text-sm text-ink-soft">感謝回報，已收到您的使用結果。</p>
+            <p className="text-sm text-ink-soft">感謝回報，已收到你的使用結果。</p>
           ) : (
             <>
               <p className="mb-2 text-xs text-ink-soft">這張券實際使用起來如何？</p>

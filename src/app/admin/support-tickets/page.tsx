@@ -173,9 +173,10 @@ export default async function AdminSupportTicketsPage({
                     <p className="truncate text-sm font-medium text-ink">{t.subject}</p>
                     <p className="mt-0.5 text-xs text-ink-soft">
                       {SUPPORT_TICKET_CATEGORY_LABEL[t.category] ?? t.category}・
-                      {t.user.profile?.nickname ?? "好物共享用戶"}・
+                      {t.user.profile?.nickname ?? "好物共享使用者"}・
                       {TAIPEI_FORMATTER.format(t.createdAt)}
-                      {t.assignee && `・負責人：${t.assignee.profile?.nickname ?? "好物共享用戶"}`}
+                      {t.assignee &&
+                        `・負責人：${t.assignee.profile?.nickname ?? "好物共享使用者"}`}
                     </p>
                   </div>
                   <Badge variant={STATUS_VARIANT[t.status] ?? "outline"}>

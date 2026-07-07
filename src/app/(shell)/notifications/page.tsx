@@ -72,7 +72,7 @@ function describeNotification(type: string, payload: unknown): string {
     return `「${itemTitleOf(p)}」即將到期，記得儘快促成分享`;
   }
   if (p.kind === "lottery_won") {
-    return `恭喜！你在「${itemTitleOf(p)}」的抽籤中中選了，請於 48 小時內確認`;
+    return `恭喜！你在「${itemTitleOf(p)}」的抽籤中獲選了，請於 48 小時內確認`;
   }
   if (p.kind === "lottery_drawn") {
     return `「${itemTitleOf(p)}」已完成開獎，正在等待中選者確認`;

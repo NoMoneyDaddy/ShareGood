@@ -48,13 +48,13 @@ export async function checkUserRestriction(
   if (hasFullBlock) {
     return {
       blocked: true,
-      message: "您的帳號目前被停權，如有疑問請聯繫站方",
+      message: "你的帳號目前被停權，如有疑問請與站方聯繫",
     };
   }
 
   return {
     blocked: true,
-    message: `您的帳號目前被限制${ACTION_LABEL[action]}，如有疑問請聯繫站方`,
+    message: `你的帳號目前被限制${ACTION_LABEL[action]}，如有疑問請與站方聯繫`,
   };
 }
 
@@ -80,6 +80,6 @@ export async function checkFullBlock(userId: string): Promise<RestrictionCheckRe
   if (!restriction) return { blocked: false };
   return {
     blocked: true,
-    message: "您的帳號目前被停權，如有疑問請聯繫站方",
+    message: "你的帳號目前被停權，如有疑問請與站方聯繫",
   };
 }

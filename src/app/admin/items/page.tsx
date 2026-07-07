@@ -153,7 +153,7 @@ export default async function AdminItemsPage({
                   </Link>
                   <p className="mt-1 text-xs text-ink-soft">
                     {item.category.name}・{item.city.name}・物主：
-                    {item.owner.profile?.nickname ?? "好物共享用戶"}・
+                    {item.owner.profile?.nickname ?? "好物共享使用者"}・
                     {TAIPEI_FORMATTER.format(item.createdAt)}
                   </p>
                 </div>
