@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { ChartLegend } from "./charts/chart-legend";
+import { StatusTimelineRow } from "./charts/status-timeline";
 import { formatTaipeiDateTime, STATUS_DOT_CLASS, STATUS_LABEL } from "./format";
 import { OpsNav } from "./ops-nav";
 import { requireOpsPageAccess } from "./require-ops-access";
@@ -16,6 +18,10 @@ const SUBSYSTEM_LABEL: Record<(typeof SUBSYSTEMS)[number], string> = {
   background_jobs: "背景工作",
 };
 const TREND_WINDOW_MS = 24 * 60 * 60 * 1000;
+const TIMELINE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+/** 每個子系統的時間線最多畫這麼多個色塊，避免 health_check_probe 密集執行時
+ * 圖表被撐爆（見 dataviz 技能「向左/向右溢出都要避免」）。 */
+const TIMELINE_MAX_POINTS = 60;
 
 // `/admin/ops` 總覽分頁（master-plan §8a 交付內容 5＋7）：三個子系統目前狀態＋過去 24
 // 小時歷史趨勢。moderator/admin 才能看，其餘一律 404（見 require-ops-access.ts）。
@@ -27,7 +33,7 @@ export default async function AdminOpsOverviewPage({
   await requireOpsPageAccess();
   const { cursor } = await searchParams;
 
-  const [latestPerSubsystem, trendCounts, recentChecks] = await Promise.all([
+  const [latestPerSubsystem, trendCounts, recentChecks, timelineRows] = await Promise.all([
     Promise.all(
       SUBSYSTEMS.map((subsystem) =>
         db.healthCheck.findFirst({ where: { subsystem }, orderBy: { checkedAt: "desc" } }),
@@ -43,6 +49,11 @@ export default async function AdminOpsOverviewPage({
       take: PAGE_SIZE + 1,
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     }),
+    db.healthCheck.findMany({
+      where: { checkedAt: { gte: new Date(Date.now() - TIMELINE_WINDOW_MS) } },
+      orderBy: { checkedAt: "asc" },
+      select: { subsystem: true, status: true, checkedAt: true, latencyMs: true },
+    }),
   ]);
 
   const hasMore = recentChecks.length > PAGE_SIZE;
@@ -53,6 +64,12 @@ export default async function AdminOpsOverviewPage({
       .filter((c) => c.subsystem === subsystem)
       .map((c) => `${STATUS_LABEL[c.status] ?? c.status} ${c._count}`)
       .join("・");
+  }
+
+  function timelineFor(subsystem: string) {
+    const rows = timelineRows.filter((r) => r.subsystem === subsystem);
+    // 取最近的 TIMELINE_MAX_POINTS 筆，維持由舊到新排序。
+    return rows.length > TIMELINE_MAX_POINTS ? rows.slice(-TIMELINE_MAX_POINTS) : rows;
   }
 
   return (
@@ -95,6 +112,28 @@ export default async function AdminOpsOverviewPage({
             </div>
           );
         })}
+      </div>
+
+      <h2 className="mt-8 text-lg font-semibold text-ink">狀態時間線（近 7 天）</h2>
+      <p className="mt-1 text-xs text-ink-soft">
+        每個色塊代表一次健康檢查，由舊到新排列；滑過色塊可看到檢查時間與延遲。
+      </p>
+      <div className="mt-3 space-y-3 rounded-xl border border-line bg-card p-4">
+        {SUBSYSTEMS.map((subsystem) => (
+          <StatusTimelineRow
+            key={subsystem}
+            label={SUBSYSTEM_LABEL[subsystem]}
+            points={timelineFor(subsystem)}
+            statusLabel={STATUS_LABEL}
+            statusDotClass={STATUS_DOT_CLASS}
+          />
+        ))}
+        <ChartLegend
+          items={Object.entries(STATUS_LABEL).map(([status, label]) => ({
+            label,
+            swatchClassName: STATUS_DOT_CLASS[status] ?? "bg-line",
+          }))}
+        />
       </div>
 
       <h2 className="mt-8 text-lg font-semibold text-ink">歷史紀錄</h2>

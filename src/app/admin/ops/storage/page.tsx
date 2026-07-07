@@ -2,6 +2,10 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { ChartLegend } from "../charts/chart-legend";
+import { dayKeyToLabel, taipeiDateKey } from "../charts/date-buckets";
+import { EmptyChartState } from "../charts/empty-chart-state";
+import { TrendLineChart } from "../charts/line-chart";
 import { formatBytes, formatTaipeiDateTime } from "../format";
 import { OpsNav } from "../ops-nav";
 import { requireOpsPageAccess } from "../require-ops-access";
@@ -9,6 +13,13 @@ import { requireOpsPageAccess } from "../require-ops-access";
 export const metadata = { title: "Storage 用量 - 營運儀表板" };
 
 const PAGE_SIZE = 20;
+/** 用量成長圖表用，每個 bucket 最多畫這麼多筆快照（跟下面分頁列表的 cursor 無關，
+ * 快照通常每天只跑一次 storage_usage_snapshot job，60 筆約可覆蓋 2 個月）。 */
+const GROWTH_CHART_MAX_SNAPSHOTS_PER_BUCKET = 60;
+/** 固定色階順序：只有一個 bucket 用 brand（單一系列不需要 legend）；多個 bucket
+ * 時第二個開始才用 navy，這是全站僅有的兩個非中性色，刻意不引入新的圖表色相
+ * （見 PR 說明：ShareGood 設計系統「全站僅此一個飽和色」）。 */
+const BUCKET_COLOR_VARS = ["var(--color-brand)", "var(--color-navy)"];
 
 const ITEM_STATUS_LABEL: Record<string, string> = {
   draft: "草稿",
@@ -50,6 +61,47 @@ export default async function AdminOpsStoragePage({
     !Array.isArray(latest.byItemStatus)
       ? (latest.byItemStatus as Record<string, number>)
       : {};
+
+  // 用量成長折線圖：依 bucket 分組，每個 bucket 同一天多筆快照取最後一筆，
+  // 缺漏的日期沿用前一筆已知值（總用量本來就不會無中生有地掉回 0）。
+  const growthRows = await db.storageUsageSnapshot.findMany({
+    orderBy: { snapshotAt: "asc" },
+    select: { bucket: true, totalBytes: true, snapshotAt: true },
+  });
+  const perBucketByDay = new Map<string, Map<string, bigint>>();
+  for (const row of growthRows) {
+    const dayKey = taipeiDateKey(row.snapshotAt);
+    if (!perBucketByDay.has(row.bucket)) perBucketByDay.set(row.bucket, new Map());
+    perBucketByDay.get(row.bucket)?.set(dayKey, row.totalBytes);
+  }
+  const bucketNames = Array.from(perBucketByDay.keys());
+  const allDayKeysSet = new Set<string>();
+  for (const dayMap of perBucketByDay.values()) {
+    for (const key of dayMap.keys()) allDayKeysSet.add(key);
+  }
+  const allDayKeysSorted = Array.from(allDayKeysSet).sort();
+  const growthDayKeys =
+    allDayKeysSorted.length > GROWTH_CHART_MAX_SNAPSHOTS_PER_BUCKET
+      ? allDayKeysSorted.slice(-GROWTH_CHART_MAX_SNAPSHOTS_PER_BUCKET)
+      : allDayKeysSorted;
+  const growthSeries = bucketNames.map((bucket, i) => {
+    const dayMap = perBucketByDay.get(bucket) ?? new Map<string, bigint>();
+    let lastKnown = 0;
+    const values = growthDayKeys.map((key) => {
+      const value = dayMap.get(key);
+      if (value !== undefined) lastKnown = Number(value);
+      return lastKnown;
+    });
+    return {
+      key: bucket,
+      name: bucket,
+      colorVar: BUCKET_COLOR_VARS[i % BUCKET_COLOR_VARS.length],
+      values,
+      formatValue: (v: number) => formatBytes(v),
+    };
+  });
+  const growthLabels = growthDayKeys.map(dayKeyToLabel);
+  const hasGrowthData = growthDayKeys.length > 0;
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
@@ -122,6 +174,29 @@ export default async function AdminOpsStoragePage({
           </div>
         </>
       )}
+
+      <h2 className="mt-8 text-lg font-semibold text-ink">用量成長趨勢</h2>
+      <div className="mt-3 rounded-xl border border-line bg-card p-4">
+        {hasGrowthData ? (
+          <>
+            <TrendLineChart
+              labels={growthLabels}
+              series={growthSeries}
+              ariaLabel="依 bucket 分組的儲存用量成長折線圖"
+            />
+            {growthSeries.length > 1 && (
+              <ChartLegend
+                items={growthSeries.map((s, i) => ({
+                  label: s.name,
+                  swatchClassName: i === 0 ? "bg-brand" : "bg-navy",
+                }))}
+              />
+            )}
+          </>
+        ) : (
+          <EmptyChartState message="尚無快照資料，無法畫出成長趨勢" />
+        )}
+      </div>
 
       <h2 className="mt-8 text-lg font-semibold text-ink">歷史趨勢</h2>
       <div className="mt-3 overflow-hidden rounded-xl border border-line bg-card">

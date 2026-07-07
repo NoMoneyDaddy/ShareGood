@@ -2,6 +2,9 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { TrendBarChart } from "../charts/bar-chart";
+import { dayKeyToLabel, lastNDayKeys, taipeiDateKey } from "../charts/date-buckets";
+import { EmptyChartState } from "../charts/empty-chart-state";
 import { formatTaipeiDateTime } from "../format";
 import { OpsNav } from "../ops-nav";
 import { requireOpsPageAccess } from "../require-ops-access";
@@ -10,12 +13,31 @@ export const metadata = { title: "慢查詢 - 營運儀表板" };
 
 const PAGE_SIZE = 20;
 const WINDOW_HOURS = 24;
+const TREND_DAYS = 7;
+/** 耗時分佈的桶界線（毫秒），由輕到重四級，用同一個 brand 色階漸深表示嚴重度
+ * （ordinal 漸層，見 dataviz 技能 color-formula：離散排序類別用同一色相深淺，不是彩虹）。 */
+const DURATION_BUCKETS = [
+  { max: 2000, label: "1–2s", barClassName: "bg-brand/35" },
+  { max: 5000, label: "2–5s", barClassName: "bg-brand/60" },
+  { max: 10000, label: "5–10s", barClassName: "bg-brand/80" },
+  { max: Number.POSITIVE_INFINITY, label: "10s+", barClassName: "bg-brand" },
+] as const;
 
 interface P95Row {
   label: string;
   p95: number | string | null;
   sample_count: bigint | number | string;
   max_duration_ms: number | null;
+}
+
+interface DailySlowRow {
+  day: Date;
+  slow_count: bigint | number | string;
+}
+
+interface DurationBucketRow {
+  bucket_index: number;
+  count: bigint | number | string;
 }
 
 function toNumber(value: bigint | number | string | null | undefined): number {
@@ -35,7 +57,9 @@ export default async function AdminOpsPerformancePage({
   const { labelCursor, slowCursor, errorCursor } = await searchParams;
   const windowStart = new Date(Date.now() - WINDOW_HOURS * 60 * 60 * 1000);
 
-  const [p95Rows, slowQueries, errors] = await Promise.all([
+  const trendWindowStart = new Date(Date.now() - TREND_DAYS * 24 * 60 * 60 * 1000);
+
+  const [p95Rows, slowQueries, errors, dailySlowRows, durationBucketRows] = await Promise.all([
     labelCursor
       ? db.$queryRaw<P95Row[]>`
           SELECT label, percentile_cont(0.95) WITHIN GROUP (ORDER BY duration_ms) AS p95,
@@ -62,6 +86,27 @@ export default async function AdminOpsPerformancePage({
       take: PAGE_SIZE + 1,
       ...(errorCursor ? { cursor: { id: errorCursor }, skip: 1 } : {}),
     }),
+    // 近 7 天每日慢查詢次數（圖表用，跟上面既有的 24 小時 P95 表格是不同時間窗）。
+    db.$queryRaw<DailySlowRow[]>`
+      SELECT date_trunc('day', recorded_at) AS day, COUNT(*) FILTER (WHERE is_slow) AS slow_count
+      FROM performance_metrics
+      WHERE metric_type = 'db_query' AND recorded_at >= ${trendWindowStart}
+      GROUP BY 1 ORDER BY 1
+    `,
+    // 近 7 天慢查詢耗時分佈（1–2s／2–5s／5–10s／10s+ 四級）。
+    db.$queryRaw<DurationBucketRow[]>`
+      SELECT
+        CASE
+          WHEN duration_ms < 2000 THEN 0
+          WHEN duration_ms < 5000 THEN 1
+          WHEN duration_ms < 10000 THEN 2
+          ELSE 3
+        END AS bucket_index,
+        COUNT(*) AS count
+      FROM performance_metrics
+      WHERE is_slow = true AND recorded_at >= ${trendWindowStart}
+      GROUP BY 1
+    `,
   ]);
 
   const hasMoreLabels = p95Rows.length > PAGE_SIZE;
@@ -71,6 +116,28 @@ export default async function AdminOpsPerformancePage({
   const hasMoreErrors = errors.length > PAGE_SIZE;
   const errorPage = hasMoreErrors ? errors.slice(0, PAGE_SIZE) : errors;
 
+  const dayKeys = lastNDayKeys(TREND_DAYS);
+  const slowCountByDay = new Map(
+    dailySlowRows.map((row) => [taipeiDateKey(row.day), toNumber(row.slow_count)]),
+  );
+  const dailySlowChartData = dayKeys.map((key) => ({
+    key,
+    label: dayKeyToLabel(key),
+    value: slowCountByDay.get(key) ?? 0,
+  }));
+  const hasDailySlowData = dailySlowChartData.some((d) => d.value > 0);
+
+  const countByBucketIndex = new Map(
+    durationBucketRows.map((row) => [Number(row.bucket_index), toNumber(row.count)]),
+  );
+  const durationHistogramData = DURATION_BUCKETS.map((bucket, index) => ({
+    key: String(index),
+    label: bucket.label,
+    value: countByBucketIndex.get(index) ?? 0,
+    barClassName: bucket.barClassName,
+  }));
+  const hasDurationData = durationHistogramData.some((d) => d.value > 0);
+
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">慢查詢與錯誤</h1>
@@ -79,6 +146,32 @@ export default async function AdminOpsPerformancePage({
       </p>
 
       <OpsNav active="/admin/ops/performance" />
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-line bg-card p-4">
+          <h2 className="text-sm font-semibold text-ink">近 7 天慢查詢次數</h2>
+          <div className="mt-4">
+            {hasDailySlowData ? (
+              <TrendBarChart data={dailySlowChartData} ariaLabel="近 7 天每日慢查詢次數" />
+            ) : (
+              <EmptyChartState message="近 7 天尚無慢查詢紀錄" />
+            )}
+          </div>
+        </div>
+        <div className="rounded-xl border border-line bg-card p-4">
+          <h2 className="text-sm font-semibold text-ink">近 7 天慢查詢耗時分佈</h2>
+          <div className="mt-4">
+            {hasDurationData ? (
+              <TrendBarChart
+                data={durationHistogramData}
+                ariaLabel="近 7 天慢查詢耗時分佈，1 到 2 秒、2 到 5 秒、5 到 10 秒、10 秒以上四級"
+              />
+            ) : (
+              <EmptyChartState message="近 7 天尚無慢查詢紀錄" />
+            )}
+          </div>
+        </div>
+      </div>
 
       <h2 className="mt-8 text-lg font-semibold text-ink">
         依 label 的 P95（過去 {WINDOW_HOURS} 小時）
