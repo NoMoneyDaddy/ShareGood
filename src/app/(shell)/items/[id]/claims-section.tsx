@@ -108,8 +108,8 @@ export function ClaimsSection({
   const statusNotice = STATUS_LABEL[currentStatus];
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">留言</h2>
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-lg font-semibold tracking-tight text-ink">留言</h2>
 
       {currentStatus === "published" && lotteryActive ? (
         <p className="mt-4 rounded-lg bg-paper-2 px-3 py-2 text-sm text-ink-soft">

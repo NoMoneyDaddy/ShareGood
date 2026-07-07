@@ -40,8 +40,8 @@ export function HandoverSection({
   }
 
   return (
-    <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">交接與私訊</h2>
+    <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-lg font-semibold tracking-tight text-ink">交接與私訊</h2>
       <div className="mt-4">
         {itemStatus === "reserved" && <StartHandoverButton itemId={itemId} />}
         {itemStatus === "handover_pending" &&

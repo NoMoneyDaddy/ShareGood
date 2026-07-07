@@ -1,3 +1,4 @@
+import { Gift } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { listPublishedDealInfos } from "@/lib/deal-info";
@@ -46,25 +47,27 @@ export default async function DealInfosPage({
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">好康資訊</h1>
+          <h1 className="text-2xl font-semibold tracking-normal text-ink">好康資訊</h1>
           <p className="mt-1.5 text-sm text-ink-soft">
             官方收錄與網友投稿的優惠活動資訊，非平台交付內容。
           </p>
         </div>
+        {/* text-brand-foreground（非 text-white）：暗色模式下 brand 是偏亮的青色，見 globals.css 對應註解 */}
         <Link
           href="/deal-infos/new"
-          className="shrink-0 rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand/90"
+          className="shrink-0 rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-brand-foreground hover:bg-brand/90"
         >
           投稿好康
         </Link>
       </div>
 
+      {/* min-h-11（44px）符合觸控目標，比照 /items 列表頁篩選列的同一批修正 */}
       <form method="get" action="/deal-infos" className="mt-6 flex flex-wrap gap-2">
         <select
           name="cityId"
           defaultValue={cityId ?? ""}
           aria-label="依縣市篩選"
-          className="rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="min-h-11 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         >
           <option value="">全部縣市（含全台適用）</option>
           {cities.map((city) => (
@@ -75,15 +78,34 @@ export default async function DealInfosPage({
         </select>
         <button
           type="submit"
-          className="rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper"
+          className="min-h-11 rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper"
         >
           篩選
         </button>
       </form>
 
       {result.dealInfos.length === 0 ? (
-        <div className="mt-10 rounded-xl border border-line bg-card px-4 py-10 text-center">
-          <p className="text-sm text-ink-soft">目前沒有符合條件的好康資訊。</p>
+        // M10 批次 2：空狀態留白比例修正——原本 py-10 的小卡片在桌面版下方留下大片
+        // 空白（研究文件 02 現況盤點已點名），改成更飽滿的空狀態：加圖示＋加大內距、
+        // 補上投稿 CTA（比照 /items 空狀態「馬上分享出去」的既有慣例），讓空狀態本身
+        // 有明確的下一步行動，而不是只有一句說明文字。
+        <div className="mt-10 rounded-xl border border-line bg-card px-6 py-16 text-center">
+          <Gift
+            size={32}
+            strokeWidth={1.5}
+            className="mx-auto text-ink-disabled"
+            aria-hidden="true"
+          />
+          <p className="mt-4 text-sm text-ink-soft">目前沒有符合條件的好康資訊。</p>
+          <p className="mt-2 text-sm text-ink-soft">
+            知道其他優惠活動嗎？
+            <Link
+              href="/deal-infos/new"
+              className="text-brand-ink underline-offset-2 hover:underline"
+            >
+              投稿分享給大家
+            </Link>
+          </p>
         </div>
       ) : (
         <ul className="mt-6 space-y-3">

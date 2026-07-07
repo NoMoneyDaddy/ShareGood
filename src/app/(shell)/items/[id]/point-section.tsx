@@ -12,8 +12,8 @@ export function PointSection({ point }: { point: PointInfo | null }) {
   if (!point) return null;
 
   return (
-    <section id="point" className="mt-8 border-t border-line pt-6">
-      <h2 className="text-lg font-bold tracking-tight">點數資訊</h2>
+    <section id="point" className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
+      <h2 className="text-sm font-semibold text-ink-soft uppercase tracking-wide">點數資訊</h2>
       <div className="mt-4 space-y-2 rounded-xl border border-line bg-card p-4 text-sm">
         <p className="text-ink">
           點數平台：<span className="font-medium">{point.pointPlatform}</span>
@@ -22,7 +22,9 @@ export function PointSection({ point }: { point: PointInfo | null }) {
           點數數量：<span className="font-medium">{point.pointAmount.toLocaleString("zh-TW")}</span>
         </p>
 
-        <div className="mt-3 space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
+        {/* M10 批次 2：改用 text-ink，理由同 ticket-section.tsx 的相同修正註解
+            （text-brand-ink 疊 bg-brand-soft 在暗色模式下對比不足 4.5:1）。 */}
+        <div className="mt-3 space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-ink">
           <p>
             點數轉贈依各平台官方規則，能否轉贈、次數與期限以官方 App
             為準；本平台不經手點數。實際轉移請雙方一律走官方 App 的轉贈功能完成。

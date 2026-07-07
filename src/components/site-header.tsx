@@ -55,7 +55,7 @@ export async function SiteHeader({ session, profile }: SiteHeaderProps) {
                 {unreadCount > 0 && (
                   <span
                     aria-hidden="true"
-                    className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold leading-none text-white"
+                    className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold leading-none text-brand-foreground"
                   >
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>

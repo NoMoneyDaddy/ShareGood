@@ -21,7 +21,7 @@ export function BottomTab() {
       <div className="mx-auto grid max-w-lg grid-cols-6 items-end px-2 pb-2 pt-1.5 text-[11px]">
         <Link
           href="/"
-          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="flex flex-col items-center gap-1 py-1 font-semibold text-brand-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <Compass size={20} strokeWidth={2} aria-hidden="true" />
           逛好物
@@ -40,7 +40,7 @@ export function BottomTab() {
         >
           {/* 未登入／未完成 onboarding 的使用者點進 /items/new 會被導去對應頁面，
               不在這裡重複判斷登入狀態（BottomTab 是全站共用元件，不吃 session）。 */}
-          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-brand-glow">
+          <span className="-mt-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-brand-foreground shadow-brand-glow">
             <Plus size={22} strokeWidth={2.4} aria-hidden="true" />
           </span>
           <span className="font-semibold text-ink">分享</span>

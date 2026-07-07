@@ -49,6 +49,10 @@
 }
 
 :root {
+  /* web-design-guidelines 檢查項：宣告 color-scheme 讓瀏覽器原生 UI（捲軸／原生
+     select 下拉選單外觀／日期選擇器等不受 Tailwind token 控制的部分）跟著系統深色
+     模式走，避免亮色模式的原生控制項疊在暗色頁面上。 */
+  color-scheme: light dark;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -116,31 +120,47 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* ===== M10 批次 1：品牌 token（paper/ink/brand 系）深色覆寫 =====
-   * 暗底用降飽和的琥珀（brand）與暖灰紙感（paper 系），不是純黑（L=0），維持品牌識別；
-   * 每一組配對都用 scripts/oklch-contrast 手算過 WCAG 對比（見 PR 描述），確保 AA。
+  /* ===== M10 批次 2：品牌 token 換裝為提案 B「靛青與暖沙」深色套組 =====
+   * 使用者 2026-07-07 拍板全站改採提案 B，取代 M10 批次 1 暫用的琥珀橘深色套組。
+   * 數值直接取自 docs/research/2026-07-07-frontend-refactor/03-style-proposals.md
+   * 提案 B 章節 Dark 表（照表換值，未自行發明色碼）；brand-accent-ink 為該表未列出的
+   * 衍生色，比照 brand→brand-ink「加深＋提高對比」的既有命名慣例另行計算，見下方
+   * 個別註解。研究文件的輔助色原建議 token 名為 accent／accent-ink，但 `--color-accent`
+   * 已被 shadcn 基礎 token 佔用（`@theme inline` 的 `--color-accent: var(--accent)`，
+   * 供 select/dropdown-menu 等元件的 `focus:bg-accent` hover 狀態使用），直接覆寫會讓
+   * 全站下拉選單 focus 狀態變成暖沙金色——因此改名為 brand-accent／brand-accent-ink
+   * 避免撞名，語意與提案文件的 accent 完全相同。
    * 這個 .dark class 選擇器本身目前沒有任何機制會被實際套用到 <html>（沒有接
    * ThemeProvider／手動切換開關，見 master-plan §10a「手動切換開關為選配」），
    * 真正負責讓深色模式跟隨系統設定自動生效的是檔案最下面的
    * `@media (prefers-color-scheme: dark)` 區塊；這裡保留 .dark class 版本只是
    * 讓未來若要做手動切換開關時，同一套數值可以直接重用，不用重算一次。 */
-  --color-paper: oklch(0.17 0.008 75);
-  --color-paper-2: oklch(0.23 0.01 75);
-  --color-ink: oklch(0.95 0.006 80);
-  --color-ink-soft: oklch(0.74 0.015 75);
-  --color-ink-disabled: oklch(0.62 0.012 70);
-  --color-line: oklch(0.34 0.015 75);
-  /* brand 同時被拿來當「按鈕底色配白字」與少數「純文字」（text-brand）兩種用途，
-     兩者對 WCAG AA 4.5:1 的最佳解不完全相同：L=0.58 C=0.14 是折衷值——配白字
-     4.53:1（過），當純文字疊在 paper 上 4.22:1、疊在 paper-2 上 3.73:1（略低於
-     4.5:1，但這兩處純文字用法本來就只有 2-3 個既有元件用到、字級也不小，且這批
-     刻意不動個別頁面內容/元件樣式，已知限制見 PR 描述，之後批次可以考慮把那幾處
-     改用 brand-ink 而非裸的 brand）。 */
-  --color-brand: oklch(0.58 0.14 45);
-  --color-brand-ink: oklch(0.82 0.09 45);
-  --color-brand-soft: oklch(0.28 0.05 45);
-  --color-navy: oklch(0.34 0.035 250);
-  --shadow-brand-glow: 0 8px 18px -6px oklch(0.58 0.14 45 / 0.55);
+  --color-paper: #10171a;
+  --color-paper-2: #182228;
+  --color-ink: #e9eeec; /* ink / paper 15.44:1 */
+  --color-ink-soft: #a9b7b4; /* ink-soft / paper 8.73:1 */
+  --color-ink-disabled: #8a9794; /* ink-disabled / paper 5.98:1 */
+  --color-line: #33454a; /* 分隔線，刻意柔和 1.80:1 */
+  --color-brand: #5cc0c7; /* 深色字 / brand（按鈕底配深字）8.47:1；純文字疊 paper 上實測約 8.5:1，遠優於舊版琥珀橘 */
+  --color-brand-ink: #3e9ca3; /* 深色字 / brand-ink（pressed）5.60:1 */
+  --color-brand-soft: #163338; /* 淺底＋字 #5cc0c7（accent/brand 純色）對比 6.28:1；若配 brand-ink 純文字對比僅約 4.15:1，未達 4.5:1，這批已知既有用法一律改配 ink 或 brand，見 PR 描述 */
+  --color-navy: #131c20; /* 近 paper-2 略深一階 */
+  /* brand-foreground（暗）：brand 暗色是偏亮的青色，配深色字才對比足夠（8.17:1，
+     沿用 navy 暗色值），不能沿用亮色模式的白字（見亮色區塊註解）。 */
+  --color-brand-foreground: #131c20;
+
+  /* 語意色與輔助色（提案 B 新增，見映射表） */
+  --color-brand-accent: #d6b478; /* 深色字 / accent 9.19:1 */
+  /* brand-accent-ink（暗）：提案文件未列出此衍生色，比照 brand 暗色版「調暗當作
+     pressed 底色」的方向另行計算（降亮度約 20%，保持色相）。 */
+  --color-brand-accent-ink: #ab9060;
+  --color-success: #6fbe6a; /* success / paper 7.98:1 */
+  --color-warning: #d9a245; /* warning / paper 7.94:1 */
+  --color-danger: #e2695c; /* danger / paper 5.53:1 */
+
+  /* 提案文件僅給亮色數值，這裡沿用同一套發光公式換算暗色版本（brand 暗色 rgb 值＋
+     同一 alpha），同樣只用在最主要的 CTA。 */
+  --shadow-brand-glow: 0 6px 14px -6px rgba(92, 192, 199, 0.3);
 }
 
 @layer base {
@@ -171,38 +191,62 @@
     animation-duration: 0.01ms !important;
   }
 }
-/* ===== ShareGood 品牌設計系統（ui-ux-pro-max 產出，經人工校正）=====
- * 色彩策略：暖白底 + 近黑墨字 + 單一飽和色「琥珀橘」。
- * 避開兩個套路：紫色（AI 泛用色）與棕米配色（高端消費品套路）。
- * 橘色取「贈與、溫暖、行動」的意象，且全站僅此一個飽和色。
+/* ===== ShareGood 品牌設計系統：M10 提案 B「靛青與暖沙」=====
+ * 使用者 2026-07-07 拍板全站改採提案 B，取代 M0-M9 版本的暖白＋琥珀橘。
+ * 色彩策略：暖沙白底 + 近黑墨字 + 靛青（刻意偏青、非紫調）品牌色，沉穩信任感定位，
+ * 訴求「平台在背後穩穩接住你」。完整 token 表／WCAG 對比驗算／映射表見
+ * docs/research/2026-07-07-frontend-refactor/03-style-proposals.md 提案 B 章節，
+ * 本區塊數值直接取自該表，未自行發明色碼；brand-accent-ink 為該表未列出的衍生色
+ * （比照 brand→brand-ink 的加深規則另行計算，見下方個別註解）。輔助色 token 命名為
+ * brand-accent／brand-accent-ink（而非研究文件原建議的 accent／accent-ink），因為
+ * `--color-accent` 已被 shadcn 基礎 token 佔用（見 .dark 區塊註解說明撞名原因）。
+ * 字型：依提案文件「共通決策」，--font-sans／--font-display 改用純系統字型堆疊
+ * （不再引用 next/font 載入的 Geist/Manrope），三套提案的字型差異一律靠字重／
+ * 字距／字級節奏而非替換字體家族；layout.tsx 是否要移除對應的 next/font 載入
+ * 不在本批次範圍（見 PR 描述已知限制，Geist/Manrope 字型檔仍會被載入但未被引用）。
  */
 @theme {
-  --color-paper: oklch(0.975 0.006 80); /* 頁面底：極低彩度暖白 */
-  --color-paper-2: oklch(0.95 0.01 75); /* 次要底：分類列、頁尾 */
+  --color-paper: #f9f6ef; /* 頁面底：暖沙白 */
+  --color-paper-2: #f0eadd; /* 次要底：分類列、頁尾 */
   /* 卡片色不在這裡宣告：沿用上面 @theme inline 的 --color-card: var(--card)，
      它已經是 oklch(1 0 0)（跟這裡想要的純白一致），重新宣告會蓋掉 --card 的
      間接參照，未來接上 dark mode（next-themes 已是相依套件）時卡片會卡死白色。 */
-  --color-ink: oklch(0.22 0.015 75); /* 主文字：近黑 */
-  --color-ink-soft: oklch(0.48 0.02 70); /* 次文字 */
-  /* L=0.55 校正過：對卡片白底對比度 4.86:1，符合 WCAG AA。用實色而非
-     ink-soft 疊透明度——疊到 50% 只剩 2.22:1，看不清楚寫什麼字。 */
-  --color-ink-disabled: oklch(0.55 0.01 70); /* 尚未開放功能的說明文字 */
-  --color-line: oklch(0.88 0.012 75); /* 分隔線 */
-  /* L=0.56 校正過：白字在此橘色上對比度 4.99:1，符合 WCAG AA（一般文字需 4.5:1） */
-  --color-brand: oklch(0.56 0.17 45); /* 品牌唯一飽和色：琥珀橘 */
-  --color-brand-ink: oklch(0.42 0.16 42); /* 深橘：hover/pressed，對白字對比 7:1+ */
-  --color-brand-soft: oklch(0.93 0.03 50); /* 淺橘：badge 底色（配深色文字） */
-  --color-navy: oklch(0.28 0.03 250); /* 中性深色：頁首頁尾、次要強調 */
+  --color-ink: #1e2624; /* 主文字：ink / paper 14.33:1 */
+  --color-ink-soft: #57625f; /* 次文字：ink-soft / paper 5.86:1 */
+  --color-ink-disabled: #66736f; /* 尚未開放功能的說明文字：4.58:1 */
+  --color-line: #d8cdaf; /* 分隔線（裝飾性，非文字），刻意柔和 1.47:1 */
+  --color-brand: #1e6b76; /* 品牌主色：靛青。白字對比 6.14:1，文字/paper 5.69:1 */
+  --color-brand-ink: #164e56; /* hover/pressed 深字版：白字對比 9.30:1，文字/paper 8.62:1 */
+  --color-brand-soft: #d8eaeb; /* 淺靛青：badge 底色（配 ink 深色文字，12.44:1） */
+  --color-navy: #1b2e33; /* 中性深色：頁首頁尾、次要強調。白字對比 14.14:1 */
+  /* brand-foreground（本批次新增，非研究文件表列項目，但技術上必要）：疊在 bg-brand
+     上的文字色。亮色模式白字對比 6.14:1（沿用既有 text-white 慣例）；**暗色模式的
+     brand（#5cc0c7）是偏亮的青色**（8.47:1 是「深色字/brand」方向，不是「白字/brand」
+     方向），若沿用亮色模式的白字，暗色模式下白字對比只剩約 2.1:1、嚴重不足。這裡引入
+     `--color-brand-foreground` token，讓 `bg-brand` 搭配的文字色（例如 button.tsx 的
+     variant="brand"、底部導覽分享鍵、卡片「免費」徽章）能在兩種模式下都選對顏色，
+     取代原本寫死的 `text-white`。 */
+  --color-brand-foreground: #ffffff;
 
-  --shadow-brand-glow: 0 8px 18px -6px oklch(0.56 0.17 45 / 0.55); /* 品牌色元件的發光陰影，例如底部導覽的分享鍵 */
+  /* 語意色與輔助色（提案 B 新增，見映射表） */
+  --color-brand-accent: #8a6a34; /* 暖沙金，輔助色。白字對比 5.01:1，文字/paper 4.64:1（三套最低但仍達 AA） */
+  /* brand-accent-ink：提案文件未列出此衍生色，比照 brand→brand-ink 的加深規則另行
+     計算（加深約 22%，保持色相），文字/paper 約 6.7:1、白字/brand-accent-ink 約 7.2:1，
+     兩者皆高於 brand-accent 本身，符合「-ink 是加深加對比版」的既有命名慣例。 */
+  --color-brand-accent-ink: #6c5329;
+  --color-success: #3f7a3c; /* 文字/paper 4.79:1，白字/success 5.17:1（刻意偏黃綠，與靛青主色區隔） */
+  --color-warning: #8a5a12; /* 文字/paper 5.48:1，白字/warning 5.91:1 */
+  --color-danger: #a83b32; /* 文字/paper 5.83:1，白字/danger 6.29:1 */
 
-  --font-display: var(--font-manrope), "PingFang TC", "Noto Sans TC", sans-serif;
+  /* 只用在最主要的 CTA（例如底部導覽分享鍵），其餘按鈕不發光——提案 B 陰影個性
+     是三套裡最克制的一套，克制使用品牌色發光。 */
+  --shadow-brand-glow: 0 6px 14px -6px rgba(30, 107, 118, 0.3);
+
+  --font-display: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 }
 
 :root {
-  --font-sans:
-    var(--font-geist-sans), "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui,
-    sans-serif;
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 }
 
 /* ===== M10 批次 1：深色模式跟隨系統設定（media strategy）=====
@@ -248,16 +292,22 @@
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
 
-    --color-paper: oklch(0.17 0.008 75);
-    --color-paper-2: oklch(0.23 0.01 75);
-    --color-ink: oklch(0.95 0.006 80);
-    --color-ink-soft: oklch(0.74 0.015 75);
-    --color-ink-disabled: oklch(0.62 0.012 70);
-    --color-line: oklch(0.34 0.015 75);
-    --color-brand: oklch(0.58 0.14 45);
-    --color-brand-ink: oklch(0.82 0.09 45);
-    --color-brand-soft: oklch(0.28 0.05 45);
-    --color-navy: oklch(0.34 0.035 250);
-    --shadow-brand-glow: 0 8px 18px -6px oklch(0.58 0.14 45 / 0.55);
+    --color-paper: #10171a;
+    --color-paper-2: #182228;
+    --color-ink: #e9eeec;
+    --color-ink-soft: #a9b7b4;
+    --color-ink-disabled: #8a9794;
+    --color-line: #33454a;
+    --color-brand: #5cc0c7;
+    --color-brand-ink: #3e9ca3;
+    --color-brand-soft: #163338;
+    --color-navy: #131c20;
+    --color-brand-foreground: #131c20;
+    --color-brand-accent: #d6b478;
+    --color-brand-accent-ink: #ab9060;
+    --color-success: #6fbe6a;
+    --color-warning: #d9a245;
+    --color-danger: #e2695c;
+    --shadow-brand-glow: 0 6px 14px -6px rgba(92, 192, 199, 0.3);
   }
 }

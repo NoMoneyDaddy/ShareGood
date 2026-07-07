@@ -137,6 +137,21 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         })
       : null;
 
+  // M10 批次 2（master-plan §10a 交付批次 2）：詳情頁「狀態導向分區層級」重排用的
+  // 衍生狀態——不新增查詢，全部從上面已查好的 item.status／isReceiver／thanksMessage
+  // 算出，只決定既有 9 個 section 元件要 mount 在哪個區塊（各元件內部邏輯不動）。
+  // handoverIsActive：交接正在進行（含尚未開始交接的 reserved），是使用者「現在該做
+  // 的事」；completed 之後交接區塊改顯示於下方「歷程」區。
+  const handoverIsActive =
+    (item.status === "reserved" || item.status === "handover_pending") &&
+    (session?.user?.id === item.ownerId || isReceiver);
+  // showHistoryZone：completed 狀態下，只有物主／接手者（會看到交接完成訊息或感謝表單）
+  // 或已經有感謝留言（任何人都能看）時才顯示「歷程」區塊，避免非相關訪客看到只有標題
+  // 沒有內容的空區塊。
+  const showHistoryZone =
+    item.status === "completed" &&
+    (session?.user?.id === item.ownerId || isReceiver || thanksMessage !== null);
+
   // M9（master-plan §9a 交付內容 3）：優惠券使用結果回報聚合統計，只有優惠券物品才查詢。
   const couponUsageCounts = { usable: 0, expired_or_used: 0 };
   let alreadyReportedUsage = false;
@@ -224,7 +239,8 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         <span className="mx-1">・</span>
         {item.category.name}
       </div>
-      <h1 className="mt-2 text-2xl font-bold tracking-tight">{item.title}</h1>
+      {/* 提案 B 字型節奏（見 03-style-proposals.md）：標題字重 600、字距 0，三套裡最中性沉穩的一套 */}
+      <h1 className="mt-2 text-2xl font-semibold tracking-normal text-ink">{item.title}</h1>
       <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
       <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
@@ -239,94 +255,134 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         )}
       </div>
 
-      <CouponSection
-        itemId={item.id}
-        coupon={
-          item.couponDetail
-            ? {
-                faceValue: item.couponDetail.faceValue,
-                merchantName: item.couponDetail.merchantName,
-                notes: item.couponDetail.notes,
-                expiresAt: item.expiresAt,
-              }
-            : null
-        }
-        canReveal={
-          isReceiver && (item.status === "handover_pending" || item.status === "completed")
-        }
-      />
-      {item.couponDetail && (
-        <CouponUsageSection
+      {/* M10 批次 2：Zone 2「物品詳細資訊」——描述物品本身性質的參考資訊（券/票/點數），
+          quiet 排版（無獨立卡片外框、標題改小寫細字），不是行動項目。這個 <div> 本身提供
+          與上方分享者資訊列的分隔線，個別 section 靠 first:border-t-0 避免雙重分隔線。 */}
+      <div className="mt-8 border-t border-line pt-6">
+        <CouponSection
           itemId={item.id}
-          usableCount={couponUsageCounts.usable}
-          expiredCount={couponUsageCounts.expired_or_used}
-          canReport={
+          coupon={
+            item.couponDetail
+              ? {
+                  faceValue: item.couponDetail.faceValue,
+                  merchantName: item.couponDetail.merchantName,
+                  notes: item.couponDetail.notes,
+                  expiresAt: item.expiresAt,
+                }
+              : null
+          }
+          canReveal={
             isReceiver && (item.status === "handover_pending" || item.status === "completed")
           }
-          alreadyReported={alreadyReportedUsage}
         />
-      )}
-      <TicketSection
-        ticket={
-          item.ticketDetail
-            ? {
-                ticketType: item.ticketDetail.ticketType,
-                originPlatform: item.ticketDetail.originPlatform,
-                eventName: item.ticketDetail.eventName,
-                expiresAt: item.expiresAt,
-              }
-            : null
-        }
-      />
-      <PointSection
-        point={
-          item.pointDetail
-            ? {
-                pointPlatform: item.pointDetail.pointPlatform,
-                pointAmount: item.pointDetail.pointAmount,
-              }
-            : null
-        }
-      />
+        {item.couponDetail && (
+          <CouponUsageSection
+            itemId={item.id}
+            usableCount={couponUsageCounts.usable}
+            expiredCount={couponUsageCounts.expired_or_used}
+            canReport={
+              isReceiver && (item.status === "handover_pending" || item.status === "completed")
+            }
+            alreadyReported={alreadyReportedUsage}
+          />
+        )}
+        <TicketSection
+          ticket={
+            item.ticketDetail
+              ? {
+                  ticketType: item.ticketDetail.ticketType,
+                  originPlatform: item.ticketDetail.originPlatform,
+                  eventName: item.ticketDetail.eventName,
+                  expiresAt: item.expiresAt,
+                }
+              : null
+          }
+        />
+        <PointSection
+          point={
+            item.pointDetail
+              ? {
+                  pointPlatform: item.pointDetail.pointPlatform,
+                  pointAmount: item.pointDetail.pointAmount,
+                }
+              : null
+          }
+        />
+      </div>
 
-      <DirectShareSection
-        itemId={item.id}
-        itemStatus={item.status}
-        isOwner={session?.user?.id === item.ownerId}
-        lotteryActive={lotteryActive}
-      />
-      <ClaimsSection
-        itemId={item.id}
-        itemStatus={item.status}
-        currentUserId={session?.user?.id}
-        lotteryActive={lotteryActive}
-      />
-      <LotterySection
-        itemId={item.id}
-        itemStatus={item.status}
-        isOwner={session?.user?.id === item.ownerId}
-        isLoggedIn={!!session?.user}
-      />
-      <HandoverSection
-        itemId={item.id}
-        itemStatus={item.status}
-        isOwner={session?.user?.id === item.ownerId}
-        isReceiver={isReceiver}
-        handoverId={handoverId}
-        conversationId={conversationId}
-        hasThanks={thanksMessage !== null}
-      />
-      <ThanksSection
-        thanks={
-          thanksMessage
-            ? {
-                message: thanksMessage.message,
-                createdAt: thanksMessage.createdAt,
-                fromNickname: thanksMessage.fromUser.profile?.nickname ?? "好物共享用戶",
+      {/* M10 批次 2：Zone 3「互動與交接」——把留言/直贈/抽籤/交接（進行中）合併成單一
+          卡片外框，取代過去每個功能各自一張近乎相同外觀的卡片（impeccable「identical
+          card grids」問題）。交接進行中時在最前面加「現在可以做的事」提示，優先突出當前
+          最需要處理的行動；其餘三個功能維持既有邏輯與顯示條件不變，只是外框從各自獨立
+          改成共用同一張卡片、以分隔線區隔。 */}
+      <div className="mt-8 space-y-5 rounded-2xl border border-line bg-card p-5 sm:p-6">
+        {handoverIsActive && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink">
+              現在可以做的事
+            </p>
+            <div className="mt-3">
+              <HandoverSection
+                itemId={item.id}
+                itemStatus={item.status}
+                isOwner={session?.user?.id === item.ownerId}
+                isReceiver={isReceiver}
+                handoverId={handoverId}
+                conversationId={conversationId}
+                hasThanks={thanksMessage !== null}
+              />
+            </div>
+          </div>
+        )}
+        <LotterySection
+          itemId={item.id}
+          itemStatus={item.status}
+          isOwner={session?.user?.id === item.ownerId}
+          isLoggedIn={!!session?.user}
+        />
+        <DirectShareSection
+          itemId={item.id}
+          itemStatus={item.status}
+          isOwner={session?.user?.id === item.ownerId}
+          lotteryActive={lotteryActive}
+        />
+        <ClaimsSection
+          itemId={item.id}
+          itemStatus={item.status}
+          currentUserId={session?.user?.id}
+          lotteryActive={lotteryActive}
+        />
+      </div>
+
+      {/* M10 批次 2：Zone 4「歷程」——完成分享後的紀錄（交接完成訊息／感謝留言），
+          收合到頁面最後、quiet 排版，呼應 master-plan §10a「歷程/感謝收合或後置」。 */}
+      {showHistoryZone && (
+        <div className="mt-10 border-t border-line pt-6">
+          <p className="text-xs font-semibold uppercase tracking-wide text-ink-disabled">歷程</p>
+          <div className="mt-3">
+            <HandoverSection
+              itemId={item.id}
+              itemStatus={item.status}
+              isOwner={session?.user?.id === item.ownerId}
+              isReceiver={isReceiver}
+              handoverId={handoverId}
+              conversationId={conversationId}
+              hasThanks={thanksMessage !== null}
+            />
+            <ThanksSection
+              thanks={
+                thanksMessage
+                  ? {
+                      message: thanksMessage.message,
+                      createdAt: thanksMessage.createdAt,
+                      fromNickname: thanksMessage.fromUser.profile?.nickname ?? "好物共享用戶",
+                    }
+                  : null
               }
-            : null
-        }
-      />
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

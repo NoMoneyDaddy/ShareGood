@@ -19,8 +19,11 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
-        // ShareGood 品牌唯一飽和色（琥珀橘）主要操作按鈕：登入、上架、CTA 等
-        brand: "bg-brand text-white hover:bg-brand-ink",
+        // ShareGood 品牌主要操作按鈕（提案 B 靛青）：登入、上架、CTA 等。
+        // text-brand-foreground（非 text-white）：M10 批次 2 換裝提案 B 後，暗色模式的
+        // brand 本身是偏亮的青色，白字對比只剩約 2.1:1；brand-foreground token 在暗色
+        // 模式下改配深色字，亮色模式維持白字，見 globals.css 對應註解。
+        brand: "bg-brand text-brand-foreground hover:bg-brand-ink",
       },
       size: {
         default:
