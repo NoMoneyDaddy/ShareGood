@@ -112,7 +112,7 @@ function OwnerDirectShareForm({ itemId }: { itemId: string }) {
           )}
         </Button>
       </form>
-      {sent && <p className="mt-2 text-sm text-brand">已送出直贈邀請</p>}
+      {sent && <p className="mt-2 text-sm text-brand-ink">已送出直贈邀請</p>}
       {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
     </div>
   );

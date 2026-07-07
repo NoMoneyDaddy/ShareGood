@@ -144,7 +144,9 @@ export default async function HomePage() {
                       無圖片
                     </div>
                   )}
-                  <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-white">
+                  {/* text-brand-foreground（非 text-white）：暗色模式下 brand 是偏亮的
+                      青色，見 globals.css 對應註解。 */}
+                  <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-brand-foreground">
                     免費
                   </span>
                 </div>
@@ -172,7 +174,7 @@ export default async function HomePage() {
           </h2>
           <div className="mt-9 grid gap-8 md:grid-cols-3">
             <div>
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-brand-ink">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-ink">
                 1
               </span>
               <h3 className="mt-4 font-bold">上架分享</h3>
@@ -181,7 +183,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div>
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-brand-ink">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-ink">
                 2
               </span>
               <h3 className="mt-4 font-bold">留言需要</h3>
@@ -190,7 +192,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div>
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-brand-ink">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-lg font-extrabold text-ink">
                 3
               </span>
               <h3 className="mt-4 font-bold">私訊交接</h3>
@@ -211,7 +213,7 @@ export default async function HomePage() {
                 size={18}
                 strokeWidth={2}
                 aria-hidden="true"
-                className="mt-0.5 shrink-0 text-brand"
+                className="mt-0.5 shrink-0 text-brand-ink"
               />
               <p className="text-sm text-ink-soft">
                 <strong className="font-bold text-ink">絕不收費。</strong>
@@ -223,7 +225,7 @@ export default async function HomePage() {
                 size={18}
                 strokeWidth={2}
                 aria-hidden="true"
-                className="mt-0.5 shrink-0 text-brand"
+                className="mt-0.5 shrink-0 text-brand-ink"
               />
               <p className="text-sm text-ink-soft">
                 <strong className="font-bold text-ink">私訊才開放。</strong>
@@ -235,7 +237,7 @@ export default async function HomePage() {
                 size={18}
                 strokeWidth={2}
                 aria-hidden="true"
-                className="mt-0.5 shrink-0 text-brand"
+                className="mt-0.5 shrink-0 text-brand-ink"
               />
               <p className="text-sm text-ink-soft">
                 <strong className="font-bold text-ink">分享者做主。</strong>

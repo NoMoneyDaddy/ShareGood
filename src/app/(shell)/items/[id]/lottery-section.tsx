@@ -331,7 +331,7 @@ function OpenLottery({
         <p className="mt-3 text-sm text-ink-soft">登入後即可報名參加這場抽籤。</p>
       ) : myEntryStatus === "entered" ? (
         <div className="mt-3">
-          <p className="text-sm text-brand">你已經報名這場抽籤了。</p>
+          <p className="text-sm text-brand-ink">你已經報名這場抽籤了。</p>
           <Button
             type="button"
             variant="outline"

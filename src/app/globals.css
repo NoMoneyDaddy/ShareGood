@@ -141,6 +141,9 @@
   --color-brand-ink: #3e9ca3; /* 深色字 / brand-ink（pressed）5.60:1 */
   --color-brand-soft: #163338; /* 淺底＋字 #5cc0c7（accent/brand 純色）對比 6.28:1；若配 brand-ink 純文字對比僅約 4.15:1，未達 4.5:1，這批已知既有用法一律改配 ink 或 brand，見 PR 描述 */
   --color-navy: #131c20; /* 近 paper-2 略深一階 */
+  /* brand-foreground（暗）：brand 暗色是偏亮的青色，配深色字才對比足夠（8.17:1，
+     沿用 navy 暗色值），不能沿用亮色模式的白字（見亮色區塊註解）。 */
+  --color-brand-foreground: #131c20;
 
   /* 語意色與輔助色（提案 B 新增，見映射表） */
   --color-brand-accent: #d6b478; /* 深色字 / accent 9.19:1 */
@@ -212,6 +215,14 @@
   --color-brand-ink: #164e56; /* hover/pressed 深字版：白字對比 9.30:1，文字/paper 8.62:1 */
   --color-brand-soft: #d8eaeb; /* 淺靛青：badge 底色（配 ink 深色文字，12.44:1） */
   --color-navy: #1b2e33; /* 中性深色：頁首頁尾、次要強調。白字對比 14.14:1 */
+  /* brand-foreground（本批次新增，非研究文件表列項目，但技術上必要）：疊在 bg-brand
+     上的文字色。亮色模式白字對比 6.14:1（沿用既有 text-white 慣例）；**暗色模式的
+     brand（#5cc0c7）是偏亮的青色**（8.47:1 是「深色字/brand」方向，不是「白字/brand」
+     方向），若沿用亮色模式的白字，暗色模式下白字對比只剩約 2.1:1、嚴重不足。這裡引入
+     `--color-brand-foreground` token，讓 `bg-brand` 搭配的文字色（例如 button.tsx 的
+     variant="brand"、底部導覽分享鍵、卡片「免費」徽章）能在兩種模式下都選對顏色，
+     取代原本寫死的 `text-white`。 */
+  --color-brand-foreground: #ffffff;
 
   /* 語意色與輔助色（提案 B 新增，見映射表） */
   --color-brand-accent: #8a6a34; /* 暖沙金，輔助色。白字對比 5.01:1，文字/paper 4.64:1（三套最低但仍達 AA） */
@@ -287,6 +298,7 @@
     --color-brand-ink: #3e9ca3;
     --color-brand-soft: #163338;
     --color-navy: #131c20;
+    --color-brand-foreground: #131c20;
     --color-brand-accent: #d6b478;
     --color-brand-accent-ink: #ab9060;
     --color-success: #6fbe6a;

@@ -76,49 +76,59 @@ export default async function ItemsPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
-      <h1 className="text-2xl font-bold tracking-tight">逛好物</h1>
+      <h1 className="text-2xl font-semibold tracking-normal text-ink">逛好物</h1>
       <p className="mt-1.5 text-sm text-ink-soft">看看鄰居分享了什麼，留言就有機會接手。</p>
 
-      <form method="get" action="/items" className="mt-6 flex flex-wrap gap-2">
+      {/* M10 批次 2：行動版篩選列擁擠修正——原本 flex-wrap 把輸入框＋兩個原生 select＋
+          送出鍵擠在同一行，390px 寬度下搜尋框被壓縮到只剩幾個字（研究文件 02 現況盤點
+          已點名）。改成行動版三列堆疊（搜尋框整行→縣市/分類各半→送出鍵整行）、
+          sm 以上斷點還原成原本同一行的版面；控制項統一 min-h-11（44px）符合觸控目標。 */}
+      <form
+        method="get"
+        action="/items"
+        className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center"
+      >
         <input
           type="search"
           name="q"
           defaultValue={keyword ?? ""}
           placeholder="搜尋好物、分類或縣市…"
           aria-label="搜尋好物、分類或縣市"
-          className="min-w-0 flex-1 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="min-h-11 w-full min-w-0 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20 sm:flex-1"
         />
-        <select
-          name="cityId"
-          defaultValue={cityId ?? ""}
-          aria-label="依縣市篩選"
-          className="rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
-        >
-          <option value="">全部縣市</option>
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.name}
-            </option>
-          ))}
-        </select>
-        <select
-          name="categoryId"
-          defaultValue={categoryId ?? ""}
-          aria-label="依分類篩選"
-          className="rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
-        >
-          <option value="">全部分類</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+        <div className="flex gap-2">
+          <select
+            name="cityId"
+            defaultValue={cityId ?? ""}
+            aria-label="依縣市篩選"
+            className="min-h-11 flex-1 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20 sm:flex-none"
+          >
+            <option value="">全部縣市</option>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>
+                {city.name}
+              </option>
+            ))}
+          </select>
+          <select
+            name="categoryId"
+            defaultValue={categoryId ?? ""}
+            aria-label="依分類篩選"
+            className="min-h-11 flex-1 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20 sm:flex-none"
+          >
+            <option value="">全部分類</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {/* 排序用隱藏欄位帶著送出，避免搜尋／篩選送出後把目前的排序條件重置成預設值 */}
         <input type="hidden" name="sort" value={activeSort} />
         <button
           type="submit"
-          className="rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper"
+          className="min-h-11 w-full rounded-lg border border-line bg-paper-2 px-3 py-2 text-sm font-medium text-ink hover:bg-paper sm:w-auto"
         >
           搜尋
         </button>
@@ -187,7 +197,9 @@ export default async function ItemsPage({
                     無圖片
                   </div>
                 )}
-                <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-white">
+                {/* text-brand-foreground（非 text-white）：暗色模式下 brand 是偏亮的青色，
+                    見 globals.css 對應註解。 */}
+                <span className="absolute left-2 top-2 rounded-md bg-brand px-2 py-0.5 text-xs font-bold text-brand-foreground">
                   免費
                 </span>
                 {item.expiresAt && (
