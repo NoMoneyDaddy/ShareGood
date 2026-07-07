@@ -12,7 +12,8 @@
       "!**/.claude/skills",
       "!**/.agents",
       "!**/src/generated",
-      "!**/prisma/migrations"
+      "!**/prisma/migrations",
+      "!**/docs/research"
     ]
   },
   "formatter": {
