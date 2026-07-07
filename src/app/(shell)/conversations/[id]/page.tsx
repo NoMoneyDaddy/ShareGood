@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { db } from "@/lib/db";
 import { ConversationThread } from "./conversation-thread";
 
@@ -41,12 +41,10 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6">
-      <Link
-        href={`/items/${conversation.item.id}`}
-        className="text-sm text-ink-soft hover:text-ink"
-      >
-        ← 回到「{conversation.item.title}」
-      </Link>
+      <BackBar
+        fallbackHref={`/items/${conversation.item.id}`}
+        label={`回到「${conversation.item.title}」`}
+      />
       <h1 className="mt-2 text-2xl font-bold tracking-tight">交接私訊</h1>
 
       <div className="mt-6">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { db } from "@/lib/db";
 import { SubscriptionForm } from "./subscription-form";
 import { SubscriptionList } from "./subscription-list";
@@ -71,6 +72,7 @@ export default async function SubscriptionsPage() {
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/me" />
       <h1 className="text-2xl font-bold tracking-tight">我的訂閱</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
         依關鍵字／分類／縣市設定訂閱條件，符合的新物品上架後依你的設定即時通知或每日摘要。
