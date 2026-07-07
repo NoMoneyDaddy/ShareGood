@@ -447,7 +447,7 @@ export function ItemForm({
               onChange={(e) => setExpiresAt(e.target.value)}
             />
           </div>
-          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
+          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-ink">
             <p>
               依文創法第 10 條之 1 及運動產業發展條例第 24 條之 1，以超過票面金額轉售票券可處票面 10
               至 50 倍罰鍰。本平台僅允許無償轉贈。
@@ -491,7 +491,7 @@ export function ItemForm({
               />
             </div>
           </div>
-          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-brand-ink">
+          <div className="space-y-2 rounded-lg border border-brand/30 bg-brand-soft p-3 text-xs text-ink">
             <p>
               點數轉贈依各平台官方規則，能否轉贈、次數與期限以官方 App
               為準；本平台不經手點數。實際轉移請雙方一律走官方 App 的轉贈功能完成。

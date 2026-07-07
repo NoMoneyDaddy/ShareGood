@@ -34,7 +34,7 @@ export function EmptyState({
       {action && (
         <Link
           href={action.href}
-          className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-brand px-5 text-sm font-medium text-white transition hover:bg-brand-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-brand px-5 text-sm font-medium text-brand-foreground transition hover:bg-brand-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           {action.label}
         </Link>

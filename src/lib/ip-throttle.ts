@@ -19,13 +19,15 @@ import type { NextRequest } from "next/server";
 // 隱私：key 只存 IP 的 SHA-256 雜湊，不存明文 IP（即使記憶體被 dump 也讀不回原始 IP）。
 // ==========================================================================
 
-export type IpThrottleAction = "items_list";
+export type IpThrottleAction = "items_list" | "deal_infos_list";
 
 /** 各動作的時窗與上限，集中管理（比照 rate-limit.ts / contribution.ts 慣例）。 */
 export const IP_THROTTLE_LIMITS: Record<IpThrottleAction, { windowMs: number; max: number }> = {
   // 公開物品列表 GET /api/items：每 IP 每分鐘 60 次。正常瀏覽（換頁／篩選）遠低於此，
   // 只擋機器人式的高速抓取。
   items_list: { windowMs: 60_000, max: 60 },
+  // 公開好康列表 GET /api/deal-infos：同為免登入 cursor 分頁端點，比照相同上限。
+  deal_infos_list: { windowMs: 60_000, max: 60 },
 };
 
 const IP_HASH_SALT = "sharegood-ip-throttle-v1";
