@@ -3,6 +3,7 @@
 import { Loader2, Send } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ReportButton } from "@/components/report-button";
+import { RoleBadge } from "@/components/user-badge";
 import { cn } from "@/lib/utils";
 
 type Message = {
@@ -25,10 +26,14 @@ export function ConversationThread({
   conversationId,
   currentUserId,
   initialMessages,
+  memberRoles = {},
 }: {
   conversationId: string;
   currentUserId: string;
   initialMessages: Message[];
+  // 正式上線衝刺（貢獻值排行榜＋徽章）：對話成員 userId → 身份組陣列，只有 admin/moderator
+  // 才會出現在這個 map 裡（見 page.tsx 查詢），純粹用來在對方訊息上顯示信任徽章。
+  memberRoles?: Record<string, string[]>;
 }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [body, setBody] = useState("");
@@ -106,8 +111,18 @@ export function ConversationThread({
         )}
         {messages.map((m) => {
           const mine = m.senderId === currentUserId;
+          const senderRoles = memberRoles[m.senderId];
           return (
-            <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+            <div
+              key={m.id}
+              className={cn(
+                "flex flex-col",
+                mine ? "items-end" : "items-start",
+              )}
+            >
+              {!mine && senderRoles && senderRoles.length > 0 && (
+                <RoleBadge roles={senderRoles} className="mb-1" />
+              )}
               <div
                 className={cn(
                   "max-w-[80%] rounded-2xl px-3 py-2 text-sm",

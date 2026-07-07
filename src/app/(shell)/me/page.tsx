@@ -1,4 +1,12 @@
-import { Bell, type LucideIcon, Settings, ShieldCheck, Ticket, UserCircle } from "lucide-react";
+import {
+  Bell,
+  type LucideIcon,
+  Settings,
+  ShieldCheck,
+  Ticket,
+  Trophy,
+  UserCircle,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -34,6 +42,12 @@ export default async function MePage() {
   const canModerate = user ? isModeratorOrAdmin(user) : false;
 
   const cards: MeCard[] = [
+    {
+      href: "/leaderboard",
+      icon: Trophy,
+      title: "貢獻排行榜",
+      description: "看看誰是最熱心的分享鄰居，也看看自己排第幾名。",
+    },
     {
       href: "/me/wallet",
       icon: Ticket,

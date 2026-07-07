@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { UserBadges } from "@/components/user-badge";
 import { db } from "@/lib/db";
 
 // generateMetadata 與頁面本體都要查 profile；db.profile.findUnique 不是 fetch()，
@@ -28,17 +29,23 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
   if (!profile) notFound();
 
   // session/viewerProfile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡不用再查一次。
-  const contributionSum = await db.contributionEvent.aggregate({
-    where: { userId },
-    _sum: { points: true },
-  });
+  const [contributionSum, roles] = await Promise.all([
+    db.contributionEvent.aggregate({
+      where: { userId },
+      _sum: { points: true },
+    }),
+    db.userRole.findMany({ where: { userId }, select: { role: true } }),
+  ]);
 
   // 累計貢獻值就是真實反映使用者行為的數字，no_show 扣分可能讓它變負數，不特別防呆。
   const totalPoints = contributionSum._sum.points ?? 0;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
-      <h1 className="text-2xl font-bold tracking-tight">{profile.nickname}</h1>
+      <div className="flex flex-wrap items-center gap-2">
+        <h1 className="text-2xl font-bold tracking-tight">{profile.nickname}</h1>
+        <UserBadges roles={roles} points={totalPoints} size="md" />
+      </div>
       <p className="mt-1 text-sm text-ink-soft">分享足跡</p>
 
       <div className="mt-6 rounded-xl border border-line bg-card p-4">
