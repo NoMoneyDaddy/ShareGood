@@ -28,10 +28,16 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
   if (!profile) notFound();
 
   // session/viewerProfile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡不用再查一次。
-  const contributionSum = await db.contributionEvent.aggregate({
-    where: { userId },
-    _sum: { points: true },
-  });
+  // 參考 GiveCircle 個人檔案頁的統計列（研究文件 05-givecircle-reference.md：「年度分享／
+  // 年度公益／感謝率」）——公開個人頁只有一個累計貢獻值數字，對第一次點進來的陌生訪客
+  // 不夠直覺（不知道這個數字代表什麼）。這裡補上三個具體行為次數當信任信號，
+  // 三個查詢互不相關可以併發。
+  const [contributionSum, sharedCount, receivedCount, thanksCount] = await Promise.all([
+    db.contributionEvent.aggregate({ where: { userId }, _sum: { points: true } }),
+    db.item.count({ where: { ownerId: userId, status: "completed" } }),
+    db.handoverRecord.count({ where: { receiverId: userId, status: "completed" } }),
+    db.thanksMessage.count({ where: { toUserId: userId } }),
+  ]);
 
   // 累計貢獻值就是真實反映使用者行為的數字，no_show 扣分可能讓它變負數，不特別防呆。
   const totalPoints = contributionSum._sum.points ?? 0;
@@ -44,6 +50,21 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
       <div className="mt-6 rounded-xl border border-line bg-card p-4">
         <p className="text-sm text-ink-soft">累計貢獻值</p>
         <p className="mt-1 text-3xl font-bold tracking-tight text-brand-ink">{totalPoints}</p>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-xl border border-line bg-card">
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{sharedCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">完成分享</p>
+        </div>
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{receivedCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">完成接手</p>
+        </div>
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{thanksCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">收到感謝</p>
+        </div>
       </div>
     </div>
   );

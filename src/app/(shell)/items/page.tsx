@@ -1,6 +1,7 @@
-import { MapPin } from "lucide-react";
+import { MapPin, PackageSearch, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { EmptyState } from "@/components/empty-state";
 import { db } from "@/lib/db";
 import { listPublishedItems } from "@/lib/items";
 import { publicUrl } from "@/lib/storage";
@@ -134,7 +135,7 @@ export default async function ItemsPage({
         </button>
       </form>
 
-      <div className="mt-3 flex gap-2 text-sm">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
         <Link
           href={hrefWith({ sort: "newest", cursor: null })}
           aria-current={activeSort === "newest" ? "page" : undefined}
@@ -159,22 +160,35 @@ export default async function ItemsPage({
         >
           即將到期
         </Link>
+        {/* 參考 GiveCircle 行動版篩選互動（docs/research/2026-07-07-launch/
+            05-givecircle-reference.md）：篩選中的狀態要能一眼看出、一鍵清除，
+            不然只能手動改網址。條件成立時才顯示，避免平白多一顆按鈕。 */}
+        {hasFilters && (
+          <Link
+            href="/items"
+            className="ml-auto flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink"
+          >
+            <X size={13} strokeWidth={2.4} aria-hidden="true" />
+            清除篩選
+          </Link>
+        )}
       </div>
 
       {result.items.length === 0 ? (
-        <div className="mt-10 rounded-xl border border-line bg-card px-4 py-10 text-center">
-          <p className="text-sm text-ink-soft">
-            {hasFilters
-              ? "找不到符合條件的物品，試試調整篩選條件或關鍵字。"
-              : "目前還沒有物品上架，稍後再回來看看。"}
-          </p>
-          <p className="mt-2 text-sm text-ink-soft">
-            有用不到的好物嗎？
-            <Link href="/items/new" className="text-brand-ink underline-offset-2 hover:underline">
-              馬上分享出去
-            </Link>
-          </p>
-        </div>
+        <EmptyState
+          icon={PackageSearch}
+          title={hasFilters ? "找不到符合條件的物品" : "目前還沒有物品上架"}
+          description={
+            hasFilters
+              ? "試試調整篩選條件或關鍵字，或者先看看全部物品。"
+              : "稍後再回來看看，或成為第一個分享的人。"
+          }
+          action={
+            hasFilters
+              ? { href: "/items", label: "清除篩選看全部" }
+              : { href: "/items/new", label: "馬上分享好物" }
+          }
+        />
       ) : (
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
           {result.items.map((item) => (
