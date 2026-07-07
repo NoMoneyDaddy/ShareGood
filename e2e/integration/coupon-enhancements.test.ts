@@ -299,12 +299,12 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
     return new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   }
 
-  it("標題含「LINE 即享券」/「隨買跨店取」→ 422（各種空白/半形變體皆被正規化攔截）", async () => {
+  it("標題含「LINE 即享券」→ 422（各種空白/半形變體皆被正規化攔截）", async () => {
     const owner = await user("blocklist-title-owner");
     const { cityId } = await pickCityAndCategory();
     const images = await createImagePair(owner.id);
 
-    for (const title of ["LINE 即享券", "line即享券", "全家隨買跨店取"]) {
+    for (const title of ["LINE 即享券", "line即享券"]) {
       const res = await api("/api/items", {
         method: "POST",
         user: owner,
@@ -362,12 +362,35 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
         expiresAt: tomorrow(),
         coupon: {
           faceValue: "$50",
-          merchantName: "7-ELEVEN 行動隨時取",
+          merchantName: "LINE 即享券",
           code: `CODE-${Date.now()}`,
         },
       },
     });
     expect(res.status).toBe(422);
+  });
+
+  it("「隨買跨店取」「行動隨時取」「LINE 禮物」不攔截（使用者拍板：官方閉環類以文案引導，不硬擋）", async () => {
+    const owner = await user("blocklist-allowed-owner");
+    const { cityId } = await pickCityAndCategory();
+
+    for (const title of ["全家隨買跨店取咖啡寄杯", "7-ELEVEN 行動隨時取拿鐵", "LINE 禮物星巴克券"]) {
+      const images = await createImagePair(owner.id);
+      const res = await api("/api/items", {
+        method: "POST",
+        user: owner,
+        body: {
+          title,
+          description: "使用者拍板不攔截的類型",
+          categoryId: couponCategoryId,
+          cityId,
+          images: [images],
+          expiresAt: tomorrow(),
+          coupon: { faceValue: "一杯", merchantName: "測試商店", code: `CODE-${Date.now()}` },
+        },
+      });
+      expect(res.status).toBe(201);
+    }
   });
 
   it("正常券種（不含禁止清單詞彙）仍可正常上架，確認攔截沒有誤傷", async () => {
