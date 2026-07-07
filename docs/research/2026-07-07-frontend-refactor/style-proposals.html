@@ -1,0 +1,648 @@
+<title>ShareGood 視覺識別提案</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { overflow-x: hidden; }
+
+  /* ============ 提案 A：苔綠與奶白 ============ */
+  #root[data-proposal="a"] {
+    --paper: #F6F4EC; --paper-2: #ECE7D8;
+    --ink: #232821; --ink-soft: #5A6152; --ink-disabled: #68705F;
+    --line: #CBC1A6;
+    --brand: #3D6B45; --brand-ink: #2A4A30;
+    --brand-soft-bg: #DCEBD7; --brand-soft-text: #232821;
+    --accent: #8F5228;
+    --neutral-deep: #26362A;
+    --success: #2F7D4F; --warning: #8A5A12; --danger: #A83B32;
+    --on-brand: #ffffff;
+    --radius-card: 1.25rem; --radius-btn: 0.85rem; --radius-input: 0.7rem; --pill: 0;
+    --shadow-card: 0 8px 20px -8px rgba(35,40,33,.14);
+    --shadow-glow: 0 8px 18px -6px rgba(61,107,69,.38);
+    --heading-weight: 700; --heading-tracking: -0.01em; --body-lh: 1.7;
+    --section-gap: 4rem; --card-pad: 1.375rem;
+  }
+  #root[data-proposal="a"][data-theme="dark"] {
+    --paper: #14170F; --paper-2: #1D2117;
+    --ink: #ECE8DA; --ink-soft: #AAB29C; --ink-disabled: #8B9382;
+    --line: #3E4735;
+    --brand: #7FB37C; --brand-ink: #59A65B;
+    --brand-soft-bg: #24371F; --brand-soft-text: #8FC08A;
+    --accent: #D9986A;
+    --neutral-deep: #1A2116;
+    --success: #5FBE83; --warning: #D9A245; --danger: #E2695C;
+    --on-brand: #14170F;
+    --shadow-card: 0 8px 22px -8px rgba(0,0,0,.55);
+    --shadow-glow: 0 8px 18px -6px rgba(127,179,124,.30);
+  }
+
+  /* ============ 提案 B：靛青與暖沙 ============ */
+  #root[data-proposal="b"] {
+    --paper: #F9F6EF; --paper-2: #F0EADD;
+    --ink: #1E2624; --ink-soft: #57625F; --ink-disabled: #66736F;
+    --line: #D8CDAF;
+    --brand: #1E6B76; --brand-ink: #164E56;
+    --brand-soft-bg: #D8EAEB; --brand-soft-text: #1E2624;
+    --accent: #8A6A34;
+    --neutral-deep: #1B2E33;
+    --success: #3F7A3C; --warning: #8A5A12; --danger: #A83B32;
+    --on-brand: #ffffff;
+    --radius-card: 0.7rem; --radius-btn: 0.55rem; --radius-input: 0.5rem; --pill: 0;
+    --shadow-card: 0 4px 12px -4px rgba(30,38,36,.12);
+    --shadow-glow: 0 6px 14px -6px rgba(30,107,118,.32);
+    --heading-weight: 600; --heading-tracking: 0em; --body-lh: 1.6;
+    --section-gap: 3.5rem; --card-pad: 1.25rem;
+  }
+  #root[data-proposal="b"][data-theme="dark"] {
+    --paper: #10171A; --paper-2: #182228;
+    --ink: #E9EEEC; --ink-soft: #A9B7B4; --ink-disabled: #8A9794;
+    --line: #33454A;
+    --brand: #5CC0C7; --brand-ink: #3E9CA3;
+    --brand-soft-bg: #163338; --brand-soft-text: #5CC0C7;
+    --accent: #D6B478;
+    --neutral-deep: #131C20;
+    --success: #6FBE6A; --warning: #D9A245; --danger: #E2695C;
+    --on-brand: #10171A;
+    --shadow-card: 0 4px 14px -4px rgba(0,0,0,.5);
+    --shadow-glow: 0 6px 14px -6px rgba(92,192,199,.28);
+  }
+
+  /* ============ 提案 C：珊瑚與米白 ============ */
+  #root[data-proposal="c"] {
+    --paper: #FBF5EC; --paper-2: #F5E8DD;
+    --ink: #2B211D; --ink-soft: #6B5A50; --ink-disabled: #7A6357;
+    --line: #DDC7B2;
+    --brand: #BB4531; --brand-ink: #A83F31;
+    --brand-soft-bg: #FBE0D8; --brand-soft-text: #2B211D;
+    --accent: #2E6B5E;
+    --neutral-deep: #2E211B;
+    --success: #3F7D4F; --warning: #8A5A12; --danger: #9A2F44;
+    --on-brand: #ffffff;
+    --radius-card: 1.5rem; --radius-btn: 999px; --radius-input: 0.9rem; --pill: 1;
+    --shadow-card: 0 6px 16px -6px rgba(43,33,29,.16);
+    --shadow-glow: 0 10px 24px -8px rgba(187,69,49,.34);
+    --heading-weight: 800; --heading-tracking: -0.015em; --body-lh: 1.65;
+    --section-gap: 4.5rem; --card-pad: 1.125rem;
+  }
+  #root[data-proposal="c"][data-theme="dark"] {
+    --paper: #1B1310; --paper-2: #241A15;
+    --ink: #F5EBE1; --ink-soft: #C9B6A9; --ink-disabled: #B89E90;
+    --line: #46332A;
+    --brand: #F0846D; --brand-ink: #DD6A50;
+    --brand-soft-bg: #3A2018; --brand-soft-text: #F0846D;
+    --accent: #5FC7B3;
+    --neutral-deep: #2A1F19;
+    --success: #6BC79A; --warning: #D9A245; --danger: #D66E86;
+    --on-brand: #1B1310;
+    --shadow-card: 0 6px 18px -6px rgba(0,0,0,.55);
+    --shadow-glow: 0 10px 24px -8px rgba(240,132,109,.28);
+  }
+
+  /* ============ 版面骨架 ============ */
+  #root {
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  /* 頂部固定切換列 */
+  #switchbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    background: var(--neutral-deep);
+    flex-wrap: wrap;
+  }
+  #switchbar .group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  #switchbar button {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(255,255,255,.28);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 160ms ease-out, background-color 160ms ease-out, border-color 160ms ease-out;
+  }
+  #switchbar button:active { transform: scale(0.97); }
+  #switchbar button[aria-pressed="true"] {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: var(--on-brand);
+  }
+  #switchbar .spacer { flex: 1 1 auto; }
+  #switchbar .label { color: rgba(255,255,255,.7); font-size: 0.75rem; margin-right: 0.25rem; }
+
+  main.stage { padding-bottom: 88px; }
+
+  /* 站頭 */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .wordmark {
+    font-weight: var(--heading-weight);
+    letter-spacing: var(--heading-tracking);
+    font-size: 1.25rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .wordmark .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--brand);
+    flex-shrink: 0;
+  }
+  nav.site-nav { display: none; gap: 1.25rem; font-size: 0.9375rem; color: var(--ink-soft); }
+  nav.site-nav a { color: inherit; text-decoration: none; font-weight: 500; }
+  nav.site-nav a:hover { color: var(--brand); }
+  .header-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .icon-btn {
+    width: 44px; height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 0.6rem;
+    background: var(--paper-2);
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  @media (min-width: 720px) {
+    nav.site-nav { display: flex; }
+  }
+
+  /* Hero */
+  .hero {
+    padding: 2.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+  .hero h1 {
+    margin: 0;
+    font-weight: var(--heading-weight);
+    letter-spacing: var(--heading-tracking);
+    font-size: 1.75rem;
+    line-height: 1.35;
+    color: var(--ink);
+    max-width: 22ch;
+  }
+  .hero p {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: var(--body-lh);
+    font-size: 1rem;
+    max-width: 40ch;
+  }
+  .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .hero-visual {
+    height: 160px;
+    border-radius: var(--radius-card);
+    background:
+      radial-gradient(120% 100% at 15% 20%, color-mix(in srgb, var(--brand) 55%, transparent), transparent 60%),
+      radial-gradient(100% 100% at 85% 80%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 65%),
+      var(--brand-soft-bg);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 2px, transparent 2px 22px);
+  }
+
+  @media (min-width: 860px) {
+    .hero {
+      flex-direction: row;
+      align-items: center;
+      padding: 3.5rem 2rem;
+    }
+    .hero-copy { flex: 1 1 50%; }
+    .hero h1 { font-size: 2.25rem; }
+    .hero-visual { flex: 1 1 50%; height: 240px; }
+  }
+
+  /* 按鈕 */
+  .btn {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    min-height: 44px;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-btn);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: transform 160ms ease-out, filter 160ms ease-out;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--brand);
+    color: var(--on-brand);
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-primary:hover { background: var(--brand-ink); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+
+  /* 區塊 */
+  section.block { padding: 1.75rem 1.25rem; }
+  section.block h2 {
+    font-weight: var(--heading-weight);
+    letter-spacing: var(--heading-tracking);
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+    color: var(--ink);
+  }
+
+  /* 卡片網格 */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .item-card {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+  }
+  .item-card .thumb {
+    height: 120px;
+    position: relative;
+  }
+  .item-card .thumb.food { background: linear-gradient(135deg, color-mix(in srgb, var(--warning) 55%, var(--paper-2)), color-mix(in srgb, var(--brand) 35%, var(--paper-2))); }
+  .item-card .thumb.coupon { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 55%, var(--paper-2)), color-mix(in srgb, var(--brand) 30%, var(--paper-2))); }
+  .item-card .thumb.goods { background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 50%, var(--paper-2)), color-mix(in srgb, var(--accent) 25%, var(--paper-2))); }
+  .badge {
+    position: absolute;
+    top: 0.5rem; left: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: calc(var(--pill) * 999px + (1 - var(--pill)) * 0.4rem);
+    background: var(--brand-soft-bg);
+    color: var(--brand-soft-text);
+  }
+  .badge.free {
+    top: 0.5rem; left: auto; right: 0.5rem;
+    background: var(--brand);
+    color: var(--on-brand);
+  }
+  .item-card .body { padding: var(--card-pad); display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+  .item-card .title { font-weight: 700; font-size: 0.9375rem; color: var(--ink); line-height: 1.4; }
+  .item-card .meta { font-size: 0.8125rem; color: var(--ink-soft); display: flex; gap: 0.4rem; align-items: center; }
+  .city-tag {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--pill) * 999px + (1 - var(--pill)) * 0.35rem);
+    padding: 0.1rem 0.5rem;
+  }
+
+  /* 物品詳情片段 */
+  .detail-card {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: var(--card-pad);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .detail-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+  .detail-title { font-weight: var(--heading-weight); font-size: 1.125rem; color: var(--ink); margin: 0; }
+  .status-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: calc(var(--pill) * 999px + (1 - var(--pill)) * 0.4rem);
+    background: color-mix(in srgb, var(--success) 18%, var(--paper));
+    color: var(--success);
+    white-space: nowrap;
+  }
+  .detail-desc { color: var(--ink-soft); line-height: var(--body-lh); font-size: 0.9375rem; margin: 0; }
+  .detail-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* 表單 */
+  .form-card {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: var(--card-pad);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 520px;
+  }
+  .field { display: flex; flex-direction: column; gap: 0.375rem; }
+  .field label { font-size: 0.875rem; font-weight: 600; color: var(--ink); }
+  .field input, .field textarea {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.65rem 0.85rem;
+    min-height: 44px;
+    border-radius: var(--radius-input);
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .field input:focus, .field textarea:focus {
+    outline: 2px solid var(--brand);
+    outline-offset: 1px;
+    border-color: var(--brand);
+  }
+  .field textarea { resize: vertical; min-height: 80px; font-family: var(--font-sans); }
+  .form-actions { display: flex; gap: 0.75rem; }
+
+  /* 底部分頁列 */
+  .bottom-tab {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+  }
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 0.6875rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+  }
+  .tab-item svg { width: 22px; height: 22px; }
+  .tab-item.active { color: var(--brand); font-weight: 700; }
+  .tab-item.fab {
+    position: relative;
+    color: var(--on-brand);
+  }
+  .tab-item.fab .fab-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--brand);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-glow);
+    margin-top: -20px;
+  }
+
+  footer.site-footer {
+    padding: 1.5rem 1.25rem 2rem;
+    background: var(--neutral-deep);
+    color: rgba(255,255,255,.82);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+  }
+  footer.site-footer strong { color: #fff; }
+
+  .philosophy-strip {
+    padding: 0.875rem 1.25rem;
+    background: var(--brand-soft-bg);
+    color: var(--brand-soft-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<div id="root" data-proposal="a" data-theme="light">
+  <div id="switchbar">
+    <span class="label">提案</span>
+    <div class="group" role="group" aria-label="切換視覺提案">
+      <button type="button" data-set-proposal="a" aria-pressed="true">A 苔綠</button>
+      <button type="button" data-set-proposal="b" aria-pressed="false">B 靛青</button>
+      <button type="button" data-set-proposal="c" aria-pressed="false">C 珊瑚</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="group" role="group" aria-label="切換亮暗模式">
+      <button type="button" data-set-theme="light" aria-pressed="true">亮</button>
+      <button type="button" data-set-theme="dark" aria-pressed="false">暗</button>
+    </div>
+  </div>
+
+  <p class="philosophy-strip" id="philosophy">像鄰里菜園一樣，把不需要的種回土裡，讓新的需要在此發芽。</p>
+
+  <main class="stage">
+    <!-- 站頭 -->
+    <header class="site-header">
+      <div class="wordmark"><span class="dot"></span>好物共享</div>
+      <nav class="site-nav">
+        <a href="#">逛好物</a>
+        <a href="#">好康資訊</a>
+        <a href="#">我的分享</a>
+        <a href="#">訊息</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="通知">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>把用不到的好物，分享給需要的人</h1>
+        <p>台灣縣市級免費共享平台。不做金流、不做物流，讓多的物資直接接住需要的人。</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary">立即分享好物</button>
+          <button class="btn btn-secondary">逛逛附近的好物</button>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true"></div>
+    </section>
+
+    <!-- 物品卡片網格 -->
+    <section class="block">
+      <h2>最新好物</h2>
+      <div class="card-grid">
+        <article class="item-card">
+          <div class="thumb food">
+            <span class="badge">即期食品</span>
+            <span class="badge free">免費</span>
+          </div>
+          <div class="body">
+            <div class="title">吐司兩條，今明兩天內要吃完</div>
+            <div class="meta"><span class="city-tag">台北市 大安區</span></div>
+          </div>
+        </article>
+        <article class="item-card">
+          <div class="thumb coupon">
+            <span class="badge">優惠券</span>
+            <span class="badge free">免費</span>
+          </div>
+          <div class="body">
+            <div class="title">連鎖咖啡買一送一券（12/31 前）</div>
+            <div class="meta"><span class="city-tag">新北市 板橋區</span></div>
+          </div>
+        </article>
+        <article class="item-card">
+          <div class="thumb goods">
+            <span class="badge">生活用品</span>
+            <span class="badge free">免費</span>
+          </div>
+          <div class="body">
+            <div class="title">兒童腳踏車，附安全帽</div>
+            <div class="meta"><span class="city-tag">台中市 西屯區</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 物品詳情片段 -->
+    <section class="block">
+      <h2>物品詳情</h2>
+      <div class="detail-card">
+        <div class="detail-top">
+          <h3 class="detail-title">兒童腳踏車，附安全帽</h3>
+          <span class="status-pill">留言中</span>
+        </div>
+        <p class="detail-desc">小孩長太快穿不到了，附贈安全帽一頂，面交地點在台中市西屯區，歡迎有需要的家庭留言。</p>
+        <div class="detail-actions">
+          <button class="btn btn-primary">我要留言</button>
+          <button class="btn btn-secondary">檢舉</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 表單元件 -->
+    <section class="block">
+      <h2>上架好物</h2>
+      <form class="form-card" onsubmit="return false">
+        <div class="field">
+          <label for="demo-title">物品標題</label>
+          <input id="demo-title" type="text" placeholder="例如：兒童腳踏車" />
+        </div>
+        <div class="field">
+          <label for="demo-desc">分享的話</label>
+          <textarea id="demo-desc" placeholder="簡單介紹這件物品的狀況與面交方式"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">發布好物</button>
+          <button type="button" class="btn btn-secondary">先儲存草稿</button>
+        </div>
+      </form>
+    </section>
+
+    <footer class="site-footer">
+      <strong>好物共享</strong> — 台灣縣市級免費共享平台。<br />
+      不做金流、不做物流、不做交換、不做社區圈。本站與頁面提及之品牌、通路、票券發行方皆無合作或背書關係。
+    </footer>
+  </main>
+
+  <!-- 底部分頁列 -->
+  <nav class="bottom-tab" aria-label="底部導覽">
+    <button class="tab-item active" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      首頁
+    </button>
+    <button class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      逛好物
+    </button>
+    <button class="tab-item fab" aria-label="分享好物">
+      <span class="fab-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </span>
+    </button>
+    <button class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.5A8.4 8.4 0 0 1 3.5 11 8.38 8.38 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"/></svg>
+      訊息
+    </button>
+    <button class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      我的
+    </button>
+  </nav>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('root');
+    var philosophy = document.getElementById('philosophy');
+    var texts = {
+      a: '像鄰里菜園一樣，把不需要的種回土裡，讓新的需要在此發芽。',
+      b: '像巷口老鄰居一樣沉穩牢靠，把每一次交接都當作信用的累積。',
+      c: '像巷口打招呼的笑容一樣，讓分享這件事變得輕鬆又開心。'
+    };
+
+    function setPressed(selector, value) {
+      var buttons = document.querySelectorAll(selector);
+      buttons.forEach(function (btn) {
+        var isMatch = btn.dataset.setProposal === value || btn.dataset.setTheme === value;
+        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+    }
+
+    document.querySelectorAll('[data-set-proposal]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var p = btn.dataset.setProposal;
+        root.setAttribute('data-proposal', p);
+        philosophy.textContent = texts[p];
+        setPressed('[data-set-proposal]', p);
+      });
+    });
+
+    document.querySelectorAll('[data-set-theme]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var t = btn.dataset.setTheme;
+        root.setAttribute('data-theme', t);
+        setPressed('[data-set-theme]', t);
+      });
+    });
+  })();
+</script>
