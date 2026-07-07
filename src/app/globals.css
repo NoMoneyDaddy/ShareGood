@@ -50,9 +50,10 @@
 
 :root {
   /* web-design-guidelines 檢查項：宣告 color-scheme 讓瀏覽器原生 UI（捲軸／原生
-     select 下拉選單外觀／日期選擇器等不受 Tailwind token 控制的部分）跟著系統深色
-     模式走，避免亮色模式的原生控制項疊在暗色頁面上。 */
-  color-scheme: light dark;
+     select 下拉選單外觀／日期選擇器等不受 Tailwind token 控制的部分）跟著目前主題走。
+     M11 改為手動切換（不跟系統設定）後，這裡固定宣告 light，`.dark` class 再覆寫成
+     dark，兩者互斥，避免「使用者手動選淺色，但系統是深色」時原生控制項卻選錯邊。 */
+  color-scheme: light;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -88,6 +89,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -130,11 +132,13 @@
    * 供 select/dropdown-menu 等元件的 `focus:bg-accent` hover 狀態使用），直接覆寫會讓
    * 全站下拉選單 focus 狀態變成暖沙金色——因此改名為 brand-accent／brand-accent-ink
    * 避免撞名，語意與提案文件的 accent 完全相同。
-   * 這個 .dark class 選擇器本身目前沒有任何機制會被實際套用到 <html>（沒有接
-   * ThemeProvider／手動切換開關，見 master-plan §10a「手動切換開關為選配」），
-   * 真正負責讓深色模式跟隨系統設定自動生效的是檔案最下面的
-   * `@media (prefers-color-scheme: dark)` 區塊；這裡保留 .dark class 版本只是
-   * 讓未來若要做手動切換開關時，同一套數值可以直接重用，不用重算一次。 */
+   * M11：這個 .dark class 現在是深色模式唯一的生效機制——`src/components/
+   * theme-provider.tsx` 掛上 next-themes 的 ThemeProvider（attribute="class"），
+   * 使用者按下 site-header 的日/夜切換鈕時就是切換 <html> 上的這個 class。
+   * M10 批次 1/2 原本靠檔案最下面的 `@media (prefers-color-scheme: dark)`
+   * 自動跟隨系統設定，本次收斂為只走手動切換（見使用者需求「預設淺色＋手動
+   * 切換」），該 media query 區塊已移除，避免「系統深色但使用者按了淺色」時
+   * 兩套規則互相打架。 */
   --color-paper: #10171a;
   --color-paper-2: #182228;
   --color-ink: #e9eeec; /* ink / paper 15.44:1 */
@@ -249,65 +253,8 @@
   --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 }
 
-/* ===== M10 批次 1：深色模式跟隨系統設定（media strategy）=====
- * 這個專案沒有 ThemeProvider／手動切換開關（master-plan §10a 刻意選配、本批次沒做，
- * 見 PR 描述「已知限制」），所以上面 `.dark { ... }` class 選擇器實際上永遠不會被
- * 套用到任何元素上——單純靠 .dark class 沒辦法讓深色模式真的生效。
- * 這裡改用 `prefers-color-scheme: dark` media query 直接覆寫 :root，讓深色模式
- * 純粹跟隨使用者/瀏覽器的系統設定自動生效，不需要任何 JavaScript 或 provider。
- * 內容刻意跟上面 `.dark { ... }` 完全一致（shadcn 中性色沿用 shadcn 預設深色值，
- * 品牌 token 沿用同一組已驗證過 WCAG 對比的深色值），避免兩份定義各自維護出現分歧。
- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-
-    --color-paper: #10171a;
-    --color-paper-2: #182228;
-    --color-ink: #e9eeec;
-    --color-ink-soft: #a9b7b4;
-    --color-ink-disabled: #8a9794;
-    --color-line: #33454a;
-    --color-brand: #5cc0c7;
-    --color-brand-ink: #3e9ca3;
-    --color-brand-soft: #163338;
-    --color-navy: #131c20;
-    --color-brand-foreground: #131c20;
-    --color-brand-accent: #d6b478;
-    --color-brand-accent-ink: #ab9060;
-    --color-success: #6fbe6a;
-    --color-warning: #d9a245;
-    --color-danger: #e2695c;
-    --shadow-brand-glow: 0 6px 14px -6px rgba(92, 192, 199, 0.3);
-  }
-}
+/* M11：`@media (prefers-color-scheme: dark)` 自動跟隨系統設定的區塊已移除
+ * （原 M10 批次 1 內容跟上面的 `.dark { ... }` class 完全一致）。深色模式現在
+ * 只由 `.dark` class 驅動，由 `src/components/theme-provider.tsx` 掛的
+ * next-themes ThemeProvider 控制，預設淺色、使用者手動切換，見該檔與
+ * site-header.tsx 的 ThemeToggle 按鈕。 */

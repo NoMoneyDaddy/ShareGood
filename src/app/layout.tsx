@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,11 +43,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // suppressHydrationWarning：next-themes 官方要求的寫法（見其文件「with-app-dir」
+    // 範例）。ThemeProvider 會在瀏覽器 hydration 前用內聯 script 讀 localStorage 並
+    // 直接把 `.dark` class 掛到這個 <html> 元素上，這個時間點早於 React hydrate，
+    // 兩者的 className 字串本來就會不一致，屬於預期中的差異，不是真的 bug，加這個屬性
+    // 只抑制這一個元素的警告、不影響其餘 hydration mismatch 的正常偵測。
     <html
       lang="zh-TW"
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

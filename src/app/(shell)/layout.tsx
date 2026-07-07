@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { BottomTab } from "@/components/bottom-tab";
+import { OnboardingTour } from "@/components/onboarding-tour";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { db } from "@/lib/db";
@@ -25,6 +26,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
       <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <SiteFooter hasBottomTab />
       <BottomTab />
+      <OnboardingTour loggedIn={Boolean(session?.user)} />
     </div>
   );
 }
