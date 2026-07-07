@@ -53,16 +53,10 @@ const CATEGORIES: Array<[string, string]> = [
 const KEYWORD_BLOCKLIST_MARKUP: string[] = ["+300", "小補", "私訊出價", "補差價", "加價"];
 // 折現詞：防止點數/券類「折現/換現金/交換」變相金流（§1 non-goals：不做金流、不做交換）。
 const KEYWORD_BLOCKLIST_CASH_OUT: string[] = ["折現", "換現金", "交換", "面交補"];
-// 不可上架券名：官方明文禁轉贈類型（LINE 即享券），攔截層二負責擋自由文字（描述、留言），
-// 攔截層一（表單/API 常數清單）另有獨立實作，不在本表範圍。
-// 注意一：只擋「LINE 即享券」而非裸詞「即享券」——「即享券」是 Edenred 的通用電子票券
-// 品牌（麥當勞/SOGO/家樂福即享券等），多數為可自由轉贈的序號券，正是本平台利基；
-// 研究 04 查證到的「官方明文禁轉贈」僅限 LINE 即享券。本表比對無空白正規化
-// （見 src/lib/keyword-blocklist.ts），故空白變體要各列一條；正規化變體由攔截層一
-// （src/lib/non-transferable-coupon-types.ts）對券票點類另行涵蓋。
-// 注意二：使用者 2026-07-07 拍板——「LINE 禮物」「隨買跨店取」「行動隨時取」不攔截，
-// 本表僅保留 LINE 即享券兩個空白變體。
-const KEYWORD_BLOCKLIST_NON_TRANSFERABLE: string[] = ["LINE即享券", "LINE 即享券"];
+// 不可上架券名：使用者 2026-07-07 拍板**全面清空**——LINE 即享券、LINE 禮物、隨買跨店取、
+// 行動隨時取一律不在上架時硬擋，官方閉環/禁轉贈類改以詳情頁文案引導官方轉贈功能。
+// 空陣列保留位置：日後若要恢復硬擋，把詞條加回本表（或從後台 CRUD 頁加詞）即可。
+const KEYWORD_BLOCKLIST_NON_TRANSFERABLE: string[] = [];
 // 個資徵求詞：點數類型個資最小化（硬規則），固定詞攔截；手機號格式另由獨立正則 helper 處理
 // （非本表範圍，見 §9a 交付內容 5）。
 const KEYWORD_BLOCKLIST_PII: string[] = ["驗證碼", "會員帳號", "OTP"];
@@ -192,10 +186,15 @@ async function main() {
     });
   }
   // 一次性資料修正：早期詞庫曾 seed 過裸詞「即享券」（誤殺 Edenred 通用即享券）與
-  // 「LINE 禮物」「隨買跨店取」「行動隨時取」（使用者 2026-07-07 拍板不攔截）。直接刪除
-  // 這些精確詞條；若日後營運要擋，可從後台 CRUD 頁重新加入（seed 不會再建立它們）。
+  // 「LINE即享券」「LINE 即享券」「LINE 禮物」「隨買跨店取」「行動隨時取」（使用者
+  // 2026-07-07 拍板不可上架清單全面清空、不硬擋）。直接刪除這些精確詞條；若日後營運
+  // 要擋，可從後台 CRUD 頁重新加入（seed 不會再建立它們）。
   await prisma.keywordBlocklist.deleteMany({
-    where: { keyword: { in: ["即享券", "LINE 禮物", "隨買跨店取", "行動隨時取"] } },
+    where: {
+      keyword: {
+        in: ["即享券", "LINE即享券", "LINE 即享券", "LINE 禮物", "隨買跨店取", "行動隨時取"],
+      },
+    },
   });
 
   // M9 交付內容 2：deal_sources 的 10 個 S1 種子來源。§11.2 未替 deal_sources 定案任何

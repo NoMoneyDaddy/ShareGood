@@ -15,13 +15,11 @@ export function normalizeForCouponTypeCheck(text: string): string {
     .toLowerCase();
 }
 
-// 清單已內含常見變體字面（未正規化前的原文，方便閱讀），比對時雙方都會先正規化。
-// 注意一：刻意不收裸詞「即享券」——那是 Edenred 的通用電子票券品牌（麥當勞/SOGO/家樂福
-// 即享券等），多數為可自由轉贈的序號券，正是本平台利基；研究 04 查證到的「官方明文
-// 禁轉贈」僅限 LINE 即享券。
-// 注意二：使用者 2026-07-07 拍板——「LINE 禮物」「隨買跨店取」「行動隨時取」不攔截
-// （官方閉環類以詳情頁文案引導官方轉贈功能，不在上架時硬擋），本清單僅保留 LINE 即享券。
-export const NON_TRANSFERABLE_COUPON_TYPES: readonly string[] = ["LINE即享券"];
+// 使用者 2026-07-07 拍板：不可上架清單**全面清空**——LINE 即享券、LINE 禮物、隨買跨店取、
+// 行動隨時取一律不在上架時硬擋，官方閉環/禁轉贈類改以詳情頁文案引導官方轉贈功能，
+// 「能否轉讓依發行人條款」的風險提示由法務文案承擔。機制與正規化邏輯保留：日後若要恢復
+// 硬擋，把詞條加回本清單（程式層）或從後台 /admin/keyword-blocklist 加詞（資料層）皆可。
+export const NON_TRANSFERABLE_COUPON_TYPES: readonly string[] = [];
 
 /**
  * 檢查文字是否命中不可上架清單，命中回傳命中的原始詞條（未正規化），否則回傳 null。

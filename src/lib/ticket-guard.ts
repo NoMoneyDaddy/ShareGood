@@ -16,8 +16,9 @@ function normalize(text: string): string {
     .replace(/\s+/g, "");
 }
 
-// 已知變體清單（正規化後的形式；normalize() 已移除空白，這裡直接寫去空白版本即可）。
-const NON_TRANSFERABLE_TICKET_KEYWORDS: string[] = ["line即享券"];
+// 使用者 2026-07-07 拍板：不可上架清單**全面清空**（含 LINE 即享券），不在上架時硬擋，
+// 改以詳情頁文案引導官方轉贈功能。機制保留：日後要恢復硬擋，把正規化後的詞條加回即可。
+const NON_TRANSFERABLE_TICKET_KEYWORDS: string[] = [];
 
 /**
  * 文字（券種／標題）是否命中「不可上架」清單（官方明文禁轉贈／官方閉環類型）。

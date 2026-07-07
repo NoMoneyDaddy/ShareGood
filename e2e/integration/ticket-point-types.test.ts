@@ -58,7 +58,7 @@ describe("M9 票券類型", () => {
     expect(res2.status).toBe(422);
   });
 
-  it("不可上架清單：標題或券種含「LINE 即享券」變體 → 422；「隨買跨店取」等官方閉環類不攔截（使用者拍板）", async () => {
+  it("不可上架清單已全面清空（使用者拍板）：LINE 即享券／隨買跨店取皆可上架", async () => {
     const owner = await user("ticket-non-transferable-owner");
 
     const byTitle = await attemptCreateItem(owner, {
@@ -66,10 +66,8 @@ describe("M9 票券類型", () => {
       title: "轉讓 LINE即享券 一張",
       ticket: { ticketType: "電子券", originPlatform: "LINE" },
     });
-    expect(byTitle.status).toBe(422);
+    expect(byTitle.status).toBe(201);
 
-    // 使用者 2026-07-07 拍板：「隨買跨店取」「行動隨時取」「LINE 禮物」不攔截，
-    // 官方閉環類以詳情頁文案引導官方轉贈功能。
     const byTicketType = await attemptCreateItem(owner, {
       categoryId: ticketCategoryId,
       ticket: { ticketType: "7-11隨買跨店取", originPlatform: "7-ELEVEN" },
