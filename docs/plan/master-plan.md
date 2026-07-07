@@ -2314,9 +2314,13 @@ claims/handover 交付；類型判別依上方「共通設計決策」採 catego
 > （現況診斷與逐頁範圍）。實作與審查使用本地已載入技能：impeccable、
 > web-design-guidelines、ui-ux-pro-max、emil-design-eng、motion-design、dataviz。
 
-**設計方向（已由現況延續，不重新發明）**：沿用首頁既有品牌語言——暖白紙感底＋琥珀橘
-主色＋近黑墨字，WCAG AA 對比；視覺密度中低、寬敞排版（面向一般民眾）；動效低強度、
-Lottie 僅限高價值互動；行動優先（375px 起）。**不採納**紫藍漸層等 AI 陳詞濫調。
+**設計方向（使用者 2026-07-07 拍板更新）**：全站改採**提案 B「靛青與暖沙」**視覺識別
+（主色 #1E6B76，完整 token 表見 `docs/research/2026-07-07-frontend-refactor/03-style-proposals.md`
+提案 B 章節，亮暗雙套皆已通過 WCAG AA 對比驗證）——沉穩信任感定位，取代原有暖白＋琥珀橘。
+token **名稱**沿用既有命名（paper/ink/brand/line…）僅換值，另新增 accent/success/warning/
+danger 等 6 個語意變數；視覺密度中低、寬敞排版；動效低強度、Lottie 僅限高價值互動；
+行動優先（375px 起）。**不採納**紫藍漸層等 AI 陳詞濫調。批次分工：批次 2 獨佔
+`globals.css` token 換值，批次 3 只使用既有 token class 名。
 
 **交付批次**：
 1. **殼層強制化＋設計系統補完**（結構性最高槓桿）：
