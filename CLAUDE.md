@@ -259,6 +259,35 @@
       每個 PR 皆過 `biome`／`tsc`／`NODE_ENV=production next build`。**已知遺留**：
       M9 規格「選配」未做——stale 逾期自動轉 expired、DealInfo 到期前提醒投稿者；
       give-to-get 級距數字待真實數據調整；法務文案上線前需律師審閱（研究 04 共 8 項）。
+- [x] M10 前端重構：範圍見 master-plan.md §10a，使用者 2026-07-07 指示開工。研究先行
+      （`docs/research/2026-07-07-frontend-refactor/`：21 項外部設計資源精讀成 25 條可執行
+      守則、41 路由現況盤點＋截圖診斷、三套視覺識別提案），四批交付全部完成。
+    - [x] 先行獨立項：PWA manifest＋192/512 圖示（PR #49，haiku 代理）；`/admin/ops`
+          四分頁儀表板圖表化（PR #50，零新依賴純 SVG/CSS，dataviz 技能調色＋CVD 分離度
+          驗證，開發中順手修掉單系列直條圖 `items-end` 高度歸零的隱形 bug）。
+    - [x] 批次 1 殼層強制化＋深色模式（PR #51）：`src/app/(shell)/` route group 一次把
+          16 個裸/半裸前台路由收進強制 SiteHeader＋BottomTab＋SiteFooter（URL 不變，
+          session/profile 查詢收斂進 layout）；深色模式品牌 token（media strategy＋
+          `.dark` class 預留，WCAG AA 對比手算驗證）；admin 與法務頁刻意排除。順手修
+          「searchParams 重複參數（?q=a&q=b 給 string[]）500」舊 bug。
+    - [x] 視覺識別決策：三套提案（苔綠/靛青/珊瑚）做成自包含 HTML 互動預覽（Artifact
+          發佈），使用者拍板 **提案 B「靛青與暖沙」**（主色 #1E6B76），token 表見
+          `03-style-proposals.md`。
+    - [x] 批次 2 提案 B 換裝＋P0 深度重設計（PR #53）：globals.css 亮暗兩套 token 全換
+          ＋新增 success/warning/danger/brand-accent/brand-foreground 語意變數＋
+          `color-scheme` 宣告；`/items/[id]` 九模組卡片牆改狀態導向分區；`/items`
+          行動版篩選列堆疊；`/deal-infos` 空狀態重做；多處暗色對比缺陷修正。
+    - [x] 批次 3 P1 清單＋空狀態＋表單（PR #52）：共用 `empty-state.tsx` 元件套 6 頁
+          空狀態；conversations/notifications/wallet/subscriptions/support 清單密度與
+          Badge 分級統一；表單觸控目標 ≥44px＋inputMode；原生 select 不套 flex
+          （Safari 渲染地雷，review 採納）。
+    - 驗收：每批皆過 `biome`／`tsc`／`production build`／全套 vitest（M7 MinIO 5 個既有
+      基準）＋Playwright 主迴路 E2E；前後對照截圖累計 60+ 張在 `docs/research/
+      2026-07-07-frontend-refactor/screenshots/`。**已知遺留**：深色手動切換開關（`.dark`
+      數值已就位，需 ThemeProvider）；`legal-draft-notice.tsx` 與 `/items/new` 的
+      `bg-brand-soft`+`text-brand-ink` 暗色對比舊寫法；`/support` ticket-form 與
+      `/conversations/[id]` 觸控目標；layout.tsx 的 next/font Geist/Manrope 載入已無
+      引用可移除；多選 chip 觸控目標約 32px（WCAG 2.5.8 取捨）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
