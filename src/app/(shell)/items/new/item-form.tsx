@@ -263,7 +263,7 @@ export function ItemForm({
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
-            className="flex h-11 w-full items-center rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+            className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
           >
             <option value="">請選擇</option>
             {categories.map((c) => (
@@ -280,7 +280,7 @@ export function ItemForm({
             value={cityId}
             onChange={(e) => setCityId(e.target.value)}
             required
-            className="flex h-11 w-full items-center rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+            className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
           >
             <option value="">請選擇</option>
             {cities.map((c) => (
