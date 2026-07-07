@@ -20,9 +20,13 @@ const TAIPEI_DATE_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
 export default async function DealInfosPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cityId?: string; cursor?: string }>;
+  searchParams: Promise<{ cityId?: string | string[]; cursor?: string | string[] }>;
 }) {
-  const { cityId, cursor } = await searchParams;
+  const raw = await searchParams;
+  // URL 帶重複參數時（?cityId=a&cityId=b）Next.js 會給 string[]，一律取第一個。
+  const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  const cityId = one(raw.cityId);
+  const cursor = one(raw.cursor);
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡不用再查一次。
   const [cities, result] = await Promise.all([

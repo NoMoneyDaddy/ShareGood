@@ -25,16 +25,21 @@ export default async function ItemsPage({
   searchParams,
 }: {
   searchParams: Promise<{
-    cityId?: string;
-    categoryId?: string;
-    q?: string;
-    sort?: string;
-    cursor?: string;
+    cityId?: string | string[];
+    categoryId?: string | string[];
+    q?: string | string[];
+    sort?: string | string[];
+    cursor?: string | string[];
   }>;
 }) {
-  const { cityId, categoryId, q, sort, cursor } = await searchParams;
-  const keyword = q?.trim() || undefined;
-  const activeSort = sort === "expiring" ? "expiring" : "newest";
+  const raw = await searchParams;
+  // URL 帶重複參數時（?q=a&q=b）Next.js 會給 string[]，直接 .trim() 會 500；一律取第一個。
+  const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  const cityId = one(raw.cityId);
+  const categoryId = one(raw.categoryId);
+  const cursor = one(raw.cursor);
+  const keyword = one(raw.q)?.trim() || undefined;
+  const activeSort = one(raw.sort) === "expiring" ? "expiring" : "newest";
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡不用再查一次。
   const [cities, categories, result] = await Promise.all([
