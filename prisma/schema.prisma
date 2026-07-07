@@ -1693,6 +1693,7 @@ model DealInfoReport {
   reporter User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
 
   @@unique([dealInfoId, reporterId, round]) // 擋同一人同一輪重複回報
+  @@index([reporterId, createdAt]) // rate limit deal_info_report_create 的計數查詢形狀（unique 以 dealInfoId 為前導欄，查不了單獨 reporterId）
   @@map("deal_info_reports")
 }
 

@@ -79,13 +79,18 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     });
     if (flipped.count !== 1) return { ok: false as const };
 
-    await writeAudit({
-      actorId: user.id,
-      action: auditAction,
-      targetType: "deal_info",
-      targetId: id,
-      detail: { fromStatus: dealInfo.status, toStatus: nextStatus },
-    });
+    // 傳入 tx：audit 與狀態轉換同交易生死。reactivate 的輪次是拿 audit 筆數反推的，
+    // 若 audit 用全域 client 寫、交易卻回滾，會多出一筆幽靈紀錄弄壞輪次計數。
+    await writeAudit(
+      {
+        actorId: user.id,
+        action: auditAction,
+        targetType: "deal_info",
+        targetId: id,
+        detail: { fromStatus: dealInfo.status, toStatus: nextStatus },
+      },
+      tx,
+    );
 
     return { ok: true as const };
   });

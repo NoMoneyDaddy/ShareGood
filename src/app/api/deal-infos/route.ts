@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { listPublishedDealInfos } from "@/lib/deal-info";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
+import { writeAudit } from "@/lib/audit";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkFullBlock, checkUserRestriction } from "@/lib/restrictions";
 
@@ -64,13 +65,6 @@ export async function POST(req: NextRequest) {
   const restriction = await checkUserRestriction(user.id, "posting");
   if (restriction.blocked) return jsonError("FORBIDDEN", restriction.message);
 
-  try {
-    await checkRateLimit(user.id, "deal_info_create");
-  } catch (e) {
-    if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
-    throw e;
-  }
-
   const now = new Date();
   const body = await req.json().catch(() => null);
 
@@ -119,13 +113,27 @@ export async function POST(req: NextRequest) {
     return jsonError("UNPROCESSABLE", "使用者投稿不可指定來源");
   }
 
+  // 頻率限制只套用在使用者投稿：editorial 的 submitterId 為 null（見下方 create），
+  // rate-limit.ts 的計數器以 submitterId 統計本來就數不到 editorial，這裡明確跳過讓
+  // 語意一致——editorial 僅限 moderator/admin、且每筆建立都寫 audit_logs 可追溯，
+  // 編輯一次收錄整批官方檔期不該被個人額度卡住。
+  if (!isEditorial) {
+    try {
+      await checkRateLimit(user.id, "deal_info_create");
+    } catch (e) {
+      if (e instanceof RateLimitExceededError) return jsonError("RATE_LIMITED", e.message);
+      throw e;
+    }
+  }
+
   let dealSource: { id: string } | null = null;
   if (isEditorial && dealSourceIdInput) {
-    dealSource = await db.dealSource.findUnique({
-      where: { id: dealSourceIdInput },
+    // isActive: true——已被後台停用的來源不得再關聯新的好康（停用語意要真的生效）。
+    dealSource = await db.dealSource.findFirst({
+      where: { id: dealSourceIdInput, isActive: true },
       select: { id: true },
     });
-    if (!dealSource) return jsonError("UNPROCESSABLE", "無效的來源");
+    if (!dealSource) return jsonError("UNPROCESSABLE", "無效的來源，或來源已停用");
   }
 
   let cityIds: string[] = [];
@@ -188,6 +196,18 @@ export async function POST(req: NextRequest) {
 
     return dealInfo;
   });
+
+  // editorial 的 submitterId 刻意為 null（不與「使用者投稿」語意混淆），操作軌跡改由
+  // audit_logs 承擔：不記 audit 的話，編輯收錄行為完全無法追溯（誰建了哪筆、何時）。
+  if (isEditorial) {
+    await writeAudit({
+      actorId: user.id,
+      action: "deal_info.create",
+      targetType: "deal_info",
+      targetId: created.id,
+      detail: { title, sourceUrl, dealSourceId: dealSource?.id ?? null },
+    });
+  }
 
   return NextResponse.json({ id: created.id, status: created.status }, { status: 201 });
 }
