@@ -159,7 +159,7 @@ export function TicketForm() {
           value={category}
           onChange={(e) => setCategory(e.target.value as typeof category)}
           required
-          className="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         >
           <option value="">請選擇</option>
           {CATEGORY_OPTIONS.map((opt) => (
@@ -180,7 +180,7 @@ export function TicketForm() {
           maxLength={100}
           placeholder="簡短描述你遇到的問題"
           required
-          className="w-full rounded-lg border border-line bg-card px-3 py-2 text-base text-ink shadow-sm outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="h-11 w-full rounded-lg border border-line bg-card px-3 text-base text-ink shadow-sm outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         />
       </div>
 
@@ -206,17 +206,19 @@ export function TicketForm() {
           {attachments.map((att) => (
             <div
               key={att.key}
-              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-paper-2"
+              className="relative h-20 w-20 shrink-0 rounded-lg border border-line bg-paper-2"
             >
+              {/* 圓角改套在 img 與遮罩上、父容器不用 overflow-hidden：
+                  overflow-hidden 會連移除按鈕超出邊界的觸控熱區一起裁掉（含命中測試）。 */}
               {/* biome-ignore lint/performance/noImgElement: 本機選檔的暫時預覽（blob: URL） */}
-              <img src={att.previewUrl} alt="" className="h-full w-full object-cover" />
+              <img src={att.previewUrl} alt="" className="h-full w-full rounded-lg object-cover" />
               {att.status === "uploading" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-ink/40">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-ink/40">
                   <Loader2 size={20} className="animate-spin text-white" aria-hidden="true" />
                 </div>
               )}
               {att.status === "error" && (
-                <div className="absolute inset-0 flex items-center justify-center bg-destructive/80 p-1 text-center text-[10px] text-white">
+                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-destructive/80 p-1 text-center text-[10px] text-white">
                   {att.error}
                 </div>
               )}
@@ -224,7 +226,7 @@ export function TicketForm() {
                 type="button"
                 onClick={() => removeAttachment(att.key)}
                 aria-label="移除這張截圖"
-                className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-white"
+                className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-white after:absolute after:-inset-3 after:content-['']"
               >
                 <X size={12} aria-hidden="true" />
               </button>

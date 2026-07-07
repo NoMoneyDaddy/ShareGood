@@ -1,23 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
+// UX 走查（2026-07-07）順手清掉的遺留：globals.css 的 --font-sans／--font-display
+// 早已改用純系統字型堆疊（見該檔「共通決策」註解），Geist（sans）與 Manrope 這兩支
+// Google Fonts 從未被任何 CSS 變數引用，只是白白多打一次字型下載。--font-mono 有實際
+// 引用（優惠券券碼、後台效能表格），Geist Mono 保留。
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  weight: ["600", "700", "800"],
-  subsets: ["latin"],
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +42,7 @@ export default function RootLayout({
     // 只抑制這一個元素的警告、不影響其餘 hydration mismatch 的正常偵測。
     <html
       lang="zh-TW"
-      className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} h-full antialiased`}
+      className={`${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
