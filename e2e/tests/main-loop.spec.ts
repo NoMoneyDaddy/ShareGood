@@ -62,6 +62,10 @@ async function loginAs(page: import("@playwright/test").Page, user: TestUser) {
 test("A 上架 → B 留言 → 自動接受 → 私訊 → 雙方完成 → B 感謝", async ({ browser }) => {
   const ownerContext = await browser.newContext();
   const claimerContext = await browser.newContext();
+  // M11 初次導覽會在登入後首訪自動彈出（localStorage 無 tour_done 時），浮層會攔截
+  // 主迴路的點擊；這支測試專注交付流程本身，預先標記導覽已看過。
+  await ownerContext.addInitScript(() => window.localStorage.setItem("tour_done", "true"));
+  await claimerContext.addInitScript(() => window.localStorage.setItem("tour_done", "true"));
   const ownerPage = await ownerContext.newPage();
   const claimerPage = await claimerContext.newPage();
   await loginAs(ownerPage, owner);
