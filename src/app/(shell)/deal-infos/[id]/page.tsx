@@ -92,7 +92,7 @@ export default async function DealInfoDetailPage({ params }: { params: Promise<{
         <MapPin size={14} strokeWidth={2.4} aria-hidden="true" />
         {dealInfo.isNationwide ? "全台適用" : dealInfo.cities.map((c) => c.city.name).join("、")}
       </div>
-      <h1 className="mt-2 text-2xl font-bold tracking-tight">{dealInfo.title}</h1>
+      <h1 className="mt-2 text-2xl font-semibold tracking-normal text-ink">{dealInfo.title}</h1>
       <p className="mt-3 whitespace-pre-wrap text-ink-soft">{dealInfo.summary}</p>
 
       <div className="mt-6 space-y-1.5 rounded-xl border border-line bg-card p-4 text-sm">
