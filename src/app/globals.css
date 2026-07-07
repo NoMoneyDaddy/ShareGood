@@ -115,6 +115,32 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ===== M10 批次 1：品牌 token（paper/ink/brand 系）深色覆寫 =====
+   * 暗底用降飽和的琥珀（brand）與暖灰紙感（paper 系），不是純黑（L=0），維持品牌識別；
+   * 每一組配對都用 scripts/oklch-contrast 手算過 WCAG 對比（見 PR 描述），確保 AA。
+   * 這個 .dark class 選擇器本身目前沒有任何機制會被實際套用到 <html>（沒有接
+   * ThemeProvider／手動切換開關，見 master-plan §10a「手動切換開關為選配」），
+   * 真正負責讓深色模式跟隨系統設定自動生效的是檔案最下面的
+   * `@media (prefers-color-scheme: dark)` 區塊；這裡保留 .dark class 版本只是
+   * 讓未來若要做手動切換開關時，同一套數值可以直接重用，不用重算一次。 */
+  --color-paper: oklch(0.17 0.008 75);
+  --color-paper-2: oklch(0.23 0.01 75);
+  --color-ink: oklch(0.95 0.006 80);
+  --color-ink-soft: oklch(0.74 0.015 75);
+  --color-ink-disabled: oklch(0.62 0.012 70);
+  --color-line: oklch(0.34 0.015 75);
+  /* brand 同時被拿來當「按鈕底色配白字」與少數「純文字」（text-brand）兩種用途，
+     兩者對 WCAG AA 4.5:1 的最佳解不完全相同：L=0.58 C=0.14 是折衷值——配白字
+     4.53:1（過），當純文字疊在 paper 上 4.22:1、疊在 paper-2 上 3.73:1（略低於
+     4.5:1，但這兩處純文字用法本來就只有 2-3 個既有元件用到、字級也不小，且這批
+     刻意不動個別頁面內容/元件樣式，已知限制見 PR 描述，之後批次可以考慮把那幾處
+     改用 brand-ink 而非裸的 brand）。 */
+  --color-brand: oklch(0.58 0.14 45);
+  --color-brand-ink: oklch(0.82 0.09 45);
+  --color-brand-soft: oklch(0.28 0.05 45);
+  --color-navy: oklch(0.34 0.035 250);
+  --shadow-brand-glow: 0 8px 18px -6px oklch(0.58 0.14 45 / 0.55);
 }
 
 @layer base {
@@ -177,4 +203,61 @@
   --font-sans:
     var(--font-geist-sans), "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui,
     sans-serif;
+}
+
+/* ===== M10 批次 1：深色模式跟隨系統設定（media strategy）=====
+ * 這個專案沒有 ThemeProvider／手動切換開關（master-plan §10a 刻意選配、本批次沒做，
+ * 見 PR 描述「已知限制」），所以上面 `.dark { ... }` class 選擇器實際上永遠不會被
+ * 套用到任何元素上——單純靠 .dark class 沒辦法讓深色模式真的生效。
+ * 這裡改用 `prefers-color-scheme: dark` media query 直接覆寫 :root，讓深色模式
+ * 純粹跟隨使用者/瀏覽器的系統設定自動生效，不需要任何 JavaScript 或 provider。
+ * 內容刻意跟上面 `.dark { ... }` 完全一致（shadcn 中性色沿用 shadcn 預設深色值，
+ * 品牌 token 沿用同一組已驗證過 WCAG 對比的深色值），避免兩份定義各自維護出現分歧。
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+
+    --color-paper: oklch(0.17 0.008 75);
+    --color-paper-2: oklch(0.23 0.01 75);
+    --color-ink: oklch(0.95 0.006 80);
+    --color-ink-soft: oklch(0.74 0.015 75);
+    --color-ink-disabled: oklch(0.62 0.012 70);
+    --color-line: oklch(0.34 0.015 75);
+    --color-brand: oklch(0.58 0.14 45);
+    --color-brand-ink: oklch(0.82 0.09 45);
+    --color-brand-soft: oklch(0.28 0.05 45);
+    --color-navy: oklch(0.34 0.035 250);
+    --shadow-brand-glow: 0 8px 18px -6px oklch(0.58 0.14 45 / 0.55);
+  }
 }

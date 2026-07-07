@@ -1,12 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { DealInfoStatus, DealSourceType } from "@/generated/prisma/enums";
 import { jsonError } from "@/lib/api";
+import { writeAudit } from "@/lib/audit";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { listPublishedDealInfos } from "@/lib/deal-info";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
-import { writeAudit } from "@/lib/audit";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkFullBlock, checkUserRestriction } from "@/lib/restrictions";
 
