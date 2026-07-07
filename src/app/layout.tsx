@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   },
   description:
     "把用不到但還能用的好物免費分享出去，讓剛好需要的人接手。台灣縣市級免費共享平台，不買賣、不交換。",
+  manifest: "/manifest.webmanifest",
   openGraph: {
     siteName: "ShareGood 好物共享",
     locale: "zh_TW",
