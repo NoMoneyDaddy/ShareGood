@@ -374,7 +374,11 @@ describe("M9 不可上架清單（官方明文禁轉贈／官方閉環券種）"
     const owner = await user("blocklist-allowed-owner");
     const { cityId } = await pickCityAndCategory();
 
-    for (const title of ["全家隨買跨店取咖啡寄杯", "7-ELEVEN 行動隨時取拿鐵", "LINE 禮物星巴克券"]) {
+    for (const title of [
+      "全家隨買跨店取咖啡寄杯",
+      "7-ELEVEN 行動隨時取拿鐵",
+      "LINE 禮物星巴克券",
+    ]) {
       const images = await createImagePair(owner.id);
       const res = await api("/api/items", {
         method: "POST",
