@@ -1,7 +1,11 @@
+import { Gift, Ticket } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { ReactNode } from "react";
 import { auth } from "@/auth";
+import { EmptyState } from "@/components/empty-state";
+import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 
 export const metadata: Metadata = { title: "優惠券錢包" };
@@ -26,6 +30,19 @@ const STATUS_LABEL: Record<string, string> = {
   expired: "已到期下架",
   removed_by_user: "已下架",
   removed_by_moderator: "已下架",
+};
+
+// 狀態徽章顏色分級，比照 /support 頁「處理中／已解決」的用色慣例：進行中用預設（品牌色）
+// 突顯，已完成用 outline 弱化，下架／到期用 destructive 提醒使用者這張券可能已經拿不到手了。
+const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
+  draft: "outline",
+  published: "default",
+  reserved: "secondary",
+  handover_pending: "secondary",
+  completed: "outline",
+  expired: "destructive",
+  removed_by_user: "destructive",
+  removed_by_moderator: "destructive",
 };
 
 type WalletRow = {
@@ -87,15 +104,15 @@ async function loadReceivedCoupons(userId: string, cursor?: string) {
 
 function CouponList({
   rows,
-  emptyText,
+  emptyState,
   canReveal,
 }: {
   rows: WalletRow[];
-  emptyText: string;
+  emptyState: ReactNode;
   canReveal: boolean;
 }) {
   if (rows.length === 0) {
-    return <p className="mt-3 text-sm text-ink-soft">{emptyText}</p>;
+    return emptyState;
   }
   return (
     <ul className="mt-3 flex flex-col gap-2">
@@ -105,14 +122,18 @@ function CouponList({
             href={`/items/${item.id}${canReveal ? "#coupon" : ""}`}
             className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            <p className="font-medium text-ink">{item.title}</p>
+            <div className="flex items-start justify-between gap-3">
+              <p className="font-medium text-ink">{item.title}</p>
+              <Badge variant={STATUS_VARIANT[item.status] ?? "outline"} className="shrink-0">
+                {STATUS_LABEL[item.status] ?? item.status}
+              </Badge>
+            </div>
             {item.couponDetail && (
               <p className="mt-1 text-sm text-ink-soft">
                 {item.couponDetail.faceValue}・{item.couponDetail.merchantName}
               </p>
             )}
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-soft">
-              <span>{STATUS_LABEL[item.status] ?? item.status}</span>
               <span>到期日：{formatDate(item.expiresAt)}</span>
             </div>
           </Link>
@@ -157,7 +178,18 @@ export default async function WalletPage({
 
       <section className="mt-6">
         <h2 className="text-sm font-semibold text-ink-soft">我分享的券</h2>
-        <CouponList rows={shared.rows} emptyText="還沒有分享過優惠券。" canReveal={false} />
+        <CouponList
+          rows={shared.rows}
+          canReveal={false}
+          emptyState={
+            <EmptyState
+              icon={Ticket}
+              title="還沒有分享過優惠券"
+              description="上架物品時選擇優惠券分類，就能把用不到的券分享給需要的人。"
+              action={{ href: "/items/new", label: "分享優惠券" }}
+            />
+          }
+        />
         {shared.nextCursor && (
           <div className="mt-3">
             <Link
@@ -174,7 +206,18 @@ export default async function WalletPage({
 
       <section className="mt-8">
         <h2 className="text-sm font-semibold text-ink-soft">我接手的券</h2>
-        <CouponList rows={received.rows} emptyText="還沒有接手過優惠券。" canReveal={true} />
+        <CouponList
+          rows={received.rows}
+          canReveal={true}
+          emptyState={
+            <EmptyState
+              icon={Gift}
+              title="還沒有接手過優惠券"
+              description="去逛逛好物，說不定有適合你的優惠券正在分享中。"
+              action={{ href: "/items", label: "去逛逛好物" }}
+            />
+          }
+        />
         {received.nextCursor && (
           <div className="mt-3">
             <Link

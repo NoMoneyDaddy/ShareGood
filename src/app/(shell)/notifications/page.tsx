@@ -1,6 +1,8 @@
+import { Bell } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { EmptyState } from "@/components/empty-state";
 import { db } from "@/lib/db";
 import { mergedCountOf } from "@/lib/notifications";
 import { NotificationRow } from "./notification-row";
@@ -174,7 +176,12 @@ export default async function NotificationsPage({
       </div>
 
       {notifications.length === 0 ? (
-        <p className="mt-10 text-center text-sm text-ink-soft">目前還沒有通知。</p>
+        <EmptyState
+          icon={Bell}
+          title="目前還沒有通知"
+          description="留言、認領、直贈與交接的最新消息都會顯示在這裡。"
+          action={{ href: "/items", label: "去逛逛好物" }}
+        />
       ) : (
         <ul className="mt-6 flex flex-col gap-2">
           {notifications.map((n) => {
