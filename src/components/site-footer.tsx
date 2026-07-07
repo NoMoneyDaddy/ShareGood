@@ -23,7 +23,7 @@ export function SiteFooter({ hasBottomTab = false }: { hasBottomTab?: boolean })
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-ink-soft sm:px-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
           <span className="font-bold text-ink">好物共享 ShareGood</span>
-          <span>台灣縣市級免費共享平台。不做金流、不做物流、不做交換。</span>
+          <span>台灣在地免費共享平台，不做金流、不做物流、不做交換。</span>
         </div>
         <nav aria-label="頁尾連結" className="flex flex-wrap gap-x-5 gap-y-2">
           {FOOTER_LINKS.map((link) => (
