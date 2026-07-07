@@ -189,7 +189,7 @@ export function DealInfoForm({
               onChange={(e) => setIsEditorial(e.target.checked)}
               className="size-4 rounded border-line"
             />
-            人工收錄（editorial）——關聯官方來源、直接發布不進審核佇列
+            以編輯身分人工收錄——關聯官方來源、直接發布不進審核佇列
           </label>
           {isEditorial && (
             <div className="space-y-2">

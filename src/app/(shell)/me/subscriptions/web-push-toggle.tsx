@@ -57,7 +57,7 @@ export function WebPushToggle({ publicKey }: { publicKey: string }) {
 
   async function handleSubscribe() {
     if (!publicKey) {
-      setMessage("尚未設定 VAPID 金鑰，無法啟用瀏覽器推播");
+      setMessage("系統尚未完成推播設定，暫時無法啟用瀏覽器推播");
       return;
     }
     setPending(true);

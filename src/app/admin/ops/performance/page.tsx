@@ -142,7 +142,8 @@ export default async function AdminOpsPerformancePage({
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">慢查詢與錯誤</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        過去 {WINDOW_HOURS} 小時依 label 分組的 P95、最近的慢查詢個案、最新錯誤紀錄。
+        過去 {WINDOW_HOURS} 小時依查詢項目分組的 P95（95% 查詢的耗時上限）、最近的慢查詢個案、
+        最新錯誤紀錄。
       </p>
 
       <OpsNav active="/admin/ops/performance" />
@@ -174,7 +175,7 @@ export default async function AdminOpsPerformancePage({
       </div>
 
       <h2 className="mt-8 text-lg font-semibold text-ink">
-        依 label 的 P95（過去 {WINDOW_HOURS} 小時）
+        依查詢項目的 P95（過去 {WINDOW_HOURS} 小時）
       </h2>
       <div className="mt-3 overflow-x-auto rounded-xl border border-line bg-card">
         {labelPage.length === 0 ? (
@@ -185,7 +186,7 @@ export default async function AdminOpsPerformancePage({
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-line text-xs text-ink-soft">
-                <th className="px-4 py-2 font-medium">label</th>
+                <th className="px-4 py-2 font-medium">查詢項目</th>
                 <th className="px-4 py-2 font-medium">P95</th>
                 <th className="px-4 py-2 font-medium">最慢單筆</th>
                 <th className="px-4 py-2 font-medium">樣本數</th>
@@ -220,7 +221,7 @@ export default async function AdminOpsPerformancePage({
             href={`/admin/ops/performance?labelCursor=${labelPage[labelPage.length - 1].label}`}
             className="text-sm font-medium text-brand-ink underline-offset-4 hover:underline"
           >
-            載入更多 label
+            載入更多查詢項目
           </Link>
         </div>
       )}

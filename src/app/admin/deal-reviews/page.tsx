@@ -54,7 +54,7 @@ export default async function AdminDealReviewsPage({
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">好康審核佇列</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        REQUIRE_REVIEW 開啟時，使用者投稿的好康資訊會先進到這裡等待審核。
+        先審後上模式（系統設定 REQUIRE_REVIEW）開啟時，使用者投稿的好康資訊會先進到這裡等待審核。
       </p>
 
       <div className="mt-6">
