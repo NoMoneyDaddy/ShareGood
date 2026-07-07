@@ -10,8 +10,10 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     lang: "zh-TW",
-    theme_color: "#363636",
-    background_color: "#ffffff",
+    // M10 提案 B「靛青與暖沙」：品牌主色 #1E6B76，背景色沿用 --color-paper 亮色值
+    // （docs/research/2026-07-07-frontend-refactor/03-style-proposals.md 提案 B）。
+    theme_color: "#1e6b76",
+    background_color: "#f9f6ef",
     // 同一檔案同時宣告 any 與 maskable：只給 maskable 在不支援遮罩的平台（桌面
     // Chrome/Firefox 等）可能無法顯示、甚至讓 PWA 安裝檢查失敗。
     icons: [
