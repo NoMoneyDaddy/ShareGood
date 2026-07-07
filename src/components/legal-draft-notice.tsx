@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 // 頁面明顯位置——抽成共用元件避免兩頁措辭日後各自漂移。
 export function LegalDraftNotice() {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-brand/30 bg-brand-soft px-4 py-3.5 text-sm text-brand-ink">
+    <div className="flex items-start gap-3 rounded-xl border border-brand/30 bg-brand-soft px-4 py-3.5 text-sm text-ink">
       <AlertTriangle size={18} strokeWidth={2.2} aria-hidden="true" className="mt-0.5 shrink-0" />
       <p className="leading-relaxed">
         <strong className="font-bold">重要提醒：</strong>

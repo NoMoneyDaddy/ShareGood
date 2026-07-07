@@ -6,6 +6,7 @@ import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { listPublishedDealInfos } from "@/lib/deal-info";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
+import { checkIpThrottle, getClientIp, IpThrottleExceededError } from "@/lib/ip-throttle";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkFullBlock, checkUserRestriction } from "@/lib/restrictions";
@@ -215,6 +216,18 @@ export async function POST(req: NextRequest) {
 // GET /api/deal-infos — 公開好康列表（cursor 分頁＋縣市/全台篩選），比照 GET /api/items
 // 既有慣例，查詢邏輯集中在 src/lib/deal-info.ts 供 API 與前台頁面共用。
 export async function GET(req: NextRequest) {
+  // 公開匿名端點的 IP 級節流，比照 GET /api/items 既有寫法：超限請求不進 DB 查詢，
+  // 取不到可識別 IP 時跳過（不落入共用 bucket 誤傷正常流量）。
+  const clientIp = getClientIp(req);
+  if (clientIp) {
+    try {
+      checkIpThrottle(clientIp, "deal_infos_list");
+    } catch (e) {
+      if (e instanceof IpThrottleExceededError) return jsonError("RATE_LIMITED", e.message);
+      throw e;
+    }
+  }
+
   const { searchParams } = new URL(req.url);
   const cityId = searchParams.get("cityId") || undefined;
   const cursor = searchParams.get("cursor")?.trim() || undefined;

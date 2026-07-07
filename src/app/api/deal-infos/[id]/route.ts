@@ -5,7 +5,7 @@ import { writeAudit } from "@/lib/audit";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { DEAL_INFO_HUMAN_TRANSITIONS } from "@/lib/deal-info";
-import { checkFullBlock } from "@/lib/restrictions";
+import { checkFullBlock, checkUserRestriction } from "@/lib/restrictions";
 
 const VALID_STATUSES = new Set<string>(Object.values(DealInfoStatus));
 
@@ -52,6 +52,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     // reactivate：原投稿者本人或 moderator/admin。
     if (!isModerator && dealInfo.submitterId !== user.id) {
       return jsonError("FORBIDDEN", "只有原投稿者或 moderator/admin 可以將這則好康重新上架");
+    }
+    // reactivate 等同讓內容重新公開，比照 POST 建立端點疊加 posting 限制：
+    // 被禁上架的使用者不得把自己的 stale 好康轉回 published（moderator 不受此限）。
+    if (!isModerator) {
+      const restriction = await checkUserRestriction(user.id, "posting");
+      if (restriction.blocked) return jsonError("FORBIDDEN", restriction.message);
     }
   }
 
