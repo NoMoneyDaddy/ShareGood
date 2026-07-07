@@ -272,6 +272,20 @@ export function ItemForm({
               </option>
             ))}
           </select>
+          {/* 「分類即類型」：券票點三類會切換成對應的專屬表單，選錯分類＝走錯上架流程，
+              所以在選中時給一句說明；傢俱大型物則提醒搬運。 */}
+          {isCoupon && (
+            <p className="text-xs text-ink-soft">優惠券：有券碼或序號的折扣券，交接後才向接手者顯示券碼。</p>
+          )}
+          {isTicket && (
+            <p className="text-xs text-ink-soft">電子票券：演出、展覽、交通等入場票券的無償轉贈（不是折扣券）。</p>
+          )}
+          {isPoint && (
+            <p className="text-xs text-ink-soft">點數好康：會員點數的無償贈與媒合，實際移轉請走官方管道。</p>
+          )}
+          {selectedCategory?.slug === "furniture" && (
+            <p className="text-xs text-ink-soft">大型傢俱請在描述註明尺寸與搬運方式，方便接手者評估。</p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="city">縣市</Label>
