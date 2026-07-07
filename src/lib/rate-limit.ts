@@ -11,7 +11,9 @@ export type RateLimitAction =
   | "claim_create"
   | "message_create"
   | "upload_create"
-  | "report_create";
+  | "report_create"
+  | "deal_info_create"
+  | "deal_info_report_create";
 
 // 數值集中放這裡，之後要調整不用去改各支 API。比照 src/lib/contribution.ts 的慣例。
 // 注意 upload_create：一次 POST /api/uploads 會建立 2 筆 StorageObject（thumb+medium），
@@ -22,6 +24,12 @@ export const RATE_LIMITS: Record<RateLimitAction, { hourly: number; daily: numbe
   message_create: { hourly: 60, daily: 300 },
   upload_create: { hourly: 60, daily: 300 },
   report_create: { hourly: 10, daily: 30 },
+  // M9（master-plan §9a 交付內容 1）：DealInfo 投稿頻率上限，比照 item_create 但稍寬鬆——
+  // moderator/admin 人工收錄 S1 來源時常一次建立好幾筆（例如初次把 10 個種子來源各自對應
+  // 一則好康），5/hour 會誤傷正常的編輯作業，數值為工程判斷，非規格明文（規格本身沒有給
+  // 這個動作的精確數字，只要求「新增 mutation 端點一律套用 rate limit」）。
+  deal_info_create: { hourly: 10, daily: 40 },
+  deal_info_report_create: { hourly: 10, daily: 30 },
 };
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -42,6 +50,10 @@ const COUNTERS: Record<RateLimitAction, Counter> = {
     db.storageObject.count({ where: { uploaderId: userId, createdAt: { gte: since } } }),
   report_create: (userId, since) =>
     db.report.count({ where: { reporterId: userId, createdAt: { gte: since } } }),
+  deal_info_create: (userId, since) =>
+    db.dealInfo.count({ where: { submitterId: userId, createdAt: { gte: since } } }),
+  deal_info_report_create: (userId, since) =>
+    db.dealInfoReport.count({ where: { reporterId: userId, createdAt: { gte: since } } }),
 };
 
 export class RateLimitExceededError extends Error {}
