@@ -12,12 +12,26 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "zh-TW",
     theme_color: "#363636",
     background_color: "#ffffff",
+    // 同一檔案同時宣告 any 與 maskable：只給 maskable 在不支援遮罩的平台（桌面
+    // Chrome/Firefox 等）可能無法顯示、甚至讓 PWA 安裝檢查失敗。
     icons: [
       {
         src: "/icon-192.png",
         sizes: "192x192",
         type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
         purpose: "maskable",
+      },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
       },
       {
         src: "/icon-512.png",
