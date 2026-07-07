@@ -146,13 +146,13 @@ export function ConversationThread({
           onChange={(e) => setBody(e.target.value)}
           maxLength={1000}
           placeholder="輸入訊息…"
-          className="h-10 flex-1 rounded-lg border border-line bg-paper px-3 text-base text-ink outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="h-11 flex-1 rounded-lg border border-line bg-paper px-3 text-base text-ink outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         />
         <button
           type="submit"
           disabled={!canSend}
           aria-label="送出訊息"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand text-white transition disabled:cursor-not-allowed disabled:opacity-50"
         >
           {sending ? (
             <Loader2 size={18} className="animate-spin" aria-hidden="true" />

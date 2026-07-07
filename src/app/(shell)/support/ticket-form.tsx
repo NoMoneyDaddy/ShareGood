@@ -159,7 +159,7 @@ export function TicketForm() {
           value={category}
           onChange={(e) => setCategory(e.target.value as typeof category)}
           required
-          className="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="h-11 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         >
           <option value="">請選擇</option>
           {CATEGORY_OPTIONS.map((opt) => (
@@ -180,7 +180,7 @@ export function TicketForm() {
           maxLength={100}
           placeholder="簡短描述你遇到的問題"
           required
-          className="w-full rounded-lg border border-line bg-card px-3 py-2 text-base text-ink shadow-sm outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          className="h-11 w-full rounded-lg border border-line bg-card px-3 text-base text-ink shadow-sm outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         />
       </div>
 
@@ -224,7 +224,7 @@ export function TicketForm() {
                 type="button"
                 onClick={() => removeAttachment(att.key)}
                 aria-label="移除這張截圖"
-                className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-white"
+                className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-white after:absolute after:-inset-3 after:content-['']"
               >
                 <X size={12} aria-hidden="true" />
               </button>
