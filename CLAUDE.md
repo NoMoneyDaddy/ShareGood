@@ -288,6 +288,21 @@
       `bg-brand-soft`+`text-brand-ink` 暗色對比舊寫法；`/support` ticket-form 與
       `/conversations/[id]` 觸控目標；layout.tsx 的 next/font Geist/Manrope 載入已無
       引用可移除；多選 chip 觸控目標約 32px（WCAG 2.5.8 取捨）。
+- [x] 全站文案校稿＋M11 UX 導覽整改（使用者實測回饋 wave）：
+    - [x] 文案優化（PR #55）：依使用者指定四資源（Humanizer-zh-TW／chinese-copywriting-
+          guidelines／tw-formal-writing／TencentEdgeOne）唯讀萃取規則後全站校稿 41 檔
+          （排版空格/全半形標點/台灣用語/去 AI 腔）；標語年輕化（hero「剛好有人在找」）；
+          Threads 宣傳草稿 7 則（`docs/research/2026-07-07-copywriting/`）；法務四頁語意
+          凍結零修改。
+    - [x] M11 UX 整改（PR #56）：底部選單 5 格全可點（砍 M1 遺留 disabled 佔位「我的需要」
+          「我的」；首頁/逛好物/分享/訊息/我的）；新增 `/me` 中心頁（錢包/訂閱/通知設定/
+          帳號設定大卡片＋白話說明）；主題改 class strategy **預設淺色**＋header 日/月
+          切換鈕（ThemeProvider＋localStorage＋防 FOUC inline script，移除系統自動跟隨）；
+          零依賴初次導覽 5 步（登入首訪自動彈、可跳過、/me 可重開，localStorage
+          `tour_done`；主迴路 E2E 需預標 tour_done 否則浮層攔截點擊）；標題中英文字標調和。
+    - 驗證：兩 PR 皆過 biome／tsc／production build／全套 vitest（261/266 基準）；#56 另過
+      Playwright 主迴路。**環境教訓**：磁碟滿導致 Turbopack 快取崩潰偽裝成大規模測試失敗，
+      見 `docs/governance/lessons/20260707-turbopack-cache-crash-on-full-disk.md`。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
