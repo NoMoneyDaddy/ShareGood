@@ -32,20 +32,28 @@ const CITIES: Array<[string, string]> = [
   ["連江縣", "lienchiang-county"],
 ];
 
+// 分類修訂（使用者 2026-07-07 拍板）：slug 一律不動（券票點三個功能判別 slug 尤其不可動），
+// 只改顯示名與新增分類——upsert 以 slug 為 key，改名與排序對既有資料自動生效。
+// 改名：優惠票券→優惠券（與「電子票券」的混淆會導致走錯上架表單）；母嬰童書→母嬰用品
+// （書籍獨立成類）。排序：實體分類在前、券票點聚在一起、其他墊底。
 const CATEGORIES: Array<[string, string]> = [
   ["食品雜貨", "groceries"],
-  ["優惠票券", "coupons"],
   ["居家生活", "home-living"],
+  ["傢俱大型物", "furniture"],
   ["服飾配件", "apparel"],
-  ["母嬰童書", "kids-books"],
-  ["3C 家電", "electronics"],
+  ["美妝保養", "beauty"],
+  ["母嬰用品", "kids-books"],
+  ["書籍雜誌", "books"],
   ["文具玩具", "stationery-toys"],
+  ["3C 家電", "electronics"],
+  ["運動戶外", "sports-outdoors"],
   ["寵物用品", "pets"],
-  ["其他", "others"],
-  // M9 好康資訊與券票點強化（master-plan.md §9a 共通設計決策）：票券／點數沿用既有
+  // M9 好康資訊與券票點強化（master-plan.md §9a 共通設計決策）：券／票／點沿用既有
   // category slug 模式判別內容類型，不加 items.type 欄位。
+  ["優惠券", "coupons"],
   ["電子票券", "tickets"],
   ["點數好康", "points"],
+  ["其他", "others"],
 ];
 
 // M9 §9a 交付內容 3／4／5：keyword_blocklist 詞庫（idempotent upsert，四組詞條）。
