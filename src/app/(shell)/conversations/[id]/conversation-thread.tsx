@@ -1,8 +1,9 @@
 "use client";
 
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, ShieldCheck } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ReportButton } from "@/components/report-button";
+import { RoleBadge } from "@/components/user-badge";
 import { cn } from "@/lib/utils";
 
 type Message = {
@@ -25,10 +26,14 @@ export function ConversationThread({
   conversationId,
   currentUserId,
   initialMessages,
+  memberRoles = {},
 }: {
   conversationId: string;
   currentUserId: string;
   initialMessages: Message[];
+  // 正式上線衝刺（貢獻值排行榜＋徽章）：對話成員 userId → 身份組陣列，只有 admin/moderator
+  // 才會出現在這個 map 裡（見 page.tsx 查詢），純粹用來在對方訊息上顯示信任徽章。
+  memberRoles?: Record<string, string[]>;
 }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [body, setBody] = useState("");
@@ -106,8 +111,18 @@ export function ConversationThread({
         )}
         {messages.map((m) => {
           const mine = m.senderId === currentUserId;
+          const senderRoles = memberRoles[m.senderId];
           return (
-            <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+            <div
+              key={m.id}
+              className={cn(
+                "flex flex-col",
+                mine ? "items-end" : "items-start",
+              )}
+            >
+              {!mine && senderRoles && senderRoles.length > 0 && (
+                <RoleBadge roles={senderRoles} className="mb-1" />
+              )}
               <div
                 className={cn(
                   "max-w-[80%] rounded-2xl px-3 py-2 text-sm",
@@ -136,6 +151,12 @@ export function ConversationThread({
         })}
       </div>
 
+      {/* 面交安全提示（正式上線衝刺 A1）：固定在輸入框上方的低調小字，約時間地點時
+          剛好看得到；平台不做金流，任何金錢或個資要求都不該出現在這裡。 */}
+      <p className="flex items-start gap-1.5 border-t border-line bg-paper-2/60 px-3 py-2 text-xs text-ink-soft">
+        <ShieldCheck size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
+        面交建議約在人多的公共場所；平台全程免費，不需要提供金錢或個人資料。
+      </p>
       <form onSubmit={submit} className="flex items-center gap-2 border-t border-line p-3">
         <label htmlFor="conversation-message" className="sr-only">
           輸入訊息

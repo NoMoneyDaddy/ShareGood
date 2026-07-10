@@ -6,7 +6,9 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { BackBar } from "@/components/back-bar";
 import { ReportButton } from "@/components/report-button";
+import { UserBadges } from "@/components/user-badge";
 import type { ItemStatus } from "@/generated/prisma/enums";
+import { getUserSharingStats } from "@/lib/contribution";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
@@ -25,7 +27,7 @@ async function getItem(id: string) {
     include: {
       category: true,
       city: true,
-      owner: { include: { profile: true } },
+      owner: { include: { profile: true, roles: { select: { role: true } } } },
       images: {
         orderBy: { sortOrder: "asc" },
         include: { thumbObject: true, mediumObject: true },
@@ -88,6 +90,12 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   const [item, session] = await Promise.all([getItem(id), auth()]);
   if (!item || item.status === "removed_by_moderator") notFound();
   if (item.status === "pending_review" && session?.user?.id !== item.ownerId) notFound();
+
+  // 分享者身分列的徽章與信任訊號（正式上線衝刺）：累計貢獻值（徽章用）與「已分享 N 件」
+  // 同一次 groupBy 拿齊（口徑見 src/lib/contribution.ts 的 getUserSharingStats，跟 /u/[userId]
+  // 共用），身份組徽章沿用剛查好的 item.owner.roles，不用再多查一次。
+  const ownerStats = await getUserSharingStats(item.ownerId);
+  const ownerContributionPoints = ownerStats.totalPoints;
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡的 session
   // 只用於本頁內容判斷（擁有者/接手者權限、檢舉按鈕顯示等）。
@@ -246,11 +254,13 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
       <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
-        <span>
+        <span className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
           分享者：
           <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
             {item.owner.profile?.nickname ?? "好物共享使用者"}
           </Link>
+          <UserBadges roles={item.owner.roles} points={ownerContributionPoints} />
+          <span className="text-xs text-ink-soft">已分享 {ownerStats.sharedCount} 件</span>
         </span>
         {session?.user && session.user.id !== item.ownerId && (
           <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />

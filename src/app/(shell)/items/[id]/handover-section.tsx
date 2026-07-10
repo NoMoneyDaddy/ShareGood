@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -42,6 +42,14 @@ export function HandoverSection({
   return (
     <section className="border-t border-line/70 pt-5 first:border-t-0 first:pt-0">
       <h2 className="text-lg font-semibold tracking-tight text-ink">交接與私訊</h2>
+      {/* 面交安全提示（正式上線衝刺 A1）：只在交接還在進行時顯示，completed 之後沒有意義。
+          小字＋icon 的低調樣式，不搶走下方主要操作按鈕的注意力。 */}
+      {itemStatus !== "completed" && (
+        <p className="mt-1.5 flex items-start gap-1.5 text-xs text-ink-soft">
+          <ShieldCheck size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
+          面交建議約在人多的公共場所，出發前記得留意自身安全。
+        </p>
+      )}
       <div className="mt-4">
         {itemStatus === "reserved" && <StartHandoverButton itemId={itemId} />}
         {itemStatus === "handover_pending" &&

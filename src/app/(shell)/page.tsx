@@ -113,14 +113,22 @@ export default async function HomePage() {
 
       {/* 熱門好物 */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="mb-6 flex items-end justify-between">
+        <div className="mb-6 flex items-end justify-between gap-3">
           <h2 className="text-2xl font-bold tracking-tight">熱門好物</h2>
-          <Link
-            href="/items"
-            className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
-          >
-            看更多 →
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/leaderboard"
+              className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+            >
+              貢獻排行榜 →
+            </Link>
+            <Link
+              href="/items"
+              className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+            >
+              看更多 →
+            </Link>
+          </div>
         </div>
 
         {featured.items.length === 0 ? (

@@ -203,6 +203,33 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const hasMore = claims.length > take;
   const page = hasMore ? claims.slice(0, take) : claims;
 
+  // 正式上線衝刺（貢獻值排行榜＋徽章）：留言者旁邊要顯示身份組／貢獻值徽章，這裡一次把
+  // 這一頁留言者的角色與累計貢獻值都查出來，而不是每則留言各自查一次（N+1）。單頁最多
+  // MAX_PAGE_SIZE（50）則留言，去重後的 userIds 數量必然更少，兩次查詢皆有界。
+  const userIds = [...new Set(page.map((c) => c.userId))];
+  const [roleRows, contributionRows] =
+    userIds.length > 0
+      ? await Promise.all([
+          db.userRole.findMany({
+            where: { userId: { in: userIds } },
+            select: { userId: true, role: true },
+          }),
+          db.contributionEvent.groupBy({
+            by: ["userId"],
+            where: { userId: { in: userIds } },
+            _sum: { points: true },
+          }),
+        ])
+      : ([[], []] as [
+          Array<{ userId: string; role: string }>,
+          Array<{ userId: string; _sum: { points: number | null } }>,
+        ]);
+  const rolesByUser = new Map<string, string[]>();
+  for (const r of roleRows) {
+    rolesByUser.set(r.userId, [...(rolesByUser.get(r.userId) ?? []), r.role]);
+  }
+  const pointsByUser = new Map(contributionRows.map((c) => [c.userId, c._sum.points ?? 0]));
+
   return NextResponse.json({
     claims: page.map((c) => ({
       id: c.id,
@@ -210,7 +237,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       message: c.message,
       status: c.status,
       createdAt: c.createdAt,
-      user: { nickname: c.user.profile?.nickname ?? "好物共享使用者" },
+      user: {
+        nickname: c.user.profile?.nickname ?? "好物共享使用者",
+        roles: rolesByUser.get(c.userId) ?? [],
+        contributionPoints: pointsByUser.get(c.userId) ?? 0,
+      },
     })),
     nextCursor: hasMore ? page[page.length - 1].id : null,
   });
