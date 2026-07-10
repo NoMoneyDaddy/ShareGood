@@ -3,9 +3,10 @@ import { BASE_URL } from "../support/api";
 import { cleanupTestData, createTestUser } from "../support/auth";
 import { db } from "../support/db";
 
-// 公開個人頁 /u/[userId]（src/app/(shell)/u/[userId]/page.tsx）：getProfile 查詢帶
-// `deletedAt: null` 條件（M7 帳號去識別化後不應再公開展示個人統計），查不到就
-// notFound()。這裡直接打正在跑的 dev server 驗證 HTTP 狀態碼，不 mock 任何東西。
+// 公開個人頁 /u/[userId]（src/app/(shell)/u/[userId]/page.tsx）：M7 帳號刪除是應用層
+// 去識別化（User 列保留、nickname 改寫為「已刪除的使用者」），個人頁仍回 200 顯示匿名化
+// 頁面（維持歷史紀錄完整性，見 data-rights.test.ts 的既有驗收）。這裡直接打正在跑的
+// dev server 驗證 HTTP 狀態碼，不 mock 任何東西。
 describe("GET /u/[userId]：公開個人頁", () => {
   const userIds: string[] = [];
 
@@ -27,12 +28,17 @@ describe("GET /u/[userId]：公開個人頁", () => {
     expect(html).toContain(u.nickname);
   });
 
-  it("已去識別化帳號（deletedAt 非 null）回 404", async () => {
+  it("已去識別化帳號（deletedAt 非 null）仍回 200 並顯示匿名暱稱（M7 保留匿名歷史）", async () => {
     const u = await user("profile-page-deleted");
+    // 模擬 M7 去識別化後的狀態：deletedAt 非 null＋nickname 改寫為「已刪除的使用者」。
     await db.user.update({ where: { id: u.id }, data: { deletedAt: new Date() } });
+    await db.profile.update({ where: { userId: u.id }, data: { nickname: "已刪除的使用者" } });
 
     const res = await fetch(`${BASE_URL}/u/${u.id}`);
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain("已刪除的使用者");
+    expect(html).not.toContain(u.nickname);
   });
 
   it("不存在的 userId 回 404", async () => {

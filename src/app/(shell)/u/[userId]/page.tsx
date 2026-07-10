@@ -22,14 +22,13 @@ function formatJoinedMonth(date: Date): string {
 // generateMetadata 與頁面本體都要查 profile；db.profile.findUnique 不是 fetch()，
 // Next.js 不會自動去重，用 React cache() 讓同一次請求內兩處呼叫共用一次查詢結果。
 const getProfile = cache(async (userId: string) => {
-  // 已去識別化帳號（M7 帳號刪除，User.deletedAt 非 null）不應再公開展示個人頁與行為
-  // 統計——比照 leaderboard 的 deletedAt: null 過濾，查不到就讓頁面走 notFound()，
-  // 避免刪除帳號後其「完成分享/接手/收到感謝」歷史仍被公開陳列。
-  const user = await db.user.findFirst({
-    where: { id: userId, deletedAt: null },
-    select: { profile: true },
-  });
-  return user?.profile ?? null;
+  // M7 帳號刪除是「應用層去識別化」而非真刪除：User 列保留、nickname 已被改寫為
+  // 「已刪除的使用者」，個人頁仍回 200 顯示匿名化後的頁面與歷史統計（維持其他使用者
+  // 看到的歷史紀錄完整性，見 src/lib/account-deletion.ts 與 data-rights.test.ts 的驗收）。
+  // 匿名化後已無法連回真人、不算個資洩漏，因此這裡刻意「不」做 deletedAt 過濾——
+  // 曾有一版為了隱私改成 deletedAt notFound()，但那會破壞 M7 保留匿名歷史的既定設計，
+  // 已撤回；排行榜（主動推薦榜單）才需要排除已刪除帳號，被動查詢的個人頁不需要。
+  return db.profile.findUnique({ where: { userId } });
 });
 
 export async function generateMetadata({
