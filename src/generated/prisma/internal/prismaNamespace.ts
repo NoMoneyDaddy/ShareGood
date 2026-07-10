@@ -461,7 +461,10 @@ export const ModelName = {
   DealInfoReport: 'DealInfoReport',
   CouponUsageReport: 'CouponUsageReport',
   TicketDetail: 'TicketDetail',
-  PointDetail: 'PointDetail'
+  PointDetail: 'PointDetail',
+  HandoverRating: 'HandoverRating',
+  ItemFavorite: 'ItemFavorite',
+  UserBlock: 'UserBlock'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -477,7 +480,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "userRole" | "city" | "category" | "auditLog" | "storageObject" | "item" | "itemImage" | "itemStatusLog" | "claimComment" | "directShare" | "handoverRecord" | "thanksMessage" | "contributionEvent" | "notification" | "conversation" | "conversationMember" | "message" | "report" | "reportEvidence" | "userRestriction" | "itemRemoval" | "supportTicket" | "supportTicketEvent" | "supportTicketAttachment" | "appeal" | "appealEvidence" | "keywordBlocklist" | "featureFlag" | "couponDetail" | "couponSecret" | "couponRevealLog" | "itemExpirationLog" | "systemJob" | "systemJobRun" | "notificationPreference" | "notificationDelivery" | "telegramAccount" | "telegramLinkToken" | "telegramUpdate" | "lottery" | "lotteryEntry" | "lotteryResult" | "lotteryAuditLog" | "userSubscription" | "subscriptionKeyword" | "subscriptionCategory" | "subscriptionCity" | "subscriptionMatch" | "subscriptionDigestJob" | "webPushSubscription" | "privacyRequest" | "dataExport" | "dataRetentionPolicy" | "dataPurgeLog" | "lawEnforcementRequest" | "lawEnforcementRequestTarget" | "lawEnforcementRequestDocument" | "lawEnforcementRequestEvent" | "lawEnforcementExport" | "legalHold" | "legalHoldTarget" | "legalHoldEvent" | "healthCheck" | "errorLog" | "performanceMetric" | "storageUsageSnapshot" | "dealSource" | "dealInfo" | "dealInfoCity" | "dealInfoReport" | "couponUsageReport" | "ticketDetail" | "pointDetail"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "userRole" | "city" | "category" | "auditLog" | "storageObject" | "item" | "itemImage" | "itemStatusLog" | "claimComment" | "directShare" | "handoverRecord" | "thanksMessage" | "contributionEvent" | "notification" | "conversation" | "conversationMember" | "message" | "report" | "reportEvidence" | "userRestriction" | "itemRemoval" | "supportTicket" | "supportTicketEvent" | "supportTicketAttachment" | "appeal" | "appealEvidence" | "keywordBlocklist" | "featureFlag" | "couponDetail" | "couponSecret" | "couponRevealLog" | "itemExpirationLog" | "systemJob" | "systemJobRun" | "notificationPreference" | "notificationDelivery" | "telegramAccount" | "telegramLinkToken" | "telegramUpdate" | "lottery" | "lotteryEntry" | "lotteryResult" | "lotteryAuditLog" | "userSubscription" | "subscriptionKeyword" | "subscriptionCategory" | "subscriptionCity" | "subscriptionMatch" | "subscriptionDigestJob" | "webPushSubscription" | "privacyRequest" | "dataExport" | "dataRetentionPolicy" | "dataPurgeLog" | "lawEnforcementRequest" | "lawEnforcementRequestTarget" | "lawEnforcementRequestDocument" | "lawEnforcementRequestEvent" | "lawEnforcementExport" | "legalHold" | "legalHoldTarget" | "legalHoldEvent" | "healthCheck" | "errorLog" | "performanceMetric" | "storageUsageSnapshot" | "dealSource" | "dealInfo" | "dealInfoCity" | "dealInfoReport" | "couponUsageReport" | "ticketDetail" | "pointDetail" | "handoverRating" | "itemFavorite" | "userBlock"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -6253,6 +6256,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    HandoverRating: {
+      payload: Prisma.$HandoverRatingPayload<ExtArgs>
+      fields: Prisma.HandoverRatingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HandoverRatingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HandoverRatingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        findFirst: {
+          args: Prisma.HandoverRatingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HandoverRatingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        findMany: {
+          args: Prisma.HandoverRatingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>[]
+        }
+        create: {
+          args: Prisma.HandoverRatingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        createMany: {
+          args: Prisma.HandoverRatingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HandoverRatingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>[]
+        }
+        delete: {
+          args: Prisma.HandoverRatingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        update: {
+          args: Prisma.HandoverRatingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        deleteMany: {
+          args: Prisma.HandoverRatingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HandoverRatingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HandoverRatingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>[]
+        }
+        upsert: {
+          args: Prisma.HandoverRatingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HandoverRatingPayload>
+        }
+        aggregate: {
+          args: Prisma.HandoverRatingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHandoverRating>
+        }
+        groupBy: {
+          args: Prisma.HandoverRatingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HandoverRatingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HandoverRatingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HandoverRatingCountAggregateOutputType> | number
+        }
+      }
+    }
+    ItemFavorite: {
+      payload: Prisma.$ItemFavoritePayload<ExtArgs>
+      fields: Prisma.ItemFavoriteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ItemFavoriteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ItemFavoriteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        findFirst: {
+          args: Prisma.ItemFavoriteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ItemFavoriteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        findMany: {
+          args: Prisma.ItemFavoriteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>[]
+        }
+        create: {
+          args: Prisma.ItemFavoriteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        createMany: {
+          args: Prisma.ItemFavoriteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ItemFavoriteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>[]
+        }
+        delete: {
+          args: Prisma.ItemFavoriteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        update: {
+          args: Prisma.ItemFavoriteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        deleteMany: {
+          args: Prisma.ItemFavoriteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ItemFavoriteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ItemFavoriteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>[]
+        }
+        upsert: {
+          args: Prisma.ItemFavoriteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ItemFavoritePayload>
+        }
+        aggregate: {
+          args: Prisma.ItemFavoriteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateItemFavorite>
+        }
+        groupBy: {
+          args: Prisma.ItemFavoriteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ItemFavoriteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ItemFavoriteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ItemFavoriteCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserBlock: {
+      payload: Prisma.$UserBlockPayload<ExtArgs>
+      fields: Prisma.UserBlockFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserBlockFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserBlockFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        findFirst: {
+          args: Prisma.UserBlockFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserBlockFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        findMany: {
+          args: Prisma.UserBlockFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>[]
+        }
+        create: {
+          args: Prisma.UserBlockCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        createMany: {
+          args: Prisma.UserBlockCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserBlockCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>[]
+        }
+        delete: {
+          args: Prisma.UserBlockDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        update: {
+          args: Prisma.UserBlockUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserBlockDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserBlockUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserBlockUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserBlockUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserBlockPayload>
+        }
+        aggregate: {
+          args: Prisma.UserBlockAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserBlock>
+        }
+        groupBy: {
+          args: Prisma.UserBlockGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserBlockGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserBlockCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserBlockCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -6349,7 +6574,8 @@ export const ProfileScalarFieldEnum = {
   cityId: 'cityId',
   bio: 'bio',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  leaderboardOptOut: 'leaderboardOptOut'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -6496,7 +6722,9 @@ export const HandoverRecordScalarFieldEnum = {
   ownerConfirmedAt: 'ownerConfirmedAt',
   receiverConfirmedAt: 'receiverConfirmedAt',
   completedAt: 'completedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  scheduledAt: 'scheduledAt',
+  reminderSentAt: 'reminderSentAt'
 } as const
 
 export type HandoverRecordScalarFieldEnum = (typeof HandoverRecordScalarFieldEnum)[keyof typeof HandoverRecordScalarFieldEnum]
@@ -7304,6 +7532,39 @@ export const PointDetailScalarFieldEnum = {
 export type PointDetailScalarFieldEnum = (typeof PointDetailScalarFieldEnum)[keyof typeof PointDetailScalarFieldEnum]
 
 
+export const HandoverRatingScalarFieldEnum = {
+  id: 'id',
+  handoverRecordId: 'handoverRecordId',
+  raterId: 'raterId',
+  rateeId: 'rateeId',
+  stars: 'stars',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type HandoverRatingScalarFieldEnum = (typeof HandoverRatingScalarFieldEnum)[keyof typeof HandoverRatingScalarFieldEnum]
+
+
+export const ItemFavoriteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  itemId: 'itemId',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemFavoriteScalarFieldEnum = (typeof ItemFavoriteScalarFieldEnum)[keyof typeof ItemFavoriteScalarFieldEnum]
+
+
+export const UserBlockScalarFieldEnum = {
+  id: 'id',
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserBlockScalarFieldEnum = (typeof UserBlockScalarFieldEnum)[keyof typeof UserBlockScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -7401,6 +7662,13 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -7411,13 +7679,6 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8070,6 +8331,9 @@ export type GlobalOmitConfig = {
   couponUsageReport?: Prisma.CouponUsageReportOmit
   ticketDetail?: Prisma.TicketDetailOmit
   pointDetail?: Prisma.PointDetailOmit
+  handoverRating?: Prisma.HandoverRatingOmit
+  itemFavorite?: Prisma.ItemFavoriteOmit
+  userBlock?: Prisma.UserBlockOmit
 }
 
 /* Types for Logging */

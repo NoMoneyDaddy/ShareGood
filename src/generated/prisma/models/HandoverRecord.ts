@@ -33,6 +33,8 @@ export type HandoverRecordMinAggregateOutputType = {
   receiverConfirmedAt: Date | null
   completedAt: Date | null
   createdAt: Date | null
+  scheduledAt: Date | null
+  reminderSentAt: Date | null
 }
 
 export type HandoverRecordMaxAggregateOutputType = {
@@ -44,6 +46,8 @@ export type HandoverRecordMaxAggregateOutputType = {
   receiverConfirmedAt: Date | null
   completedAt: Date | null
   createdAt: Date | null
+  scheduledAt: Date | null
+  reminderSentAt: Date | null
 }
 
 export type HandoverRecordCountAggregateOutputType = {
@@ -55,6 +59,8 @@ export type HandoverRecordCountAggregateOutputType = {
   receiverConfirmedAt: number
   completedAt: number
   createdAt: number
+  scheduledAt: number
+  reminderSentAt: number
   _all: number
 }
 
@@ -68,6 +74,8 @@ export type HandoverRecordMinAggregateInputType = {
   receiverConfirmedAt?: true
   completedAt?: true
   createdAt?: true
+  scheduledAt?: true
+  reminderSentAt?: true
 }
 
 export type HandoverRecordMaxAggregateInputType = {
@@ -79,6 +87,8 @@ export type HandoverRecordMaxAggregateInputType = {
   receiverConfirmedAt?: true
   completedAt?: true
   createdAt?: true
+  scheduledAt?: true
+  reminderSentAt?: true
 }
 
 export type HandoverRecordCountAggregateInputType = {
@@ -90,6 +100,8 @@ export type HandoverRecordCountAggregateInputType = {
   receiverConfirmedAt?: true
   completedAt?: true
   createdAt?: true
+  scheduledAt?: true
+  reminderSentAt?: true
   _all?: true
 }
 
@@ -174,6 +186,8 @@ export type HandoverRecordGroupByOutputType = {
   receiverConfirmedAt: Date | null
   completedAt: Date | null
   createdAt: Date
+  scheduledAt: Date | null
+  reminderSentAt: Date | null
   _count: HandoverRecordCountAggregateOutputType | null
   _min: HandoverRecordMinAggregateOutputType | null
   _max: HandoverRecordMaxAggregateOutputType | null
@@ -206,8 +220,11 @@ export type HandoverRecordWhereInput = {
   receiverConfirmedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"HandoverRecord"> | Date | string
+  scheduledAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
+  reminderSentAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   receiver?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  ratings?: Prisma.HandoverRatingListRelationFilter
 }
 
 export type HandoverRecordOrderByWithRelationInput = {
@@ -219,8 +236,11 @@ export type HandoverRecordOrderByWithRelationInput = {
   receiverConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   item?: Prisma.ItemOrderByWithRelationInput
   receiver?: Prisma.UserOrderByWithRelationInput
+  ratings?: Prisma.HandoverRatingOrderByRelationAggregateInput
 }
 
 export type HandoverRecordWhereUniqueInput = Prisma.AtLeast<{
@@ -235,8 +255,11 @@ export type HandoverRecordWhereUniqueInput = Prisma.AtLeast<{
   receiverConfirmedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"HandoverRecord"> | Date | string
+  scheduledAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
+  reminderSentAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   receiver?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  ratings?: Prisma.HandoverRatingListRelationFilter
 }, "id" | "itemId">
 
 export type HandoverRecordOrderByWithAggregationInput = {
@@ -248,6 +271,8 @@ export type HandoverRecordOrderByWithAggregationInput = {
   receiverConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.HandoverRecordCountOrderByAggregateInput
   _max?: Prisma.HandoverRecordMaxOrderByAggregateInput
   _min?: Prisma.HandoverRecordMinOrderByAggregateInput
@@ -265,6 +290,8 @@ export type HandoverRecordScalarWhereWithAggregatesInput = {
   receiverConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"HandoverRecord"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"HandoverRecord"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"HandoverRecord"> | Date | string
+  scheduledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"HandoverRecord"> | Date | string | null
+  reminderSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"HandoverRecord"> | Date | string | null
 }
 
 export type HandoverRecordCreateInput = {
@@ -274,8 +301,11 @@ export type HandoverRecordCreateInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
   item: Prisma.ItemCreateNestedOneWithoutHandoverRecordInput
   receiver: Prisma.UserCreateNestedOneWithoutHandoverRecordsInput
+  ratings?: Prisma.HandoverRatingCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordUncheckedCreateInput = {
@@ -287,6 +317,9 @@ export type HandoverRecordUncheckedCreateInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordUpdateInput = {
@@ -296,8 +329,11 @@ export type HandoverRecordUpdateInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   item?: Prisma.ItemUpdateOneRequiredWithoutHandoverRecordNestedInput
   receiver?: Prisma.UserUpdateOneRequiredWithoutHandoverRecordsNestedInput
+  ratings?: Prisma.HandoverRatingUpdateManyWithoutHandoverRecordNestedInput
 }
 
 export type HandoverRecordUncheckedUpdateInput = {
@@ -309,6 +345,9 @@ export type HandoverRecordUncheckedUpdateInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedUpdateManyWithoutHandoverRecordNestedInput
 }
 
 export type HandoverRecordCreateManyInput = {
@@ -320,6 +359,8 @@ export type HandoverRecordCreateManyInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
 }
 
 export type HandoverRecordUpdateManyMutationInput = {
@@ -329,6 +370,8 @@ export type HandoverRecordUpdateManyMutationInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type HandoverRecordUncheckedUpdateManyInput = {
@@ -340,6 +383,8 @@ export type HandoverRecordUncheckedUpdateManyInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type HandoverRecordListRelationFilter = {
@@ -366,6 +411,8 @@ export type HandoverRecordCountOrderByAggregateInput = {
   receiverConfirmedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  reminderSentAt?: Prisma.SortOrder
 }
 
 export type HandoverRecordMaxOrderByAggregateInput = {
@@ -377,6 +424,8 @@ export type HandoverRecordMaxOrderByAggregateInput = {
   receiverConfirmedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  reminderSentAt?: Prisma.SortOrder
 }
 
 export type HandoverRecordMinOrderByAggregateInput = {
@@ -388,6 +437,13 @@ export type HandoverRecordMinOrderByAggregateInput = {
   receiverConfirmedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  reminderSentAt?: Prisma.SortOrder
+}
+
+export type HandoverRecordScalarRelationFilter = {
+  is?: Prisma.HandoverRecordWhereInput
+  isNot?: Prisma.HandoverRecordWhereInput
 }
 
 export type HandoverRecordCreateNestedManyWithoutReceiverInput = {
@@ -468,6 +524,20 @@ export type EnumHandoverStatusFieldUpdateOperationsInput = {
   set?: $Enums.HandoverStatus
 }
 
+export type HandoverRecordCreateNestedOneWithoutRatingsInput = {
+  create?: Prisma.XOR<Prisma.HandoverRecordCreateWithoutRatingsInput, Prisma.HandoverRecordUncheckedCreateWithoutRatingsInput>
+  connectOrCreate?: Prisma.HandoverRecordCreateOrConnectWithoutRatingsInput
+  connect?: Prisma.HandoverRecordWhereUniqueInput
+}
+
+export type HandoverRecordUpdateOneRequiredWithoutRatingsNestedInput = {
+  create?: Prisma.XOR<Prisma.HandoverRecordCreateWithoutRatingsInput, Prisma.HandoverRecordUncheckedCreateWithoutRatingsInput>
+  connectOrCreate?: Prisma.HandoverRecordCreateOrConnectWithoutRatingsInput
+  upsert?: Prisma.HandoverRecordUpsertWithoutRatingsInput
+  connect?: Prisma.HandoverRecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.HandoverRecordUpdateToOneWithWhereWithoutRatingsInput, Prisma.HandoverRecordUpdateWithoutRatingsInput>, Prisma.HandoverRecordUncheckedUpdateWithoutRatingsInput>
+}
+
 export type HandoverRecordCreateWithoutReceiverInput = {
   id?: string
   status?: $Enums.HandoverStatus
@@ -475,7 +545,10 @@ export type HandoverRecordCreateWithoutReceiverInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
   item: Prisma.ItemCreateNestedOneWithoutHandoverRecordInput
+  ratings?: Prisma.HandoverRatingCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordUncheckedCreateWithoutReceiverInput = {
@@ -486,6 +559,9 @@ export type HandoverRecordUncheckedCreateWithoutReceiverInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordCreateOrConnectWithoutReceiverInput = {
@@ -526,6 +602,8 @@ export type HandoverRecordScalarWhereInput = {
   receiverConfirmedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"HandoverRecord"> | Date | string
+  scheduledAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
+  reminderSentAt?: Prisma.DateTimeNullableFilter<"HandoverRecord"> | Date | string | null
 }
 
 export type HandoverRecordCreateWithoutItemInput = {
@@ -535,7 +613,10 @@ export type HandoverRecordCreateWithoutItemInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
   receiver: Prisma.UserCreateNestedOneWithoutHandoverRecordsInput
+  ratings?: Prisma.HandoverRatingCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordUncheckedCreateWithoutItemInput = {
@@ -546,6 +627,9 @@ export type HandoverRecordUncheckedCreateWithoutItemInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedCreateNestedManyWithoutHandoverRecordInput
 }
 
 export type HandoverRecordCreateOrConnectWithoutItemInput = {
@@ -571,7 +655,10 @@ export type HandoverRecordUpdateWithoutItemInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   receiver?: Prisma.UserUpdateOneRequiredWithoutHandoverRecordsNestedInput
+  ratings?: Prisma.HandoverRatingUpdateManyWithoutHandoverRecordNestedInput
 }
 
 export type HandoverRecordUncheckedUpdateWithoutItemInput = {
@@ -582,6 +669,77 @@ export type HandoverRecordUncheckedUpdateWithoutItemInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedUpdateManyWithoutHandoverRecordNestedInput
+}
+
+export type HandoverRecordCreateWithoutRatingsInput = {
+  id?: string
+  status?: $Enums.HandoverStatus
+  ownerConfirmedAt?: Date | string | null
+  receiverConfirmedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
+  item: Prisma.ItemCreateNestedOneWithoutHandoverRecordInput
+  receiver: Prisma.UserCreateNestedOneWithoutHandoverRecordsInput
+}
+
+export type HandoverRecordUncheckedCreateWithoutRatingsInput = {
+  id?: string
+  itemId: string
+  receiverId: string
+  status?: $Enums.HandoverStatus
+  ownerConfirmedAt?: Date | string | null
+  receiverConfirmedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
+}
+
+export type HandoverRecordCreateOrConnectWithoutRatingsInput = {
+  where: Prisma.HandoverRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.HandoverRecordCreateWithoutRatingsInput, Prisma.HandoverRecordUncheckedCreateWithoutRatingsInput>
+}
+
+export type HandoverRecordUpsertWithoutRatingsInput = {
+  update: Prisma.XOR<Prisma.HandoverRecordUpdateWithoutRatingsInput, Prisma.HandoverRecordUncheckedUpdateWithoutRatingsInput>
+  create: Prisma.XOR<Prisma.HandoverRecordCreateWithoutRatingsInput, Prisma.HandoverRecordUncheckedCreateWithoutRatingsInput>
+  where?: Prisma.HandoverRecordWhereInput
+}
+
+export type HandoverRecordUpdateToOneWithWhereWithoutRatingsInput = {
+  where?: Prisma.HandoverRecordWhereInput
+  data: Prisma.XOR<Prisma.HandoverRecordUpdateWithoutRatingsInput, Prisma.HandoverRecordUncheckedUpdateWithoutRatingsInput>
+}
+
+export type HandoverRecordUpdateWithoutRatingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumHandoverStatusFieldUpdateOperationsInput | $Enums.HandoverStatus
+  ownerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  item?: Prisma.ItemUpdateOneRequiredWithoutHandoverRecordNestedInput
+  receiver?: Prisma.UserUpdateOneRequiredWithoutHandoverRecordsNestedInput
+}
+
+export type HandoverRecordUncheckedUpdateWithoutRatingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumHandoverStatusFieldUpdateOperationsInput | $Enums.HandoverStatus
+  ownerConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type HandoverRecordCreateManyReceiverInput = {
@@ -592,6 +750,8 @@ export type HandoverRecordCreateManyReceiverInput = {
   receiverConfirmedAt?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
+  scheduledAt?: Date | string | null
+  reminderSentAt?: Date | string | null
 }
 
 export type HandoverRecordUpdateWithoutReceiverInput = {
@@ -601,7 +761,10 @@ export type HandoverRecordUpdateWithoutReceiverInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   item?: Prisma.ItemUpdateOneRequiredWithoutHandoverRecordNestedInput
+  ratings?: Prisma.HandoverRatingUpdateManyWithoutHandoverRecordNestedInput
 }
 
 export type HandoverRecordUncheckedUpdateWithoutReceiverInput = {
@@ -612,6 +775,9 @@ export type HandoverRecordUncheckedUpdateWithoutReceiverInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ratings?: Prisma.HandoverRatingUncheckedUpdateManyWithoutHandoverRecordNestedInput
 }
 
 export type HandoverRecordUncheckedUpdateManyWithoutReceiverInput = {
@@ -622,8 +788,39 @@ export type HandoverRecordUncheckedUpdateManyWithoutReceiverInput = {
   receiverConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+
+/**
+ * Count Type HandoverRecordCountOutputType
+ */
+
+export type HandoverRecordCountOutputType = {
+  ratings: number
+}
+
+export type HandoverRecordCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ratings?: boolean | HandoverRecordCountOutputTypeCountRatingsArgs
+}
+
+/**
+ * HandoverRecordCountOutputType without action
+ */
+export type HandoverRecordCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HandoverRecordCountOutputType
+   */
+  select?: Prisma.HandoverRecordCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * HandoverRecordCountOutputType without action
+ */
+export type HandoverRecordCountOutputTypeCountRatingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HandoverRatingWhereInput
+}
 
 
 export type HandoverRecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -635,8 +832,12 @@ export type HandoverRecordSelect<ExtArgs extends runtime.Types.Extensions.Intern
   receiverConfirmedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
+  scheduledAt?: boolean
+  reminderSentAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ratings?: boolean | Prisma.HandoverRecord$ratingsArgs<ExtArgs>
+  _count?: boolean | Prisma.HandoverRecordCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["handoverRecord"]>
 
 export type HandoverRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -648,6 +849,8 @@ export type HandoverRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   receiverConfirmedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
+  scheduledAt?: boolean
+  reminderSentAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["handoverRecord"]>
@@ -661,6 +864,8 @@ export type HandoverRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   receiverConfirmedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
+  scheduledAt?: boolean
+  reminderSentAt?: boolean
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["handoverRecord"]>
@@ -674,12 +879,16 @@ export type HandoverRecordSelectScalar = {
   receiverConfirmedAt?: boolean
   completedAt?: boolean
   createdAt?: boolean
+  scheduledAt?: boolean
+  reminderSentAt?: boolean
 }
 
-export type HandoverRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "receiverId" | "status" | "ownerConfirmedAt" | "receiverConfirmedAt" | "completedAt" | "createdAt", ExtArgs["result"]["handoverRecord"]>
+export type HandoverRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "receiverId" | "status" | "ownerConfirmedAt" | "receiverConfirmedAt" | "completedAt" | "createdAt" | "scheduledAt" | "reminderSentAt", ExtArgs["result"]["handoverRecord"]>
 export type HandoverRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ratings?: boolean | Prisma.HandoverRecord$ratingsArgs<ExtArgs>
+  _count?: boolean | Prisma.HandoverRecordCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type HandoverRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
@@ -695,6 +904,7 @@ export type $HandoverRecordPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     item: Prisma.$ItemPayload<ExtArgs>
     receiver: Prisma.$UserPayload<ExtArgs>
+    ratings: Prisma.$HandoverRatingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -705,6 +915,8 @@ export type $HandoverRecordPayload<ExtArgs extends runtime.Types.Extensions.Inte
     receiverConfirmedAt: Date | null
     completedAt: Date | null
     createdAt: Date
+    scheduledAt: Date | null
+    reminderSentAt: Date | null
   }, ExtArgs["result"]["handoverRecord"]>
   composites: {}
 }
@@ -1101,6 +1313,7 @@ export interface Prisma__HandoverRecordClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   receiver<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  ratings<T extends Prisma.HandoverRecord$ratingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HandoverRecord$ratingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HandoverRatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1138,6 +1351,8 @@ export interface HandoverRecordFieldRefs {
   readonly receiverConfirmedAt: Prisma.FieldRef<"HandoverRecord", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"HandoverRecord", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"HandoverRecord", 'DateTime'>
+  readonly scheduledAt: Prisma.FieldRef<"HandoverRecord", 'DateTime'>
+  readonly reminderSentAt: Prisma.FieldRef<"HandoverRecord", 'DateTime'>
 }
     
 
@@ -1536,6 +1751,30 @@ export type HandoverRecordDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many HandoverRecords to delete.
    */
   limit?: number
+}
+
+/**
+ * HandoverRecord.ratings
+ */
+export type HandoverRecord$ratingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HandoverRating
+   */
+  select?: Prisma.HandoverRatingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HandoverRating
+   */
+  omit?: Prisma.HandoverRatingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HandoverRatingInclude<ExtArgs> | null
+  where?: Prisma.HandoverRatingWhereInput
+  orderBy?: Prisma.HandoverRatingOrderByWithRelationInput | Prisma.HandoverRatingOrderByWithRelationInput[]
+  cursor?: Prisma.HandoverRatingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HandoverRatingScalarFieldEnum | Prisma.HandoverRatingScalarFieldEnum[]
 }
 
 /**

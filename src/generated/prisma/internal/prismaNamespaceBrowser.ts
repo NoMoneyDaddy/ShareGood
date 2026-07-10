@@ -128,7 +128,10 @@ export const ModelName = {
   DealInfoReport: 'DealInfoReport',
   CouponUsageReport: 'CouponUsageReport',
   TicketDetail: 'TicketDetail',
-  PointDetail: 'PointDetail'
+  PointDetail: 'PointDetail',
+  HandoverRating: 'HandoverRating',
+  ItemFavorite: 'ItemFavorite',
+  UserBlock: 'UserBlock'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -204,7 +207,8 @@ export const ProfileScalarFieldEnum = {
   cityId: 'cityId',
   bio: 'bio',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  leaderboardOptOut: 'leaderboardOptOut'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -351,7 +355,9 @@ export const HandoverRecordScalarFieldEnum = {
   ownerConfirmedAt: 'ownerConfirmedAt',
   receiverConfirmedAt: 'receiverConfirmedAt',
   completedAt: 'completedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  scheduledAt: 'scheduledAt',
+  reminderSentAt: 'reminderSentAt'
 } as const
 
 export type HandoverRecordScalarFieldEnum = (typeof HandoverRecordScalarFieldEnum)[keyof typeof HandoverRecordScalarFieldEnum]
@@ -1157,6 +1163,39 @@ export const PointDetailScalarFieldEnum = {
 } as const
 
 export type PointDetailScalarFieldEnum = (typeof PointDetailScalarFieldEnum)[keyof typeof PointDetailScalarFieldEnum]
+
+
+export const HandoverRatingScalarFieldEnum = {
+  id: 'id',
+  handoverRecordId: 'handoverRecordId',
+  raterId: 'raterId',
+  rateeId: 'rateeId',
+  stars: 'stars',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type HandoverRatingScalarFieldEnum = (typeof HandoverRatingScalarFieldEnum)[keyof typeof HandoverRatingScalarFieldEnum]
+
+
+export const ItemFavoriteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  itemId: 'itemId',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemFavoriteScalarFieldEnum = (typeof ItemFavoriteScalarFieldEnum)[keyof typeof ItemFavoriteScalarFieldEnum]
+
+
+export const UserBlockScalarFieldEnum = {
+  id: 'id',
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  createdAt: 'createdAt'
+} as const
+
+export type UserBlockScalarFieldEnum = (typeof UserBlockScalarFieldEnum)[keyof typeof UserBlockScalarFieldEnum]
 
 
 export const SortOrder = {
