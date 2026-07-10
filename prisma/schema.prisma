@@ -464,6 +464,8 @@ model HandoverRecord {
   // M12 面交約定時間（交付內容 5）：任一方可設定/修改/清空，不需要雙方確認；scheduledAt 為
   // null 代表尚未約定/已清空，reminderSentAt 是提醒 job 的 idempotent 保護（見
   // docs/plan/m12-product-growth.md 交付內容 5）。
+  // **實作注意（後續 wave 勿漏）**：更新 scheduledAt（重新約定時間）時必須同時把
+  // reminderSentAt 重設為 null，否則提醒 job 會因既有 reminderSentAt 而不再對新時間發提醒。
   scheduledAt    DateTime? @map("scheduled_at")
   reminderSentAt DateTime? @map("reminder_sent_at")
 
@@ -1775,8 +1777,8 @@ model PointDetail {
 // ===== M12 產品成長與信任機制強化（schema 地基，見 docs/plan/m12-product-growth.md） =====
 
 // 雙向互評（交付內容 1）：交接完成（HandoverRecord.status = completed）後，物主與接手者各自
-// 對另一方留一次 1–5 星評分＋可選文字評語。stars 範圍靠 API 層驗證，schema 不加 CHECK。
-// 雙盲揭露（雙方都評完前互相看不到內容）由 API 層邏輯負責，schema 本身不需要額外欄位。
+// 對另一方留一次 1–5 星評分＋可選文字評語。stars 範圍由 DB CHECK constraint（見 migration）
+// 與後續 wave 的 API 層雙重驗證。雙盲揭露（雙方都評完前互相看不到內容）由 API 層邏輯負責。
 model HandoverRating {
   id               String   @id @default(cuid())
   handoverRecordId String   @map("handover_record_id")
@@ -1792,6 +1794,7 @@ model HandoverRating {
 
   @@unique([handoverRecordId, raterId]) // 一筆交接每個人只能評一次（雙向各自受這條約束）
   @@index([rateeId, createdAt]) // 個人頁聚合查詢（平均星等＋則數）
+  @@index([raterId, createdAt]) // 「我給出的評價」查詢＋優化 raterId 外鍵 ON DELETE CASCADE
   @@map("handover_ratings")
 }
 

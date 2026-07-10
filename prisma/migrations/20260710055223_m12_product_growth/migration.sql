@@ -42,6 +42,9 @@ CREATE TABLE "user_blocks" (
 CREATE INDEX "handover_ratings_ratee_id_created_at_idx" ON "handover_ratings"("ratee_id", "created_at");
 
 -- CreateIndex
+CREATE INDEX "handover_ratings_rater_id_created_at_idx" ON "handover_ratings"("rater_id", "created_at");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "handover_ratings_handover_record_id_rater_id_key" ON "handover_ratings"("handover_record_id", "rater_id");
 
 -- CreateIndex
@@ -82,3 +85,9 @@ ALTER TABLE "user_blocks" ADD CONSTRAINT "user_blocks_blocker_id_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "user_blocks" ADD CONSTRAINT "user_blocks_blocked_id_fkey" FOREIGN KEY ("blocked_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- 資料完整性 CHECK constraint（採納 review 建議，DB 層 defense in depth；功能實作 wave 的
+-- API 層仍會各自驗證）：評分限 1–5 星、封鎖不可指向自己。Prisma schema 不管理 CHECK，
+-- 這兩條為手動 raw SQL（Prisma 官方對 CHECK 的建議做法）。
+ALTER TABLE "handover_ratings" ADD CONSTRAINT "handover_ratings_stars_range" CHECK ("stars" BETWEEN 1 AND 5);
+ALTER TABLE "user_blocks" ADD CONSTRAINT "user_blocks_no_self_block" CHECK ("blocker_id" <> "blocked_id");
