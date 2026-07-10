@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { ReportButton } from "@/components/report-button";
 import type { ItemStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
@@ -199,6 +200,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <BackBar fallbackHref="/items" />
       {item.images.length > 0 && (
         <div className="overflow-hidden rounded-2xl border border-line">
           <div className="relative aspect-[4/3] w-full bg-paper-2">

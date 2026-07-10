@@ -1,3 +1,4 @@
+import { Home } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -29,9 +30,20 @@ const ADMIN_NAV_LINKS = [
 // 各自變成孤兒頁——進到任何一頁都能一鍵切換到其他治理功能，不用每次手動改網址。
 // `current` 由呼叫端明確傳入（比對 pathname 前綴），不在這裡用 usePathname，讓這個元件
 // 保持 server component、不用整包變成 client bundle。
+//
+// 使用者實測回饋：進到後台之後沒有明顯出口——admin/* 不在 (shell) route group 裡，
+// 沒有 SiteHeader 的 logo 可以點回首頁，這裡補一個「回前台首頁」連結當唯一出口。
 export function AdminNav({ current }: { current: string }) {
   return (
-    <nav aria-label="後台導覽" className="flex flex-wrap gap-2 border-b border-line pb-4">
+    <nav aria-label="後台導覽" className="flex flex-wrap items-center gap-2 border-b border-line pb-4">
+      <Link
+        href="/"
+        className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink"
+      >
+        <Home size={14} strokeWidth={2.2} aria-hidden="true" />
+        回前台首頁
+      </Link>
+      <span className="h-5 w-px bg-line" aria-hidden="true" />
       {ADMIN_NAV_LINKS.map((link) => {
         const isCurrent =
           link.href === "/admin" ? current === "/admin" : current.startsWith(link.href);

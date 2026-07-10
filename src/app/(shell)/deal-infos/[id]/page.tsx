@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { DealInfoStatus } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { DEAL_INFO_DISCLAIMER } from "@/lib/deal-info";
@@ -88,6 +89,7 @@ export default async function DealInfoDetailPage({ params }: { params: Promise<{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <BackBar fallbackHref="/deal-infos" />
       <div className="flex items-center gap-1.5 text-sm text-ink-soft">
         <MapPin size={14} strokeWidth={2.4} aria-hidden="true" />
         {dealInfo.isNationwide ? "全台適用" : dealInfo.cities.map((c) => c.city.name).join("、")}

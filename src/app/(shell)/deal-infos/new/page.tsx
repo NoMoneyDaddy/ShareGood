@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { db } from "@/lib/db";
 import { DealInfoForm } from "./deal-info-form";
 
@@ -35,6 +36,7 @@ export default async function NewDealInfoPage() {
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/deal-infos" />
       <h1 className="text-2xl font-bold tracking-tight">投稿好康資訊</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
         分享目前正在進行的優惠活動——寫清楚活動內容、附上官方連結，讓其他人也能查證。禁止複製官方圖文，請自己轉述事實。

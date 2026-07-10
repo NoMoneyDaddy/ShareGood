@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { BackBar } from "@/components/back-bar";
 import { db } from "@/lib/db";
 
 // generateMetadata 與頁面本體都要查 profile；db.profile.findUnique 不是 fetch()，
@@ -38,6 +39,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/" />
       <h1 className="text-2xl font-bold tracking-tight">{profile.nickname}</h1>
       <p className="mt-1 text-sm text-ink-soft">分享足跡</p>
 
