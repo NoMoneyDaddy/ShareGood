@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { db } from "@/lib/db";
 import { listPublishedItems } from "@/lib/items";
 import { publicUrl } from "@/lib/storage";
+import { HomeStatsSection } from "./home-stats-section";
 
 // 熱門好物取幾筆最新 published 物品（首頁只是預覽，完整瀏覽＋篩選在 /items）
 const HOME_FEATURED_COUNT = 8;
@@ -105,6 +106,10 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 平台活躍度：訪客一眼感受到平台是活的（server component 直接查 db 計數，
+          5 分鐘快取見 src/lib/home-stats.ts；數字為 0 時的口徑放寬／隱藏邏輯同上）。 */}
+      <HomeStatsSection />
 
       {/* 熱門好物 */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
