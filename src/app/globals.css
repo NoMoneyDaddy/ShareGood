@@ -147,7 +147,16 @@
   --color-line: #33454a; /* 分隔線，刻意柔和 1.80:1 */
   --color-brand: #5cc0c7; /* 深色字 / brand（按鈕底配深字）8.47:1；純文字疊 paper 上實測約 8.5:1，遠優於舊版琥珀橘 */
   --color-brand-ink: #3e9ca3; /* 深色字 / brand-ink（pressed）5.60:1 */
-  --color-brand-soft: #163338; /* 淺底＋字 #5cc0c7（accent/brand 純色）對比 6.28:1；若配 brand-ink 純文字對比僅約 4.15:1，未達 4.5:1，這批已知既有用法一律改配 ink 或 brand，見 PR 描述 */
+  /* P1-2（2026-07-07 UX 走查）：原值 #163338 飽和度太高，法定警示／優惠提示方塊
+     （legal-draft-notice.tsx、item-form.tsx 票券／點數子表單）在近黑背景（paper
+     #10171a）前顯得像貼上去的亮色色塊、與整體低飽和深色調不協調（見 04-post-refactor-
+     ux-walkthrough.md P1 清單第 2 項、screenshots/p1-dark-before-*.png）。改成同色相
+     但大幅降飽和度＋略微加深的版本（HSL 約 184° 25% 14%，色度約為原本一半），維持
+     「低飽和深青底」語意，同時保留跟 paper/paper-2 明顯有別的青色調（不是純灰）。
+     配字 ink（#e9eeec）對比 12.52:1、配字 brand（#5cc0c7）6.87:1、配字 ink-soft
+     （#a9b7b4）7.08:1；配字 brand-ink（#3e9ca3，未在這批元件實際使用，但其他既有
+     用法可能疊加）對比 4.54:1，剛好達 AA 門檻。 */
+  --color-brand-soft: #1b2b2d;
   --color-navy: #131c20; /* 近 paper-2 略深一階 */
   /* brand-foreground（暗）：brand 暗色是偏亮的青色，配深色字才對比足夠（8.17:1，
      沿用 navy 暗色值），不能沿用亮色模式的白字（見亮色區塊註解）。 */
