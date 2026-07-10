@@ -54,9 +54,14 @@ export function PwaInstallPrompt() {
   }
 
   async function handleInstallClick() {
-    const outcome = await promptInstall();
-    // 使用者在系統對話框按了「取消」：視同關閉這則提示，不再重複打擾。
-    if (outcome === "dismissed") dismiss();
+    try {
+      const outcome = await promptInstall();
+      // 使用者在系統對話框按了「取消」：視同關閉這則提示，不再重複打擾。
+      if (outcome === "dismissed") dismiss();
+    } catch {
+      // prompt() 少數情況下會 reject（瀏覽器限制／狀態異常等）；關掉提示避免橫幅卡住重複打擾。
+      dismiss();
+    }
   }
 
   if (!mounted || isStandalone || dismissed || !eligible) return null;
