@@ -64,6 +64,9 @@ const ROLE_BADGE_LABEL: Record<"admin" | "moderator", string> = {
 type RoleInput = readonly { role: string }[] | readonly string[];
 
 function normalizeRoles(roles: RoleInput): string[] {
+  // 防禦：型別上是陣列，但呼叫端若把序列化後意外變 null/undefined 的資料傳進來，
+  // 直接 .map 會整個渲染路徑崩潰；非陣列一律當「沒有身份組」處理。
+  if (!Array.isArray(roles)) return [];
   return roles.map((r) => (typeof r === "string" ? r : r.role));
 }
 

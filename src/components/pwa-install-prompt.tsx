@@ -27,17 +27,29 @@ export function PwaInstallPrompt() {
   const [showIosSteps, setShowIosSteps] = useState(false);
 
   useEffect(() => {
-    setDismissed(window.localStorage.getItem(DISMISS_KEY) === "true");
+    // 隱私瀏覽模式或瀏覽器停用本地儲存時，存取 localStorage 會拋 SecurityError；這個橫幅
+    // 掛在全站 (shell) 殼層，必須用 try/catch 兜住，不能讓它把整個 layout 拖垮。讀不到就
+    // 保守地不顯示橫幅（等同已關閉），完全不影響其他功能。
+    try {
+      setDismissed(window.localStorage.getItem(DISMISS_KEY) === "true");
 
-    const tourDone = window.localStorage.getItem(TOUR_DONE_KEY) === "true";
-    const prevVisits = Number(window.localStorage.getItem(VISIT_KEY) ?? "0");
-    const visits = prevVisits + 1;
-    window.localStorage.setItem(VISIT_KEY, String(visits));
-    setEligible(tourDone || visits >= 2);
+      const tourDone = window.localStorage.getItem(TOUR_DONE_KEY) === "true";
+      const prevVisits = Number(window.localStorage.getItem(VISIT_KEY) ?? "0");
+      const visits = prevVisits + 1;
+      window.localStorage.setItem(VISIT_KEY, String(visits));
+      setEligible(tourDone || visits >= 2);
+    } catch {
+      setDismissed(true);
+      setEligible(false);
+    }
   }, []);
 
   function dismiss() {
-    window.localStorage.setItem(DISMISS_KEY, "true");
+    try {
+      window.localStorage.setItem(DISMISS_KEY, "true");
+    } catch {
+      // 寫不進 localStorage（隱私模式等）也沒關係，至少這個 session 內先關掉。
+    }
     setDismissed(true);
   }
 
