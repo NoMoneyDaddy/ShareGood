@@ -93,6 +93,13 @@ model User {
   dealInfoReports    DealInfoReport[]
   couponUsageReports CouponUsageReport[]
 
+  // M12 產品成長與信任機制強化（schema 地基）
+  handoverRatingsGiven    HandoverRating[] @relation("HandoverRatingRater")
+  handoverRatingsReceived HandoverRating[] @relation("HandoverRatingRatee")
+  favorites               ItemFavorite[]
+  blocksInitiated         UserBlock[]      @relation("UserBlockBlocker")
+  blocksReceived          UserBlock[]      @relation("UserBlockBlocked")
+
   @@map("users")
 }
 
@@ -145,6 +152,11 @@ model Profile {
   bio       String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  // M12 產品成長與信任機制強化：排行榜 opt-out（單一全站開關，比照既有 nickname/cityId/bio
+  // 這種「一個使用者一列、放簡單設定值」的既定風格，不另開表；預設 false＝維持既有行為不變，
+  // 見 docs/plan/m12-product-growth.md 交付內容 4）。
+  leaderboardOptOut Boolean @default(false) @map("leaderboard_opt_out")
 
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   city City? @relation(fields: [cityId], references: [id])
@@ -342,6 +354,9 @@ model Item {
   ticketDetail TicketDetail?
   pointDetail  PointDetail?
 
+  // M12 收藏（交付內容 2）
+  favorites ItemFavorite[]
+
   @@index([status, cityId, categoryId, createdAt])
   @@index([status, ownerId, createdAt])
   @@index([status, expiresAt])
@@ -446,10 +461,18 @@ model HandoverRecord {
   completedAt         DateTime?      @map("completed_at")
   createdAt           DateTime       @default(now()) @map("created_at")
 
-  item     Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  receiver User @relation(fields: [receiverId], references: [id], onDelete: Cascade)
+  // M12 面交約定時間（交付內容 5）：任一方可設定/修改/清空，不需要雙方確認；scheduledAt 為
+  // null 代表尚未約定/已清空，reminderSentAt 是提醒 job 的 idempotent 保護（見
+  // docs/plan/m12-product-growth.md 交付內容 5）。
+  scheduledAt    DateTime? @map("scheduled_at")
+  reminderSentAt DateTime? @map("reminder_sent_at")
+
+  item     Item             @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  receiver User             @relation(fields: [receiverId], references: [id], onDelete: Cascade)
+  ratings  HandoverRating[]
 
   @@index([receiverId]) // 接手者查看「交接中/已完成」列表用
+  @@index([status, scheduledAt]) // M12 面交提醒 job 掃描用
   @@map("handover_records")
 }
 
@@ -1747,4 +1770,58 @@ model PointDetail {
   item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@map("point_details")
+}
+
+// ===== M12 產品成長與信任機制強化（schema 地基，見 docs/plan/m12-product-growth.md） =====
+
+// 雙向互評（交付內容 1）：交接完成（HandoverRecord.status = completed）後，物主與接手者各自
+// 對另一方留一次 1–5 星評分＋可選文字評語。stars 範圍靠 API 層驗證，schema 不加 CHECK。
+// 雙盲揭露（雙方都評完前互相看不到內容）由 API 層邏輯負責，schema 本身不需要額外欄位。
+model HandoverRating {
+  id               String   @id @default(cuid())
+  handoverRecordId String   @map("handover_record_id")
+  raterId          String   @map("rater_id") // 給分的人
+  rateeId          String   @map("ratee_id") // 被評分的人
+  stars            Int
+  comment          String?
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  handoverRecord HandoverRecord @relation(fields: [handoverRecordId], references: [id], onDelete: Cascade)
+  rater          User           @relation("HandoverRatingRater", fields: [raterId], references: [id], onDelete: Cascade)
+  ratee          User           @relation("HandoverRatingRatee", fields: [rateeId], references: [id], onDelete: Cascade)
+
+  @@unique([handoverRecordId, raterId]) // 一筆交接每個人只能評一次（雙向各自受這條約束）
+  @@index([rateeId, createdAt]) // 個人頁聚合查詢（平均星等＋則數）
+  @@map("handover_ratings")
+}
+
+// 收藏／我的最愛（交付內容 2）：不限物品狀態皆可收藏，純書籤性質。
+model ItemFavorite {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  itemId    String   @map("item_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+  @@index([userId, createdAt]) // /me/favorites 分頁
+  @@index([itemId]) // 反查「這個物品被幾人收藏」（社會證明數字＋通知扇出查詢）
+  @@map("item_favorites")
+}
+
+// 封鎖使用者（交付內容 3）：單向即生效，無感知（silent block）——被封鎖方不會被告知。
+model UserBlock {
+  id        String   @id @default(cuid())
+  blockerId String   @map("blocker_id")
+  blockedId String   @map("blocked_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  blocker User @relation("UserBlockBlocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("UserBlockBlocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+  @@index([blockedId]) // 供 isBlockedEitherDirection 反向查詢，以及未來申訴/客服需要時查「誰封鎖了這個人」
+  @@map("user_blocks")
 }

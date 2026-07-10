@@ -431,3 +431,18 @@ export type TicketDetail = Prisma.TicketDetailModel
  * 
  */
 export type PointDetail = Prisma.PointDetailModel
+/**
+ * Model HandoverRating
+ * 
+ */
+export type HandoverRating = Prisma.HandoverRatingModel
+/**
+ * Model ItemFavorite
+ * 
+ */
+export type ItemFavorite = Prisma.ItemFavoriteModel
+/**
+ * Model UserBlock
+ * 
+ */
+export type UserBlock = Prisma.UserBlockModel

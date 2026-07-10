@@ -250,6 +250,7 @@ export type ItemWhereInput = {
   couponUsageReports?: Prisma.CouponUsageReportListRelationFilter
   ticketDetail?: Prisma.XOR<Prisma.TicketDetailNullableScalarRelationFilter, Prisma.TicketDetailWhereInput> | null
   pointDetail?: Prisma.XOR<Prisma.PointDetailNullableScalarRelationFilter, Prisma.PointDetailWhereInput> | null
+  favorites?: Prisma.ItemFavoriteListRelationFilter
 }
 
 export type ItemOrderByWithRelationInput = {
@@ -284,6 +285,7 @@ export type ItemOrderByWithRelationInput = {
   couponUsageReports?: Prisma.CouponUsageReportOrderByRelationAggregateInput
   ticketDetail?: Prisma.TicketDetailOrderByWithRelationInput
   pointDetail?: Prisma.PointDetailOrderByWithRelationInput
+  favorites?: Prisma.ItemFavoriteOrderByRelationAggregateInput
 }
 
 export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -321,6 +323,7 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   couponUsageReports?: Prisma.CouponUsageReportListRelationFilter
   ticketDetail?: Prisma.XOR<Prisma.TicketDetailNullableScalarRelationFilter, Prisma.TicketDetailWhereInput> | null
   pointDetail?: Prisma.XOR<Prisma.PointDetailNullableScalarRelationFilter, Prisma.PointDetailWhereInput> | null
+  favorites?: Prisma.ItemFavoriteListRelationFilter
 }, "id">
 
 export type ItemOrderByWithAggregationInput = {
@@ -386,6 +389,7 @@ export type ItemCreateInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateInput = {
@@ -417,6 +421,7 @@ export type ItemUncheckedCreateInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemUpdateInput = {
@@ -448,6 +453,7 @@ export type ItemUpdateInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateInput = {
@@ -479,6 +485,7 @@ export type ItemUncheckedUpdateInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateManyInput = {
@@ -954,6 +961,20 @@ export type ItemUpdateOneRequiredWithoutPointDetailNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutPointDetailInput, Prisma.ItemUpdateWithoutPointDetailInput>, Prisma.ItemUncheckedUpdateWithoutPointDetailInput>
 }
 
+export type ItemCreateNestedOneWithoutFavoritesInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutFavoritesInput, Prisma.ItemUncheckedCreateWithoutFavoritesInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutFavoritesInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutFavoritesNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutFavoritesInput, Prisma.ItemUncheckedCreateWithoutFavoritesInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutFavoritesInput
+  upsert?: Prisma.ItemUpsertWithoutFavoritesInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutFavoritesInput, Prisma.ItemUpdateWithoutFavoritesInput>, Prisma.ItemUncheckedUpdateWithoutFavoritesInput>
+}
+
 export type ItemCreateWithoutOwnerInput = {
   id?: string
   title: string
@@ -982,6 +1003,7 @@ export type ItemCreateWithoutOwnerInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutOwnerInput = {
@@ -1012,6 +1034,7 @@ export type ItemUncheckedCreateWithoutOwnerInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutOwnerInput = {
@@ -1085,6 +1108,7 @@ export type ItemCreateWithoutCityInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCityInput = {
@@ -1115,6 +1139,7 @@ export type ItemUncheckedCreateWithoutCityInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCityInput = {
@@ -1171,6 +1196,7 @@ export type ItemCreateWithoutCategoryInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -1201,6 +1227,7 @@ export type ItemUncheckedCreateWithoutCategoryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -1257,6 +1284,7 @@ export type ItemCreateWithoutImagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutImagesInput = {
@@ -1287,6 +1315,7 @@ export type ItemUncheckedCreateWithoutImagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutImagesInput = {
@@ -1333,6 +1362,7 @@ export type ItemUpdateWithoutImagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutImagesInput = {
@@ -1363,6 +1393,7 @@ export type ItemUncheckedUpdateWithoutImagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutStatusLogsInput = {
@@ -1393,6 +1424,7 @@ export type ItemCreateWithoutStatusLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutStatusLogsInput = {
@@ -1423,6 +1455,7 @@ export type ItemUncheckedCreateWithoutStatusLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutStatusLogsInput = {
@@ -1469,6 +1502,7 @@ export type ItemUpdateWithoutStatusLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutStatusLogsInput = {
@@ -1499,6 +1533,7 @@ export type ItemUncheckedUpdateWithoutStatusLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutClaimCommentsInput = {
@@ -1529,6 +1564,7 @@ export type ItemCreateWithoutClaimCommentsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutClaimCommentsInput = {
@@ -1559,6 +1595,7 @@ export type ItemUncheckedCreateWithoutClaimCommentsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutClaimCommentsInput = {
@@ -1605,6 +1642,7 @@ export type ItemUpdateWithoutClaimCommentsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutClaimCommentsInput = {
@@ -1635,6 +1673,7 @@ export type ItemUncheckedUpdateWithoutClaimCommentsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutDirectSharesInput = {
@@ -1665,6 +1704,7 @@ export type ItemCreateWithoutDirectSharesInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutDirectSharesInput = {
@@ -1695,6 +1735,7 @@ export type ItemUncheckedCreateWithoutDirectSharesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutDirectSharesInput = {
@@ -1741,6 +1782,7 @@ export type ItemUpdateWithoutDirectSharesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutDirectSharesInput = {
@@ -1771,6 +1813,7 @@ export type ItemUncheckedUpdateWithoutDirectSharesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutHandoverRecordInput = {
@@ -1801,6 +1844,7 @@ export type ItemCreateWithoutHandoverRecordInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutHandoverRecordInput = {
@@ -1831,6 +1875,7 @@ export type ItemUncheckedCreateWithoutHandoverRecordInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutHandoverRecordInput = {
@@ -1877,6 +1922,7 @@ export type ItemUpdateWithoutHandoverRecordInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutHandoverRecordInput = {
@@ -1907,6 +1953,7 @@ export type ItemUncheckedUpdateWithoutHandoverRecordInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutThanksMessagesInput = {
@@ -1937,6 +1984,7 @@ export type ItemCreateWithoutThanksMessagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutThanksMessagesInput = {
@@ -1967,6 +2015,7 @@ export type ItemUncheckedCreateWithoutThanksMessagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutThanksMessagesInput = {
@@ -2013,6 +2062,7 @@ export type ItemUpdateWithoutThanksMessagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutThanksMessagesInput = {
@@ -2043,6 +2093,7 @@ export type ItemUncheckedUpdateWithoutThanksMessagesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutContributionEventsInput = {
@@ -2073,6 +2124,7 @@ export type ItemCreateWithoutContributionEventsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutContributionEventsInput = {
@@ -2103,6 +2155,7 @@ export type ItemUncheckedCreateWithoutContributionEventsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutContributionEventsInput = {
@@ -2149,6 +2202,7 @@ export type ItemUpdateWithoutContributionEventsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutContributionEventsInput = {
@@ -2179,6 +2233,7 @@ export type ItemUncheckedUpdateWithoutContributionEventsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutConversationInput = {
@@ -2209,6 +2264,7 @@ export type ItemCreateWithoutConversationInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutConversationInput = {
@@ -2239,6 +2295,7 @@ export type ItemUncheckedCreateWithoutConversationInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutConversationInput = {
@@ -2285,6 +2342,7 @@ export type ItemUpdateWithoutConversationInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutConversationInput = {
@@ -2315,6 +2373,7 @@ export type ItemUncheckedUpdateWithoutConversationInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutReportsInput = {
@@ -2345,6 +2404,7 @@ export type ItemCreateWithoutReportsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutReportsInput = {
@@ -2375,6 +2435,7 @@ export type ItemUncheckedCreateWithoutReportsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutReportsInput = {
@@ -2421,6 +2482,7 @@ export type ItemUpdateWithoutReportsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutReportsInput = {
@@ -2451,6 +2513,7 @@ export type ItemUncheckedUpdateWithoutReportsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutItemRemovalsInput = {
@@ -2481,6 +2544,7 @@ export type ItemCreateWithoutItemRemovalsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutItemRemovalsInput = {
@@ -2511,6 +2575,7 @@ export type ItemUncheckedCreateWithoutItemRemovalsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutItemRemovalsInput = {
@@ -2557,6 +2622,7 @@ export type ItemUpdateWithoutItemRemovalsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutItemRemovalsInput = {
@@ -2587,6 +2653,7 @@ export type ItemUncheckedUpdateWithoutItemRemovalsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutCouponDetailInput = {
@@ -2617,6 +2684,7 @@ export type ItemCreateWithoutCouponDetailInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCouponDetailInput = {
@@ -2647,6 +2715,7 @@ export type ItemUncheckedCreateWithoutCouponDetailInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCouponDetailInput = {
@@ -2693,6 +2762,7 @@ export type ItemUpdateWithoutCouponDetailInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCouponDetailInput = {
@@ -2723,6 +2793,7 @@ export type ItemUncheckedUpdateWithoutCouponDetailInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutExpirationLogsInput = {
@@ -2753,6 +2824,7 @@ export type ItemCreateWithoutExpirationLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutExpirationLogsInput = {
@@ -2783,6 +2855,7 @@ export type ItemUncheckedCreateWithoutExpirationLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutExpirationLogsInput = {
@@ -2829,6 +2902,7 @@ export type ItemUpdateWithoutExpirationLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutExpirationLogsInput = {
@@ -2859,6 +2933,7 @@ export type ItemUncheckedUpdateWithoutExpirationLogsInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutLotteryInput = {
@@ -2889,6 +2964,7 @@ export type ItemCreateWithoutLotteryInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutLotteryInput = {
@@ -2919,6 +2995,7 @@ export type ItemUncheckedCreateWithoutLotteryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutLotteryInput = {
@@ -2965,6 +3042,7 @@ export type ItemUpdateWithoutLotteryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutLotteryInput = {
@@ -2995,6 +3073,7 @@ export type ItemUncheckedUpdateWithoutLotteryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutSubscriptionMatchesInput = {
@@ -3025,6 +3104,7 @@ export type ItemCreateWithoutSubscriptionMatchesInput = {
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutSubscriptionMatchesInput = {
@@ -3055,6 +3135,7 @@ export type ItemUncheckedCreateWithoutSubscriptionMatchesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutSubscriptionMatchesInput = {
@@ -3101,6 +3182,7 @@ export type ItemUpdateWithoutSubscriptionMatchesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutSubscriptionMatchesInput = {
@@ -3131,6 +3213,7 @@ export type ItemUncheckedUpdateWithoutSubscriptionMatchesInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutCouponUsageReportsInput = {
@@ -3161,6 +3244,7 @@ export type ItemCreateWithoutCouponUsageReportsInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutCouponUsageReportsInput = {
@@ -3191,6 +3275,7 @@ export type ItemUncheckedCreateWithoutCouponUsageReportsInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutCouponUsageReportsInput = {
@@ -3237,6 +3322,7 @@ export type ItemUpdateWithoutCouponUsageReportsInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCouponUsageReportsInput = {
@@ -3267,6 +3353,7 @@ export type ItemUncheckedUpdateWithoutCouponUsageReportsInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutTicketDetailInput = {
@@ -3297,6 +3384,7 @@ export type ItemCreateWithoutTicketDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchCreateNestedManyWithoutItemInput
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutTicketDetailInput = {
@@ -3327,6 +3415,7 @@ export type ItemUncheckedCreateWithoutTicketDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedCreateNestedManyWithoutItemInput
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutTicketDetailInput = {
@@ -3373,6 +3462,7 @@ export type ItemUpdateWithoutTicketDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUpdateManyWithoutItemNestedInput
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutTicketDetailInput = {
@@ -3403,6 +3493,7 @@ export type ItemUncheckedUpdateWithoutTicketDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedUpdateManyWithoutItemNestedInput
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutPointDetailInput = {
@@ -3433,6 +3524,7 @@ export type ItemCreateWithoutPointDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchCreateNestedManyWithoutItemInput
   couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutPointDetailInput = {
@@ -3463,6 +3555,7 @@ export type ItemUncheckedCreateWithoutPointDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedCreateNestedManyWithoutItemInput
   couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
   ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
+  favorites?: Prisma.ItemFavoriteUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutPointDetailInput = {
@@ -3509,6 +3602,7 @@ export type ItemUpdateWithoutPointDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUpdateManyWithoutItemNestedInput
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutPointDetailInput = {
@@ -3539,6 +3633,147 @@ export type ItemUncheckedUpdateWithoutPointDetailInput = {
   subscriptionMatches?: Prisma.SubscriptionMatchUncheckedUpdateManyWithoutItemNestedInput
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutFavoritesInput = {
+  id?: string
+  title: string
+  description: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutItemsInput
+  category: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  city: Prisma.CityCreateNestedOneWithoutItemsInput
+  images?: Prisma.ItemImageCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogCreateNestedManyWithoutItemInput
+  lottery?: Prisma.LotteryCreateNestedOneWithoutItemInput
+  subscriptionMatches?: Prisma.SubscriptionMatchCreateNestedManyWithoutItemInput
+  couponUsageReports?: Prisma.CouponUsageReportCreateNestedManyWithoutItemInput
+  ticketDetail?: Prisma.TicketDetailCreateNestedOneWithoutItemInput
+  pointDetail?: Prisma.PointDetailCreateNestedOneWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutFavoritesInput = {
+  id?: string
+  ownerId: string
+  title: string
+  description: string
+  categoryId: string
+  cityId: string
+  status?: $Enums.ItemStatus
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  expiresAt?: Date | string | null
+  images?: Prisma.ItemImageUncheckedCreateNestedManyWithoutItemInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedCreateNestedManyWithoutItemInput
+  claimComments?: Prisma.ClaimCommentUncheckedCreateNestedManyWithoutItemInput
+  directShares?: Prisma.DirectShareUncheckedCreateNestedManyWithoutItemInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedCreateNestedOneWithoutItemInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedCreateNestedManyWithoutItemInput
+  contributionEvents?: Prisma.ContributionEventUncheckedCreateNestedManyWithoutItemInput
+  conversation?: Prisma.ConversationUncheckedCreateNestedOneWithoutItemInput
+  reports?: Prisma.ReportUncheckedCreateNestedManyWithoutItemInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedCreateNestedManyWithoutItemInput
+  couponDetail?: Prisma.CouponDetailUncheckedCreateNestedOneWithoutItemInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedCreateNestedManyWithoutItemInput
+  lottery?: Prisma.LotteryUncheckedCreateNestedOneWithoutItemInput
+  subscriptionMatches?: Prisma.SubscriptionMatchUncheckedCreateNestedManyWithoutItemInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedCreateNestedManyWithoutItemInput
+  ticketDetail?: Prisma.TicketDetailUncheckedCreateNestedOneWithoutItemInput
+  pointDetail?: Prisma.PointDetailUncheckedCreateNestedOneWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutFavoritesInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutFavoritesInput, Prisma.ItemUncheckedCreateWithoutFavoritesInput>
+}
+
+export type ItemUpsertWithoutFavoritesInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutFavoritesInput, Prisma.ItemUncheckedUpdateWithoutFavoritesInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutFavoritesInput, Prisma.ItemUncheckedCreateWithoutFavoritesInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutFavoritesInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutFavoritesInput, Prisma.ItemUncheckedUpdateWithoutFavoritesInput>
+}
+
+export type ItemUpdateWithoutFavoritesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutItemsNestedInput
+  city?: Prisma.CityUpdateOneRequiredWithoutItemsNestedInput
+  images?: Prisma.ItemImageUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUpdateManyWithoutItemNestedInput
+  lottery?: Prisma.LotteryUpdateOneWithoutItemNestedInput
+  subscriptionMatches?: Prisma.SubscriptionMatchUpdateManyWithoutItemNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
+  ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
+  pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutFavoritesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  cityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  images?: Prisma.ItemImageUncheckedUpdateManyWithoutItemNestedInput
+  statusLogs?: Prisma.ItemStatusLogUncheckedUpdateManyWithoutItemNestedInput
+  claimComments?: Prisma.ClaimCommentUncheckedUpdateManyWithoutItemNestedInput
+  directShares?: Prisma.DirectShareUncheckedUpdateManyWithoutItemNestedInput
+  handoverRecord?: Prisma.HandoverRecordUncheckedUpdateOneWithoutItemNestedInput
+  thanksMessages?: Prisma.ThanksMessageUncheckedUpdateManyWithoutItemNestedInput
+  contributionEvents?: Prisma.ContributionEventUncheckedUpdateManyWithoutItemNestedInput
+  conversation?: Prisma.ConversationUncheckedUpdateOneWithoutItemNestedInput
+  reports?: Prisma.ReportUncheckedUpdateManyWithoutItemNestedInput
+  itemRemovals?: Prisma.ItemRemovalUncheckedUpdateManyWithoutItemNestedInput
+  couponDetail?: Prisma.CouponDetailUncheckedUpdateOneWithoutItemNestedInput
+  expirationLogs?: Prisma.ItemExpirationLogUncheckedUpdateManyWithoutItemNestedInput
+  lottery?: Prisma.LotteryUncheckedUpdateOneWithoutItemNestedInput
+  subscriptionMatches?: Prisma.SubscriptionMatchUncheckedUpdateManyWithoutItemNestedInput
+  couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
+  ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
+  pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
 }
 
 export type ItemCreateManyOwnerInput = {
@@ -3582,6 +3817,7 @@ export type ItemUpdateWithoutOwnerInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutOwnerInput = {
@@ -3612,6 +3848,7 @@ export type ItemUncheckedUpdateWithoutOwnerInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutOwnerInput = {
@@ -3668,6 +3905,7 @@ export type ItemUpdateWithoutCityInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCityInput = {
@@ -3698,6 +3936,7 @@ export type ItemUncheckedUpdateWithoutCityInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutCityInput = {
@@ -3754,6 +3993,7 @@ export type ItemUpdateWithoutCategoryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -3784,6 +4024,7 @@ export type ItemUncheckedUpdateWithoutCategoryInput = {
   couponUsageReports?: Prisma.CouponUsageReportUncheckedUpdateManyWithoutItemNestedInput
   ticketDetail?: Prisma.TicketDetailUncheckedUpdateOneWithoutItemNestedInput
   pointDetail?: Prisma.PointDetailUncheckedUpdateOneWithoutItemNestedInput
+  favorites?: Prisma.ItemFavoriteUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -3816,6 +4057,7 @@ export type ItemCountOutputType = {
   expirationLogs: number
   subscriptionMatches: number
   couponUsageReports: number
+  favorites: number
 }
 
 export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3830,6 +4072,7 @@ export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   expirationLogs?: boolean | ItemCountOutputTypeCountExpirationLogsArgs
   subscriptionMatches?: boolean | ItemCountOutputTypeCountSubscriptionMatchesArgs
   couponUsageReports?: boolean | ItemCountOutputTypeCountCouponUsageReportsArgs
+  favorites?: boolean | ItemCountOutputTypeCountFavoritesArgs
 }
 
 /**
@@ -3919,6 +4162,13 @@ export type ItemCountOutputTypeCountCouponUsageReportsArgs<ExtArgs extends runti
   where?: Prisma.CouponUsageReportWhereInput
 }
 
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemFavoriteWhereInput
+}
+
 
 export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3952,6 +4202,7 @@ export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   couponUsageReports?: boolean | Prisma.Item$couponUsageReportsArgs<ExtArgs>
   ticketDetail?: boolean | Prisma.Item$ticketDetailArgs<ExtArgs>
   pointDetail?: boolean | Prisma.Item$pointDetailArgs<ExtArgs>
+  favorites?: boolean | Prisma.Item$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
@@ -4025,6 +4276,7 @@ export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   couponUsageReports?: boolean | Prisma.Item$couponUsageReportsArgs<ExtArgs>
   ticketDetail?: boolean | Prisma.Item$ticketDetailArgs<ExtArgs>
   pointDetail?: boolean | Prisma.Item$pointDetailArgs<ExtArgs>
+  favorites?: boolean | Prisma.Item$favoritesArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4061,6 +4313,7 @@ export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     couponUsageReports: Prisma.$CouponUsageReportPayload<ExtArgs>[]
     ticketDetail: Prisma.$TicketDetailPayload<ExtArgs> | null
     pointDetail: Prisma.$PointDetailPayload<ExtArgs> | null
+    favorites: Prisma.$ItemFavoritePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4488,6 +4741,7 @@ export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Typ
   couponUsageReports<T extends Prisma.Item$couponUsageReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$couponUsageReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CouponUsageReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ticketDetail<T extends Prisma.Item$ticketDetailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$ticketDetailArgs<ExtArgs>>): Prisma.Prisma__TicketDetailClient<runtime.Types.Result.GetResult<Prisma.$TicketDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   pointDetail<T extends Prisma.Item$pointDetailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$pointDetailArgs<ExtArgs>>): Prisma.Prisma__PointDetailClient<runtime.Types.Result.GetResult<Prisma.$PointDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  favorites<T extends Prisma.Item$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5304,6 +5558,30 @@ export type Item$pointDetailArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.PointDetailInclude<ExtArgs> | null
   where?: Prisma.PointDetailWhereInput
+}
+
+/**
+ * Item.favorites
+ */
+export type Item$favoritesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemFavorite
+   */
+  select?: Prisma.ItemFavoriteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemFavorite
+   */
+  omit?: Prisma.ItemFavoriteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemFavoriteInclude<ExtArgs> | null
+  where?: Prisma.ItemFavoriteWhereInput
+  orderBy?: Prisma.ItemFavoriteOrderByWithRelationInput | Prisma.ItemFavoriteOrderByWithRelationInput[]
+  cursor?: Prisma.ItemFavoriteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemFavoriteScalarFieldEnum | Prisma.ItemFavoriteScalarFieldEnum[]
 }
 
 /**

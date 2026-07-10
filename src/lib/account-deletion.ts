@@ -65,4 +65,25 @@ export async function deidentifyUser(tx: Prisma.TransactionClient, userId: strin
       },
     });
   }
+
+  // M12 產品增量三張新使用者行為表的去識別化處理（docs/plan/m12-product-growth.md「核心表
+  // 變更的相容性風險」節點名的已知缺口，這裡補上）。判斷原則比照既有 ClaimComment／Message／
+  // ThanksMessage 的既定做法：「別人看得到、屬於歷史紀錄一部分」的內容不動；「純粹屬於這個
+  // 使用者自己的行為/偏好資料、對他人沒有紀錄完整性意義」的則整批清除，呼應資料刪除權精神。
+  //
+  // - HandoverRating：不刪、不改寫。評分（stars/comment）是雙方交接歷史的一部分，比照既有
+  //   ClaimComment/ThanksMessage 先例保留；rater/ratee 的 FK 都指向 User，User 列本身已經
+  //   去識別化（name/email 已改寫），不會再洩漏可識別資訊。若砍掉「這個使用者評分過的紀錄」，
+  //   會不公平地抹掉對方（ratee）應得的評價歷史（例如接手者已刪帳號，物主收到的星等不該
+  //   連帶消失）。
+  // - ItemFavorite：整批刪除。收藏清單是這個使用者單方面的興趣/瀏覽偏好資料，不對任何其他
+  //   使用者呈現「是誰收藏的」（規格明定只顯示彙總數字），清除後只會讓對應物品的「已有 N 人
+  //   收藏」計數同步減少，不影響任何他人可見的歷史紀錄完整性；保留下去只是無意義地累積已刪
+  //   帳號的行為資料。
+  // - UserBlock：整批刪除（不論 blockerId 或 blockedId 是這個使用者）。封鎖是使用者對使用者
+  //   的私人安全選擇，帳號去識別化後既不能登入也無法再與任何人互動，這段關係資料已無實質
+  //   作用；比照 Account/Session/UserRole 用「真的刪除」處理（而非改寫），因為它不像
+  //   ClaimComment 那樣涉及「對方應得的歷史紀錄」。
+  await tx.itemFavorite.deleteMany({ where: { userId } });
+  await tx.userBlock.deleteMany({ where: { OR: [{ blockerId: userId }, { blockedId: userId }] } });
 }
