@@ -43,11 +43,14 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
   if (!profile) notFound();
 
   // session/viewerProfile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡不用再查一次。
-  // 貢獻值總分與完成件數同一次 groupBy 拿齊（見 getUserSharingStats 口徑說明），
-  // 跟身份組查詢平行執行，不串行疊加延遲。
-  const [stats, roles] = await Promise.all([
+  // 貢獻值總分與完成件數用 getUserSharingStats 同一次 groupBy 拿齊（口徑＝contribution_events
+  // 事件筆數，與記分一致、天然去重）；「收到感謝」另查 thanksMessage。下方三格統計列的呈現
+  // 參考 GiveCircle 個人檔案頁（研究文件 05-givecircle-reference.md）——單一貢獻值數字對陌生
+  // 訪客不夠直覺，補三個具體行為次數當信任信號。三者互不相關，與身份組查詢一併平行執行。
+  const [stats, roles, thanksCount] = await Promise.all([
     getUserSharingStats(userId),
     db.userRole.findMany({ where: { userId }, select: { role: true } }),
+    db.thanksMessage.count({ where: { toUserId: userId } }),
   ]);
 
   // 累計貢獻值就是真實反映使用者行為的數字，no_show 扣分可能讓它變負數，不特別防呆。
@@ -68,10 +71,21 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
       <div className="mt-6 rounded-xl border border-line bg-card p-4">
         <p className="text-sm text-ink-soft">累計貢獻值</p>
         <p className="mt-1 text-3xl font-bold tracking-tight text-brand-ink">{totalPoints}</p>
-        <p className="mt-2 border-t border-line/70 pt-2 text-sm text-ink-soft">
-          已完成分享 {stats.sharedCount} 件<span className="mx-1.5">・</span>已接手{" "}
-          {stats.receivedCount} 件
-        </p>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-xl border border-line bg-card">
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{stats.sharedCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">完成分享</p>
+        </div>
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{stats.receivedCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">完成接手</p>
+        </div>
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">{thanksCount}</p>
+          <p className="mt-0.5 text-xs text-ink-soft">收到感謝</p>
+        </div>
       </div>
     </div>
   );
