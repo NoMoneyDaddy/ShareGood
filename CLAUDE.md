@@ -328,6 +328,22 @@
       在本機卡 `load` 事件——fixture item 帶圖、圖 URL 指向本機 MinIO（`localhost:9200` 無服務），
       `next/image` 對此上游 hang，非整合問題（正式站 `S3_PUBLIC_URL` 為公開網域無此問題）；市場
       調查 B/C 級（互評/封鎖/收藏/手機驗證）列上線後 backlog（`docs/research/2026-07-07-launch/`）。
+    - **合併前五視角上線審計**（用 `agency-agents-zh` 的 persona 派 5 路 fresh-context 審計：
+      現實檢驗者 4/10、應用安全 7.5、產品 7.5、UX 7.5、程式碼 8）——採納並修掉確認的真問題：
+      ①排行榜 `export const revalidate` 掛在 (shell) layout 的 `await auth()` 子樹下是死碼
+      （build 為 ƒ Dynamic），改用 `unstable_cache` 快取查詢本身；②分享按鈕 `navigator.share()`
+      按「取消」的 `AbortError` 未分流會誤複製連結，改成取消即 return；③首頁三步驟文案「分享者
+      從中挑選」與先到先得機制矛盾，改對齊；④首頁統計卡從死 div 改可點 Link 導流；⑤個人頁貢獻值
+      補級距說明（手機無 hover）。**回歸教訓**：一度採納安全建議把已刪除帳號個人頁改 `deletedAt→
+      notFound()`，補測試時發現破壞 M7「去識別化保留匿名歷史」既有驗收（`data-rights.test.ts` 預期
+      200），已撤回並留註解——匿名化後無法識別個人、顯示歷史統計不算洩漏，排行榜（主動推薦）才需
+      排除已刪除帳號、被動查詢的個人頁不需要。補 26 個整合測試（badges/contribution-stats/
+      leaderboard-query/user-profile-page）回應「新功能零測試」批評，全套 **vitest 287/292**
+      （5 個 data-rights MinIO 為既有基準）。**上線本身**（`ADMIN_EMAIL` 等環境變數、15 支 cron、
+      首次備份）是使用者在 Zeabur 的部署步驟，非程式碼缺陷，見 `docs/runbooks/launch-checklist.md`。
+- [ ] M12 產品增量（審計挖出、使用者拍板「全做」）：互評/收藏/封鎖/排行榜 opt-out/面交約定時間
+      （5 個動核心 schema）＋產品成長儀表板/批量上架（2 個無 schema）。比照 M9「schema 地基→平行
+      功能」模式，設計代理先出 schema＋規格→指揮官審核→派實作 wave→整合成獨立 PR。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
