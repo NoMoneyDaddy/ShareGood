@@ -25,7 +25,9 @@ export function PwaInstallCard() {
         </span>
         <span>
           <span className="block text-sm font-semibold text-ink">已加入主畫面</span>
-          <span className="block text-xs text-ink-soft">你現在就是用這個模式在使用 ShareGood。</span>
+          <span className="block text-xs text-ink-soft">
+            你現在就是用這個模式在使用 ShareGood。
+          </span>
         </span>
       </div>
     );

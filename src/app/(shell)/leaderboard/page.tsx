@@ -81,7 +81,8 @@ export default async function LeaderboardPage() {
         <h1 className="text-2xl font-bold tracking-tight">貢獻排行榜</h1>
       </div>
       <p className="mt-2 text-sm text-ink-soft">
-        分享完成 +10、接手完成 +2，累計貢獻值最高的前 50 位好鄰居都在這裡。貢獻值只用來表揚熱心分享，不能拿來兌換或交易任何東西。
+        分享完成 +10、接手完成 +2，累計貢獻值最高的前 50
+        位好鄰居都在這裡。貢獻值只用來表揚熱心分享，不能拿來兌換或交易任何東西。
       </p>
 
       {rows.length === 0 ? (

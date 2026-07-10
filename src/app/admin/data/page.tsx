@@ -85,7 +85,9 @@ export default async function AdminDataPage({
                     <p className="text-xs text-ink-soft">{p.description}</p>
                   </td>
                   <td className="py-2 pr-3">{p.retentionDays ?? "不自動清理"}</td>
-                  <td className="py-2 pr-3">{p.action ? (RETENTION_ACTION_LABEL[p.action] ?? p.action) : "—"}</td>
+                  <td className="py-2 pr-3">
+                    {p.action ? (RETENTION_ACTION_LABEL[p.action] ?? p.action) : "—"}
+                  </td>
                   <td className="py-2">{p.isActive ? "啟用" : "停用"}</td>
                   <td />
                 </tr>

@@ -113,13 +113,7 @@ export function ConversationThread({
           const mine = m.senderId === currentUserId;
           const senderRoles = memberRoles[m.senderId];
           return (
-            <div
-              key={m.id}
-              className={cn(
-                "flex flex-col",
-                mine ? "items-end" : "items-start",
-              )}
-            >
+            <div key={m.id} className={cn("flex flex-col", mine ? "items-end" : "items-start")}>
               {!mine && senderRoles && senderRoles.length > 0 && (
                 <RoleBadge roles={senderRoles} className="mb-1" />
               )}

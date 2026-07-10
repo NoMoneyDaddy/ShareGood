@@ -107,9 +107,7 @@ export default async function AdminDashboardPage() {
             className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
           >
             <p className="text-sm font-medium text-ink">稽核紀錄查詢</p>
-            <p className="mt-1 text-xs text-ink-soft">
-              所有管理操作（操作者／動作／對象／時間）
-            </p>
+            <p className="mt-1 text-xs text-ink-soft">所有管理操作（操作者／動作／對象／時間）</p>
           </Link>
           {/* M8 營運強化（master-plan §8a）／M7 資料權利與法務（master-plan §7a）：這四頁一直
               存在，只是沒有從 /admin 首頁連過去，補上避免孤兒頁（比照上面既有卡片的處理方式）。 */}

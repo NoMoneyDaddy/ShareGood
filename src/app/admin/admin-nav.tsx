@@ -35,7 +35,10 @@ const ADMIN_NAV_LINKS = [
 // 沒有 SiteHeader 的 logo 可以點回首頁，這裡補一個「回前台首頁」連結當唯一出口。
 export function AdminNav({ current }: { current: string }) {
   return (
-    <nav aria-label="後台導覽" className="flex flex-wrap items-center gap-2 border-b border-line pb-4">
+    <nav
+      aria-label="後台導覽"
+      className="flex flex-wrap items-center gap-2 border-b border-line pb-4"
+    >
       <Link
         href="/"
         className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink"

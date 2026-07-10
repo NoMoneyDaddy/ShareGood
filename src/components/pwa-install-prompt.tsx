@@ -53,7 +53,7 @@ export function PwaInstallPrompt() {
   if (platform !== "ios" && !canPromptInstall) return null;
 
   return (
-    <div role="region" aria-label="加到主畫面提示" className="border-b border-line bg-brand-soft">
+    <section aria-label="加到主畫面提示" className="border-b border-line bg-brand-soft">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5 sm:px-6">
         <span
           className="flex size-9 shrink-0 items-center justify-center rounded-full bg-card text-brand-ink"
@@ -117,6 +117,6 @@ export function PwaInstallPrompt() {
           </ol>
         </div>
       )}
-    </div>
+    </section>
   );
 }

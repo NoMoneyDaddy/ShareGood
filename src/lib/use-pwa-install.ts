@@ -26,7 +26,9 @@ function detectPlatform(): PwaPlatform {
   // 「要不要顯示 iOS 專屬圖解」的判斷用途。
   const isIosUa =
     /iPad|iPhone|iPod/.test(ua) ||
-    (ua.includes("Macintosh") && typeof navigator.maxTouchPoints === "number" && navigator.maxTouchPoints > 1);
+    (ua.includes("Macintosh") &&
+      typeof navigator.maxTouchPoints === "number" &&
+      navigator.maxTouchPoints > 1);
   if (isIosUa) return "ios";
   if (/Android/.test(ua)) return "android";
   return "other";
