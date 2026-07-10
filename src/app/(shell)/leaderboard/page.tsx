@@ -1,5 +1,6 @@
 import { Crown, Trophy } from "lucide-react";
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { UserBadges } from "@/components/user-badge";
@@ -8,11 +9,11 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "貢獻排行榜｜好物共享" };
 
-// 公開頁不需要登入即可查看，內容 5 分鐘內不太會變化，用 ISR 快取減少資料庫負擔
-// （這支頁面不呼叫 auth()／cookies()／searchParams，符合 Next.js 靜態渲染條件，
-// revalidate 才有實際效果）。
-export const revalidate = 300;
-
+// 快取策略：這頁掛在 (shell)/layout.tsx 底下，而該 layout 無條件 `await auth()`（讀
+// cookies），整個子樹會被迫動態渲染（`next build` 輸出為 ƒ Dynamic）——所以 route 段
+// 的 `export const revalidate` 對這頁是死碼、不會生效。改用 `unstable_cache` 把實際的
+// groupBy+findMany 查詢本身快取 5 分鐘，才真的達到「減少資料庫負擔」的目的（比照
+// src/lib/home-stats.ts 對同一問題的處理）。
 const LEADERBOARD_SIZE = 50;
 // 排行榜要濾掉貢獻值 ≤0 與已去識別化帳號（M7 帳號刪除去識別化，見 src/lib/
 // account-deletion.ts：User.deletedAt 非 null 代表已去識別化），濾完之後才截斷到 50 名，
@@ -27,41 +28,45 @@ type LeaderboardRow = {
   roles: string[];
 };
 
-async function getLeaderboard(): Promise<LeaderboardRow[]> {
-  const grouped = await db.contributionEvent.groupBy({
-    by: ["userId"],
-    _sum: { points: true },
-    orderBy: { _sum: { points: "desc" } },
-    take: GROUP_BY_FETCH_SIZE,
-  });
-
-  const candidates = grouped
-    .map((g) => ({ userId: g.userId, points: g._sum.points ?? 0 }))
-    .filter((g) => g.points > 0);
-  if (candidates.length === 0) return [];
-
-  const users = await db.user.findMany({
-    where: { id: { in: candidates.map((c) => c.userId) }, deletedAt: null },
-    include: { profile: { select: { nickname: true } }, roles: { select: { role: true } } },
-  });
-  const userById = new Map(users.map((u) => [u.id, u]));
-
-  const rows: LeaderboardRow[] = [];
-  for (const c of candidates) {
-    const user = userById.get(c.userId);
-    // 沒有 profile 理論上不會發生（onboarding 必建），已去識別化帳號也不會出現在
-    // userById（上面查詢已加 deletedAt: null 條件），這裡再擋一次純防呆。
-    if (!user?.profile) continue;
-    rows.push({
-      userId: c.userId,
-      nickname: user.profile.nickname,
-      points: c.points,
-      roles: user.roles.map((r) => r.role),
+const getLeaderboard = unstable_cache(
+  async (): Promise<LeaderboardRow[]> => {
+    const grouped = await db.contributionEvent.groupBy({
+      by: ["userId"],
+      _sum: { points: true },
+      orderBy: { _sum: { points: "desc" } },
+      take: GROUP_BY_FETCH_SIZE,
     });
-    if (rows.length >= LEADERBOARD_SIZE) break;
-  }
-  return rows;
-}
+
+    const candidates = grouped
+      .map((g) => ({ userId: g.userId, points: g._sum.points ?? 0 }))
+      .filter((g) => g.points > 0);
+    if (candidates.length === 0) return [];
+
+    const users = await db.user.findMany({
+      where: { id: { in: candidates.map((c) => c.userId) }, deletedAt: null },
+      include: { profile: { select: { nickname: true } }, roles: { select: { role: true } } },
+    });
+    const userById = new Map(users.map((u) => [u.id, u]));
+
+    const rows: LeaderboardRow[] = [];
+    for (const c of candidates) {
+      const user = userById.get(c.userId);
+      // 沒有 profile 理論上不會發生（onboarding 必建），已去識別化帳號也不會出現在
+      // userById（上面查詢已加 deletedAt: null 條件），這裡再擋一次純防呆。
+      if (!user?.profile) continue;
+      rows.push({
+        userId: c.userId,
+        nickname: user.profile.nickname,
+        points: c.points,
+        roles: user.roles.map((r) => r.role),
+      });
+      if (rows.length >= LEADERBOARD_SIZE) break;
+    }
+    return rows;
+  },
+  ["leaderboard-top50"],
+  { revalidate: 300 },
+);
 
 const RANK_MEDAL_STYLE: Record<number, string> = {
   1: "bg-brand-accent text-white",

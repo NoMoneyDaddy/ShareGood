@@ -201,7 +201,7 @@ export default async function HomePage() {
               </span>
               <h3 className="mt-4 font-bold">留言需要</h3>
               <p className="mt-1.5 max-w-[30ch] text-sm text-ink-soft">
-                需要的人留言，分享者從中挑選，也能直接贈與。
+                看到喜歡的就留言，最快的一則會先保留；分享者也能指定直接贈與。
               </p>
             </div>
             <div>

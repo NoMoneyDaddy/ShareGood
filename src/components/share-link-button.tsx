@@ -20,8 +20,11 @@ export function ShareLinkButton({ title, className }: { title: string; className
       try {
         await navigator.share({ title, url });
         return;
-      } catch {
-        // 使用者取消分享面板或裝置不支援時，落到下面的複製連結 fallback。
+      } catch (err) {
+        // 使用者在系統分享面板按「取消」會拋 AbortError——那是刻意取消，不該再自動
+        // 把連結複製到剪貼簿（否則會顯示「已複製連結」誤導使用者）；只有裝置不支援等
+        // 其他錯誤才落到下面的複製連結 fallback。
+        if (err instanceof Error && err.name === "AbortError") return;
       }
     }
     try {

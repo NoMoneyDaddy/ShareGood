@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { BackBar } from "@/components/back-bar";
@@ -21,7 +22,14 @@ function formatJoinedMonth(date: Date): string {
 // generateMetadata 與頁面本體都要查 profile；db.profile.findUnique 不是 fetch()，
 // Next.js 不會自動去重，用 React cache() 讓同一次請求內兩處呼叫共用一次查詢結果。
 const getProfile = cache(async (userId: string) => {
-  return db.profile.findUnique({ where: { userId } });
+  // 已去識別化帳號（M7 帳號刪除，User.deletedAt 非 null）不應再公開展示個人頁與行為
+  // 統計——比照 leaderboard 的 deletedAt: null 過濾，查不到就讓頁面走 notFound()，
+  // 避免刪除帳號後其「完成分享/接手/收到感謝」歷史仍被公開陳列。
+  const user = await db.user.findFirst({
+    where: { id: userId, deletedAt: null },
+    select: { profile: true },
+  });
+  return user?.profile ?? null;
 });
 
 export async function generateMetadata({
@@ -71,6 +79,17 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
       <div className="mt-6 rounded-xl border border-line bg-card p-4">
         <p className="text-sm text-ink-soft">累計貢獻值</p>
         <p className="mt-1 text-3xl font-bold tracking-tight text-brand-ink">{totalPoints}</p>
+        {/* 陌生訪客點進來想確認「這個人可不可信」，看到裸數字無從判斷高低——補一句
+            說明貢獻值怎麼來、代表什麼（手機沒有 hover 看不到徽章 tooltip，這裡用文字補上）。 */}
+        <p className="mt-2 border-t border-line/70 pt-2 text-xs text-ink-soft">
+          分享完成 +10、接手完成 +2 累積而來，只用來表揚熱心分享。
+          <Link
+            href="/leaderboard"
+            className="ml-1 text-brand-ink underline-offset-2 hover:underline"
+          >
+            看排行榜
+          </Link>
+        </p>
       </div>
 
       <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-xl border border-line bg-card">
