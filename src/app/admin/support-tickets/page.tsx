@@ -103,7 +103,7 @@ export default async function AdminSupportTicketsPage({
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">使用者回報處理</h1>
-      <p className="mt-1.5 text-sm text-ink-soft">bug 與帳號問題回報的後台處理列表。</p>
+      <p className="mt-1.5 text-sm text-ink-soft">功能異常與帳號問題回報的後台處理列表。</p>
 
       <div className="mt-6">
         <AdminNav current="/admin/support-tickets" />

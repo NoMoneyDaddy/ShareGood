@@ -120,12 +120,12 @@ export function LegalRequestForm() {
         {targets.map((t) => (
           <div key={t.key} className="flex gap-2">
             <Input
-              placeholder="targetType（user/item/conversation/message）"
+              placeholder="目標類型（user／item／conversation／message 擇一）"
               value={t.targetType}
               onChange={(e) => updateTarget(t.key, "targetType", e.target.value)}
             />
             <Input
-              placeholder="targetId"
+              placeholder="目標項目 ID"
               value={t.targetId}
               onChange={(e) => updateTarget(t.key, "targetId", e.target.value)}
             />

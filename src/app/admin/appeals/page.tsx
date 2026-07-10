@@ -27,7 +27,7 @@ export default async function AdminAppealsPage() {
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">申訴複審</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        被下架／被限制者對自己名下紀錄提出的申訴，需 admin 複審核准或駁回。
+        被下架／被限制者對自己名下紀錄提出的申訴，需管理者複審核准或駁回。
       </p>
 
       <div className="mt-6">

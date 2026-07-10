@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { RETENTION_ACTION_LABEL, RETENTION_TARGET_TYPE_LABEL } from "@/lib/retention-labels";
 import { isModeratorOrAdmin } from "@/lib/support-tickets";
 import { RetentionPolicyRow } from "./retention-policy-row";
 
@@ -48,7 +49,7 @@ export default async function AdminDataPage({
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">資料保留政策與清除紀錄</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        天數與動作皆可調整，retention_purge job 每次執行都依這裡的設定判斷，不寫死在程式碼裡。
+        保留天數與到期後的處理方式都可以在這裡調整，系統每天清理時會依最新設定執行。
       </p>
 
       <section className="mt-6 overflow-x-auto">
@@ -60,7 +61,7 @@ export default async function AdminDataPage({
               <th className="pb-2 pr-3 font-medium">保留天數</th>
               <th className="pb-2 pr-3 font-medium">動作</th>
               <th className="pb-2 pr-3 font-medium">狀態</th>
-              <th className="pb-2 font-medium">{isAdmin ? "" : "（僅 admin 可編輯）"}</th>
+              <th className="pb-2 font-medium">{isAdmin ? "" : "（僅管理者可編輯）"}</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +85,7 @@ export default async function AdminDataPage({
                     <p className="text-xs text-ink-soft">{p.description}</p>
                   </td>
                   <td className="py-2 pr-3">{p.retentionDays ?? "不自動清理"}</td>
-                  <td className="py-2 pr-3">{p.action ?? "—"}</td>
+                  <td className="py-2 pr-3">{p.action ? (RETENTION_ACTION_LABEL[p.action] ?? p.action) : "—"}</td>
                   <td className="py-2">{p.isActive ? "啟用" : "停用"}</td>
                   <td />
                 </tr>
@@ -106,7 +107,7 @@ export default async function AdminDataPage({
                 <th className="pb-2 pr-3 font-medium">政策</th>
                 <th className="pb-2 pr-3 font-medium">目標</th>
                 <th className="pb-2 pr-3 font-medium">動作</th>
-                <th className="pb-2 font-medium">是否被 legal hold 擋下</th>
+                <th className="pb-2 font-medium">是否被訴訟保全擋下</th>
               </tr>
             </thead>
             <tbody>
@@ -117,9 +118,11 @@ export default async function AdminDataPage({
                   </td>
                   <td className="py-2 pr-3">{log.policyKey}</td>
                   <td className="py-2 pr-3 text-xs text-ink-soft">
-                    {log.targetType}:{log.targetId}
+                    {RETENTION_TARGET_TYPE_LABEL[log.targetType] ?? log.targetType}:{log.targetId}
                   </td>
-                  <td className="py-2 pr-3">{log.actionTaken}</td>
+                  <td className="py-2 pr-3">
+                    {RETENTION_ACTION_LABEL[log.actionTaken] ?? log.actionTaken}
+                  </td>
                   <td className="py-2">{log.skippedLegalHold ? "是" : "否"}</td>
                 </tr>
               ))}

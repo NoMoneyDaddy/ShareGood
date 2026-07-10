@@ -108,7 +108,7 @@ export default async function AdminDashboardPage() {
           >
             <p className="text-sm font-medium text-ink">稽核紀錄查詢</p>
             <p className="mt-1 text-xs text-ink-soft">
-              所有管理操作（actor／action／target／時間）
+              所有管理操作（操作者／動作／對象／時間）
             </p>
           </Link>
           {/* M8 營運強化（master-plan §8a）／M7 資料權利與法務（master-plan §7a）：這四頁一直
@@ -133,7 +133,7 @@ export default async function AdminDashboardPage() {
             href="/admin/legal-holds"
             className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
           >
-            <p className="text-sm font-medium text-ink">訴訟保全（admin-only）</p>
+            <p className="text-sm font-medium text-ink">訴訟保全（僅限管理者）</p>
             <p className="mt-1 text-xs text-ink-soft">建立／解除訴訟保全，暫停資料清除與去識別化</p>
           </Link>
           <Link
@@ -141,7 +141,7 @@ export default async function AdminDashboardPage() {
             className="block rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2"
           >
             <p className="text-sm font-medium text-ink">警方／檢調調閱請求</p>
-            <p className="mt-1 text-xs text-ink-soft">不對外開放，僅供客服/admin 收到公文後建檔</p>
+            <p className="mt-1 text-xs text-ink-soft">不對外開放，僅供客服或管理者收到公文後建檔</p>
           </Link>
         </div>
       </section>

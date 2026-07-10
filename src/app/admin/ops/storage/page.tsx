@@ -10,7 +10,7 @@ import { formatBytes, formatTaipeiDateTime } from "../format";
 import { OpsNav } from "../ops-nav";
 import { requireOpsPageAccess } from "../require-ops-access";
 
-export const metadata = { title: "Storage 用量 - 營運儀表板" };
+export const metadata = { title: "儲存空間用量 - 營運儀表板" };
 
 const PAGE_SIZE = 20;
 /** 用量成長圖表用，每個 bucket 最多畫這麼多筆快照（跟下面分頁列表的 cursor 無關，
@@ -105,22 +105,22 @@ export default async function AdminOpsStoragePage({
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
-      <h1 className="text-2xl font-bold tracking-tight">Storage 用量</h1>
+      <h1 className="text-2xl font-bold tracking-tight">儲存空間用量</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        MinIO 實際用量、依物品狀態分類、孤兒用量（已下架但圖片未清除）。
+        圖片儲存服務（MinIO）實際用量、依物品狀態分類、孤兒用量（已下架但圖片未清除）。
       </p>
 
       <OpsNav active="/admin/ops/storage" />
 
       {!latest ? (
         <p className="mt-6 rounded-xl border border-line bg-card px-4 py-8 text-center text-sm text-ink-soft">
-          尚無快照資料，請先觸發 `storage_usage_snapshot` job
+          尚無快照資料，系統會每天自動拍攝一次用量快照，請稍後再回來查看
         </p>
       ) : (
         <>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl border border-line bg-card p-4">
-              <p className="text-xs text-ink-soft">bucket「{latest.bucket}」總用量</p>
+              <p className="text-xs text-ink-soft">儲存區「{latest.bucket}」總用量</p>
               <p className="mt-1 text-lg font-semibold text-ink">
                 {formatBytes(latest.totalBytes.toString())}
               </p>
@@ -182,7 +182,7 @@ export default async function AdminOpsStoragePage({
             <TrendLineChart
               labels={growthLabels}
               series={growthSeries}
-              ariaLabel="依 bucket 分組的儲存用量成長折線圖"
+              ariaLabel="依儲存區分組的儲存用量成長折線圖"
             />
             {growthSeries.length > 1 && (
               <ChartLegend

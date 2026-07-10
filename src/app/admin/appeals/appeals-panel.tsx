@@ -26,6 +26,14 @@ const STATUS_TABS: { value: string; label: string }[] = [
   { value: "rejected", label: "已駁回" },
 ];
 
+// 比照 restriction-panel.tsx 的既有對照表（該檔未匯出，這裡維持一份一致的複本）。
+const RESTRICTION_TYPE_LABEL: Record<string, string> = {
+  no_posting: "禁止上架",
+  no_claiming: "禁止留言／認領",
+  no_messaging: "禁止私訊",
+  full_block: "全站封鎖（唯讀）",
+};
+
 const TAIPEI_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
   timeZone: "Asia/Taipei",
   dateStyle: "short",
@@ -267,7 +275,9 @@ function AppealRow({
           )}
           {detail?.userRestriction && (
             <p className="text-ink-soft">
-              對應限制：{detail.userRestriction.type}（原因：{detail.userRestriction.reason}）
+              對應限制：
+              {RESTRICTION_TYPE_LABEL[detail.userRestriction.type] ?? detail.userRestriction.type}
+              （原因：{detail.userRestriction.reason}）
               {detail.userRestriction.liftedAt && "・已解除"}
             </p>
           )}

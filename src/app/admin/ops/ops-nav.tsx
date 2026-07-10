@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const TABS = [
   { href: "/admin/ops", label: "總覽" },
-  { href: "/admin/ops/storage", label: "Storage" },
+  { href: "/admin/ops/storage", label: "儲存空間" },
   { href: "/admin/ops/performance", label: "慢查詢" },
   { href: "/admin/ops/notifications", label: "通知" },
 ] as const;

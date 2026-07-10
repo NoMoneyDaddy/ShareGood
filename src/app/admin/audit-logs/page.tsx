@@ -18,6 +18,15 @@ const TAIPEI_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
 
 const TARGET_TYPE_OPTIONS = ["item", "user", "report", "appeal", "support_ticket"];
 
+// 對象類型的中文對照（查詢參數與資料值仍用原始代碼，僅顯示加中文說明方便辨識）。
+const TARGET_TYPE_LABEL: Record<string, string> = {
+  item: "物品",
+  user: "使用者",
+  report: "檢舉",
+  appeal: "申訴",
+  support_ticket: "使用者回報",
+};
+
 // 後台稽核紀錄查詢頁（master-plan §7 第 7 項）：moderator/admin 才能看，其餘一律 404
 // （比照 /admin/support-tickets 現有的權限判斷寫法）。純唯讀查詢，沒有現成的 API，直接
 // 查 db（比照 /admin/items、/admin/users 既有的 server component 直接查詢慣例）。
@@ -79,7 +88,8 @@ export default async function AdminAuditLogsPage({
     <main className="mx-auto w-full max-w-4xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">稽核紀錄</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        所有管理操作（actor／action／target／時間）唯讀查詢。
+        所有管理操作（操作者／動作／對象／時間）唯讀查詢；動作代碼與對象類型為系統內部代號，
+        供除錯與追蹤之用。
       </p>
 
       <div className="mt-6">
@@ -95,7 +105,7 @@ export default async function AdminAuditLogsPage({
           <option value="">全部對象類型</option>
           {TARGET_TYPE_OPTIONS.map((t) => (
             <option key={t} value={t}>
-              {t}
+              {TARGET_TYPE_LABEL[t] ?? t}（{t}）
             </option>
           ))}
         </select>
@@ -103,7 +113,7 @@ export default async function AdminAuditLogsPage({
           type="search"
           name="targetId"
           defaultValue={targetIdFilter ?? ""}
-          placeholder="依 target id 精確查詢"
+          placeholder="依對象 ID 精確查詢"
           className="min-w-0 flex-1 rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink outline-hidden placeholder:text-ink-soft focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
         />
         <button
@@ -135,7 +145,7 @@ export default async function AdminAuditLogsPage({
                 </div>
                 <p className="mt-1 text-xs text-ink-soft">
                   操作者：{log.actor?.profile?.nickname ?? log.actor?.id ?? "系統"}・對象：
-                  {log.targetType}
+                  {TARGET_TYPE_LABEL[log.targetType] ?? log.targetType}
                   {log.targetId ? `（${log.targetId}）` : ""}
                 </p>
                 {log.detail !== null && (
