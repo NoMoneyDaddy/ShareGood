@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { BottomTab } from "@/components/bottom-tab";
 import { OnboardingTour } from "@/components/onboarding-tour";
+import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { db } from "@/lib/db";
@@ -23,6 +24,9 @@ export default async function ShellLayout({ children }: { children: React.ReactN
   return (
     <div className="flex min-h-[100dvh] flex-col bg-paper text-ink">
       <SiteHeader session={session} profile={profile} />
+      {/* 走一般文件流（非 fixed），天生不會蓋住下面 fixed 的 BottomTab，
+          見 pwa-install-prompt.tsx 內的說明。 */}
+      <PwaInstallPrompt />
       <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <SiteFooter hasBottomTab />
       <BottomTab />

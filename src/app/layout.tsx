@@ -27,6 +27,17 @@ export const metadata: Metadata = {
     locale: "zh_TW",
     type: "website",
   },
+  // iOS Safari「加入主畫面」品質靠這幾個 meta／link 標籤，manifest.ts 不會產生：
+  // apple-touch-icon 沒有專用尺寸的圖示，沿用既有 192x192（PR #49），iOS 會自動縮放，
+  // 非最佳但足夠。
+  appleWebApp: {
+    capable: true,
+    title: "ShareGood",
+    statusBarStyle: "default",
+  },
+  icons: {
+    apple: "/icon-192.png",
+  },
 };
 
 export default function RootLayout({
