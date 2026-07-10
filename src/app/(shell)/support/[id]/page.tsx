@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
@@ -86,6 +87,7 @@ export default async function SupportTicketDetailPage({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/support" label="回到問題回報" />
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs font-medium text-ink-soft">

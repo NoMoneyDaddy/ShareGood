@@ -31,6 +31,15 @@ const SCOPE_TABS = [
   { value: "maxed", label: "已達重試上限" },
 ] as const;
 
+// 通知事件大類（實際細分事件另存在 payload.kind，這裡只標示大類供除錯辨識）。
+const NOTIFICATION_TYPE_LABEL: Record<string, string> = {
+  new_comment: "新留言",
+  claim_accepted: "認領成立",
+  direct_share_received: "收到直贈",
+  handover_message: "交接／系統事件",
+  completion_confirmed: "完成確認／系統事件",
+};
+
 function isScope(value: string | undefined): value is "retrying" | "maxed" {
   return value === "retrying" || value === "maxed";
 }
@@ -180,7 +189,9 @@ export default async function AdminOpsNotificationsPage({
                       <span className="font-medium text-ink">
                         {d.notification.user.profile?.nickname ?? "好物共享使用者"}
                       </span>
-                      <Badge variant="outline">{d.notification.type}</Badge>
+                      <Badge variant="outline">
+                        {NOTIFICATION_TYPE_LABEL[d.notification.type] ?? d.notification.type}
+                      </Badge>
                       <Badge variant={maxed ? "destructive" : "secondary"}>
                         {maxed
                           ? "已達重試上限"

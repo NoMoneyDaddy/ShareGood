@@ -303,6 +303,31 @@
     - 驗證：兩 PR 皆過 biome／tsc／production build／全套 vitest（261/266 基準）；#56 另過
       Playwright 主迴路。**環境教訓**：磁碟滿導致 Turbopack 快取崩潰偽裝成大規模測試失敗，
       見 `docs/governance/lessons/20260707-turbopack-cache-crash-on-full-disk.md`。
+- [x] 分類修訂（PR #57）：分類 11→15，改名消歧義（優惠票券→優惠券、母嬰童書→母嬰用品）、
+      新增傢俱大型物/美妝保養/書籍雜誌/運動戶外四實體分類，排序實體在前券票點聚攏其他墊底；
+      **slug 全部不動**（`coupons`/`tickets`/`points` 驅動表單與 API），seed 以 slug upsert 改名
+      自動生效；上架表單分類選單加四句條件式輔助說明。
+- [x] M10/M11 合併後成品 UX 走查（PR #58）：fresh-context 代理實機走查 7 段流程全順、0 阻斷級
+      問題（報告＋52 截圖在 `docs/research/2026-07-07-frontend-refactor/04-post-refactor-ux-
+      walkthrough.md`）；順手修 layout.tsx 無引用字型、ticket-form/conversation-thread 觸控目標。
+- [x] UX 走查 P1 三項（PR #59）：食品雜貨/即期食品措辭對齊（子表單標題「即期食品規則」→「食品
+      資訊」＋分類輔助說明）、深色 `--color-brand-soft` token 降飽和、多選 chip 觸控 32→44px。
+      **裁定教訓**：bot 建議把 chip `aria-pressed` 改 `role="checkbox"`，實測違反專案 biome
+      `a11y/useSemanticElements`（要求原生 input），`aria-pressed` toggle 本就合規，駁回並還原。
+- [x] V1 正式上線整合（PR #60）：使用者「下一個 PR 就要正式上線＋每功能不要陽春」指示，10 條
+      平行分支（全 sonnet，不自驗直接 push）由指揮官（opus）一次整合為單一上線 PR：貢獻排行榜
+      `/leaderboard`＋四級徽章＋身份徽章、個人頁/物品頁信任訊號（口徑走 `contribution_events`）、
+      面交安全提示進動線、11 頁返回列＋404＋後台回前台出口、首頁公開儀表板（0 時體面隱藏、
+      `unstable_cache`）、「加入主畫面」偽 app 引導（Android `beforeinstallprompt`／iOS 圖解）、
+      27 處內部術語外漏白話化（`src/lib/retention-labels.ts`）、`/items` 空狀態＋分享按鈕（參考
+      GiveCircle）、上線 runbook（`docs/runbooks/launch-checklist.md`：15 支 cron＋環境變數差集）。
+      整合衝突集中在 `/u/[userId]`（trust/givecircle 統計重疊，統一走 contribution_events 口徑）與
+      `/items/[id]`（badges/trust/givecircle 三方，徽章＋已分享件數＋新鮮度並存）。驗證：biome／
+      tsc／production build（93 頁）全過、vitest 261/266（5 個 data-rights MinIO 為既有基準）、
+      物品詳情頁 SSR 200 驗證整合元素正常。**已知環境限制**：Playwright 主迴路 `goto /items/[id]`
+      在本機卡 `load` 事件——fixture item 帶圖、圖 URL 指向本機 MinIO（`localhost:9200` 無服務），
+      `next/image` 對此上游 hang，非整合問題（正式站 `S3_PUBLIC_URL` 為公開網域無此問題）；市場
+      調查 B/C 級（互評/封鎖/收藏/手機驗證）列上線後 backlog（`docs/research/2026-07-07-launch/`）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案

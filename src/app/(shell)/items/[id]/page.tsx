@@ -4,8 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { ReportButton } from "@/components/report-button";
+import { ShareLinkButton } from "@/components/share-link-button";
+import { UserBadges } from "@/components/user-badge";
 import type { ItemStatus } from "@/generated/prisma/enums";
+import { getUserSharingStats } from "@/lib/contribution";
 import { db } from "@/lib/db";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
@@ -24,7 +28,7 @@ async function getItem(id: string) {
     include: {
       category: true,
       city: true,
-      owner: { include: { profile: true } },
+      owner: { include: { profile: true, roles: { select: { role: true } } } },
       images: {
         orderBy: { sortOrder: "asc" },
         include: { thumbObject: true, mediumObject: true },
@@ -37,6 +41,20 @@ async function getItem(id: string) {
       pointDetail: true,
     },
   });
+}
+
+// 參考 GiveCircle 物品詳情頁在分享者資訊列旁顯示「刊登時間」（研究文件
+// 05-givecircle-reference.md）：相對時間比絕對日期更快讓瀏覽者判斷「這則還新鮮嗎」，
+// 只用粗略天數/小時數即可，不需要對到台北時區的日界線（跟 CLAUDE.md 硬規則 8 講的
+// 「時間顯示」不同，這裡是模糊的新鮮度提示文字，不是精確時間戳）。
+function formatRelativePublished(date: Date) {
+  const diffMs = Date.now() - date.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (diffHours < 1) return "剛剛上架";
+  if (diffHours < 24) return `${diffHours} 小時前上架`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 30) return `${diffDays} 天前上架`;
+  return `${Math.floor(diffDays / 30)} 個月前上架`;
 }
 
 // SEO/AEO（master-plan §3.7）：物品狀態對應 schema.org Offer availability。
@@ -87,6 +105,12 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   const [item, session] = await Promise.all([getItem(id), auth()]);
   if (!item || item.status === "removed_by_moderator") notFound();
   if (item.status === "pending_review" && session?.user?.id !== item.ownerId) notFound();
+
+  // 分享者身分列的徽章與信任訊號（正式上線衝刺）：累計貢獻值（徽章用）與「已分享 N 件」
+  // 同一次 groupBy 拿齊（口徑見 src/lib/contribution.ts 的 getUserSharingStats，跟 /u/[userId]
+  // 共用），身份組徽章沿用剛查好的 item.owner.roles，不用再多查一次。
+  const ownerStats = await getUserSharingStats(item.ownerId);
+  const ownerContributionPoints = ownerStats.totalPoints;
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡的 session
   // 只用於本頁內容判斷（擁有者/接手者權限、檢舉按鈕顯示等）。
@@ -199,6 +223,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <BackBar fallbackHref="/items" />
       {item.images.length > 0 && (
         <div className="overflow-hidden rounded-2xl border border-line">
           <div className="relative aspect-[4/3] w-full bg-paper-2">
@@ -243,16 +268,26 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       <h1 className="mt-2 text-2xl font-semibold tracking-normal text-ink">{item.title}</h1>
       <p className="mt-3 whitespace-pre-wrap text-ink-soft">{item.description}</p>
 
-      <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
-        <span>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-line bg-card p-4 text-sm text-ink-soft">
+        <span className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
           分享者：
           <Link href={`/u/${item.ownerId}`} className="text-ink underline-offset-2 hover:underline">
             {item.owner.profile?.nickname ?? "好物共享使用者"}
           </Link>
+          <UserBadges roles={item.owner.roles} points={ownerContributionPoints} />
+          <span className="text-xs text-ink-soft">已分享 {ownerStats.sharedCount} 件</span>
+          <span className="mx-1.5 text-ink-disabled">・</span>
+          {formatRelativePublished(item.publishedAt ?? item.createdAt)}
         </span>
-        {session?.user && session.user.id !== item.ownerId && (
-          <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
-        )}
+        <div className="flex items-center gap-2">
+          {/* 參考 GiveCircle 物品詳情頁的分享列（研究文件 05-givecircle-reference.md）：
+              免費共享要靠使用者自己擴散出去，一顆隨手可按的分享按鈕比只能複製網址列
+              更容易被實際使用。 */}
+          <ShareLinkButton title={item.title} />
+          {session?.user && session.user.id !== item.ownerId && (
+            <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+          )}
+        </div>
       </div>
 
       {/* M10 批次 2：Zone 2「物品詳細資訊」——描述物品本身性質的參考資訊（券/票/點數），

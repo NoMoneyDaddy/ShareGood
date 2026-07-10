@@ -275,16 +275,31 @@ export function ItemForm({
           {/* 「分類即類型」：券票點三類會切換成對應的專屬表單，選錯分類＝走錯上架流程，
               所以在選中時給一句說明；傢俱大型物則提醒搬運。 */}
           {isCoupon && (
-            <p className="text-xs text-ink-soft">優惠券：有券碼或序號的折扣券，交接後才向接手者顯示券碼。</p>
+            <p className="text-xs text-ink-soft">
+              優惠券：有券碼或序號的折扣券，交接後才向接手者顯示券碼。
+            </p>
           )}
           {isTicket && (
-            <p className="text-xs text-ink-soft">電子票券：演出、展覽、交通等入場票券的無償轉贈（不是折扣券）。</p>
+            <p className="text-xs text-ink-soft">
+              電子票券：演出、展覽、交通等入場票券的無償轉贈（不是折扣券）。
+            </p>
           )}
           {isPoint && (
-            <p className="text-xs text-ink-soft">點數好康：會員點數的無償贈與媒合，實際移轉請走官方管道。</p>
+            <p className="text-xs text-ink-soft">
+              點數好康：會員點數的無償贈與媒合，實際移轉請走官方管道。
+            </p>
           )}
           {selectedCategory?.slug === "furniture" && (
-            <p className="text-xs text-ink-soft">大型傢俱請在描述註明尺寸與搬運方式，方便接手者評估。</p>
+            <p className="text-xs text-ink-soft">
+              大型傢俱請在描述註明尺寸與搬運方式，方便接手者評估。
+            </p>
+          )}
+          {/* P1-1（2026-07-07 UX 走查）：食品雜貨選下去會強制填到期日＋食安確認子表單，
+              先在選中分類當下說清楚，避免使用者以為「食品雜貨」只限即期品、選錯分類。 */}
+          {isExpiringFood && (
+            <p className="text-xs text-ink-soft">
+              食品雜貨：不論保存期限長短，都需要填寫有效期限並確認包裝狀態（含即期食品）。
+            </p>
           )}
         </div>
         <div className="space-y-2">
@@ -378,7 +393,11 @@ export function ItemForm({
 
       {isExpiringFood && (
         <div className="space-y-4 rounded-xl border border-line bg-card p-4">
-          <p className="text-sm font-medium text-ink">即期食品規則</p>
+          {/* P1-1：標題原為「即期食品規則」，即使分享的是離到期日還很久的食品（例如未拆封
+              罐頭、調味料）也會出現，容易讓人誤以為選錯分類；改成通用措辭「食品資訊」，
+              比照優惠券／票券／點數子表單「OO資訊」的既有命名慣例。食安確認勾選框文字與
+              下方食安提示皆屬法務/食安凍結範圍，一字不動。 */}
+          <p className="text-sm font-medium text-ink">食品資訊</p>
           <div className="space-y-2">
             <Label htmlFor="food-expires-at">到期日</Label>
             <Input

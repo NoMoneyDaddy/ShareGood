@@ -17,6 +17,12 @@ const TAIPEI_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
   timeStyle: "short",
 });
 
+const ROLE_LABEL: Record<string, string> = {
+  user: "一般使用者",
+  moderator: "審核人員",
+  admin: "管理者",
+};
+
 // 後台使用者管理頁（master-plan §7 第 7 項）：moderator/admin 才能看，其餘一律 404
 // （比照 /admin/support-tickets 現有的權限判斷寫法）。沒有現成的「使用者搜尋」API，
 // 直接查 db（比照 /admin/items、/admin/support-tickets 既有的 server component 直接
@@ -130,7 +136,7 @@ export default async function AdminUsersPage({
                   <div className="flex gap-1">
                     {u.roles.map((r) => (
                       <Badge key={r.role} variant={r.role === "admin" ? "default" : "secondary"}>
-                        {r.role}
+                        {ROLE_LABEL[r.role] ?? r.role}
                       </Badge>
                     ))}
                   </div>
@@ -155,7 +161,7 @@ export default async function AdminUsersPage({
                   <CreateRestrictionForm
                     userId={u.id}
                     disabled={targetIsAdmin && !isActorAdmin}
-                    disabledReason="moderator 不能限制 admin 帳號"
+                    disabledReason="審核人員不能限制管理者帳號"
                   />
                 </div>
               </div>

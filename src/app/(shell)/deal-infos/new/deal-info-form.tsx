@@ -166,7 +166,11 @@ export function DealInfoForm({
                   aria-pressed={cityIds.includes(c.id)}
                   onClick={() => toggleCity(c.id)}
                   className={cn(
-                    "min-h-8 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                    // P1-3（2026-07-07 UX 走查）：原本 min-h-8（32px）觸控目標偏小
+                    // （CLAUDE.md 記載為 WCAG 2.5.8 取捨），改成 min-h-11（44px）搭配
+                    // flex 置中，390px 寬實測（見 screenshots/p1-chip-390-after.png）
+                    // 縣市清單換行後仍不破版。
+                    "flex min-h-11 items-center justify-center rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                     cityIds.includes(c.id)
                       ? "border-brand bg-brand-soft/50 text-ink"
                       : "border-line bg-paper text-ink-soft hover:bg-paper-2",
@@ -189,7 +193,7 @@ export function DealInfoForm({
               onChange={(e) => setIsEditorial(e.target.checked)}
               className="size-4 rounded border-line"
             />
-            人工收錄（editorial）——關聯官方來源、直接發布不進審核佇列
+            以編輯身分人工收錄——關聯官方來源、直接發布不進審核佇列
           </label>
           {isEditorial && (
             <div className="space-y-2">

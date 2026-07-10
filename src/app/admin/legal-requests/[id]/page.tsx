@@ -15,6 +15,22 @@ const STATUS_LABEL: Record<string, string> = {
   closed: "已結案",
 };
 
+const TARGET_TYPE_LABEL: Record<string, string> = {
+  user: "使用者",
+  item: "物品",
+  conversation: "對話",
+  message: "訊息",
+};
+
+const EVENT_ACTION_LABEL: Record<string, string> = {
+  submitted: "建檔",
+  document_uploaded: "上傳公文",
+  approved: "核准",
+  rejected: "駁回",
+  export_generated: "產生匯出包",
+  export_downloaded: "下載匯出包",
+};
+
 const TAIPEI_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
   timeZone: "Asia/Taipei",
   dateStyle: "short",
@@ -90,7 +106,7 @@ export default async function AdminLegalRequestDetailPage({
         <ul className="mt-2 flex flex-wrap gap-1.5">
           {request.targets.map((t) => (
             <li key={t.id} className="rounded-full bg-paper-2 px-2 py-0.5 text-xs text-ink-soft">
-              {t.targetType}:{t.targetId}
+              {TARGET_TYPE_LABEL[t.targetType] ?? t.targetType}：{t.targetId}
             </li>
           ))}
         </ul>
@@ -112,8 +128,8 @@ export default async function AdminLegalRequestDetailPage({
           {!canReview && (request.status === "submitted" || request.status === "legal_review") && (
             <p className="text-sm text-ink-soft">
               {isAdmin
-                ? "建檔人不能核准/駁回自己建立的請求，需由另一位 admin 審核。"
-                : "只有 admin 可以審核。"}
+                ? "建檔人不能核准/駁回自己建立的請求，需由另一位管理者審核。"
+                : "只有管理者可以審核。"}
             </p>
           )}
         </div>
@@ -143,7 +159,7 @@ export default async function AdminLegalRequestDetailPage({
         <ul className="mt-2 flex flex-col gap-1.5 text-xs text-ink-soft">
           {request.events.map((e) => (
             <li key={`${e.action}-${e.createdAt.getTime()}`}>
-              {TAIPEI_FORMATTER.format(e.createdAt)}・{e.action}
+              {TAIPEI_FORMATTER.format(e.createdAt)}・{EVENT_ACTION_LABEL[e.action] ?? e.action}
               {e.note && `（${e.note}）`}
             </li>
           ))}

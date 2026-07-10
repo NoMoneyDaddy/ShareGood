@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
@@ -173,6 +174,7 @@ export default async function WalletPage({
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/me" />
       <h1 className="text-2xl font-bold tracking-tight">優惠券錢包</h1>
       <p className="mt-1.5 text-sm text-ink-soft">你分享出去與接手到的優惠券，狀態一目了然。</p>
 

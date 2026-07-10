@@ -1,10 +1,19 @@
-import { Bell, type LucideIcon, Settings, ShieldCheck, Ticket, UserCircle } from "lucide-react";
+import {
+  Bell,
+  type LucideIcon,
+  Settings,
+  ShieldCheck,
+  Ticket,
+  Trophy,
+  UserCircle,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { isModeratorOrAdmin } from "@/lib/support-tickets";
+import { PwaInstallCard } from "./pwa-install-card";
 import { RestartTourButton } from "./restart-tour-button";
 
 export const metadata: Metadata = { title: "我的" };
@@ -34,6 +43,12 @@ export default async function MePage() {
   const canModerate = user ? isModeratorOrAdmin(user) : false;
 
   const cards: MeCard[] = [
+    {
+      href: "/leaderboard",
+      icon: Trophy,
+      title: "貢獻排行榜",
+      description: "看看誰是最熱心的分享鄰居，也看看自己排第幾名。",
+    },
     {
       href: "/me/wallet",
       icon: Ticket,
@@ -81,6 +96,8 @@ export default async function MePage() {
       )}
 
       <div className="mt-6 flex flex-col gap-3">
+        <PwaInstallCard />
+
         {cards.map((card) => (
           <Link
             key={card.href}

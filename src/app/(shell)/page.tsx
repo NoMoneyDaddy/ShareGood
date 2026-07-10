@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { db } from "@/lib/db";
 import { listPublishedItems } from "@/lib/items";
 import { publicUrl } from "@/lib/storage";
+import { HomeStatsSection } from "./home-stats-section";
 
 // 熱門好物取幾筆最新 published 物品（首頁只是預覽，完整瀏覽＋篩選在 /items）
 const HOME_FEATURED_COUNT = 8;
@@ -106,16 +107,28 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* 平台活躍度：訪客一眼感受到平台是活的（server component 直接查 db 計數，
+          5 分鐘快取見 src/lib/home-stats.ts；數字為 0 時的口徑放寬／隱藏邏輯同上）。 */}
+      <HomeStatsSection />
+
       {/* 熱門好物 */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="mb-6 flex items-end justify-between">
+        <div className="mb-6 flex items-end justify-between gap-3">
           <h2 className="text-2xl font-bold tracking-tight">熱門好物</h2>
-          <Link
-            href="/items"
-            className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
-          >
-            看更多 →
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/leaderboard"
+              className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+            >
+              貢獻排行榜 →
+            </Link>
+            <Link
+              href="/items"
+              className="text-sm font-medium text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+            >
+              看更多 →
+            </Link>
+          </div>
         </div>
 
         {featured.items.length === 0 ? (
@@ -188,7 +201,7 @@ export default async function HomePage() {
               </span>
               <h3 className="mt-4 font-bold">留言需要</h3>
               <p className="mt-1.5 max-w-[30ch] text-sm text-ink-soft">
-                需要的人留言，分享者從中挑選，也能直接贈與。
+                看到喜歡的就留言，最快的一則會先保留；分享者也能指定直接贈與。
               </p>
             </div>
             <div>

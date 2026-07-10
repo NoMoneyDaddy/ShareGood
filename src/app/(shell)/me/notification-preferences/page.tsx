@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { db } from "@/lib/db";
 import { mergeWithDefaults } from "@/lib/notification-preferences";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ export default async function NotificationPreferencesPage() {
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/me" />
       <h1 className="text-2xl font-bold tracking-tight">通知偏好設定</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
         選擇每一類事件要不要收站內通知，以及要不要額外收 Telegram 等外部通知。

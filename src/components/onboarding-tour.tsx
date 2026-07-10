@@ -49,7 +49,8 @@ const STEPS: { icon: LucideIcon; title: string; description: string }[] = [
   {
     icon: MessageCircle,
     title: "在訊息裡約交接",
-    description: "配對成功後，雙方可以在「訊息」裡聊聊交接時間與地點，完成後互相確認。",
+    description:
+      "配對成功後，雙方可以在「訊息」裡聊聊交接時間與地點——約在公共場所面交更安心，完成後記得互相確認。",
   },
   {
     icon: User,

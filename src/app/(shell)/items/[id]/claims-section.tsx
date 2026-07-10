@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { ReportButton } from "@/components/report-button";
 import { Button } from "@/components/ui/button";
+import { UserBadges } from "@/components/user-badge";
 
 type Claim = {
   id: string;
@@ -11,7 +12,7 @@ type Claim = {
   message: string;
   status: "pending" | "accepted" | "declined";
   createdAt: string;
-  user: { nickname: string };
+  user: { nickname: string; roles: string[]; contributionPoints: number };
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -155,7 +156,10 @@ export function ClaimsSection({
         {claims.map((claim) => (
           <li key={claim.id} className="rounded-xl border border-line bg-card p-3">
             <div className="flex items-center justify-between gap-2 text-sm">
-              <span className="font-medium">{claim.user.nickname}</span>
+              <span className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                <span className="font-medium">{claim.user.nickname}</span>
+                <UserBadges roles={claim.user.roles} points={claim.user.contributionPoints} />
+              </span>
               <span className="text-xs text-ink-soft">{formatTime(claim.createdAt)}</span>
             </div>
             <p className="mt-1 whitespace-pre-wrap text-sm text-ink-soft">{claim.message}</p>

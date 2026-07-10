@@ -218,7 +218,9 @@ function CheckboxChip({
       aria-pressed={checked}
       onClick={onClick}
       className={cn(
-        "min-h-8 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+        // P1-3（2026-07-07 UX 走查）：比照 deal-info-form.tsx 縣市 chip 同步加大，
+        // min-h-8（32px）→ min-h-11（44px）。
+        "flex min-h-11 items-center justify-center rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
         checked
           ? "border-brand bg-brand-soft/50 text-ink"
           : "border-line bg-paper text-ink-soft hover:bg-paper-2",

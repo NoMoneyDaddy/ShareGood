@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RETENTION_ACTION_LABEL } from "@/lib/retention-labels";
 import { cn } from "@/lib/utils";
 
 type Policy = {
@@ -89,7 +90,7 @@ export function RetentionPolicyRow({ policy }: { policy: Policy }) {
           >
             {ACTIONS.map((a) => (
               <option key={a} value={a}>
-                {a}
+                {RETENTION_ACTION_LABEL[a] ?? a}
               </option>
             ))}
           </select>

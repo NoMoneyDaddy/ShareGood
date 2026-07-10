@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 const MAX_ATTACHMENTS = 3; // 同步 src/app/api/support-tickets/route.ts 的 MAX_ATTACHMENTS
 
 const CATEGORY_OPTIONS: { value: "bug" | "account" | "other"; label: string }[] = [
-  { value: "bug", label: "功能異常（bug）" },
+  { value: "bug", label: "功能異常" },
   { value: "account", label: "帳號問題" },
   { value: "other", label: "其他" },
 ];

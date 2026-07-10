@@ -45,7 +45,7 @@ export default async function AdminLegalHoldsPage({
     <main className="mx-auto w-full max-w-3xl px-4 py-8 pb-24 sm:px-6">
       <h1 className="text-2xl font-bold tracking-tight">訴訟保全（Legal Hold）</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
-        被保全的資料即使超過 retention 政策的保留期限，也不會被清除 job 處理。
+        被保全的資料即使超過資料保留政策的期限，系統也不會自動清除，直到保全解除為止。
       </p>
 
       <section className="mt-6">

@@ -2,6 +2,7 @@ import { LifeBuoy } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { BackBar } from "@/components/back-bar";
 import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
@@ -51,6 +52,7 @@ export default async function SupportPage() {
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-8 sm:px-6">
+      <BackBar fallbackHref="/" />
       <h1 className="text-2xl font-bold tracking-tight">問題回報</h1>
       <p className="mt-1.5 text-sm text-ink-soft">
         遇到功能異常或帳號問題嗎？告訴我們發生了什麼，我們會盡快處理。
