@@ -54,17 +54,22 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return jsonError("UNPROCESSABLE", "星等需為 1–5 的整數");
   }
 
+  // 評語為選填：空字串／純空白視同未填寫（比對前端 rating-section.tsx 留空時整個省略
+  // comment 欄位的行為一致），不當成「使用者填了無效內容」報 422——422 只保留給「有填但
+  // 超長或命中黑名單」這種真正需要使用者修正的情況。
   let comment: string | null = null;
   if (body?.comment !== undefined && body?.comment !== null) {
     const trimmed = typeof body.comment === "string" ? body.comment.trim() : "";
-    if (trimmed.length < 1 || trimmed.length > 300) {
-      return jsonError("UNPROCESSABLE", "評語需為 1–300 個字");
+    if (trimmed.length > 0) {
+      if (trimmed.length > 300) {
+        return jsonError("UNPROCESSABLE", "評語需為 1–300 個字");
+      }
+      const hit = await checkKeywordBlocklist(trimmed);
+      if (hit) {
+        return jsonError("UNPROCESSABLE", "評語包含不允許的字詞");
+      }
+      comment = trimmed;
     }
-    const hit = await checkKeywordBlocklist(trimmed);
-    if (hit) {
-      return jsonError("UNPROCESSABLE", "評語包含不允許的字詞");
-    }
-    comment = trimmed;
   }
 
   // 通知偏好：比照 M6 subscription-notify.ts 的較嚴謹模式（M12 決策 2），先查

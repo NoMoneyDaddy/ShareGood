@@ -79,7 +79,10 @@ export function RatingSection({ handoverId, isParticipant, mine, revealed }: Rat
             <fieldset className="flex items-center gap-1 border-0 p-0">
               <legend className="sr-only">星等（1–5 星，必填）</legend>
               {[1, 2, 3, 4, 5].map((n) => (
-                <label key={n} className="cursor-pointer p-0.5">
+                <label
+                  key={n}
+                  className="cursor-pointer rounded-md p-0.5 focus-within:outline-hidden focus-within:ring-3 focus-within:ring-brand/50"
+                >
                   <input
                     type="radio"
                     name="rating-stars"

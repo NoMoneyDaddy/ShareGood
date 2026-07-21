@@ -126,6 +126,10 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   let isReceiver = false;
   let handoverId: string | null = null;
   let conversationId: string | null = null;
+  // 已經查過一次 handoverRecord 就記下 id/receiverId，下面 M12 互評區塊（item.status ===
+  // "completed" 時一定要查）優先重用，避免登入使用者瀏覽已完成物品時對同一個 itemId
+  // 查兩次 handoverRecord。
+  let handoverForItem: { id: string; receiverId: string } | null = null;
   if (session?.user) {
     if (item.status === "reserved") {
       const [acceptedClaim, acceptedDirectShare] = await Promise.all([
@@ -142,6 +146,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       isReceiver = handover?.receiverId === session.user.id;
       handoverId = handover?.id ?? null;
       conversationId = conversation?.id ?? null;
+      if (handover) handoverForItem = { id: handover.id, receiverId: handover.receiverId };
     }
   }
 
@@ -178,10 +183,12 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   let myPendingRating: RatingValue | null = null;
   let ratingsHandoverId: string | null = null;
   if (item.status === "completed") {
-    const handoverForRatings = await db.handoverRecord.findUnique({
-      where: { itemId: item.id },
-      select: { id: true, receiverId: true },
-    });
+    const handoverForRatings =
+      handoverForItem ??
+      (await db.handoverRecord.findUnique({
+        where: { itemId: item.id },
+        select: { id: true, receiverId: true },
+      }));
     if (handoverForRatings) {
       ratingsHandoverId = handoverForRatings.id;
       const rows = await db.handoverRating.findMany({

@@ -31,11 +31,14 @@ type RetentionRow = { cohort_size: bigint | number; retained_count: bigint | num
 /**
  * D{n} 回訪率：cohort = Profile.createdAt 落在 [today-(n+7), today-n] 區間的使用者
  * （確保他們的第 n 天窗口已經完整走完，7 天寬的緩衝視窗）；分子＝cohort 中在
- * [signupDate, signupDate+n天] 內於 items／claim_comments／direct_shares（respondedAt）／
+ * (signupDate, signupDate+n天] 內於 items／claim_comments／direct_shares（respondedAt）／
  * messages／contribution_events 任一張表留下 userId 紀錄的人數（去重）。
  *
  * 口徑細節見 docs/plan/m12-product-growth.md 交付內容 6：ShareGood 沒有 page-view 級
- * 追蹤，這裡的「回訪」定義為「有實際互動」，比純頁面瀏覽更嚴格。
+ * 追蹤，這裡的「回訪」定義為「有實際互動」，比純頁面瀏覽更嚴格。**刻意排除註冊當天
+ * （Day 0）的活動**：新手導覽會誘導使用者剛註冊就上架/留言，把這算進「回訪」會把
+ * 「完成 onboarding」跟「之後真的回來」混為一談、系統性膨脹數字——業界標準的
+ * Day-N retention（Amplitude/Mixpanel 等）都是量測註冊日之後的回訪，不含註冊當天本身。
  */
 export async function getRetentionMetric(
   days: number,
@@ -73,7 +76,7 @@ export async function getRetentionMetric(
       FROM cohort c
       JOIN activity a
         ON a.user_id = c.user_id
-       AND a.created_at >= c.signup_at
+       AND a.created_at >= c.signup_at + INTERVAL '1 day'
        AND a.created_at <= c.signup_at + (${days} * INTERVAL '1 day')
     )
     SELECT
