@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageUploadGrid } from "@/components/image-upload-grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,6 +68,11 @@ export function BatchItemForm({
   const [formError, setFormError] = useState("");
   const [rowErrors, setRowErrors] = useState<Record<number, string>>({});
 
+  // 就緒狀態改用 state（readyRows）而非只讀 registryRef：子列的 title/description/images
+  // 只是子元件自己的 state，改變時只會觸發子元件重新渲染，不會自動讓父層重新渲染去重算
+  // canSubmit——若 canSubmit 只讀 ref，使用者填完最後一列後按鈕可能維持灰色直到某個無關的
+  // 父層 state 剛好變化。子列改用 onReadinessChange 回呼把就緒狀態明確同步進父層 state。
+  const [readyRows, setReadyRows] = useState<Record<string, boolean>>({});
   const registryRef = useRef<Map<string, RowRegistryEntry>>(undefined);
   registryRef.current ??= new Map();
   // 移除的列要一併從 registry 清掉，避免送出時撈到已經不存在的舊資料。
@@ -77,12 +82,15 @@ export function BatchItemForm({
   function registerRow(rowId: string, entry: RowRegistryEntry) {
     registryRef.current?.set(rowId, entry);
   }
+  const handleReadinessChange = useCallback((rowId: string, isReady: boolean) => {
+    setReadyRows((prev) => (prev[rowId] === isReady ? prev : { ...prev, [rowId]: isReady }));
+  }, []);
 
   const selectedCategory = categories.find((c) => c.id === categoryId);
   const isSpecialCategory = selectedCategory
     ? SPECIAL_CATEGORY_SLUGS.has(selectedCategory.slug)
     : false;
-  const allRowsReady = rowIds.every((id) => registryRef.current?.get(id)?.isReady() ?? false);
+  const allRowsReady = rowIds.every((id) => readyRows[id]);
 
   const canSubmit = !!categoryId && !!cityId && !isSpecialCategory && allRowsReady && !submitting;
 
@@ -92,6 +100,12 @@ export function BatchItemForm({
 
   function removeRow(rowId: string) {
     setRowIds((prev) => (prev.length <= MIN_ROWS ? prev : prev.filter((id) => id !== rowId)));
+    setReadyRows((prev) => {
+      if (!(rowId in prev)) return prev;
+      const next = { ...prev };
+      delete next[rowId];
+      return next;
+    });
   }
 
   async function submit(e: React.FormEvent) {
@@ -184,6 +198,7 @@ export function BatchItemForm({
               rowId={id}
               index={index}
               register={registerRow}
+              onReadinessChange={handleReadinessChange}
               onRemove={() => removeRow(id)}
               canRemove={rowIds.length > MIN_ROWS}
               error={rowErrors[index]}
@@ -210,6 +225,7 @@ function BatchRow({
   rowId,
   index,
   register,
+  onReadinessChange,
   onRemove,
   canRemove,
   error,
@@ -217,6 +233,7 @@ function BatchRow({
   rowId: string;
   index: number;
   register: (rowId: string, entry: RowRegistryEntry) => void;
+  onReadinessChange: (rowId: string, isReady: boolean) => void;
   onRemove: () => void;
   canRemove: boolean;
   error?: string;
@@ -243,6 +260,10 @@ function BatchRow({
       })),
     }),
   });
+
+  useEffect(() => {
+    onReadinessChange(rowId, isReady);
+  }, [rowId, isReady, onReadinessChange]);
 
   return (
     <div className="space-y-3 rounded-xl border border-line bg-card p-4">

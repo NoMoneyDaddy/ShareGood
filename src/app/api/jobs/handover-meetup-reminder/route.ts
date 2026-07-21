@@ -16,6 +16,11 @@ import { MEETUP_REMINDER_WINDOW_MS, notifyMeetupReminderIfEnabled } from "@/lib/
 // idempotent（跟 M3 item-expiration／M5 lottery-draw 同一套既定模式）。
 const JOB_KEY = "handover_meetup_reminder";
 const BATCH_LIMIT = 500;
+// 每筆各自開獨立的 db.$transaction（不共用同一個 tx），分批平行處理是安全的（比照
+// M6 web-push 多裝置 Promise.all＋各自獨立 try/catch 的既定模式）：500 筆若循序 await
+// 逐一 round-trip，容易讓這支 cron 端點逾時；一次全部 500 併發又可能打爆連線池，故折衷
+// 分批。
+const CHUNK_SIZE = 10;
 
 export async function POST(req: NextRequest) {
   const token = req.headers.get("authorization")?.replace("Bearer ", "");
@@ -50,31 +55,36 @@ export async function POST(req: NextRequest) {
     });
 
     let remindedCount = 0;
-    for (const handover of candidates) {
-      // scheduledAt 在上面的 where 已經確保 not null，這裡用 non-null assertion 是安全的。
-      const scheduledAt = handover.scheduledAt as Date;
-      const sent = await db.$transaction(async (tx) => {
-        const claimed = await tx.handoverRecord.updateMany({
-          where: { id: handover.id, reminderSentAt: null, status: "pending" },
-          data: { reminderSentAt: now },
-        });
-        if (claimed.count === 0) return false;
+    for (let i = 0; i < candidates.length; i += CHUNK_SIZE) {
+      const chunk = candidates.slice(i, i + CHUNK_SIZE);
+      const results = await Promise.all(
+        chunk.map((handover) => {
+          // scheduledAt 在上面的 where 已經確保 not null，這裡用 non-null assertion 是安全的。
+          const scheduledAt = handover.scheduledAt as Date;
+          return db.$transaction(async (tx) => {
+            const claimed = await tx.handoverRecord.updateMany({
+              where: { id: handover.id, reminderSentAt: null, status: "pending" },
+              data: { reminderSentAt: now },
+            });
+            if (claimed.count === 0) return false;
 
-        await notifyMeetupReminderIfEnabled(tx, {
-          userId: handover.item.ownerId,
-          itemId: handover.item.id,
-          itemTitle: handover.item.title,
-          scheduledAt,
-        });
-        await notifyMeetupReminderIfEnabled(tx, {
-          userId: handover.receiverId,
-          itemId: handover.item.id,
-          itemTitle: handover.item.title,
-          scheduledAt,
-        });
-        return true;
-      });
-      if (sent) remindedCount++;
+            await notifyMeetupReminderIfEnabled(tx, {
+              userId: handover.item.ownerId,
+              itemId: handover.item.id,
+              itemTitle: handover.item.title,
+              scheduledAt,
+            });
+            await notifyMeetupReminderIfEnabled(tx, {
+              userId: handover.receiverId,
+              itemId: handover.item.id,
+              itemTitle: handover.item.title,
+              scheduledAt,
+            });
+            return true;
+          });
+        }),
+      );
+      remindedCount += results.filter(Boolean).length;
     }
 
     await db.systemJobRun.update({
