@@ -1,11 +1,12 @@
 "use client";
 
-import { Loader2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { ImageUploadGrid } from "@/components/image-upload-grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useImageUploadSlots } from "@/hooks/use-image-upload-slots";
 import {
   COUPON_CATEGORY_SLUG,
   EXPIRING_FOOD_CATEGORY_SLUG,
@@ -14,15 +15,6 @@ import {
 } from "@/lib/categories";
 
 const MAX_IMAGES = 5;
-
-type ImageSlot = {
-  key: string;
-  previewUrl: string;
-  status: "uploading" | "done" | "error";
-  thumbObjectId?: string;
-  mediumObjectId?: string;
-  error?: string;
-};
 
 export function ItemForm({
   categories,
@@ -38,7 +30,8 @@ export function ItemForm({
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [cityId, setCityId] = useState(defaultCityId);
-  const [images, setImages] = useState<ImageSlot[]>([]);
+  const { images, addImages, removeImage, readyImages, hasUploading } =
+    useImageUploadSlots(MAX_IMAGES);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
@@ -62,79 +55,6 @@ export function ItemForm({
   const [pointPlatform, setPointPlatform] = useState("");
   const [pointAmount, setPointAmount] = useState("");
 
-  // 追蹤本機選檔建立的 blob: 預覽連結，組件卸載時統一釋放，避免瀏覽器記憶體洩漏。
-  const previewUrlsRef = useRef<string[]>([]);
-  useEffect(() => {
-    return () => {
-      for (const url of previewUrlsRef.current) URL.revokeObjectURL(url);
-    };
-  }, []);
-
-  async function addImages(files: FileList | null) {
-    if (!files) return;
-    const room = MAX_IMAGES - images.length;
-    const picked = Array.from(files).slice(0, room);
-
-    const newSlots = picked.map((file) => {
-      const key = `${file.name}-${Date.now()}-${Math.random()}`;
-      const previewUrl = URL.createObjectURL(file);
-      previewUrlsRef.current.push(previewUrl);
-      return { key, previewUrl, file };
-    });
-
-    setImages((prev) => [
-      ...prev,
-      ...newSlots.map(({ key, previewUrl }) => ({ key, previewUrl, status: "uploading" as const })),
-    ]);
-
-    await Promise.all(
-      newSlots.map(async ({ key, file }) => {
-        try {
-          const form = new FormData();
-          form.append("file", file);
-          const res = await fetch("/api/uploads", { method: "POST", body: form });
-          const data = await res.json().catch(() => null);
-          const thumbId = data?.variants?.thumb?.storageObjectId;
-          const mediumId = data?.variants?.medium?.storageObjectId;
-
-          setImages((prev) =>
-            prev.map((img) =>
-              img.key !== key
-                ? img
-                : res.ok && thumbId && mediumId
-                  ? { ...img, status: "done", thumbObjectId: thumbId, mediumObjectId: mediumId }
-                  : { ...img, status: "error", error: data?.error?.message ?? "上傳失敗" },
-            ),
-          );
-        } catch {
-          setImages((prev) =>
-            prev.map((img) =>
-              img.key !== key
-                ? img
-                : { ...img, status: "error", error: "上傳失敗，請檢查網路連線" },
-            ),
-          );
-        }
-      }),
-    );
-  }
-
-  function removeImage(key: string) {
-    setImages((prev) => {
-      const target = prev.find((img) => img.key === key);
-      if (target) {
-        URL.revokeObjectURL(target.previewUrl);
-        previewUrlsRef.current = previewUrlsRef.current.filter((url) => url !== target.previewUrl);
-      }
-      return prev.filter((img) => img.key !== key);
-    });
-  }
-
-  const readyImages = images.filter(
-    (img): img is ImageSlot & { thumbObjectId: string; mediumObjectId: string } =>
-      img.status === "done" && !!img.thumbObjectId && !!img.mediumObjectId,
-  );
-  const hasUploading = images.some((img) => img.status === "uploading");
   const couponFieldsValid =
     !isCoupon ||
     (couponFaceValue.trim().length >= 1 &&
@@ -535,56 +455,16 @@ export function ItemForm({
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="images">
+        <Label htmlFor="item-form-images">
           圖片（{images.length}/{MAX_IMAGES}）
         </Label>
-        <div className="flex flex-wrap gap-2">
-          {images.map((img) => (
-            <div
-              key={img.key}
-              className="relative h-20 w-20 shrink-0 rounded-lg border border-line bg-paper-2"
-            >
-              {/* 圓角改套在 img 與遮罩上、父容器不用 overflow-hidden：
-                  overflow-hidden 會把刻意突出邊角的移除按鈕與其觸控熱區一起裁掉（含命中測試）。 */}
-              {/* biome-ignore lint/performance/noImgElement: 本機選檔的暫時預覽（blob: URL），不是可最佳化的遠端圖片 */}
-              <img src={img.previewUrl} alt="" className="h-full w-full rounded-lg object-cover" />
-              {img.status === "uploading" && (
-                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-ink/40">
-                  <Loader2 size={20} className="animate-spin text-white" aria-hidden="true" />
-                </div>
-              )}
-              {img.status === "error" && (
-                <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-destructive/80 p-1 text-center text-[10px] text-white">
-                  {img.error}
-                </div>
-              )}
-              <button
-                type="button"
-                onClick={() => removeImage(img.key)}
-                aria-label="移除這張圖片"
-                className="absolute -top-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-white ring-2 ring-paper after:absolute after:-inset-2 after:content-['']"
-              >
-                <X size={14} aria-hidden="true" />
-              </button>
-            </div>
-          ))}
-          {images.length < MAX_IMAGES && (
-            <label className="flex h-20 w-20 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-line text-xs text-ink-soft">
-              <span className="text-lg leading-none">＋</span>
-              新增
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => {
-                  addImages(e.target.files);
-                  e.target.value = "";
-                }}
-                className="sr-only"
-              />
-            </label>
-          )}
-        </div>
+        <ImageUploadGrid
+          images={images}
+          maxImages={MAX_IMAGES}
+          onAdd={addImages}
+          onRemove={removeImage}
+          inputId="item-form-images"
+        />
       </div>
 
       {formError && <p className="text-sm text-destructive">{formError}</p>}
