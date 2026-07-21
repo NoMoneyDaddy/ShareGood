@@ -23,6 +23,10 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const nickname = typeof body?.nickname === "string" ? body.nickname.trim() : "";
   const cityId = typeof body?.cityId === "string" ? body.cityId : null;
+  // M12 交付內容 4（排行榜 opt-out）：選填欄位，沒帶就維持既有值／預設 false，不強制
+  // 每次呼叫都要傳（見 docs/plan/m12-product-growth.md 交付內容 4）。
+  const leaderboardOptOut =
+    typeof body?.leaderboardOptOut === "boolean" ? body.leaderboardOptOut : undefined;
 
   if (nickname.length < 2 || nickname.length > 20) {
     return jsonError("UNPROCESSABLE", "暱稱需為 2–20 個字");
@@ -34,9 +38,13 @@ export async function POST(req: NextRequest) {
 
   const profile = await db.profile.upsert({
     where: { userId: user.id },
-    update: { nickname, cityId },
-    create: { userId: user.id, nickname, cityId },
+    update: { nickname, cityId, ...(leaderboardOptOut !== undefined ? { leaderboardOptOut } : {}) },
+    create: { userId: user.id, nickname, cityId, leaderboardOptOut: leaderboardOptOut ?? false },
   });
 
-  return NextResponse.json({ nickname: profile.nickname, cityId: profile.cityId });
+  return NextResponse.json({
+    nickname: profile.nickname,
+    cityId: profile.cityId,
+    leaderboardOptOut: profile.leaderboardOptOut,
+  });
 }
