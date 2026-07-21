@@ -341,9 +341,46 @@
       leaderboard-query/user-profile-page）回應「新功能零測試」批評，全套 **vitest 287/292**
       （5 個 data-rights MinIO 為既有基準）。**上線本身**（`ADMIN_EMAIL` 等環境變數、15 支 cron、
       首次備份）是使用者在 Zeabur 的部署步驟，非程式碼缺陷，見 `docs/runbooks/launch-checklist.md`。
-- [ ] M12 產品增量（審計挖出、使用者拍板「全做」）：互評/收藏/封鎖/排行榜 opt-out/面交約定時間
-      （5 個動核心 schema）＋產品成長儀表板/批量上架（2 個無 schema）。比照 M9「schema 地基→平行
-      功能」模式，設計代理先出 schema＋規格→指揮官審核→派實作 wave→整合成獨立 PR。
+- [x] M12 產品增量（PR #65 已合併，審計挖出、使用者拍板「全做」）：範圍見
+      `docs/plan/m12-product-growth.md`，比照 M9「schema 地基→平行功能」模式，schema 地基
+      （PR #61）→三路平行 wave→我整合為單一 PR。
+    - [x] Wave A（PR #64）：雙向互評 `POST /api/handover/[id]/ratings`（交接完成後雙方各評 1–5
+          星＋選填評語 300 字，評語空字串／純空白視同未填寫不誤報 422，命中黑名單才 422）；
+          排行榜 opt-out（`/me/settings` 新增區塊，`Profile.leaderboardOptOut`，貢獻值仍照實記在
+          `contribution_events`，只是不出現在 `/leaderboard` 榜單）；產品成長儀表板 `/admin/growth`
+          （moderator/admin，回訪率計算排除 Day 0 比照業界標準定義、留存漏斗）。
+    - [x] Wave B（PR #62）：收藏 `/me/favorites`（`POST/DELETE /api/items/[id]/favorites`，收藏
+          物品被認領或即將到期會收到通知，事件 kind `favorite_item_claimed`／`favorite_item_expiring`）；
+          使用者封鎖 `/me/blocked-users`（`POST /api/users/[id]/block`，被封鎖者無法對你的物品
+          留言或收到你的直贈邀請）。
+    - [x] Wave C（PR #63）：面交約定時間 `PATCH /api/handover/[id]/meetup`（任一方可設不需雙方
+          確認，改時間會重置 `reminderSentAt`）＋`POST /api/jobs/handover-meetup-reminder`（提前
+          2 小時提醒，比照 M6 web-push 既定模式：每筆各自獨立 `db.$transaction`、分批
+          `Promise.all` 平行處理，不是同一個 tx 內平行）；批量上架 `/items/new/batch`（一次最多
+          上架多筆物品，就緒狀態用 `useState`＋子元件 `onReadinessChange` 回報父層，修掉原本讀
+          `useRef` 註冊表在子元件自身 re-render 時對父層是舊值的 bug）。
+    - **整合衝突**：三個 wave 各自新增獨立通知事件 kind，`notification-preferences.ts`／
+      `notification-dispatch.ts`／`notification-format.ts`／`notifications/page.tsx` 四處皆為
+      「三邊都保留」（互不相干的新事件，不是互相覆蓋）；`me/settings/page.tsx` 排行榜 opt-out
+      區塊＋封鎖名單入口並存；`items/[id]/page.tsx` 的 `handoverRecord` 查詢去重（Wave A）與
+      面交時間讀取（Wave C）合併為互相重用同一次查詢結果。**Gemini review 觸發**共採納 7 項
+      （含上述評語空字串、星等/解除封鎖按鈕鍵盤焦點樣式、回訪率排除 Day 0、批量上架就緒狀態
+      改用 state、面交提醒 job 分批平行），駁回 2 項（`favorites.ts` 在同一互動式 transaction
+      內用 `Promise.all` 平行查詢——Prisma 不保證真正平行、官方建議循序；`/admin/growth` 加頁面
+      快取——比照 `/admin/ops/performance` 既定慣例，moderator/admin-only 低流量頁不需要）。
+      驗證：`biome`／`tsc`／`NODE_ENV=production next build`（101 頁）全過，
+      `vitest run --config vitest.config.ts` **338/343**（5 個 data-rights MinIO 為既有基準）。
+      整合 PR（#65）自己也觸發一輪 Gemini review：回訪率原本用「整整 24 小時」絕對區間比對，
+      改成台北日曆天比對——**沒有直接套用建議的 SQL**，先查證這個環境 Postgres session
+      `TimeZone` 預設是 `Etc/UTC` 不是 `Asia/Taipei`，直接 `::date` 轉型會切在台北時間早上
+      8 點，改成先 `AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Taipei'` 還原時區再轉型；面交時間
+      輸入元件 `toLocalInputValue` 原本讀執行環境本機時區、SSR 與瀏覽器 hydration 時區不同會
+      不一致，改固定用台北時區換算，並額外補上 Gemini 建議沒提到的另一半（`fromLocalInputValue`
+      同步修正送出時的反向換算，否則顯示與送出兩端時區假設會對不起來）。
+- [ ] M13 前端重頭設計（使用者 2026-07-21 指示，Wow-Frontend-Design 技能）：M12 merge 後開工，
+      範圍涵蓋**前台與後台**、從頭重新設計（非最小安全重構），目標是同時降低使用者與管理者的
+      **操作摩擦**（少點擊、流程短、好發現）與**學習摩擦**（不用說明書也看得懂；後台目前偏
+      功能導向，非工程背景的 moderator 上手困難）。
 - 之後每完成一個 milestone，就把上面清單勾掉並更新。
 
 ## 路由表：何時讀哪份檔案
