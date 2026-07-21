@@ -2,6 +2,7 @@
 
 import { Loader2, Send, ShieldCheck } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BlockButton } from "@/components/block-button";
 import { ReportButton } from "@/components/report-button";
 import { RoleBadge } from "@/components/user-badge";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,8 @@ export function ConversationThread({
   currentUserId,
   initialMessages,
   memberRoles = {},
+  otherUserId,
+  initialOtherBlocked = false,
 }: {
   conversationId: string;
   currentUserId: string;
@@ -34,6 +37,11 @@ export function ConversationThread({
   // 正式上線衝刺（貢獻值排行榜＋徽章）：對話成員 userId → 身份組陣列，只有 admin/moderator
   // 才會出現在這個 map 裡（見 page.tsx 查詢），純粹用來在對方訊息上顯示信任徽章。
   memberRoles?: Record<string, string[]>;
+  // M12（docs/plan/m12-product-growth.md 交付內容 3）：對話另一位成員的 id，供封鎖按鈕使用。
+  // 規格明定「不影響進行中的交接對話」——這裡的封鎖按鈕只是提供入口，封鎖後仍然可以繼續
+  // 在這個對話串私訊（見 conversations/[id]/messages/route.ts 刻意不加封鎖檢查的說明）。
+  otherUserId: string;
+  initialOtherBlocked?: boolean;
 }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [body, setBody] = useState("");
@@ -105,6 +113,9 @@ export function ConversationThread({
 
   return (
     <div className="flex h-[70vh] flex-col rounded-2xl border border-line bg-card">
+      <div className="flex items-center justify-end border-b border-line px-3 py-2">
+        <BlockButton targetUserId={otherUserId} initialBlocked={initialOtherBlocked} />
+      </div>
       <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && (
           <p className="text-center text-sm text-ink-soft">還沒有訊息，說聲你好開始交接吧</p>

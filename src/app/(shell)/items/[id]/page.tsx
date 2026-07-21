@@ -5,6 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { BackBar } from "@/components/back-bar";
+import { BlockButton } from "@/components/block-button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { ReportButton } from "@/components/report-button";
 import { ShareLinkButton } from "@/components/share-link-button";
 import { UserBadges } from "@/components/user-badge";
@@ -114,6 +116,27 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡的 session
   // 只用於本頁內容判斷（擁有者/接手者權限、檢舉按鈕顯示等）。
+
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏數社會證明數字（任何人都看得到，
+  // 不限登入）＋目前登入者是否已收藏（只有登入才需要查）。規格明定「只顯示彙總數字，不顯示
+  // 收藏者名單」，這裡只 count，不 select userId 清單。
+  // 交付內容 3：目前登入者是否已封鎖物主，決定 BlockButton 的初始顯示狀態（這支查詢對「封鎖
+  // 發起人」自己完全透明，不算違反無感知封鎖設計——無感知只針對被封鎖的那一方）。
+  const [favoriteCount, viewerFavorite, viewerBlockedOwner] = await Promise.all([
+    db.itemFavorite.count({ where: { itemId: item.id } }),
+    session?.user
+      ? db.itemFavorite.findUnique({
+          where: { userId_itemId: { userId: session.user.id, itemId: item.id } },
+          select: { id: true },
+        })
+      : null,
+    session?.user && session.user.id !== item.ownerId
+      ? db.userBlock.findUnique({
+          where: { blockerId_blockedId: { blockerId: session.user.id, blockedId: item.ownerId } },
+          select: { id: true },
+        })
+      : null,
+  ]);
 
   // 交接區塊需要知道「目前登入者是不是被接受的那個人」；reserved 狀態下接手者資訊在
   // ClaimComment/DirectShare 裡（handover 還沒建立），handover_pending／completed 狀態下
@@ -278,14 +301,32 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           <span className="text-xs text-ink-soft">已分享 {ownerStats.sharedCount} 件</span>
           <span className="mx-1.5 text-ink-disabled">・</span>
           {formatRelativePublished(item.publishedAt ?? item.createdAt)}
+          {/* M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏數社會證明，任何人
+              （含未登入訪客）都看得到，只顯示彙總數字、不顯示是誰收藏的。 */}
+          {favoriteCount > 0 && (
+            <>
+              <span className="mx-1.5 text-ink-disabled">・</span>
+              <span className="text-xs text-ink-soft">已有 {favoriteCount} 人收藏</span>
+            </>
+          )}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* 參考 GiveCircle 物品詳情頁的分享列（研究文件 05-givecircle-reference.md）：
               免費共享要靠使用者自己擴散出去，一顆隨手可按的分享按鈕比只能複製網址列
               更容易被實際使用。 */}
           <ShareLinkButton title={item.title} />
+          {session?.user && (
+            <FavoriteButton itemId={item.id} initialFavorited={viewerFavorite !== null} />
+          )}
           {session?.user && session.user.id !== item.ownerId && (
-            <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+            <div className="flex items-center gap-2">
+              <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+              <span className="text-ink-disabled">・</span>
+              <BlockButton
+                targetUserId={item.ownerId}
+                initialBlocked={viewerBlockedOwner !== null}
+              />
+            </div>
           )}
         </div>
       </div>

@@ -101,6 +101,13 @@ function describeNotification(type: string, payload: unknown): string {
     const totalCount = typeof p.totalCount === "number" ? p.totalCount : 0;
     return `今天有 ${totalCount} 件符合你訂閱條件的新物品，點我查看摘要`;
   }
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏提醒，見 src/lib/favorites.ts。
+  if (p.kind === "favorite_item_claimed") {
+    return `你收藏的「${itemTitleOf(p)}」已經被別人接走了`;
+  }
+  if (p.kind === "favorite_item_expiring") {
+    return `你收藏的「${itemTitleOf(p)}」即將到期`;
+  }
   const count = mergedCountOf(payload);
   switch (type) {
     case "new_comment":

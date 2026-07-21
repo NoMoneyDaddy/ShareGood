@@ -61,6 +61,15 @@ export const NOTIFICATION_EVENT_TYPES = [
     defaultInAppEnabled: true,
     defaultExternalEnabled: false,
   },
+  {
+    // M12（docs/plan/m12-product-growth.md 交付內容 2）：涵蓋 favorite_item_claimed／
+    // favorite_item_expiring 兩種 kind（見 src/lib/favorites.ts）。收藏提醒不是急迫事件，
+    // 外部通知預設關，比照 subscription_digest 的既定判斷。
+    eventType: "favorite_item_update",
+    label: "收藏的物品被認領或即將到期",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: false,
+  },
 ] as const;
 
 export type NotificationEventType = (typeof NOTIFICATION_EVENT_TYPES)[number]["eventType"];

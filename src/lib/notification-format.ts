@@ -60,6 +60,11 @@ export function formatNotificationText(type: string, payload: unknown): string {
       const total = typeof p.totalCount === "number" ? p.totalCount : 0;
       return `${PREFIX}今天有 ${total} 件符合你訂閱條件的新物品，登入網站查看摘要`;
     }
+    // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏提醒，見 src/lib/favorites.ts。
+    case "favorite_item_claimed":
+      return `${PREFIX}你收藏的「${title}」已經被別人接走了`;
+    case "favorite_item_expiring":
+      return `${PREFIX}你收藏的「${title}」即將到期`;
   }
 
   switch (type) {

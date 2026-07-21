@@ -51,6 +51,18 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
     memberRoles[r.userId] = [...(memberRoles[r.userId] ?? []), r.role];
   }
 
+  // M12（docs/plan/m12-product-growth.md 交付內容 3）：對話串的封鎖按鈕需要知道對方是誰、
+  // 目前登入者是否已經封鎖過對方（決定按鈕初始顯示狀態）。
+  const otherUserId =
+    conversation.members.find((m) => m.userId !== session.user.id)?.userId ?? session.user.id;
+  const existingBlock =
+    otherUserId !== session.user.id
+      ? await db.userBlock.findUnique({
+          where: { blockerId_blockedId: { blockerId: session.user.id, blockedId: otherUserId } },
+          select: { id: true },
+        })
+      : null;
+
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6">
       <BackBar
@@ -65,6 +77,8 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
           currentUserId={session.user.id}
           initialMessages={initialMessages}
           memberRoles={memberRoles}
+          otherUserId={otherUserId}
+          initialOtherBlocked={existingBlock !== null}
         />
       </div>
     </div>
