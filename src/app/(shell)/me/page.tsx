@@ -1,5 +1,6 @@
 import {
   Bell,
+  Heart,
   type LucideIcon,
   Settings,
   ShieldCheck,
@@ -54,6 +55,12 @@ export default async function MePage() {
       icon: Ticket,
       title: "優惠券錢包",
       description: "你分享出去和接手到的券都在這。",
+    },
+    {
+      href: "/me/favorites",
+      icon: Heart,
+      title: "我的收藏",
+      description: "收藏的物品被接走或即將到期，我們會提醒你。",
     },
     {
       href: "/me/subscriptions",

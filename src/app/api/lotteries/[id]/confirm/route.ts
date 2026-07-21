@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { notifyFavoritersOfItemClaimed } from "@/lib/favorites";
 import { checkFullBlock } from "@/lib/restrictions";
 
 // PATCH /api/lotteries/[id]/confirm — 目前 current_rank 對應的候選人本人確認中選
@@ -83,6 +84,18 @@ export async function PATCH(_req: Request, { params }: { params: Promise<{ id: s
           toStatus: "reserved",
           actorId: user.id,
         },
+      });
+
+      // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏這個物品的其他使用者
+      // 收到「已被接走」提醒，排除物主自己與這位剛確認中選的使用者。
+      const confirmedItem = await tx.item.findUniqueOrThrow({
+        where: { id: lottery.itemId },
+        select: { title: true, ownerId: true },
+      });
+      await notifyFavoritersOfItemClaimed(tx, {
+        itemId: lottery.itemId,
+        itemTitle: confirmedItem.title,
+        excludeUserIds: [confirmedItem.ownerId, user.id],
       });
 
       // 見檔案頂端註解：借用 ClaimComment 讓既有交接流程認得出這位接手者。

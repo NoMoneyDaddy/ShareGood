@@ -13,7 +13,8 @@ export type RateLimitAction =
   | "upload_create"
   | "report_create"
   | "deal_info_create"
-  | "deal_info_report_create";
+  | "deal_info_report_create"
+  | "favorite_create";
 
 // 數值集中放這裡，之後要調整不用去改各支 API。比照 src/lib/contribution.ts 的慣例。
 // 注意 upload_create：一次 POST /api/uploads 會建立 2 筆 StorageObject（thumb+medium），
@@ -30,6 +31,9 @@ export const RATE_LIMITS: Record<RateLimitAction, { hourly: number; daily: numbe
   // 這個動作的精確數字，只要求「新增 mutation 端點一律套用 rate limit」）。
   deal_info_create: { hourly: 10, daily: 40 },
   deal_info_report_create: { hourly: 10, daily: 30 },
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏是低風險的書籤動作，門檻比照
+  // message_create 量級，防洗版但不擾民（規格建議值）。
+  favorite_create: { hourly: 60, daily: 300 },
 };
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -54,6 +58,8 @@ const COUNTERS: Record<RateLimitAction, Counter> = {
     db.dealInfo.count({ where: { submitterId: userId, createdAt: { gte: since } } }),
   deal_info_report_create: (userId, since) =>
     db.dealInfoReport.count({ where: { reporterId: userId, createdAt: { gte: since } } }),
+  favorite_create: (userId, since) =>
+    db.itemFavorite.count({ where: { userId, createdAt: { gte: since } } }),
 };
 
 export class RateLimitExceededError extends Error {}

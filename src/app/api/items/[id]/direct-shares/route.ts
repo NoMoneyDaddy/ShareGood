@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { hasActiveLottery } from "@/lib/lottery";
 import { createOrMergeNotification } from "@/lib/notifications";
 import { checkFullBlock } from "@/lib/restrictions";
+import { isBlockedEitherDirection } from "@/lib/user-blocks";
 
 const DIRECT_SHARE_TTL_MS = 72 * 60 * 60 * 1000; // 72 小時
 
@@ -54,6 +55,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const receiver = await db.user.findUnique({ where: { email: receiverEmail.toLowerCase() } });
   if (!receiver) {
     return jsonError("UNPROCESSABLE", "找不到這個使用者");
+  }
+
+  // M12（docs/plan/m12-product-growth.md 交付內容 3）：封鎖使用者，無感知（silent block）
+  // ——通用錯誤訊息，不透露「被封鎖」這個事實。任一方向封鎖過就擋。
+  if (await isBlockedEitherDirection(user.id, receiver.id)) {
+    return jsonError("FORBIDDEN", "無法贈送給這位使用者");
   }
 
   const now = new Date();

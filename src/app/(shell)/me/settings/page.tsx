@@ -1,4 +1,6 @@
+import { ChevronRight, ShieldOff } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
@@ -46,6 +48,30 @@ export default async function SettingsPage() {
             }
           />
         </div>
+      </section>
+
+      {/* M12（docs/plan/m12-product-growth.md 交付內容 3）：封鎖名單是低頻功能，不佔用
+          /me 首頁卡片版位，掛在這個頁面裡的一個區塊連結過去（規格明定的入口位置）。 */}
+      <section className="mt-8">
+        <h2 className="text-sm font-semibold text-ink-soft">封鎖名單</h2>
+        <Link
+          href="/me/blocked-users"
+          className="mt-3 flex items-center gap-3 rounded-xl border border-line bg-card p-4 transition-colors hover:bg-paper-2 focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <span
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-paper-2 text-ink-soft"
+            aria-hidden="true"
+          >
+            <ShieldOff size={19} strokeWidth={1.75} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold text-ink">管理封鎖名單</span>
+            <span className="block text-xs text-ink-soft">
+              被你封鎖的人無法對你的物品留言或收到你的直贈邀請。
+            </span>
+          </span>
+          <ChevronRight size={16} className="shrink-0 text-ink-soft" aria-hidden="true" />
+        </Link>
       </section>
 
       <section className="mt-8">

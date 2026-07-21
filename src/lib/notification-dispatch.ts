@@ -70,6 +70,10 @@ export function resolveExternalEventType(
   if (kind === "item_expired" || kind === "item_expiring_reminder") return "expiring_soon";
   if (kind === "subscription_match") return "subscription_match";
   if (kind === "subscription_digest") return "subscription_digest";
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏提醒，見 src/lib/favorites.ts。
+  if (kind === "favorite_item_claimed" || kind === "favorite_item_expiring") {
+    return "favorite_item_update";
+  }
   // 其餘（含 lottery_*、item_force_removed）：用實際的 NotificationType enum 值當偏好 key。
   // NotificationType 的 5 個值剛好都是合法的 eventType（見 notification-preferences 目錄）。
   return isNotificationEventType(type) ? type : "completion_confirmed";

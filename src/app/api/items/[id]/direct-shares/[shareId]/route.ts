@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
+import { notifyFavoritersOfItemClaimed } from "@/lib/favorites";
 import { createOrMergeNotification } from "@/lib/notifications";
 import { checkFullBlock } from "@/lib/restrictions";
 
@@ -113,6 +114,14 @@ export async function PATCH(
         itemTitle: item.title,
         receiverId: user.id,
       },
+    });
+    // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏這個物品的其他使用者
+    // 收到「已被接走」提醒，排除物主自己與這位受贈者（`user` 即受贈者，PATCH 呼叫者只能是
+    // receiver，見上方權限檢查）。
+    await notifyFavoritersOfItemClaimed(tx, {
+      itemId,
+      itemTitle: item.title,
+      excludeUserIds: [item.ownerId, user.id],
     });
 
     return { ok: true as const };

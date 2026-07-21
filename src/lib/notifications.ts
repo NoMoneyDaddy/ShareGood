@@ -1,5 +1,6 @@
 import type { Notification, NotificationType, Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
+import { getEventTypeDefaults, type NotificationEventType } from "@/lib/notification-preferences";
 
 // M4 通知強化設定值（master-plan §9）：集中放這裡，之後要調整不用滿專案找魔術數字。
 export const NOTIFICATION_MERGE_WINDOW_MINUTES = 30;
@@ -90,6 +91,63 @@ export async function createOrMergeNotification(
       payload: itemId ? { ...payload, mergedCount: 1 } : payload,
     },
   });
+}
+
+type PrefLookupClient = {
+  notificationPreference: Pick<Prisma.NotificationPreferenceDelegate, "findUnique">;
+};
+
+async function resolvePreference(
+  client: PrefLookupClient,
+  userId: string,
+  eventType: NotificationEventType,
+) {
+  const row = await client.notificationPreference.findUnique({
+    where: { userId_eventType: { userId, eventType } },
+    select: { inAppEnabled: true, externalEnabled: true },
+  });
+  const defaults = getEventTypeDefaults(eventType);
+  return {
+    inAppEnabled: row?.inAppEnabled ?? defaults.defaultInAppEnabled,
+    externalEnabled: row?.externalEnabled ?? defaults.defaultExternalEnabled,
+  };
+}
+
+export type PreferenceGatedNotificationOutcome = {
+  notificationId: string;
+  externalEnabled: boolean;
+};
+
+/**
+ * `createOrMergeNotification` 前面多包一層 M4 通知偏好檢查：`inAppEnabled` 才建立/合併
+ * 站內通知，`inAppEnabled=false` 時完全不建立 `Notification`（回傳 null）。
+ *
+ * 這是 M6 `src/lib/subscription-notify.ts` 的 `createSubscriptionNotificationIfEnabled`
+ * 抽出來的通用版本（見 docs/plan/m12-product-growth.md 共通設計決策 2）：M1–M3 時期的通知
+ * （`item-expiration` job、`thanks`）建立站內通知前不查偏好，M6 才第一次做對「先查
+ * `inAppEnabled` 才建立站內通知」這件事。M12 新事件（收藏提醒等）一律採用這個較嚴謹的版本。
+ *
+ * TODO（品質改進、非本次驗收硬要求）：`subscription-notify.ts` 尚未改成呼叫這支共用版本
+ * （避免在時間有限的情況下同時改動 M6 既有邏輯），之後有餘裕可以讓兩處收斂成一份實作。
+ */
+export async function createPreferenceGatedNotification(
+  client: NotificationClient & PrefLookupClient,
+  params: {
+    userId: string;
+    eventType: NotificationEventType;
+    type: NotificationType;
+    payload: NotificationPayload;
+  },
+): Promise<PreferenceGatedNotificationOutcome | null> {
+  const pref = await resolvePreference(client, params.userId, params.eventType);
+  if (!pref.inAppEnabled) return null;
+
+  const notification = await createOrMergeNotification(client, {
+    userId: params.userId,
+    type: params.type,
+    payload: params.payload,
+  });
+  return { notificationId: notification.id, externalEnabled: pref.externalEnabled };
 }
 
 /** 台北曆日（UTC+8，無日光節約）當天 00:00 對應的 UTC 時間點，不依賴 process 本身的時區設定。 */
