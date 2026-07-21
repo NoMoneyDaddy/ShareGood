@@ -39,6 +39,14 @@ type RetentionRow = { cohort_size: bigint | number; retained_count: bigint | num
  * （Day 0）的活動**：新手導覽會誘導使用者剛註冊就上架/留言，把這算進「回訪」會把
  * 「完成 onboarding」跟「之後真的回來」混為一談、系統性膨脹數字——業界標準的
  * Day-N retention（Amplitude/Mixpanel 等）都是量測註冊日之後的回訪，不含註冊當天本身。
+ *
+ * **日曆天（非絕對 24 小時）比對，且用台北時區**：`created_at` 是 `TIMESTAMP(3)`（無時區），
+ * 實際存的是 UTC 壁鐘時間（Postgres session TimeZone 預設 `Etc/UTC`，經查證非 Asia/Taipei），
+ * 直接 `::date` 轉型會切在 UTC 午夜（=台北時間早上 8 點），跟「使用者隔天有沒有回來」的
+ * 直覺（比照全站硬規則：時區一律用台北時間）對不上；`AT TIME ZONE 'UTC' AT TIME ZONE
+ * 'Asia/Taipei'` 先還原成正確時刻再轉回台北壁鐘時間才 `::date`，讓「Day N」以台北午夜為
+ * 邊界，而不是用『整整 24 小時』這種絕對時間間隔（後者會把台北時間 23:50 註冊、隔天 00:10
+ * 互動這種「日曆上已經是隔天」的情況誤判成未跨天）。
  */
 export async function getRetentionMetric(
   days: number,
@@ -76,8 +84,10 @@ export async function getRetentionMetric(
       FROM cohort c
       JOIN activity a
         ON a.user_id = c.user_id
-       AND a.created_at >= c.signup_at + INTERVAL '1 day'
-       AND a.created_at <= c.signup_at + (${days} * INTERVAL '1 day')
+       AND (a.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Taipei')::date
+           > (c.signup_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Taipei')::date
+       AND (a.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Taipei')::date
+           <= (c.signup_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Taipei')::date + ${days}::int
     )
     SELECT
       (SELECT COUNT(*) FROM cohort) AS cohort_size,

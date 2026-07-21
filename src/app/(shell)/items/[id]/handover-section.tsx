@@ -227,14 +227,33 @@ const MEETUP_DISPLAY_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
   timeStyle: "short",
 });
 
-// datetime-local input 需要「YYYY-MM-DDTHH:mm」這種不含時區資訊的本機時間字串；瀏覽器會
-// 用使用者裝置本身的時區顯示與解讀，本平台使用者實務上都在台灣，這裡不特別處理跨時區換算。
+// datetime-local input 需要「YYYY-MM-DDTHH:mm」這種不含時區資訊的字串。刻意不用
+// d.getHours() 等讀取「執行環境本機時區」的寫法：伺服器端渲染（SSR）跑在伺服器的時區，
+// 瀏覽器端 hydration 跑在使用者裝置的時區，兩者若不同會讓這個字串在兩端算出不同結果，
+// 觸發 React hydration mismatch。改成用固定的台北時區（UTC+8）位移換算，讓 SSR／CSR
+// 兩端不論實際跑在哪個時區都算出同一個結果（全站時區約定見 CLAUDE.md 硬規則 8）。
+// fromLocalInputValue 是反向換算，兩者必須用同一套時區假設，不能只修一邊。
+const TAIPEI_OFFSET_MS = 8 * 60 * 60 * 1000;
+
 function toLocalInputValue(iso: string | null): string {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
+  const taipei = new Date(d.getTime() + TAIPEI_OFFSET_MS);
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${taipei.getUTCFullYear()}-${pad(taipei.getUTCMonth() + 1)}-${pad(taipei.getUTCDate())}T${pad(taipei.getUTCHours())}:${pad(taipei.getUTCMinutes())}`;
+}
+
+// value 是「YYYY-MM-DDTHH:mm」，代表台北時間壁鐘時間；轉回正確的 UTC 時刻。
+function fromLocalInputValue(value: string): Date | null {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+  if (!match) return null;
+  const [, year, month, day, hour, minute] = match;
+  const utcMs =
+    Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute)) -
+    TAIPEI_OFFSET_MS;
+  const d = new Date(utcMs);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 // 面交約定時間小工具（M12 交付內容 5，docs/plan/m12-product-growth.md）：任一方可設定/
@@ -279,8 +298,11 @@ function MeetupScheduler({
   function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!value || submitting) return;
-    const parsed = new Date(value);
-    if (Number.isNaN(parsed.getTime())) {
+    // 用 fromLocalInputValue（跟 toLocalInputValue 同一套台北時區假設）取代 new Date(value)
+    // ——後者會用瀏覽器本機時區解讀字串，若跟 toLocalInputValue 的時區假設不一致，同一個
+    // 顯示值送出後會變成不同的實際時刻。
+    const parsed = fromLocalInputValue(value);
+    if (!parsed) {
       setError("時間格式不正確");
       return;
     }
