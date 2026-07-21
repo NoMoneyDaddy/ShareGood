@@ -37,7 +37,7 @@ export function BlockedUserRow({ blockedId, nickname }: { blockedId: string; nic
           type="button"
           onClick={unblock}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink-soft transition-colors hover:bg-paper-2 hover:text-ink focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-60"
         >
           {loading && <Loader2 size={14} className="animate-spin" aria-hidden="true" />}
           解除封鎖
