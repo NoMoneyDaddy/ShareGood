@@ -11,7 +11,10 @@ import { createPublishedItem } from "../support/items";
 // 驗收要點對應規格：任一方設定時間後對方看得到；修改時間後 reminderSentAt 重置；到期提醒
 // 窗口到達時雙方收到通知；已完成/no_show 的交接無法再修改約定時間（409）；job 重複觸發不
 // 重複通知（idempotent）；時間驗證擋過去時間與超過 90 天的輸入。
-async function toHandoverPending(owner: TestUser, receiver: TestUser): Promise<{ itemId: string; handoverId: string }> {
+async function toHandoverPending(
+  owner: TestUser,
+  receiver: TestUser,
+): Promise<{ itemId: string; handoverId: string }> {
   const itemId = await createPublishedItem(owner, { title: `面交測試物品-${Date.now()}` });
   const claimRes = await api(`/api/items/${itemId}/claims`, {
     method: "POST",
@@ -70,7 +73,9 @@ describe("M12 交付內容 5：PATCH /api/handover/[id]/meetup", () => {
       body: { scheduledAt: newScheduledAt },
     });
     expect(modifyRes.status).toBe(200);
-    const afterReceiverModify = await db.handoverRecord.findUniqueOrThrow({ where: { id: handoverId } });
+    const afterReceiverModify = await db.handoverRecord.findUniqueOrThrow({
+      where: { id: handoverId },
+    });
     expect(afterReceiverModify.scheduledAt?.toISOString()).toBe(newScheduledAt);
   });
 
@@ -87,8 +92,13 @@ describe("M12 交付內容 5：PATCH /api/handover/[id]/meetup", () => {
       body: { scheduledAt: firstScheduledAt },
     });
     expect(setRes.status).toBe(200);
-    await db.handoverRecord.update({ where: { id: handoverId }, data: { reminderSentAt: new Date() } });
-    const afterFakeRemind = await db.handoverRecord.findUniqueOrThrow({ where: { id: handoverId } });
+    await db.handoverRecord.update({
+      where: { id: handoverId },
+      data: { reminderSentAt: new Date() },
+    });
+    const afterFakeRemind = await db.handoverRecord.findUniqueOrThrow({
+      where: { id: handoverId },
+    });
     expect(afterFakeRemind.reminderSentAt).not.toBeNull();
 
     // 修改時間：reminderSentAt 必須被重設為 null（規格關鍵行為，見 route 實作註解）。
@@ -102,7 +112,10 @@ describe("M12 交付內容 5：PATCH /api/handover/[id]/meetup", () => {
     expect(afterModify.reminderSentAt).toBeNull();
 
     // 再模擬一次已提醒過，這次測試「清空」也會重設 reminderSentAt。
-    await db.handoverRecord.update({ where: { id: handoverId }, data: { reminderSentAt: new Date() } });
+    await db.handoverRecord.update({
+      where: { id: handoverId },
+      data: { reminderSentAt: new Date() },
+    });
     const clearRes = await api(`/api/handover/${handoverId}/meetup`, {
       method: "PATCH",
       user: receiver,
@@ -162,7 +175,10 @@ describe("M12 交付內容 5：PATCH /api/handover/[id]/meetup", () => {
     expect(anonRes.status).toBe(401);
 
     // 雙方都標記完成 → completed，之後不能再修改約定時間。
-    const ownerComplete = await api(`/api/handover/${handoverId}/complete`, { method: "PATCH", user: owner });
+    const ownerComplete = await api(`/api/handover/${handoverId}/complete`, {
+      method: "PATCH",
+      user: owner,
+    });
     expect(ownerComplete.status).toBe(200);
     const receiverComplete = await api(`/api/handover/${handoverId}/complete`, {
       method: "PATCH",
@@ -202,10 +218,6 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
     const u = await createTestUser({ label });
     userIds.push(u.id);
     return u;
-  }
-
-  function hoursFromNow(h: number): string {
-    return new Date(Date.now() + h * 60 * 60 * 1000).toISOString();
   }
 
   async function callJob(secret: string | undefined) {
@@ -258,10 +270,14 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
       expect(jobRun.status).toBe("success");
 
       // 到期組：reminderSentAt 寫入 + 雙方各自收到 kind: handover_meetup_reminder 通知。
-      const dueHandover = await db.handoverRecord.findUniqueOrThrow({ where: { id: dueHandoverId } });
+      const dueHandover = await db.handoverRecord.findUniqueOrThrow({
+        where: { id: dueHandoverId },
+      });
       expect(dueHandover.reminderSentAt).not.toBeNull();
 
-      const dueOwnerNotifications = await db.notification.findMany({ where: { userId: dueOwner.id } });
+      const dueOwnerNotifications = await db.notification.findMany({
+        where: { userId: dueOwner.id },
+      });
       const dueOwnerMeetup = dueOwnerNotifications.filter(
         (n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder",
       );
@@ -276,9 +292,13 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
       expect(dueReceiverMeetup).toHaveLength(1);
 
       // 控制組：窗口外，完全不受影響。
-      const farHandover = await db.handoverRecord.findUniqueOrThrow({ where: { id: farHandoverId } });
+      const farHandover = await db.handoverRecord.findUniqueOrThrow({
+        where: { id: farHandoverId },
+      });
       expect(farHandover.reminderSentAt).toBeNull();
-      const farOwnerNotifications = await db.notification.findMany({ where: { userId: farOwner.id } });
+      const farOwnerNotifications = await db.notification.findMany({
+        where: { userId: farOwner.id },
+      });
       expect(
         farOwnerNotifications.filter(
           (n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder",
@@ -311,7 +331,10 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
       data: { scheduledAt: new Date(Date.now() + 30 * 60 * 1000) },
     });
 
-    const ownerComplete = await api(`/api/handover/${handoverId}/complete`, { method: "PATCH", user: owner });
+    const ownerComplete = await api(`/api/handover/${handoverId}/complete`, {
+      method: "PATCH",
+      user: owner,
+    });
     expect(ownerComplete.status).toBe(200);
     const receiverComplete = await api(`/api/handover/${handoverId}/complete`, {
       method: "PATCH",
@@ -326,7 +349,9 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
     expect(afterJob.reminderSentAt).toBeNull();
     const notifications = await db.notification.findMany({ where: { userId: owner.id } });
     expect(
-      notifications.filter((n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder"),
+      notifications.filter(
+        (n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder",
+      ),
     ).toHaveLength(0);
   });
 
@@ -359,11 +384,15 @@ describe("M12 交付內容 5：POST /api/jobs/handover-meetup-reminder", () => {
 
     const ownerNotifications = await db.notification.findMany({ where: { userId: owner.id } });
     expect(
-      ownerNotifications.filter((n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder"),
+      ownerNotifications.filter(
+        (n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder",
+      ),
     ).toHaveLength(0);
 
     // 接手者沒有關閉偏好，仍應收到通知。
-    const receiverNotifications = await db.notification.findMany({ where: { userId: receiver.id } });
+    const receiverNotifications = await db.notification.findMany({
+      where: { userId: receiver.id },
+    });
     expect(
       receiverNotifications.filter(
         (n) => (n.payload as { kind?: string }).kind === "handover_meetup_reminder",

@@ -66,7 +66,9 @@ describe("M12 交付內容 7：POST /api/items/batch", () => {
     const before = await db.item.count({ where: { ownerId: owner.id } });
     const res = await api("/api/items/batch", { method: "POST", user: owner, body });
     expect(res.status).toBe(422);
-    const errorBody = res.json as { error: { code: string; details: Array<{ index: number; message: string }> } };
+    const errorBody = res.json as {
+      error: { code: string; details: Array<{ index: number; message: string }> };
+    };
     expect(errorBody.error.code).toBe("UNPROCESSABLE");
     expect(errorBody.error.details).toHaveLength(1);
     expect(errorBody.error.details[0].index).toBe(1);
@@ -94,7 +96,11 @@ describe("M12 交付內容 7：POST /api/items/batch", () => {
     const { cityId, categoryId } = await pickCityAndCategory();
 
     const tooMany = await batchBody(owner, 11, categoryId, cityId);
-    const tooManyRes = await api("/api/items/batch", { method: "POST", user: owner, body: tooMany });
+    const tooManyRes = await api("/api/items/batch", {
+      method: "POST",
+      user: owner,
+      body: tooMany,
+    });
     expect(tooManyRes.status).toBe(422);
 
     const empty = { categoryId, cityId, items: [] };
@@ -225,7 +231,11 @@ describe("M12 交付內容 7：POST /api/items/batch", () => {
 
     // 但批量端點（30/hour）此時完全沒問題，因為只用掉 5 筆額度。
     const batchOkBody = await batchBody(owner, 2, categoryId, cityId);
-    const batchRes = await api("/api/items/batch", { method: "POST", user: owner, body: batchOkBody });
+    const batchRes = await api("/api/items/batch", {
+      method: "POST",
+      user: owner,
+      body: batchOkBody,
+    });
     expect(batchRes.status).toBe(201);
   });
 });
