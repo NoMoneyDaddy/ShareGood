@@ -61,6 +61,13 @@ export const NOTIFICATION_EVENT_TYPES = [
     defaultInAppEnabled: true,
     defaultExternalEnabled: false,
   },
+  {
+    // M12 交付內容 1（雙向互評）：不緊急，比照 completion_confirmed 既有預設，外部通知關。
+    eventType: "handover_rating_received",
+    label: "收到交接評分",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: false,
+  },
 ] as const;
 
 export type NotificationEventType = (typeof NOTIFICATION_EVENT_TYPES)[number]["eventType"];

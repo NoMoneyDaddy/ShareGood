@@ -13,7 +13,10 @@ const LEADERBOARD_SIZE = 50;
 
 type LeaderboardRow = { userId: string; nickname: string; points: number };
 
-async function runLeaderboardQuery(scopeUserIds: string[], size: number): Promise<LeaderboardRow[]> {
+async function runLeaderboardQuery(
+  scopeUserIds: string[],
+  size: number,
+): Promise<LeaderboardRow[]> {
   const grouped = await db.contributionEvent.groupBy({
     by: ["userId"],
     where: { userId: { in: scopeUserIds } },
@@ -106,9 +109,7 @@ describe("排行榜查詢邏輯（重現 getLeaderboard 內部查詢條件）", 
 
   it("截斷到 50 名：55 位候選人只回傳分數最高的前 50 名", async () => {
     const scopeIds: string[] = [];
-    const created = await Promise.all(
-      Array.from({ length: 55 }, (_, i) => user(`lb-trunc-${i}`)),
-    );
+    const created = await Promise.all(Array.from({ length: 55 }, (_, i) => user(`lb-trunc-${i}`)));
     for (const u of created) scopeIds.push(u.id);
     // 分數各自不同（1..55），方便驗證「前 50 名」精確等於分數最高的那 50 位。
     await Promise.all(created.map((u, i) => givePoints(u.id, i + 1)));

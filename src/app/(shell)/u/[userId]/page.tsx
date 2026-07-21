@@ -6,6 +6,7 @@ import { BackBar } from "@/components/back-bar";
 import { UserBadges } from "@/components/user-badge";
 import { getUserSharingStats } from "@/lib/contribution";
 import { db } from "@/lib/db";
+import { getUserRatingStats } from "@/lib/ratings";
 
 // 加入時間（信任訊號）：只顯示到「年／月」粒度（台北時區），不洩漏更精確的註冊時間點。
 function formatJoinedMonth(date: Date): string {
@@ -54,10 +55,11 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
   // 事件筆數，與記分一致、天然去重）；「收到感謝」另查 thanksMessage。下方三格統計列的呈現
   // 參考 GiveCircle 個人檔案頁（研究文件 05-givecircle-reference.md）——單一貢獻值數字對陌生
   // 訪客不夠直覺，補三個具體行為次數當信任信號。三者互不相關，與身份組查詢一併平行執行。
-  const [stats, roles, thanksCount] = await Promise.all([
+  const [stats, roles, thanksCount, ratingStats] = await Promise.all([
     getUserSharingStats(userId),
     db.userRole.findMany({ where: { userId }, select: { role: true } }),
     db.thanksMessage.count({ where: { toUserId: userId } }),
+    getUserRatingStats(userId),
   ]);
 
   // 累計貢獻值就是真實反映使用者行為的數字，no_show 扣分可能讓它變負數，不特別防呆。
@@ -91,7 +93,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
         </p>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-xl border border-line bg-card">
+      <div className="mt-4 grid grid-cols-2 divide-x divide-y divide-line rounded-xl border border-line bg-card sm:grid-cols-4 sm:divide-y-0">
         <div className="px-3 py-4 text-center">
           <p className="text-xl font-bold tracking-tight text-ink">{stats.sharedCount}</p>
           <p className="mt-0.5 text-xs text-ink-soft">完成分享</p>
@@ -103,6 +105,15 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
         <div className="px-3 py-4 text-center">
           <p className="text-xl font-bold tracking-tight text-ink">{thanksCount}</p>
           <p className="mt-0.5 text-xs text-ink-soft">收到感謝</p>
+        </div>
+        {/* M12 交付內容 1：第四格「平均評分」，無評分顯示「－」而非 0 星誤導。 */}
+        <div className="px-3 py-4 text-center">
+          <p className="text-xl font-bold tracking-tight text-ink">
+            {ratingStats.avgStars !== null ? `★${ratingStats.avgStars.toFixed(1)}` : "－"}
+          </p>
+          <p className="mt-0.5 text-xs text-ink-soft">
+            平均評分{ratingStats.ratingCount > 0 ? `（${ratingStats.ratingCount} 則）` : ""}
+          </p>
         </div>
       </div>
     </div>
