@@ -16,6 +16,9 @@ const ADMIN_NAV_LINKS = [
   // 但比照既有 /admin/appeals 的處理方式——moderator 點進去 404 也可以接受，這裡不依角色
   // 過濾連結本身（見各頁自己的權限判斷）。
   { href: "/admin/ops", label: "營運儀表板" },
+  // M12 產品成長與信任機制強化（master-plan §10a 交付內容 6）：純查詢的產品指標儀表板，
+  // 跟 /admin/ops（工程健康指標）刻意分開，避免兩種截然不同性質的指標混在同一頁。
+  { href: "/admin/growth", label: "成長指標" },
   { href: "/admin/data", label: "資料管理" },
   { href: "/admin/legal-holds", label: "訴訟保全" },
   { href: "/admin/legal-requests", label: "調閱請求" },

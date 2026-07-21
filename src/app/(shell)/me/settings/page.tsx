@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { DeleteAccountSection } from "./delete-account-section";
 import { ExportDataSection } from "./export-data-section";
+import { LeaderboardOptOutSection } from "./leaderboard-optout-section";
 
 export const metadata: Metadata = { title: "帳號與隱私設定" };
 
@@ -14,12 +15,13 @@ export default async function SettingsPage() {
   const userId = session?.user?.id;
   if (!userId) redirect("/");
 
-  const [latestExport, latestDeletion] = await Promise.all([
+  const [latestExport, latestDeletion, profile] = await Promise.all([
     db.dataExport.findFirst({ where: { userId }, orderBy: { createdAt: "desc" } }),
     db.privacyRequest.findFirst({
       where: { userId, type: "account_deletion" },
       orderBy: { createdAt: "desc" },
     }),
+    db.profile.findUnique({ where: { userId } }),
   ]);
 
   return (
@@ -47,6 +49,19 @@ export default async function SettingsPage() {
           />
         </div>
       </section>
+
+      {profile && (
+        <section className="mt-8">
+          <h2 className="text-sm font-semibold text-ink-soft">排行榜顯示</h2>
+          <div className="mt-3">
+            <LeaderboardOptOutSection
+              nickname={profile.nickname}
+              cityId={profile.cityId}
+              initialOptOut={profile.leaderboardOptOut}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="mt-8">
         <h2 className="text-sm font-semibold text-ink-soft">刪除我的帳號</h2>
