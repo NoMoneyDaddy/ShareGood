@@ -70,6 +70,15 @@ export function resolveExternalEventType(
   if (kind === "item_expired" || kind === "item_expiring_reminder") return "expiring_soon";
   if (kind === "subscription_match") return "subscription_match";
   if (kind === "subscription_digest") return "subscription_digest";
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏提醒，見 src/lib/favorites.ts。
+  if (kind === "favorite_item_claimed" || kind === "favorite_item_expiring") {
+    return "favorite_item_update";
+  }
+  // M12 交付內容 5（面交約定時間）：重用 completion_confirmed type＋payload.kind 判別，
+  // 有自己專屬的偏好項目（見 src/lib/notification-preferences.ts），跟其餘直接借用
+  // NotificationType enum 值當 eventType 的既有事件不同，要在這裡明確對應，否則會落回
+  // completion_confirmed 這個不相干的偏好開關（見下方 fallback 分支的既有說明）。
+  if (kind === "handover_meetup_reminder") return "handover_meetup_reminder";
   // 其餘（含 lottery_*、item_force_removed）：用實際的 NotificationType enum 值當偏好 key。
   // NotificationType 的 5 個值剛好都是合法的 eventType（見 notification-preferences 目錄）。
   return isNotificationEventType(type) ? type : "completion_confirmed";

@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma/client";
 import { jsonError } from "@/lib/api";
 import { db } from "@/lib/db";
+import { notifyFavoritersOfItemExpiring } from "@/lib/favorites";
 
 // 到期 job（master-plan §8）：由外部 cron 以 Authorization: Bearer ${CRON_SECRET} 每日觸發一次
 // （沿用 src/app/api/jobs/storage-cleanup 既有的 CRON_SECRET 驗證慣例）。
@@ -137,6 +138,13 @@ async function processReminders(now: Date): Promise<number> {
           type: "completion_confirmed",
           payload: { itemId: item.id, itemTitle: item.title, kind: "item_expiring_reminder" },
         },
+      });
+      // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏這個物品的使用者也一併
+      // 收到到期前提醒，同一批次查詢，不新增 job。
+      await notifyFavoritersOfItemExpiring(tx, {
+        itemId: item.id,
+        itemTitle: item.title,
+        ownerId: item.ownerId,
       });
       return true;
     });

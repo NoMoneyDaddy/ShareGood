@@ -8,18 +8,28 @@ import { db } from "@/lib/db";
 
 export type RateLimitAction =
   | "item_create"
+  | "item_create_batch"
   | "claim_create"
   | "message_create"
   | "upload_create"
   | "report_create"
   | "deal_info_create"
-  | "deal_info_report_create";
+  | "deal_info_report_create"
+  | "favorite_create";
 
 // 數值集中放這裡，之後要調整不用去改各支 API。比照 src/lib/contribution.ts 的慣例。
 // 注意 upload_create：一次 POST /api/uploads 會建立 2 筆 StorageObject（thumb+medium），
 // 所以這裡的門檻是「實際上傳次數 × 2」，例如 hourly 60 代表使用者一小時最多上傳 30 次檔案。
 export const RATE_LIMITS: Record<RateLimitAction, { hourly: number; daily: number }> = {
   item_create: { hourly: 5, daily: 20 },
+  // M12 交付內容 7（批量上架，docs/plan/m12-product-growth.md）：既有 item_create 門檻
+  // （5/hour、20/day）對「一次貼 10 筆」的批量場景太緊，會讓批量功能形同虛設。這裡新增
+  // 一組較寬鬆的門檻，counter 沿用 item_create 完全相同的查詢（COUNTERS 對照表下方共用同
+  // 一個函式）——不管物品是透過單筆還是批量建立，都算進同一個 items 計數；批量端點只是在
+  // 呼叫這個 action 時檢查一組較寬鬆的門檻。兩個門檻各自對各自的呼叫路徑生效、不互相放寬
+  // 對方：批量入口給冷啟動場景更高的上限，單筆入口維持原本反洗版設定（見規格「Rate limit
+  // （決策點）」一節）。數值採規格建議值。
+  item_create_batch: { hourly: 30, daily: 50 },
   claim_create: { hourly: 20, daily: 100 },
   message_create: { hourly: 60, daily: 300 },
   upload_create: { hourly: 60, daily: 300 },
@@ -30,6 +40,9 @@ export const RATE_LIMITS: Record<RateLimitAction, { hourly: number; daily: numbe
   // 這個動作的精確數字，只要求「新增 mutation 端點一律套用 rate limit」）。
   deal_info_create: { hourly: 10, daily: 40 },
   deal_info_report_create: { hourly: 10, daily: 30 },
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏是低風險的書籤動作，門檻比照
+  // message_create 量級，防洗版但不擾民（規格建議值）。
+  favorite_create: { hourly: 60, daily: 300 },
 };
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -41,6 +54,10 @@ type Counter = (userId: string, since: Date) => Promise<number>;
 // uploaderId/reporterId），這裡各自包一個小函式。
 const COUNTERS: Record<RateLimitAction, Counter> = {
   item_create: (userId, since) =>
+    db.item.count({ where: { ownerId: userId, createdAt: { gte: since } } }),
+  // 刻意跟 item_create 查詢完全相同（同一張表、同一個 ownerId/createdAt 條件）：批量與單筆
+  // 建立的物品都算進同一個計數池，只是各自呼叫時對照不同的門檻（見上方 RATE_LIMITS 註解）。
+  item_create_batch: (userId, since) =>
     db.item.count({ where: { ownerId: userId, createdAt: { gte: since } } }),
   claim_create: (userId, since) =>
     db.claimComment.count({ where: { userId, createdAt: { gte: since } } }),
@@ -54,6 +71,8 @@ const COUNTERS: Record<RateLimitAction, Counter> = {
     db.dealInfo.count({ where: { submitterId: userId, createdAt: { gte: since } } }),
   deal_info_report_create: (userId, since) =>
     db.dealInfoReport.count({ where: { reporterId: userId, createdAt: { gte: since } } }),
+  favorite_create: (userId, since) =>
+    db.itemFavorite.count({ where: { userId, createdAt: { gte: since } } }),
 };
 
 export class RateLimitExceededError extends Error {}

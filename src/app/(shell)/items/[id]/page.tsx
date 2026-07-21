@@ -5,12 +5,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { BackBar } from "@/components/back-bar";
+import { BlockButton } from "@/components/block-button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { ReportButton } from "@/components/report-button";
 import { ShareLinkButton } from "@/components/share-link-button";
 import { UserBadges } from "@/components/user-badge";
 import type { ItemStatus } from "@/generated/prisma/enums";
 import { getUserSharingStats } from "@/lib/contribution";
 import { db } from "@/lib/db";
+import { getUserRatingStats } from "@/lib/ratings";
 import { publicUrl } from "@/lib/storage";
 import { ClaimsSection } from "./claims-section";
 import { CouponSection } from "./coupon-section";
@@ -19,6 +22,7 @@ import { DirectShareSection } from "./direct-share-section";
 import { HandoverSection } from "./handover-section";
 import { LotterySection } from "./lottery-section";
 import { PointSection } from "./point-section";
+import { RatingSection } from "./rating-section";
 import { ThanksSection } from "./thanks-section";
 import { TicketSection } from "./ticket-section";
 
@@ -109,11 +113,35 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   // 分享者身分列的徽章與信任訊號（正式上線衝刺）：累計貢獻值（徽章用）與「已分享 N 件」
   // 同一次 groupBy 拿齊（口徑見 src/lib/contribution.ts 的 getUserSharingStats，跟 /u/[userId]
   // 共用），身份組徽章沿用剛查好的 item.owner.roles，不用再多查一次。
-  const ownerStats = await getUserSharingStats(item.ownerId);
+  const [ownerStats, ownerRatingStats] = await Promise.all([
+    getUserSharingStats(item.ownerId),
+    getUserRatingStats(item.ownerId),
+  ]);
   const ownerContributionPoints = ownerStats.totalPoints;
 
   // session/profile 給 SiteHeader 用的查詢已收斂進 (shell)/layout.tsx，這裡的 session
   // 只用於本頁內容判斷（擁有者/接手者權限、檢舉按鈕顯示等）。
+
+  // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏數社會證明數字（任何人都看得到，
+  // 不限登入）＋目前登入者是否已收藏（只有登入才需要查）。規格明定「只顯示彙總數字，不顯示
+  // 收藏者名單」，這裡只 count，不 select userId 清單。
+  // 交付內容 3：目前登入者是否已封鎖物主，決定 BlockButton 的初始顯示狀態（這支查詢對「封鎖
+  // 發起人」自己完全透明，不算違反無感知封鎖設計——無感知只針對被封鎖的那一方）。
+  const [favoriteCount, viewerFavorite, viewerBlockedOwner] = await Promise.all([
+    db.itemFavorite.count({ where: { itemId: item.id } }),
+    session?.user
+      ? db.itemFavorite.findUnique({
+          where: { userId_itemId: { userId: session.user.id, itemId: item.id } },
+          select: { id: true },
+        })
+      : null,
+    session?.user && session.user.id !== item.ownerId
+      ? db.userBlock.findUnique({
+          where: { blockerId_blockedId: { blockerId: session.user.id, blockedId: item.ownerId } },
+          select: { id: true },
+        })
+      : null,
+  ]);
 
   // 交接區塊需要知道「目前登入者是不是被接受的那個人」；reserved 狀態下接手者資訊在
   // ClaimComment/DirectShare 裡（handover 還沒建立），handover_pending／completed 狀態下
@@ -121,6 +149,14 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   let isReceiver = false;
   let handoverId: string | null = null;
   let conversationId: string | null = null;
+  // M12 交付內容 5（面交約定時間）：只有 handover_pending 狀態的約定時間對雙方有意義
+  // （PATCH /api/handover/[id]/meetup 也只允許 status === "pending" 時修改），completed
+  // 之後不需要再顯示這個小工具。
+  let handoverScheduledAt: string | null = null;
+  // 已經查過一次 handoverRecord 就記下 id/receiverId，下面 M12 互評區塊（item.status ===
+  // "completed" 時一定要查）優先重用，避免登入使用者瀏覽已完成物品時對同一個 itemId
+  // 查兩次 handoverRecord。
+  let handoverForItem: { id: string; receiverId: string } | null = null;
   if (session?.user) {
     if (item.status === "reserved") {
       const [acceptedClaim, acceptedDirectShare] = await Promise.all([
@@ -137,6 +173,8 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       isReceiver = handover?.receiverId === session.user.id;
       handoverId = handover?.id ?? null;
       conversationId = conversation?.id ?? null;
+      handoverScheduledAt = handover?.scheduledAt?.toISOString() ?? null;
+      if (handover) handoverForItem = { id: handover.id, receiverId: handover.receiverId };
     }
   }
 
@@ -161,6 +199,44 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
         })
       : null;
 
+  // M12 交付內容 1（雙向互評）：比照 ThanksMessage 既有先例——評分內容顯示在物品詳情頁的
+  // 「歷程」區塊，任何人（含未登入訪客）都能看到，不限物主/接手者。但雙盲揭露規則要求
+  // 「雙方都評完之前互相看不到對方的內容」，所以在雙方都評分之前，評分內容一律不公開，
+  // 只有已提交的那一方能在自己的瀏覽階段看到「我已提交／等待對方」（下方 isParticipant
+  // 分支）；一旦雙方都評完，內容才對所有人（含非參與者）揭露，這時公開等同 ThanksMessage
+  // 的行為。ratingsHandoverId 跟 handoverId 分開查（不依賴上面 session 限定的查詢），
+  // 確保未登入訪客也能看到已經雙方揭露的評分。
+  type RatingValue = { stars: number; comment: string | null };
+  let ratingsRevealed: { owner: RatingValue; receiver: RatingValue } | null = null;
+  let myPendingRating: RatingValue | null = null;
+  let ratingsHandoverId: string | null = null;
+  if (item.status === "completed") {
+    const handoverForRatings =
+      handoverForItem ??
+      (await db.handoverRecord.findUnique({
+        where: { itemId: item.id },
+        select: { id: true, receiverId: true },
+      }));
+    if (handoverForRatings) {
+      ratingsHandoverId = handoverForRatings.id;
+      const rows = await db.handoverRating.findMany({
+        where: { handoverRecordId: handoverForRatings.id },
+        select: { raterId: true, stars: true, comment: true },
+      });
+      const ownerRow = rows.find((r) => r.raterId === item.ownerId) ?? null;
+      const receiverRow = rows.find((r) => r.raterId === handoverForRatings.receiverId) ?? null;
+      if (ownerRow && receiverRow) {
+        ratingsRevealed = {
+          owner: { stars: ownerRow.stars, comment: ownerRow.comment },
+          receiver: { stars: receiverRow.stars, comment: receiverRow.comment },
+        };
+      } else if (session?.user?.id) {
+        const mineRow = rows.find((r) => r.raterId === session.user.id) ?? null;
+        myPendingRating = mineRow ? { stars: mineRow.stars, comment: mineRow.comment } : null;
+      }
+    }
+  }
+
   // M10 批次 2（master-plan §10a 交付批次 2）：詳情頁「狀態導向分區層級」重排用的
   // 衍生狀態——不新增查詢，全部從上面已查好的 item.status／isReceiver／thanksMessage
   // 算出，只決定既有 9 個 section 元件要 mount 在哪個區塊（各元件內部邏輯不動）。
@@ -170,11 +246,14 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
     (item.status === "reserved" || item.status === "handover_pending") &&
     (session?.user?.id === item.ownerId || isReceiver);
   // showHistoryZone：completed 狀態下，只有物主／接手者（會看到交接完成訊息或感謝表單）
-  // 或已經有感謝留言（任何人都能看）時才顯示「歷程」區塊，避免非相關訪客看到只有標題
-  // 沒有內容的空區塊。
+  // 或已經有感謝留言／雙方都已完成互評（任何人都能看）時才顯示「歷程」區塊，避免非相關
+  // 訪客看到只有標題沒有內容的空區塊。
   const showHistoryZone =
     item.status === "completed" &&
-    (session?.user?.id === item.ownerId || isReceiver || thanksMessage !== null);
+    (session?.user?.id === item.ownerId ||
+      isReceiver ||
+      thanksMessage !== null ||
+      ratingsRevealed !== null);
 
   // M9（master-plan §9a 交付內容 3）：優惠券使用結果回報聚合統計，只有優惠券物品才查詢。
   const couponUsageCounts = { usable: 0, expired_or_used: 0 };
@@ -277,15 +356,41 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
           <UserBadges roles={item.owner.roles} points={ownerContributionPoints} />
           <span className="text-xs text-ink-soft">已分享 {ownerStats.sharedCount} 件</span>
           <span className="mx-1.5 text-ink-disabled">・</span>
+          {/* M12 交付內容 1：物主信任訊號比照 A3 既有先例，無評分顯示「尚無評分」而非
+              0 星誤導（見 docs/plan/m12-product-growth.md 交付內容 1 驗收要點）。 */}
+          <span className="text-xs text-ink-soft">
+            {ownerRatingStats.avgStars !== null
+              ? `★${ownerRatingStats.avgStars.toFixed(1)}（${ownerRatingStats.ratingCount} 則評分）`
+              : "尚無評分"}
+          </span>
+          <span className="mx-1.5 text-ink-disabled">・</span>
           {formatRelativePublished(item.publishedAt ?? item.createdAt)}
+          {/* M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏數社會證明，任何人
+              （含未登入訪客）都看得到，只顯示彙總數字、不顯示是誰收藏的。 */}
+          {favoriteCount > 0 && (
+            <>
+              <span className="mx-1.5 text-ink-disabled">・</span>
+              <span className="text-xs text-ink-soft">已有 {favoriteCount} 人收藏</span>
+            </>
+          )}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* 參考 GiveCircle 物品詳情頁的分享列（研究文件 05-givecircle-reference.md）：
               免費共享要靠使用者自己擴散出去，一顆隨手可按的分享按鈕比只能複製網址列
               更容易被實際使用。 */}
           <ShareLinkButton title={item.title} />
+          {session?.user && (
+            <FavoriteButton itemId={item.id} initialFavorited={viewerFavorite !== null} />
+          )}
           {session?.user && session.user.id !== item.ownerId && (
-            <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+            <div className="flex items-center gap-2">
+              <ReportButton target={{ itemId: item.id }} label="檢舉這個物品" />
+              <span className="text-ink-disabled">・</span>
+              <BlockButton
+                targetUserId={item.ownerId}
+                initialBlocked={viewerBlockedOwner !== null}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -365,6 +470,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
                 handoverId={handoverId}
                 conversationId={conversationId}
                 hasThanks={thanksMessage !== null}
+                scheduledAt={handoverScheduledAt}
               />
             </div>
           </div>
@@ -415,6 +521,20 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
                   : null
               }
             />
+            {/* M12 交付內容 1：雙盲揭露前只有參與者看得到自己的提交狀態／表單；雙方都評完
+                後才對所有人（含非參與者）公開內容，比照 ThanksMessage 既有先例。 */}
+            {ratingsHandoverId &&
+              (ratingsRevealed !== null ||
+                (session?.user?.id && (session.user.id === item.ownerId || isReceiver))) && (
+                <RatingSection
+                  handoverId={ratingsHandoverId}
+                  isParticipant={
+                    !!session?.user?.id && (session.user.id === item.ownerId || isReceiver)
+                  }
+                  mine={myPendingRating}
+                  revealed={ratingsRevealed}
+                />
+              )}
           </div>
         </div>
       )}

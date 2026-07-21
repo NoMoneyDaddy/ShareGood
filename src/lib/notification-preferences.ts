@@ -61,6 +61,31 @@ export const NOTIFICATION_EVENT_TYPES = [
     defaultInAppEnabled: true,
     defaultExternalEnabled: false,
   },
+  {
+    // M12（docs/plan/m12-product-growth.md 交付內容 2）：涵蓋 favorite_item_claimed／
+    // favorite_item_expiring 兩種 kind（見 src/lib/favorites.ts）。收藏提醒不是急迫事件，
+    // 外部通知預設關，比照 subscription_digest 的既定判斷。
+    eventType: "favorite_item_update",
+    label: "收藏的物品被認領或即將到期",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: false,
+  },
+  {
+    // M12 交付內容 5（面交約定時間，docs/plan/m12-product-growth.md）：比照
+    // claim_accepted／handover_message 這類時效性高的既有事件，外部通知預設開——這正是
+    // 「降低 no-show」這個目標最需要觸及使用者的管道（規格明訂建議值）。
+    eventType: "handover_meetup_reminder",
+    label: "約定面交時間快到了",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: true,
+  },
+  {
+    // M12 交付內容 1（雙向互評）：不緊急，比照 completion_confirmed 既有預設，外部通知關。
+    eventType: "handover_rating_received",
+    label: "收到交接評分",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: false,
+  },
 ] as const;
 
 export type NotificationEventType = (typeof NOTIFICATION_EVENT_TYPES)[number]["eventType"];

@@ -4,6 +4,7 @@ import { jsonError } from "@/lib/api";
 import { AuthzError, requireUser } from "@/lib/authz";
 import { POINT_CATEGORY_SLUG } from "@/lib/categories";
 import { db } from "@/lib/db";
+import { notifyFavoritersOfItemClaimed } from "@/lib/favorites";
 import {
   checkGiveToGetQuota,
   GIVE_TO_GET_CATEGORY_SLUGS,
@@ -15,6 +16,7 @@ import { createOrMergeNotification } from "@/lib/notifications";
 import { containsTaiwanMobileNumber } from "@/lib/phone-guard";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
+import { isBlockedEitherDirection } from "@/lib/user-blocks";
 
 const DEFAULT_PAGE_SIZE = 20;
 const MAX_PAGE_SIZE = 50;
@@ -72,6 +74,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
   if (item.status !== "published") {
     return jsonError("CONFLICT", "這個物品目前無法留言");
+  }
+
+  // M12（docs/plan/m12-product-growth.md 交付內容 3）：封鎖使用者，無感知（silent block）
+  // ——通用錯誤訊息，不透露「被封鎖」這個事實。任一方向封鎖過就擋。
+  if (await isBlockedEitherDirection(user.id, item.ownerId)) {
+    return jsonError("FORBIDDEN", "目前無法對這個物品留言");
   }
 
   // M9 §9a 交付內容 5：點數類型個資最小化——留言內容禁含疑似台灣手機號（keyword_blocklist
@@ -152,6 +160,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
           userId: item.ownerId,
           type: "new_comment",
           payload: { itemId, itemTitle: item.title, claimerId: user.id },
+        });
+        // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏這個物品的其他使用者
+        // 收到「已被接走」提醒，排除物主自己與剛剛得標的這位使用者。
+        await notifyFavoritersOfItemClaimed(tx, {
+          itemId,
+          itemTitle: item.title,
+          excludeUserIds: [item.ownerId, user.id],
         });
         return { id: claim.id, status: "accepted" as const };
       }

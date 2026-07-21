@@ -43,7 +43,13 @@ const getLeaderboard = unstable_cache(
     if (candidates.length === 0) return [];
 
     const users = await db.user.findMany({
-      where: { id: { in: candidates.map((c) => c.userId) }, deletedAt: null },
+      // M12 交付內容 4（排行榜 opt-out）：貢獻值仍然真實存在於 contribution_events
+      // （分數不變），這裡只是不把 opt-out 的使用者撈進榜單結果。
+      where: {
+        id: { in: candidates.map((c) => c.userId) },
+        deletedAt: null,
+        profile: { leaderboardOptOut: false },
+      },
       include: { profile: { select: { nickname: true } }, roles: { select: { role: true } } },
     });
     const userById = new Map(users.map((u) => [u.id, u]));

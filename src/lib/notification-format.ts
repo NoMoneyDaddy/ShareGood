@@ -21,6 +21,21 @@ function itemTitleOf(p: Record<string, unknown>): string {
 
 const PREFIX = "【好物共享】";
 
+// M12 交付內容 5（面交約定時間）：payload.scheduledAt 是 ISO 字串，外部推播文字用台北時間
+// 顯示（master-plan §3.4 全站時區慣例），格式化失敗（不是合法日期）就不附時間字樣。
+const TAIPEI_TIME_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
+  timeZone: "Asia/Taipei",
+  dateStyle: "short",
+  timeStyle: "short",
+});
+
+function formatScheduledAt(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return TAIPEI_TIME_FORMATTER.format(date);
+}
+
 /**
  * 組出外部推播（Telegram／Web Push body）用的一句話。回傳值一律帶「好物共享」前綴，讓
  * 使用者一眼認得來源。未知的 kind／type 一律回保底文字，不會因為未來新增事件忘記處理就
@@ -59,6 +74,15 @@ export function formatNotificationText(type: string, payload: unknown): string {
     case "subscription_digest": {
       const total = typeof p.totalCount === "number" ? p.totalCount : 0;
       return `${PREFIX}今天有 ${total} 件符合你訂閱條件的新物品，登入網站查看摘要`;
+    }
+    // M12（docs/plan/m12-product-growth.md 交付內容 2）：收藏提醒，見 src/lib/favorites.ts。
+    case "favorite_item_claimed":
+      return `${PREFIX}你收藏的「${title}」已經被別人接走了`;
+    case "favorite_item_expiring":
+      return `${PREFIX}你收藏的「${title}」即將到期`;
+    case "handover_meetup_reminder": {
+      const scheduledLabel = formatScheduledAt(p.scheduledAt);
+      return `${PREFIX}「${title}」的約定面交時間快到了${scheduledLabel ? `（${scheduledLabel}）` : ""}`;
     }
   }
 
