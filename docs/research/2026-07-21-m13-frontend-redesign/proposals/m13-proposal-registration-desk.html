@@ -1,0 +1,1561 @@
+<title>ShareGood M13．方向一：掛號台</title>
+<style>
+  /* ====================================================================
+     TOKENS
+     ==================================================================== */
+  :root{
+    --bg:#F7F3EC;
+    --surface:#FFFFFF;
+    --surface-muted:#EFE7D6;
+    --ink:#2B2621;
+    --ink-soft:#5B5148;
+    --ink-faint:#8A7F70;
+    --border:#E1D6C0;
+    --border-strong:#C9BA9C;
+
+    --brand:#8B5E23;
+    --brand-strong:#6B4718;
+    --brand-soft:#F1E4CC;
+    --on-brand:#FFFFFF;
+
+    --info:#3B6690;       --info-soft:#DEEAF2;    --info-ink:#204A68;
+    --success:#2E7D4F;    --success-soft:#DEEFE2; --success-ink:#1D5E39;
+    --warning:#C1440E;    --warning-soft:#FBE6DA; --warning-ink:#8F3209;
+    --danger:#A32020;     --danger-soft:#F6DCDA;  --danger-ink:#7A1717;
+    --neutral-chip-bg:#EDE7DA; --neutral-chip-ink:#5B5148;
+
+    --kiosk-bg:#241E17;
+    --kiosk-digit:#F2A93B;
+    --kiosk-label:rgba(255,255,255,.72);
+
+    --seal:#A32020;
+
+    --shadow-sm:0 1px 2px rgba(43,38,33,.08), 0 1px 1px rgba(43,38,33,.06);
+    --shadow-md:0 6px 20px rgba(43,38,33,.12), 0 2px 6px rgba(43,38,33,.08);
+
+    --radius-sm:4px;
+    --radius-md:10px;
+    --radius-pill:999px;
+
+    --font-display:"PingFang TC","Heiti TC","Microsoft JhengHei","Noto Sans TC","Helvetica Neue",Arial,sans-serif;
+    --font-body:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono","Noto Sans Mono TC",Consolas,monospace;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1B1712;
+      --surface:#241F19;
+      --surface-muted:#2C2620;
+      --ink:#F3ECE0;
+      --ink-soft:#CBBFAC;
+      --ink-faint:#9C907C;
+      --border:#3C342A;
+      --border-strong:#4E4433;
+
+      --brand:#D9A164;
+      --brand-strong:#EFC087;
+      --brand-soft:#3A2E1C;
+      --on-brand:#241708;
+
+      --info:#8FBBDD;       --info-soft:#213A4C;    --info-ink:#CFE3F1;
+      --success:#7BC79E;    --success-soft:#1F3A2B; --success-ink:#B9E4CB;
+      --warning:#E28A55;    --warning-soft:#402318; --warning-ink:#F3C3A4;
+      --danger:#E2726A;     --danger-soft:#3E1E1A;  --danger-ink:#F3B2AC;
+      --neutral-chip-bg:#332C22; --neutral-chip-ink:#CBBFAC;
+
+      --kiosk-bg:#120E09;
+      --kiosk-digit:#F6B958;
+      --kiosk-label:rgba(255,255,255,.68);
+
+      --seal:#E2726A;
+
+      --shadow-sm:0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.25);
+      --shadow-md:0 10px 26px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+    }
+  }
+
+  :root[data-theme="dark"]{
+    --bg:#1B1712; --surface:#241F19; --surface-muted:#2C2620;
+    --ink:#F3ECE0; --ink-soft:#CBBFAC; --ink-faint:#9C907C;
+    --border:#3C342A; --border-strong:#4E4433;
+    --brand:#D9A164; --brand-strong:#EFC087; --brand-soft:#3A2E1C; --on-brand:#241708;
+    --info:#8FBBDD; --info-soft:#213A4C; --info-ink:#CFE3F1;
+    --success:#7BC79E; --success-soft:#1F3A2B; --success-ink:#B9E4CB;
+    --warning:#E28A55; --warning-soft:#402318; --warning-ink:#F3C3A4;
+    --danger:#E2726A; --danger-soft:#3E1E1A; --danger-ink:#F3B2AC;
+    --neutral-chip-bg:#332C22; --neutral-chip-ink:#CBBFAC;
+    --kiosk-bg:#120E09; --kiosk-digit:#F6B958; --kiosk-label:rgba(255,255,255,.68);
+    --seal:#E2726A;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.25);
+    --shadow-md:0 10px 26px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+  }
+  :root[data-theme="light"]{
+    --bg:#F7F3EC; --surface:#FFFFFF; --surface-muted:#EFE7D6;
+    --ink:#2B2621; --ink-soft:#5B5148; --ink-faint:#8A7F70;
+    --border:#E1D6C0; --border-strong:#C9BA9C;
+    --brand:#8B5E23; --brand-strong:#6B4718; --brand-soft:#F1E4CC; --on-brand:#FFFFFF;
+    --info:#3B6690; --info-soft:#DEEAF2; --info-ink:#204A68;
+    --success:#2E7D4F; --success-soft:#DEEFE2; --success-ink:#1D5E39;
+    --warning:#C1440E; --warning-soft:#FBE6DA; --warning-ink:#8F3209;
+    --danger:#A32020; --danger-soft:#F6DCDA; --danger-ink:#7A1717;
+    --neutral-chip-bg:#EDE7DA; --neutral-chip-ink:#5B5148;
+    --kiosk-bg:#241E17; --kiosk-digit:#F2A93B; --kiosk-label:rgba(255,255,255,.72);
+    --seal:#A32020;
+    --shadow-sm:0 1px 2px rgba(43,38,33,.08), 0 1px 1px rgba(43,38,33,.06);
+    --shadow-md:0 6px 20px rgba(43,38,33,.12), 0 2px 6px rgba(43,38,33,.08);
+  }
+
+  /* ====================================================================
+     BASE
+     ==================================================================== */
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    margin:0;
+    color:var(--ink);
+    text-wrap:balance;
+  }
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font:inherit;color:inherit;}
+  input,select,textarea{font:inherit;color:inherit;}
+  a{color:inherit;}
+  svg{display:block;}
+  ::selection{background:var(--brand-soft);color:var(--ink);}
+
+  :focus-visible{
+    outline:2.5px solid var(--brand);
+    outline-offset:2px;
+    border-radius:3px;
+  }
+
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  .mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+
+  /* ====================================================================
+     LAYOUT SHELL
+     ==================================================================== */
+  .app-shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 20px 64px;
+  }
+
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    backdrop-filter:saturate(140%) blur(6px);
+  }
+  .topbar-inner{
+    max-width:1180px; margin:0 auto;
+    padding:14px 20px;
+    display:flex; align-items:center; gap:20px;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:12px; margin-right:4px;}
+  .brand-mark{
+    width:40px; height:40px; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--brand); color:var(--on-brand);
+    border-radius:var(--radius-sm);
+    font-family:var(--font-display); font-weight:800; font-size:18px;
+    transform:rotate(-4deg);
+    box-shadow:var(--shadow-sm);
+    border:1.5px solid var(--brand-strong);
+  }
+  .brand-text{display:flex; flex-direction:column; line-height:1.25;}
+  .brand-title{font-family:var(--font-display); font-weight:800; font-size:16.5px; letter-spacing:.01em;}
+  .brand-sub{font-size:11.5px; color:var(--ink-faint); letter-spacing:.02em;}
+
+  .nav-clusters{
+    display:flex; align-items:flex-start; gap:22px;
+    overflow-x:auto;
+    padding-bottom:2px;
+    flex:1;
+  }
+  .nav-cluster{display:flex; flex-direction:column; gap:6px; flex:none;}
+  .nav-cluster-label{
+    font-size:10.5px; font-weight:700; letter-spacing:.14em;
+    color:var(--ink-faint); text-transform:uppercase;
+    padding-left:2px;
+  }
+  .nav-tabs{display:flex; gap:6px;}
+  .tab{
+    display:flex; align-items:center; gap:7px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--ink-soft);
+    padding:7px 12px 7px 9px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+  }
+  .tab:hover{border-color:var(--border-strong); color:var(--ink);}
+  .tab-index{
+    font-family:var(--font-mono); font-size:11px; font-weight:700;
+    background:var(--surface-muted); color:var(--ink-soft);
+    border-radius:var(--radius-pill);
+    padding:2px 6px;
+    transition:background-color .15s ease, color .15s ease;
+  }
+  .tab-label{font-size:13px; font-weight:600;}
+  .tab[aria-selected="true"]{
+    background:var(--brand-soft);
+    border-color:var(--brand);
+    color:var(--brand-strong);
+    box-shadow:var(--shadow-sm);
+  }
+  .tab[aria-selected="true"] .tab-index{background:var(--brand); color:var(--on-brand);}
+
+  .screen{display:none;}
+  .screen.active{display:block; animation:screen-in .22s ease;}
+  @media (prefers-reduced-motion: reduce){
+    .screen.active{animation:none;}
+  }
+  @keyframes screen-in{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .screen-inner{padding-top:28px;}
+
+  .page-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:16px; flex-wrap:wrap;
+    margin-bottom:22px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--border);
+  }
+  .page-head h1{font-size:1.6rem; font-weight:800;}
+  .page-head .page-meta{font-size:13px; color:var(--ink-soft); margin-top:6px;}
+  .page-lede{font-size:13.5px; color:var(--ink-faint); max-width:46ch;}
+
+  /* ====================================================================
+     ICONS
+     ==================================================================== */
+  .icon{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; flex:none;}
+  .icon-lg{width:24px; height:24px;}
+
+  /* ====================================================================
+     CHIPS
+     ==================================================================== */
+  .chip{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12px; font-weight:700;
+    padding:4px 10px 4px 8px;
+    border-radius:var(--radius-pill);
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .chip .icon{width:13px; height:13px; stroke-width:2.25;}
+  .chip--info{background:var(--info-soft); color:var(--info-ink); border-color:color-mix(in srgb, var(--info) 35%, transparent);}
+  .chip--success{background:var(--success-soft); color:var(--success-ink); border-color:color-mix(in srgb, var(--success) 35%, transparent);}
+  .chip--warning{background:var(--warning-soft); color:var(--warning-ink); border-color:color-mix(in srgb, var(--warning) 35%, transparent);}
+  .chip--danger{background:var(--danger-soft); color:var(--danger-ink); border-color:color-mix(in srgb, var(--danger) 35%, transparent);}
+  .chip--neutral{background:var(--neutral-chip-bg); color:var(--neutral-chip-ink);}
+  .chip--brand{background:var(--brand-soft); color:var(--brand-strong);}
+
+  /* ====================================================================
+     BUTTONS
+     ==================================================================== */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    border-radius:var(--radius-sm);
+    border:1px solid transparent;
+    padding:9px 16px;
+    font-size:13.5px; font-weight:700;
+    cursor:pointer;
+    transition:background-color .15s ease, border-color .15s ease, color .15s ease, transform .1s ease, box-shadow .15s ease;
+  }
+  .btn .icon{width:15px; height:15px;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--brand); color:var(--on-brand); border-color:var(--brand-strong); box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{background:var(--brand-strong);}
+  .btn-secondary{background:var(--surface); color:var(--ink); border-color:var(--border-strong);}
+  .btn-secondary:hover{border-color:var(--brand); color:var(--brand-strong);}
+  .btn-ghost{background:transparent; color:var(--ink-soft); border-color:transparent;}
+  .btn-ghost:hover{background:var(--surface-muted); color:var(--ink);}
+  .btn-danger{background:var(--danger); color:#fff; border-color:color-mix(in srgb, var(--danger) 70%, black);}
+  .btn-danger:hover{filter:brightness(1.06);}
+  .btn:disabled{opacity:.45; cursor:not-allowed; transform:none;}
+  .btn-block{width:100%;}
+  .btn-sm{padding:6px 11px; font-size:12.5px;}
+
+  /* ====================================================================
+     TICKET CARD (perforated task card)
+     ==================================================================== */
+  .task-list{display:flex; flex-direction:column; gap:14px; margin-bottom:8px;}
+  .ticket{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm);
+    overflow:visible;
+  }
+  .ticket-notch{
+    position:absolute; top:64px; width:16px; height:16px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:50%;
+  }
+  .ticket-notch.left{left:-9px;}
+  .ticket-notch.right{right:-9px;}
+
+  .ticket-head{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 20px 12px;
+  }
+  .ticket-icon{
+    width:38px; height:38px; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:var(--radius-sm);
+    background:var(--brand-soft); color:var(--brand-strong);
+  }
+  .ticket-head-text{flex:1; min-width:0;}
+  .ticket-title{font-size:15px; font-weight:700; line-height:1.4;}
+  .ticket-meta{margin-top:2px; font-size:12px; color:var(--ink-faint);}
+  .ticket-tear{
+    border-top:1.5px dashed var(--border-strong);
+    margin:0 20px;
+  }
+  .ticket-body{
+    padding:14px 20px 18px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .ticket-body p{flex:1; min-width:220px; font-size:13.5px; color:var(--ink-soft);}
+  .ticket-actions{flex:none; display:flex; gap:8px;}
+
+  .ticket.quiet{box-shadow:none; background:transparent; border-style:dashed;}
+  .ticket.quiet .ticket-icon{background:var(--surface-muted); color:var(--ink-faint);}
+
+  .section-divider{
+    display:flex; align-items:center; gap:12px;
+    margin:26px 0 16px;
+    color:var(--ink-faint);
+    font-size:12px; font-weight:700; letter-spacing:.06em;
+  }
+  .section-divider::before, .section-divider::after{content:""; flex:1; height:1px; background:var(--border);}
+
+  .secondary-entries{display:flex; gap:14px; flex-wrap:wrap;}
+  .entry-card{
+    flex:1; min-width:220px;
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface-muted);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:16px 18px;
+    cursor:pointer; text-align:left;
+    transition:border-color .15s ease, background-color .15s ease;
+  }
+  .entry-card:hover{border-color:var(--brand); background:var(--brand-soft);}
+  .entry-card .icon{width:22px; height:22px; color:var(--brand-strong);}
+  .entry-card-title{font-weight:700; font-size:14px;}
+  .entry-card-sub{font-size:12px; color:var(--ink-faint); margin-top:2px;}
+
+  /* ====================================================================
+     BROWSE SCREEN
+     ==================================================================== */
+  .filter-bar{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    background:var(--surface-muted);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    margin-bottom:18px;
+  }
+  .field-inline{display:flex; align-items:center; gap:7px; background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius-sm); padding:7px 10px;}
+  .field-inline .icon{width:15px; height:15px; color:var(--ink-faint);}
+  .field-inline select, .field-inline input{border:none; background:transparent; font-size:13px; min-width:0; outline:none;}
+  .filter-search{flex:1; min-width:180px;}
+  .filter-search input{width:100%;}
+  .result-count{font-size:12.5px; color:var(--ink-faint); margin-bottom:14px;}
+  .result-count b{color:var(--ink); font-weight:700;}
+
+  .item-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:16px;
+  }
+  .item-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+    display:flex; flex-direction:column;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .item-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
+  .item-photo{
+    aspect-ratio:4/3;
+    display:flex; align-items:flex-end; justify-content:flex-start;
+    padding:10px;
+    position:relative;
+  }
+  .item-photo .icon{width:26px; height:26px; color:rgba(255,255,255,.85);}
+  .item-photo-tag{
+    position:absolute; top:10px; right:10px;
+    font-size:10.5px; font-weight:700; letter-spacing:.03em;
+    background:rgba(0,0,0,.32); color:#fff;
+    padding:3px 8px; border-radius:var(--radius-pill);
+    backdrop-filter:blur(2px);
+  }
+  .item-body{padding:12px 14px 14px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .item-title{font-size:13.5px; font-weight:700; line-height:1.4;}
+  .item-meta-row{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--ink-faint); flex-wrap:wrap;}
+  .item-meta-row .icon{width:13px; height:13px;}
+  .item-meta-sep{width:2px; height:2px; border-radius:50%; background:var(--ink-faint);}
+  .item-foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .item-stat{font-size:11.5px; color:var(--ink-faint); display:flex; align-items:center; gap:4px;}
+
+  /* ====================================================================
+     DETAIL SCREEN
+     ==================================================================== */
+  .detail-head{margin-bottom:22px;}
+  .detail-title{font-size:1.4rem; font-weight:800;}
+  .detail-meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; font-size:13px; color:var(--ink-soft);}
+  .detail-meta-item{display:flex; align-items:center; gap:5px;}
+  .detail-meta-item .icon{width:15px; height:15px; color:var(--ink-faint);}
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:18px 20px 20px;
+    margin-bottom:18px;
+    box-shadow:var(--shadow-sm);
+  }
+  .panel-head{display:flex; align-items:center; gap:9px; margin-bottom:14px;}
+  .panel-head .icon{width:19px; height:19px; color:var(--brand-strong);}
+  .panel-head h2{font-size:15.5px; font-weight:800;}
+  .panel-head-count{margin-left:auto; font-size:12px; color:var(--ink-faint); font-family:var(--font-mono);}
+
+  .claim-row{
+    display:flex; align-items:flex-start; gap:12px;
+    padding:11px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .claim-row:last-child{border-bottom:none; padding-bottom:2px;}
+  .claim-avatar{
+    width:30px; height:30px; flex:none; border-radius:50%;
+    background:var(--surface-muted); color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:700;
+  }
+  .claim-main{flex:1; min-width:0;}
+  .claim-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:3px;}
+  .claim-name{font-size:13px; font-weight:700;}
+  .claim-time{font-size:11.5px; color:var(--ink-faint); margin-left:auto;}
+  .claim-text{font-size:13px; color:var(--ink-soft);}
+  .claim-report{font-size:11.5px; color:var(--ink-faint); text-decoration:underline; text-underline-offset:2px; cursor:pointer; background:none; border:none; padding:4px 0 0; }
+  .claim-report:hover{color:var(--danger);}
+
+  .stepper{display:flex; align-items:flex-start; gap:0; margin-top:6px;}
+  .step{flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; padding:0 6px;}
+  .step-connector{position:absolute; top:20px; left:-50%; width:100%; height:2px; background:var(--border-strong); z-index:0;}
+  .step:first-child .step-connector{display:none;}
+  .step.done ~ .step .step-connector{background:var(--border-strong);}
+  .step.done .step-connector{background:var(--success);}
+  .step-stamp{
+    width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border:2px solid var(--border-strong);
+    background:var(--surface);
+    color:var(--ink-faint);
+    position:relative; z-index:1;
+    margin-bottom:8px;
+  }
+  .step.done .step-stamp{border-color:var(--success); color:var(--success); background:var(--success-soft); transform:rotate(-6deg);}
+  .step.active .step-stamp{border-color:var(--info); color:var(--info); box-shadow:0 0 0 4px var(--info-soft);}
+  .step-label{font-size:12.5px; font-weight:700;}
+  .step-sub{font-size:11px; color:var(--ink-faint); margin-top:2px; max-width:15ch;}
+
+  /* ====================================================================
+     ADMIN — DUTY OVERVIEW
+     ==================================================================== */
+  .kiosk-row{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
+    gap:14px; margin-bottom:26px;
+  }
+  .kiosk-tile{
+    background:var(--kiosk-bg);
+    border-radius:var(--radius-md);
+    padding:18px 20px 16px;
+    display:flex; flex-direction:column; gap:2px;
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:var(--shadow-md);
+    cursor:pointer;
+    text-align:left;
+    transition:transform .15s ease;
+  }
+  .kiosk-tile:hover{transform:translateY(-2px);}
+  .kiosk-label-row{display:flex; align-items:center; gap:7px; color:var(--kiosk-label); font-size:12.5px; font-weight:700; letter-spacing:.03em;}
+  .kiosk-label-row .icon{width:15px; height:15px; color:var(--kiosk-label);}
+  .kiosk-digit{
+    font-family:var(--font-mono); font-weight:700; font-size:2.75rem;
+    color:var(--kiosk-digit);
+    line-height:1.05;
+    text-shadow:0 0 18px color-mix(in srgb, var(--kiosk-digit) 45%, transparent);
+    margin:2px 0 4px;
+  }
+  .kiosk-sub{font-size:11.5px; color:var(--kiosk-label);}
+
+  .todo-panel{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm); overflow:hidden;
+  }
+  .todo-panel-head{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border);}
+  .todo-panel-head h2{font-size:15px; font-weight:800;}
+  .todo-panel-head span{font-size:12px; color:var(--ink-faint);}
+  .todo-table-wrap{overflow-x:auto;}
+  .todo-table{width:100%; border-collapse:collapse; min-width:640px;}
+  .todo-table th{
+    text-align:left; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--ink-faint); padding:10px 20px; border-bottom:1px solid var(--border);
+  }
+  .todo-table td{padding:13px 20px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle;}
+  .todo-table tr:last-child td{border-bottom:none;}
+  .todo-table tr:hover td{background:var(--surface-muted);}
+  .todo-summary{font-weight:600;}
+  .todo-wait{font-family:var(--font-mono); color:var(--ink-soft);}
+  .todo-goto{color:var(--brand-strong); font-weight:700; font-size:12.5px; background:none; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:3px;}
+  .todo-goto:hover{text-decoration:underline;}
+  .todo-note-row td{padding:12px 20px; font-size:12.5px; color:var(--ink-faint); font-style:normal;}
+
+  .admin-quicknav{display:flex; gap:14px; flex-wrap:wrap; margin-top:20px;}
+
+  /* ====================================================================
+     REPORTS QUEUE
+     ==================================================================== */
+  .queue-layout{display:grid; grid-template-columns:minmax(280px, 360px) 1fr; gap:18px; align-items:flex-start;}
+  @media (max-width: 860px){ .queue-layout{grid-template-columns:1fr;} }
+
+  .queue-list{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    overflow:hidden; box-shadow:var(--shadow-sm);
+  }
+  .queue-list-head{padding:14px 16px; border-bottom:1px solid var(--border); font-size:13px; font-weight:800; display:flex; justify-content:space-between; align-items:center;}
+  .queue-list-head span{font-weight:400; color:var(--ink-faint); font-size:12px;}
+  .queue-row{
+    width:100%; text-align:left; display:block;
+    padding:13px 16px; border-bottom:1px solid var(--border);
+    background:transparent; border-left:3px solid transparent; cursor:pointer;
+    transition:background-color .12s ease, border-color .12s ease;
+  }
+  .queue-row:last-child{border-bottom:none;}
+  .queue-row:hover{background:var(--surface-muted);}
+  .queue-row[aria-current="true"]{background:var(--brand-soft); border-left-color:var(--brand);}
+  .queue-row-top{display:flex; align-items:center; gap:8px; margin-bottom:5px;}
+  .queue-code{font-family:var(--font-mono); font-weight:700; font-size:13px;}
+  .queue-row-reason{font-size:12.5px; color:var(--ink-soft); margin-bottom:5px; line-height:1.45;}
+  .queue-row-foot{display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--ink-faint);}
+
+  .call-panel{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm); padding:22px 24px 24px;
+  }
+  .call-panel-eyebrow{display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--brand-strong); text-transform:uppercase; margin-bottom:6px;}
+  .call-panel-code{font-family:var(--font-mono); font-weight:700; font-size:2.25rem; margin-bottom:14px;}
+  .call-panel-dl{display:grid; grid-template-columns:auto 1fr; gap:9px 16px; font-size:13.5px; margin-bottom:18px;}
+  .call-panel-dl dt{color:var(--ink-faint); font-weight:600; white-space:nowrap;}
+  .call-panel-dl dd{margin:0; color:var(--ink);}
+  .call-panel-actions{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .call-panel-note label{display:block; font-size:12.5px; font-weight:700; margin-bottom:6px; color:var(--ink-soft);}
+  textarea{
+    width:100%; resize:vertical; min-height:72px;
+    border:1px solid var(--border-strong); border-radius:var(--radius-sm);
+    background:var(--surface); color:var(--ink);
+    padding:10px 12px; font-size:13px; font-family:inherit;
+  }
+  textarea:focus{border-color:var(--brand);}
+
+  /* ====================================================================
+     FORCE-REMOVE FLOW
+     ==================================================================== */
+  .fr-steps{display:flex; flex-direction:column; gap:18px; max-width:640px;}
+  .fr-stepnum{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:11.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:10px;
+  }
+  .fr-stepnum b{
+    width:20px; height:20px; border-radius:50%; background:var(--surface-muted); color:var(--ink-soft);
+    display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:11px;
+  }
+
+  .case-card{
+    position:relative;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:18px 20px; box-shadow:var(--shadow-sm);
+  }
+  .case-card-title{font-size:15px; font-weight:800; margin-bottom:10px;}
+  .case-dl{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:13px; margin-bottom:14px;}
+  .case-dl dt{color:var(--ink-faint); font-weight:600;}
+  .case-dl dd{margin:0;}
+  .case-count{
+    display:inline-flex; align-items:baseline; gap:5px;
+    background:var(--danger-soft); color:var(--danger-ink);
+    border-radius:var(--radius-sm); padding:6px 12px; margin-bottom:12px; font-weight:700; font-size:13px;
+  }
+  .case-count b{font-family:var(--font-mono); font-size:1.15rem;}
+  .case-reasons{display:flex; flex-direction:column; gap:6px;}
+  .case-reasons li{display:flex; gap:8px; font-size:12.5px; color:var(--ink-soft); align-items:flex-start;}
+  .case-reasons .icon{width:14px; height:14px; color:var(--warning); margin-top:2px; flex:none;}
+
+  .seal-mark{
+    position:absolute; top:-14px; right:18px;
+    width:82px; height:82px;
+    display:flex; align-items:center; justify-content:center;
+    transform:rotate(-9deg) scale(.4);
+    opacity:0;
+    pointer-events:none;
+    transition:transform .5s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+  }
+  .seal-mark.show{opacity:1; transform:rotate(-9deg) scale(1);}
+  .seal-mark-inner{
+    width:100%; height:100%;
+    border:3px solid var(--seal); border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--seal); font-family:var(--font-display); font-weight:800; font-size:15px;
+    letter-spacing:.06em; text-align:center; line-height:1.3;
+    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+    background:color-mix(in srgb, var(--seal) 6%, transparent);
+  }
+
+  .reason-field{margin-top:2px;}
+  .reason-field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px;}
+  .reason-field .helper{font-size:11.5px; color:var(--ink-faint); margin-top:6px; display:flex; justify-content:space-between; gap:8px;}
+  .reason-field .helper.invalid{color:var(--warning-ink);}
+
+  .stamp-zone{
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    padding:26px 20px; background:var(--surface-muted); border:1px solid var(--border); border-radius:var(--radius-md);
+  }
+  .stamp-instructions{font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:32ch;}
+  .stamp-button{
+    position:relative;
+    width:132px; height:132px; border-radius:50%;
+    background:var(--surface);
+    border:3px solid var(--seal);
+    color:var(--seal);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px;
+    cursor:pointer;
+    font-family:var(--font-display); font-weight:800; font-size:13px; text-align:center;
+    -webkit-user-select:none; user-select:none; touch-action:none;
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .stamp-button .icon{width:30px; height:30px; stroke-width:1.6;}
+  .stamp-button:disabled{opacity:.4; cursor:not-allowed;}
+  .stamp-button:not(:disabled):hover{box-shadow:0 0 0 6px color-mix(in srgb, var(--seal) 10%, transparent);}
+  .stamp-ring{
+    position:absolute; inset:-3px; border-radius:50%;
+    background:conic-gradient(var(--seal) calc(var(--progress,0) * 1%), transparent 0);
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+            mask:radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+    pointer-events:none;
+  }
+  .stamp-button.holding{transform:scale(.96);}
+  .stamp-button.confirmed{
+    background:var(--seal); color:#fff; border-color:var(--seal);
+    animation:stamp-thunk .32s ease;
+  }
+  @keyframes stamp-thunk{
+    0%{transform:scale(1);} 40%{transform:scale(1.12) rotate(-3deg);} 100%{transform:scale(1) rotate(0);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp-button, .stamp-button.holding, .stamp-button.confirmed{transition:none; animation:none; transform:none;}
+    .seal-mark{transition:opacity .15s ease;}
+    .seal-mark.show{transform:rotate(-9deg) scale(1);}
+  }
+
+  .fr-submit-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .fr-submit-note{font-size:11.5px; color:var(--ink-faint);}
+
+  .success-panel{
+    background:var(--success-soft); border:1px solid color-mix(in srgb, var(--success) 40%, transparent);
+    border-radius:var(--radius-md); padding:18px 20px; display:flex; gap:12px; align-items:flex-start;
+  }
+  .success-panel .icon{width:22px; height:22px; color:var(--success-ink); flex:none; margin-top:1px;}
+  .success-panel-title{font-weight:800; color:var(--success-ink); font-size:14px; margin-bottom:4px;}
+  .success-panel-text{font-size:12.5px; color:var(--success-ink); opacity:.9; line-height:1.6;}
+
+  /* ====================================================================
+     RESPONSIVE
+     ==================================================================== */
+  @media (max-width: 640px){
+    .ticket-notch{display:none;}
+    .ticket-head, .ticket-body, .ticket-tear{padding-left:16px; padding-right:16px; margin-left:16px; margin-right:16px;}
+    .call-panel-code, .kiosk-digit{font-size:1.9rem;}
+    .page-head{align-items:flex-start; flex-direction:column;}
+  }
+
+  footer.app-footer{
+    max-width:1180px; margin:36px auto 0; padding:18px 20px 0; border-top:1px solid var(--border);
+    font-size:11.5px; color:var(--ink-faint); text-align:center;
+  }
+</style>
+
+<!-- ============================================================
+     ICON SPRITE
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M9.5 19.5V14h5v5.5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9 12h6M9 15.5h6M9 8.5h2"/></symbol>
+    <symbol id="i-desk" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="12" rx="1.5"/><path d="M8 20h8M12 16.5V20"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 5h12l-3 4 3 4H6"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="10" rx="1.5"/><path d="M9 8h6M9 11h4"/><path d="M4.5 20h15"/><path d="M8 20l1.5-6h5L16 20"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M4 5.5h16v11h-9L7 20v-3.5H4z"/><path d="M8 10h8M8 13h5"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M2.5 12.5 6 9l3 2 3-2.5 3 2 3.5-3 3 3"/><path d="M6 9l4 7 2-1 1.5 2 2-1"/><path d="M18 9l-4.5 6"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3.5 8.5V6a1.5 1.5 0 0 1 1.5-1.5h14A1.5 1.5 0 0 1 20.5 6v2.5a2 2 0 0 0 0 4V15a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 15v-2.5a2 2 0 0 0 0-4Z"/><path d="M14 5v13" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.3l2.4 2.4 4.6-5.4"/></symbol>
+    <symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5l5 5m0-5-5 5"/></symbol>
+    <symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 21 19H3Z"/><path d="M12 10v4.2"/><circle cx="12" cy="17" r="0.15" fill="currentColor" stroke-width="2.2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-6.2 6.5-11A6.5 6.5 0 0 0 5.5 10c0 4.8 6.5 11 6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M11.5 3.5H5.5a2 2 0 0 0-2 2v6l9.5 9.5a2 2 0 0 0 2.8 0l6-6a2 2 0 0 0 0-2.8L11.5 3.5Z"/><circle cx="8" cy="8" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c0-3 2.5-5.2 5.5-5.2s5.5 2.2 5.5 5.2"/><circle cx="17" cy="9" r="2.4"/><path d="M14.5 13.5c2.5.3 4.5 2.3 4.5 5.5"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 12.5h4.5l1.5 3h4l1.5-3H20"/><path d="M4.5 12.5 6 5.5h12l1.5 7"/><path d="M4 12.5v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9.5" width="16" height="10" rx="1"/><path d="M4 13h16"/><path d="M12 9.5V20"/><path d="M12 9.5C10 9.5 8.5 8.3 8.5 6.8A2.3 2.3 0 0 1 12 6.8m0 2.7c2 0 3.5-1.2 3.5-2.7A2.3 2.3 0 0 0 12 6.8"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     TOP BAR
+     ============================================================ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">好</div>
+      <div class="brand-text">
+        <span class="brand-title">好物掛號台</span>
+        <span class="brand-sub">ShareGood M13 前端方向提案．方向一</span>
+      </div>
+    </div>
+    <nav class="nav-clusters" aria-label="畫面切換">
+      <div class="nav-cluster">
+        <span class="nav-cluster-label">前台窗口</span>
+        <div class="nav-tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-target="home"><span class="tab-index mono">01</span><span class="tab-label">首頁待辦</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="browse"><span class="tab-index mono">02</span><span class="tab-label">好物瀏覽</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="detail"><span class="tab-index mono">03</span><span class="tab-label">物品詳情</span></button>
+        </div>
+      </div>
+      <div class="nav-cluster">
+        <span class="nav-cluster-label">後台櫃檯</span>
+        <div class="nav-tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="false" data-target="admin-home"><span class="tab-index mono">04</span><span class="tab-label">值班總覽</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="reports-queue"><span class="tab-index mono">05</span><span class="tab-label">檢舉佇列</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-target="force-remove"><span class="tab-index mono">06</span><span class="tab-label">強制下架流程</span></button>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- ============================================================
+       01 前台首頁：我的待辦
+       ============================================================ -->
+  <section class="screen active" id="screen-home">
+    <div class="screen-inner">
+      <div class="page-head">
+        <div>
+          <h1>早安，Leo</h1>
+          <p class="page-meta">2026 年 7 月 21 日．星期二</p>
+        </div>
+        <p class="page-lede">以下依急迫程度排序，辦完會自動收起，不用自己整理。</p>
+      </div>
+
+      <div class="task-list">
+        <article class="ticket">
+          <span class="ticket-notch left" aria-hidden="true"></span>
+          <span class="ticket-notch right" aria-hidden="true"></span>
+          <div class="ticket-head">
+            <span class="ticket-icon"><svg class="icon"><use href="#i-message"/></svg></span>
+            <div class="ticket-head-text">
+              <div class="ticket-title">「IKEA MALM 書櫃（白色）」有新留言待回覆</div>
+              <div class="ticket-meta">2 小時前．王小姐</div>
+            </div>
+            <span class="chip chip--info"><svg class="icon"><use href="#i-circle-dot"/></svg>留言待回覆</span>
+          </div>
+          <div class="ticket-tear"></div>
+          <div class="ticket-body">
+            <p>「請問可以約明天晚上七點在板橋捷運站附近面交嗎？」</p>
+            <div class="ticket-actions">
+              <button class="btn btn-secondary btn-sm">先看物品</button>
+              <button class="btn btn-primary btn-sm">回覆留言</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ticket">
+          <span class="ticket-notch left" aria-hidden="true"></span>
+          <span class="ticket-notch right" aria-hidden="true"></span>
+          <div class="ticket-head">
+            <span class="ticket-icon"><svg class="icon"><use href="#i-handshake"/></svg></span>
+            <div class="ticket-head-text">
+              <div class="ticket-title">與陳同學的「兒童安全座椅」交接，等你確認完成</div>
+              <div class="ticket-meta">對方已確認．等待你 5 小時</div>
+            </div>
+            <span class="chip chip--warning"><svg class="icon"><use href="#i-clock"/></svg>交接待確認</span>
+          </div>
+          <div class="ticket-tear"></div>
+          <div class="ticket-body">
+            <p>對方已標記完成，只差你確認，這筆分享就能結案並計入貢獻值。</p>
+            <div class="ticket-actions">
+              <button class="btn btn-secondary btn-sm">查看對話</button>
+              <button class="btn btn-primary btn-sm">確認完成</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ticket">
+          <span class="ticket-notch left" aria-hidden="true"></span>
+          <span class="ticket-notch right" aria-hidden="true"></span>
+          <div class="ticket-head">
+            <span class="ticket-icon"><svg class="icon"><use href="#i-ticket"/></svg></span>
+            <div class="ticket-head-text">
+              <div class="ticket-title">「任天堂 Switch 主機（附兩隻手把）」抽籤即將開獎</div>
+              <div class="ticket-meta">已有 12 人報名</div>
+            </div>
+            <span class="chip chip--info"><svg class="icon"><use href="#i-clock"/></svg>今天 18:00 開獎</span>
+          </div>
+          <div class="ticket-tear"></div>
+          <div class="ticket-body">
+            <p>系統會在開獎時間自動抽出得主，並通知結果，不需要你手動操作。</p>
+            <div class="ticket-actions">
+              <button class="btn btn-secondary btn-sm">查看抽籤狀態</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ticket quiet">
+          <div class="ticket-head">
+            <span class="ticket-icon"><svg class="icon"><use href="#i-gift"/></svg></span>
+            <div class="ticket-head-text">
+              <div class="ticket-title">「兒童繪本一批（20 本）」的接手者留了感謝留言</div>
+              <div class="ticket-meta">貢獻值 +10．不需要你採取任何動作</div>
+            </div>
+            <span class="chip chip--neutral">已完成</span>
+          </div>
+          <div class="ticket-body">
+            <p>「謝謝分享，孩子很喜歡這套繪本！」</p>
+            <div class="ticket-actions">
+              <button class="btn btn-ghost btn-sm">查看感謝留言</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="section-divider">還有其他事</div>
+      <div class="secondary-entries">
+        <button class="entry-card" type="button">
+          <svg class="icon icon-lg"><use href="#i-search"/></svg>
+          <div>
+            <div class="entry-card-title">瀏覽好物</div>
+            <div class="entry-card-sub">看看附近縣市現在有什麼</div>
+          </div>
+        </button>
+        <button class="entry-card" type="button">
+          <svg class="icon icon-lg"><use href="#i-plus"/></svg>
+          <div>
+            <div class="entry-card-title">上架好物</div>
+            <div class="entry-card-sub">把用不到的東西分享出去</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       02 好物瀏覽列表
+       ============================================================ -->
+  <section class="screen" id="screen-browse">
+    <div class="screen-inner">
+      <div class="page-head">
+        <div>
+          <h1>好物瀏覽</h1>
+          <p class="page-meta">依縣市、分類篩選，先到先得</p>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <label class="field-inline"><svg class="icon"><use href="#i-pin"/></svg>
+          <select aria-label="縣市"><option>台北市</option><option>新北市</option><option>台中市</option></select>
+        </label>
+        <label class="field-inline"><svg class="icon"><use href="#i-tag"/></svg>
+          <select aria-label="分類"><option>全部分類</option><option>傢俱大型物</option><option>優惠券</option></select>
+        </label>
+        <label class="field-inline filter-search"><svg class="icon"><use href="#i-search"/></svg>
+          <input type="text" placeholder="搜尋好物名稱" aria-label="關鍵字搜尋">
+        </label>
+        <button class="btn btn-primary btn-sm">搜尋</button>
+      </div>
+
+      <p class="result-count">台北市．共 <b>128</b> 件好物</p>
+
+      <div class="item-grid">
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#8B5E23,#5B3B14)">
+            <svg class="icon"><use href="#i-home"/></svg>
+            <span class="item-photo-tag">傢俱大型物</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">北歐風單人布沙發椅</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>台北市大安區<span class="item-meta-sep"></span>剛上架</div>
+            <div class="item-foot">
+              <span class="chip chip--success"><svg class="icon"><use href="#i-circle-dot"/></svg>剛上架</span>
+              <span class="item-stat">0 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#3B6690,#1F3C55)">
+            <svg class="icon"><use href="#i-doc"/></svg>
+            <span class="item-photo-tag">書籍雜誌</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">兒童繪本一批（20 本）</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>新北市板橋區</div>
+            <div class="item-foot">
+              <span class="chip chip--info"><svg class="icon"><use href="#i-clock"/></svg>3 天內</span>
+              <span class="item-stat">4 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#6B4718,#3A2610)">
+            <svg class="icon"><use href="#i-ticket"/></svg>
+            <span class="item-photo-tag">優惠券</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">星巴克買一送一兌換券</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>台北市信義區</div>
+            <div class="item-foot">
+              <span class="chip chip--warning"><svg class="icon"><use href="#i-alert"/></svg>明天到期</span>
+              <span class="item-stat">9 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#2E7D4F,#164529)">
+            <svg class="icon"><use href="#i-tag"/></svg>
+            <span class="item-photo-tag">運動戶外</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">羽球拍＋羽球一筒</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>台中市西區</div>
+            <div class="item-foot">
+              <span class="chip chip--info"><svg class="icon"><use href="#i-clock"/></svg>3 天內</span>
+              <span class="item-stat">2 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#8B5E23,#3A2610)">
+            <svg class="icon"><use href="#i-ticket"/></svg>
+            <span class="item-photo-tag">3C 家電</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">任天堂 Switch 主機（附兩隻手把）</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>台北市中山區</div>
+            <div class="item-foot">
+              <span class="chip chip--brand"><svg class="icon"><use href="#i-ticket"/></svg>抽籤中</span>
+              <span class="item-stat">12 人報名</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#C1440E,#7A2A08)">
+            <svg class="icon"><use href="#i-gift"/></svg>
+            <span class="item-photo-tag">點數好康</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">全聯商品卡 200 元</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>新北市板橋區</div>
+            <div class="item-foot">
+              <span class="chip chip--warning"><svg class="icon"><use href="#i-alert"/></svg>3 天內</span>
+              <span class="item-stat">1 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#5B7A8B,#2C3E47)">
+            <svg class="icon"><use href="#i-gift"/></svg>
+            <span class="item-photo-tag">母嬰用品</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">未拆封嬰兒奶粉（1 罐）</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>桃園市中壢區</div>
+            <div class="item-foot">
+              <span class="chip chip--success"><svg class="icon"><use href="#i-circle-dot"/></svg>剛上架</span>
+              <span class="item-stat">0 則留言</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-photo" style="background:linear-gradient(140deg,#8B4E6B,#4A2438)">
+            <svg class="icon"><use href="#i-tag"/></svg>
+            <span class="item-photo-tag">美妝保養</span>
+          </div>
+          <div class="item-body">
+            <div class="item-title">專櫃保養品試用組</div>
+            <div class="item-meta-row"><svg class="icon"><use href="#i-pin"/></svg>台北市信義區</div>
+            <div class="item-foot">
+              <span class="chip chip--info"><svg class="icon"><use href="#i-clock"/></svg>3 天內</span>
+              <span class="item-stat">3 則留言</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       03 物品詳情頁片段
+       ============================================================ -->
+  <section class="screen" id="screen-detail">
+    <div class="screen-inner">
+      <div class="detail-head">
+        <h1 class="detail-title">IKEA MALM 書櫃（白色）</h1>
+        <div class="detail-meta">
+          <span class="detail-meta-item"><svg class="icon"><use href="#i-pin"/></svg>新北市板橋區</span>
+          <span class="detail-meta-item"><svg class="icon"><use href="#i-tag"/></svg>傢俱大型物</span>
+          <span class="detail-meta-item"><svg class="icon"><use href="#i-clock"/></svg>2 天前上架</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <svg class="icon"><use href="#i-message"/></svg>
+          <h2>留言／認領</h2>
+          <span class="panel-head-count">3 則</span>
+        </div>
+        <div class="claim-row">
+          <span class="claim-avatar">王</span>
+          <div class="claim-main">
+            <div class="claim-top">
+              <span class="claim-name">王小姐</span>
+              <span class="chip chip--success"><svg class="icon"><use href="#i-check-circle"/></svg>已認領</span>
+              <span class="claim-time">2 小時前</span>
+            </div>
+            <p class="claim-text">可以約明天晚上七點在板橋捷運站附近面交嗎？</p>
+            <button class="claim-report">檢舉這則留言</button>
+          </div>
+        </div>
+        <div class="claim-row">
+          <span class="claim-avatar">林</span>
+          <div class="claim-main">
+            <div class="claim-top">
+              <span class="claim-name">林先生</span>
+              <span class="chip chip--neutral"><svg class="icon"><use href="#i-x-circle"/></svg>未獲選</span>
+              <span class="claim-time">3 小時前</span>
+            </div>
+            <p class="claim-text">我也想要，如果王小姐取消我可以補上。</p>
+          </div>
+        </div>
+        <div class="claim-row">
+          <span class="claim-avatar">陳</span>
+          <div class="claim-main">
+            <div class="claim-top">
+              <span class="claim-name">陳小姐</span>
+              <span class="chip chip--info"><svg class="icon"><use href="#i-circle-dot"/></svg>待回覆</span>
+              <span class="claim-time">剛剛</span>
+            </div>
+            <p class="claim-text">請問書櫃側板有明顯刮傷嗎？</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <svg class="icon"><use href="#i-handshake"/></svg>
+          <h2>交接進度</h2>
+        </div>
+        <div class="stepper">
+          <div class="step done">
+            <div class="step-connector"></div>
+            <span class="step-stamp"><svg class="icon"><use href="#i-check-circle"/></svg></span>
+            <span class="step-label">配對成功</span>
+            <span class="step-sub">與王小姐</span>
+          </div>
+          <div class="step done">
+            <div class="step-connector"></div>
+            <span class="step-stamp"><svg class="icon"><use href="#i-check-circle"/></svg></span>
+            <span class="step-label">約定面交</span>
+            <span class="step-sub">明天 19:00．板橋站</span>
+          </div>
+          <div class="step active">
+            <div class="step-connector"></div>
+            <span class="step-stamp"><svg class="icon"><use href="#i-circle-dot"/></svg></span>
+            <span class="step-label">雙方確認完成</span>
+            <span class="step-sub">對方已確認，等你</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       04 /admin 值班總覽
+       ============================================================ -->
+  <section class="screen" id="screen-admin-home">
+    <div class="screen-inner">
+      <div class="page-head">
+        <div>
+          <h1>值班總覽</h1>
+          <p class="page-meta">moderator：Leo．2026 年 7 月 21 日</p>
+        </div>
+      </div>
+
+      <div class="kiosk-row">
+        <button class="kiosk-tile" type="button">
+          <span class="kiosk-label-row"><svg class="icon"><use href="#i-flag"/></svg>檢舉待處理</span>
+          <span class="kiosk-digit mono">3</span>
+          <span class="kiosk-sub">最舊一件已等 2 天</span>
+        </button>
+        <button class="kiosk-tile" type="button">
+          <span class="kiosk-label-row"><svg class="icon"><use href="#i-doc"/></svg>申訴待複審</span>
+          <span class="kiosk-digit mono">1</span>
+          <span class="kiosk-sub">已等 18 小時</span>
+        </button>
+        <button class="kiosk-tile" type="button">
+          <span class="kiosk-label-row"><svg class="icon"><use href="#i-inbox"/></svg>支援單待處理</span>
+          <span class="kiosk-digit mono">5</span>
+          <span class="kiosk-sub">最舊一件已等 1 天</span>
+        </button>
+      </div>
+
+      <div class="todo-panel">
+        <div class="todo-panel-head">
+          <h2>今天要辦的事</h2>
+          <span>依等待時間排序</span>
+        </div>
+        <div class="todo-table-wrap">
+          <table class="todo-table">
+            <thead>
+              <tr><th>類型</th><th>摘要</th><th>等待時間</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="chip chip--danger"><svg class="icon"><use href="#i-flag"/></svg>檢舉</span></td>
+                <td class="todo-summary">物品「限量球鞋 Air Max 一代」被檢舉「疑似造假／詐騙」</td>
+                <td class="todo-wait mono">2 天</td>
+                <td><button class="todo-goto">前往處理<svg class="icon"><use href="#i-chevron"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><span class="chip chip--info"><svg class="icon"><use href="#i-inbox"/></svg>支援單</span></td>
+                <td class="todo-summary">使用者反映「無法上傳照片」</td>
+                <td class="todo-wait mono">1 天</td>
+                <td><button class="todo-goto">前往處理<svg class="icon"><use href="#i-chevron"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><span class="chip chip--warning"><svg class="icon"><use href="#i-doc"/></svg>申訴</span></td>
+                <td class="todo-summary">物主對「二手電風扇」強制下架提出申訴</td>
+                <td class="todo-wait mono">18 時</td>
+                <td><button class="todo-goto">前往處理<svg class="icon"><use href="#i-chevron"/></svg></button></td>
+              </tr>
+              <tr>
+                <td><span class="chip chip--danger"><svg class="icon"><use href="#i-flag"/></svg>檢舉</span></td>
+                <td class="todo-summary">私訊對話被檢舉「騷擾內容」</td>
+                <td class="todo-wait mono">6 時</td>
+                <td><button class="todo-goto">前往處理<svg class="icon"><use href="#i-chevron"/></svg></button></td>
+              </tr>
+              <tr class="todo-note-row">
+                <td colspan="4">還有 4 筆支援單、1 筆檢舉待處理，前往各佇列查看完整清單。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-quicknav">
+        <button class="entry-card" type="button" style="flex:none; min-width:200px;">
+          <svg class="icon icon-lg"><use href="#i-flag"/></svg>
+          <div><div class="entry-card-title">前往檢舉佇列</div><div class="entry-card-sub">3 件待處理</div></div>
+        </button>
+        <button class="entry-card" type="button" style="flex:none; min-width:200px;">
+          <svg class="icon icon-lg"><use href="#i-doc"/></svg>
+          <div><div class="entry-card-title">前往申訴複審</div><div class="entry-card-sub">1 件待複審</div></div>
+        </button>
+        <button class="entry-card" type="button" style="flex:none; min-width:200px;">
+          <svg class="icon icon-lg"><use href="#i-inbox"/></svg>
+          <div><div class="entry-card-title">前往支援單</div><div class="entry-card-sub">5 件待處理</div></div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       05 檢舉處理佇列
+       ============================================================ -->
+  <section class="screen" id="screen-reports-queue">
+    <div class="screen-inner">
+      <div class="page-head">
+        <div>
+          <h1>檢舉處理佇列</h1>
+          <p class="page-meta">點選左側案件，右側會像叫號一樣切換到該筆</p>
+        </div>
+      </div>
+
+      <div class="queue-layout">
+        <div class="queue-list" role="listbox" aria-label="待處理檢舉">
+          <div class="queue-list-head">待處理 <span>4 件</span></div>
+
+          <button class="queue-row" type="button" aria-current="true"
+            data-code="檢-0142" data-type="物品" data-reason="疑似詐騙，賣家收款不出貨" data-target-item="限量球鞋 Air Max 一代" data-reporter="匿名檢舉人" data-wait="2 天" data-status="submitted">
+            <div class="queue-row-top">
+              <span class="queue-code mono">檢-0142</span>
+              <span class="chip chip--neutral">物品</span>
+            </div>
+            <p class="queue-row-reason">「限量球鞋 Air Max 一代」疑似詐騙，賣家收款不出貨</p>
+            <div class="queue-row-foot"><span>等待 2 天</span><span>已受理</span></div>
+          </button>
+
+          <button class="queue-row" type="button" aria-current="false"
+            data-code="檢-0139" data-type="留言" data-reason="留言內容涉及騷擾字眼" data-target-item="二手嬰兒推車" data-reporter="Emily.chen" data-wait="1 天" data-status="triaged">
+            <div class="queue-row-top">
+              <span class="queue-code mono">檢-0139</span>
+              <span class="chip chip--neutral">留言</span>
+            </div>
+            <p class="queue-row-reason">「二手嬰兒推車」底下留言涉及騷擾字眼</p>
+            <div class="queue-row-foot"><span>等待 1 天</span><span>分類中</span></div>
+          </button>
+
+          <button class="queue-row" type="button" aria-current="false"
+            data-code="私-0031" data-type="私訊" data-reason="對話中出現騷擾訊息" data-target-item="與物主的私訊對話" data-reporter="王小姐" data-wait="6 小時" data-status="submitted">
+            <div class="queue-row-top">
+              <span class="queue-code mono">私-0031</span>
+              <span class="chip chip--neutral">私訊</span>
+            </div>
+            <p class="queue-row-reason">交接對話中出現騷擾訊息，已附截圖</p>
+            <div class="queue-row-foot"><span>等待 6 小時</span><span>已受理</span></div>
+          </button>
+
+          <button class="queue-row" type="button" aria-current="false"
+            data-code="檢-0144" data-type="物品" data-reason="物品描述與實際照片不符" data-target-item="日本帶回限定文具組" data-reporter="阿哲" data-wait="剛提交" data-status="submitted">
+            <div class="queue-row-top">
+              <span class="queue-code mono">檢-0144</span>
+              <span class="chip chip--neutral">物品</span>
+            </div>
+            <p class="queue-row-reason">「日本帶回限定文具組」描述與實際照片不符</p>
+            <div class="queue-row-foot"><span>剛提交</span><span>已受理</span></div>
+          </button>
+        </div>
+
+        <div class="call-panel">
+          <div class="call-panel-eyebrow"><svg class="icon"><use href="#i-flag"/></svg>目前處理案件</div>
+          <div class="call-panel-code mono" id="cp-code">檢-0142</div>
+          <dl class="call-panel-dl">
+            <dt>類型</dt><dd id="cp-type">物品檢舉</dd>
+            <dt>被檢舉對象</dt><dd id="cp-target">限量球鞋 Air Max 一代</dd>
+            <dt>檢舉理由</dt><dd id="cp-reason">疑似詐騙，賣家收款不出貨</dd>
+            <dt>檢舉人</dt><dd id="cp-reporter">匿名檢舉人</dd>
+            <dt>等待時間</dt><dd id="cp-wait">2 天</dd>
+          </dl>
+          <div class="call-panel-actions">
+            <button class="btn btn-secondary">標記處理中</button>
+            <button class="btn btn-secondary">退回駁回</button>
+            <button class="btn btn-danger">結案並下架物品</button>
+          </div>
+          <div class="call-panel-note">
+            <label for="cp-note">處理備註（結案／駁回時必填）</label>
+            <textarea id="cp-note" placeholder="說明處理結果，物主與檢舉人都看得到這段文字"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       06 強制下架確認流程
+       ============================================================ -->
+  <section class="screen" id="screen-force-remove">
+    <div class="screen-inner">
+      <div class="page-head">
+        <div>
+          <h1>開立強制下架處分單</h1>
+          <p class="page-meta">案件來源：檢舉 檢-0142</p>
+        </div>
+      </div>
+
+      <div class="fr-steps">
+
+        <div>
+          <div class="fr-stepnum"><b>1</b>案件摘要</div>
+          <div class="case-card" id="case-card">
+            <div class="seal-mark" id="seal-mark" aria-hidden="true">
+              <span class="seal-mark-inner">已核准<br>強制下架</span>
+            </div>
+            <div class="case-card-title">限量球鞋 Air Max 一代</div>
+            <dl class="case-dl">
+              <dt>物主</dt><dd>張先生</dd>
+              <dt>分類</dt><dd>運動戶外</dd>
+              <dt>上架時間</dt><dd>5 天前</dd>
+              <dt>目前狀態</dt><dd><span class="chip chip--success"><svg class="icon"><use href="#i-circle-dot"/></svg>上架中</span></dd>
+            </dl>
+            <div class="case-count">累計被檢舉 <b class="mono">3</b> 次</div>
+            <ul class="case-reasons">
+              <li><svg class="icon"><use href="#i-alert"/></svg>疑似詐騙，賣家收款不出貨（檢-0142）</li>
+              <li><svg class="icon"><use href="#i-alert"/></svg>照片與其他賣場重複，疑似盜圖（檢-0098）</li>
+              <li><svg class="icon"><use href="#i-alert"/></svg>物主已讀不回超過一週（檢-0071）</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="fr-stepnum"><b>2</b>填寫下架原因（必填）</div>
+          <div class="reason-field">
+            <label for="fr-reason">下架原因</label>
+            <textarea id="fr-reason" placeholder="具體說明下架原因，物主與稽核紀錄都看得到這段文字"></textarea>
+            <p class="helper" id="fr-reason-helper"><span>至少需要 6 個字</span><span id="fr-reason-count" class="mono">0 字</span></p>
+          </div>
+        </div>
+
+        <div>
+          <div class="fr-stepnum"><b>3</b>蓋章確認</div>
+          <div class="stamp-zone">
+            <p class="stamp-instructions" id="stamp-instructions">請先完成上方必填原因，再按住印章完成確認</p>
+            <button class="stamp-button" id="stamp-button" type="button" disabled aria-describedby="stamp-instructions">
+              <span class="stamp-ring" id="stamp-ring" aria-hidden="true"></span>
+              <svg class="icon" id="stamp-icon"><use href="#i-stamp"/></svg>
+              <span id="stamp-label">按住蓋章</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="fr-submit-block">
+          <div class="fr-stepnum"><b>4</b>送出處分單</div>
+          <div class="fr-submit-row">
+            <button class="btn btn-danger" id="fr-submit" disabled>送出強制下架處分</button>
+            <span class="fr-submit-note">此操作會立即下架物品並通知物主，之後只能透過申訴恢復。</span>
+          </div>
+        </div>
+
+        <div id="fr-success" style="display:none;">
+          <div class="success-panel">
+            <svg class="icon"><use href="#i-check-circle"/></svg>
+            <div>
+              <div class="success-panel-title">處分單已送出</div>
+              <p class="success-panel-text">「限量球鞋 Air Max 一代」已下架，物主已收到通知，稽核紀錄已建立。此操作不可復原，物主如有異議可提出申訴。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="app-footer">
+  ShareGood M13 前端重頭設計．方向一「掛號台」互動預覽 — 僅供設計方向討論，非最終畫面
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- 分頁切換 ---------- */
+  var tabs = document.querySelectorAll(".tab");
+  var screens = document.querySelectorAll(".screen");
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      var target = tab.getAttribute("data-target");
+      tabs.forEach(function(t){ t.setAttribute("aria-selected", t === tab ? "true" : "false"); });
+      screens.forEach(function(s){
+        s.classList.toggle("active", s.id === "screen-" + target);
+      });
+      window.scrollTo({top:0, behavior: prefersReducedMotion() ? "auto" : "smooth"});
+    });
+  });
+
+  function prefersReducedMotion(){
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  /* ---------- 05 檢舉佇列：叫號切換 ---------- */
+  var queueRows = document.querySelectorAll(".queue-row");
+  var cp = {
+    code: document.getElementById("cp-code"),
+    type: document.getElementById("cp-type"),
+    target: document.getElementById("cp-target"),
+    reason: document.getElementById("cp-reason"),
+    reporter: document.getElementById("cp-reporter"),
+    wait: document.getElementById("cp-wait")
+  };
+  queueRows.forEach(function(row){
+    row.addEventListener("click", function(){
+      queueRows.forEach(function(r){ r.setAttribute("aria-current", r === row ? "true" : "false"); });
+      cp.code.textContent = row.dataset.code;
+      cp.type.textContent = row.dataset.type + "檢舉";
+      cp.target.textContent = row.dataset.targetItem;
+      cp.reason.textContent = row.dataset.reason;
+      cp.reporter.textContent = row.dataset.reporter;
+      cp.wait.textContent = row.dataset.wait;
+    });
+  });
+
+  /* ---------- 06 強制下架：必填原因 + 蓋章確認 ---------- */
+  var reasonInput = document.getElementById("fr-reason");
+  var reasonCount = document.getElementById("fr-reason-count");
+  var reasonHelper = document.getElementById("fr-reason-helper");
+  var stampButton = document.getElementById("stamp-button");
+  var stampRing = document.getElementById("stamp-ring");
+  var stampLabel = document.getElementById("stamp-label");
+  var stampInstructions = document.getElementById("stamp-instructions");
+  var sealMark = document.getElementById("seal-mark");
+  var submitBtn = document.getElementById("fr-submit");
+  var successPanel = document.getElementById("fr-success");
+  var submitBlock = document.getElementById("fr-submit-block");
+
+  var MIN_LEN = 6;
+  var HOLD_MS = 1200;
+  var confirmed = false;
+  var holdTimer = null;
+  var holdStart = 0;
+  var armedForClick = false; // reduced-motion 兩段式點擊 fallback
+
+  function reasonValid(){
+    return reasonInput.value.trim().length >= MIN_LEN;
+  }
+
+  function refreshReasonState(){
+    var len = reasonInput.value.trim().length;
+    reasonCount.textContent = len + " 字";
+    if (reasonValid()){
+      reasonHelper.classList.remove("invalid");
+      if (!confirmed){
+        stampButton.disabled = false;
+        stampInstructions.textContent = prefersReducedMotion()
+          ? "按一下武裝印章，再按一次完成確認"
+          : "按住印章 1.2 秒完成蓋章確認";
+      }
+    } else {
+      reasonHelper.classList.add("invalid");
+      stampButton.disabled = true;
+      stampInstructions.textContent = "請先完成上方必填原因，再進行蓋章確認";
+      resetStampVisual();
+    }
+  }
+  reasonInput.addEventListener("input", refreshReasonState);
+  refreshReasonState();
+
+  function resetStampVisual(){
+    stampButton.classList.remove("holding","confirmed");
+    stampRing.style.setProperty("--progress", 0);
+    stampLabel.textContent = "按住蓋章";
+    armedForClick = false;
+  }
+
+  function completeStamp(){
+    confirmed = true;
+    stampButton.classList.remove("holding");
+    stampButton.classList.add("confirmed");
+    stampButton.disabled = true;
+    stampLabel.textContent = "已蓋章確認";
+    stampInstructions.textContent = "已完成蓋章確認，請送出處分單";
+    sealMark.classList.add("show");
+    submitBtn.disabled = false;
+  }
+
+  function cancelHold(){
+    if (holdTimer){ cancelAnimationFrame(holdTimer); holdTimer = null; }
+    if (!confirmed){
+      stampButton.classList.remove("holding");
+      stampRing.style.setProperty("--progress", 0);
+      stampLabel.textContent = "按住蓋章";
+    }
+  }
+
+  function tickHold(ts){
+    if (!holdStart) holdStart = ts;
+    var elapsed = ts - holdStart;
+    var pct = Math.min(100, (elapsed / HOLD_MS) * 100);
+    stampRing.style.setProperty("--progress", pct);
+    if (elapsed >= HOLD_MS){
+      completeStamp();
+      holdTimer = null;
+      return;
+    }
+    holdTimer = requestAnimationFrame(tickHold);
+  }
+
+  function startHold(){
+    if (stampButton.disabled || confirmed) return;
+    if (prefersReducedMotion()){
+      // 兩段式點擊：第一次「武裝」，第二次才確認，避免依賴長按動畫
+      if (!armedForClick){
+        armedForClick = true;
+        stampLabel.textContent = "再按一次確認";
+        stampButton.classList.add("holding");
+      } else {
+        completeStamp();
+      }
+      return;
+    }
+    stampButton.classList.add("holding");
+    stampLabel.textContent = "蓋章中…放開會取消";
+    holdStart = 0;
+    holdTimer = requestAnimationFrame(tickHold);
+  }
+
+  stampButton.addEventListener("pointerdown", function(e){ e.preventDefault(); startHold(); });
+  stampButton.addEventListener("pointerup", cancelHold);
+  stampButton.addEventListener("pointerleave", cancelHold);
+  stampButton.addEventListener("pointercancel", cancelHold);
+  stampButton.addEventListener("keydown", function(e){
+    if ((e.key === "Enter" || e.key === " ") && !e.repeat){ e.preventDefault(); startHold(); }
+  });
+  stampButton.addEventListener("keyup", function(e){
+    if (e.key === "Enter" || e.key === " ") cancelHold();
+  });
+  // 純點擊裝置（無 pointerdown hold 情境）之保底：click 僅在已武裝但尚未觸發 hold 時處理 reduced-motion 流程
+  stampButton.addEventListener("click", function(){
+    if (prefersReducedMotion() && armedForClick && !confirmed){
+      completeStamp();
+    }
+  });
+
+  submitBtn.addEventListener("click", function(){
+    if (submitBtn.disabled) return;
+    submitBlock.style.display = "none";
+    successPanel.style.display = "block";
+  });
+
+})();
+</script>

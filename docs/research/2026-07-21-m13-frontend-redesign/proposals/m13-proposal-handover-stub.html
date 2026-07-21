@@ -1,0 +1,1262 @@
+<title>ShareGood M13．方向三：交接存根</title>
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    --font-sans:"PingFang TC","Heiti TC","Microsoft JhengHei","Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+    /* type scale */
+    --fs-xs:.75rem;
+    --fs-sm:.8125rem;
+    --fs-base:.9375rem;
+    --fs-md:1.0625rem;
+    --fs-lg:1.25rem;
+    --fs-xl:clamp(1.375rem,1.2rem + .8vw,1.75rem);
+    --fs-2xl:clamp(1.75rem,1.4rem + 1.5vw,2.25rem);
+    --fs-display:clamp(2rem,1.5rem + 2vw,2.75rem);
+
+    --radius-card:14px;
+    --radius-sm:8px;
+    --radius-pill:999px;
+
+    /* ---- light (default) ---- */
+    --color-bg:#F4EEE3;
+    --color-bg-subtle:#ECE3D2;
+    --color-surface:#FBF8F1;
+    --color-surface-alt:#F1E8D9;
+    --color-ink:#2E2A2C;
+    --color-ink-soft:#665D5E;
+    --color-ink-faint:#948A87;
+    --color-line:#DACBAE;
+    --color-line-strong:#C1AA84;
+
+    --color-brand:#5B3A55;
+    --color-brand-strong:#42293D;
+    --color-brand-soft:#E6D8E2;
+    --color-brand-contrast:#FBF8F1;
+    --color-accent-2:#7C5A73;
+
+    --color-success:#2F7A4D;
+    --color-success-soft:#DCEBDD;
+    --color-warning:#8F620E;
+    --color-warning-soft:#F0E1BC;
+    --color-danger:#A23A3F;
+    --color-danger-soft:#F4DBDA;
+
+    --shadow-stub:0 1px 2px rgba(46,42,44,.08),0 6px 16px rgba(46,42,44,.07);
+    --shadow-pop:0 12px 32px rgba(46,42,44,.18);
+    --noise-opacity:.05;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --color-bg:#1F1A1C;
+      --color-bg-subtle:#251F21;
+      --color-surface:#2A2325;
+      --color-surface-alt:#332A2C;
+      --color-ink:#EFE6DC;
+      --color-ink-soft:#C7BAB5;
+      --color-ink-faint:#95898A;
+      --color-line:#463A3A;
+      --color-line-strong:#59494A;
+
+      --color-brand:#D9A9CE;
+      --color-brand-strong:#EBC6E0;
+      --color-brand-soft:#432D40;
+      --color-brand-contrast:#241A22;
+      --color-accent-2:#BB90B0;
+
+      --color-success:#75C393;
+      --color-success-soft:#213A29;
+      --color-warning:#E3B564;
+      --color-warning-soft:#3E2F16;
+      --color-danger:#E99498;
+      --color-danger-soft:#3E2224;
+
+      --shadow-stub:0 1px 2px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.4);
+      --shadow-pop:0 16px 40px rgba(0,0,0,.5);
+      --noise-opacity:.06;
+    }
+  }
+  :root[data-theme="light"]{
+    --color-bg:#F4EEE3;--color-bg-subtle:#ECE3D2;--color-surface:#FBF8F1;--color-surface-alt:#F1E8D9;
+    --color-ink:#2E2A2C;--color-ink-soft:#665D5E;--color-ink-faint:#948A87;
+    --color-line:#DACBAE;--color-line-strong:#C1AA84;
+    --color-brand:#5B3A55;--color-brand-strong:#42293D;--color-brand-soft:#E6D8E2;--color-brand-contrast:#FBF8F1;--color-accent-2:#7C5A73;
+    --color-success:#2F7A4D;--color-success-soft:#DCEBDD;--color-warning:#8F620E;--color-warning-soft:#F0E1BC;--color-danger:#A23A3F;--color-danger-soft:#F4DBDA;
+    --shadow-stub:0 1px 2px rgba(46,42,44,.08),0 6px 16px rgba(46,42,44,.07);
+    --shadow-pop:0 12px 32px rgba(46,42,44,.18);
+    --noise-opacity:.05;
+  }
+  :root[data-theme="dark"]{
+    --color-bg:#1F1A1C;--color-bg-subtle:#251F21;--color-surface:#2A2325;--color-surface-alt:#332A2C;
+    --color-ink:#EFE6DC;--color-ink-soft:#C7BAB5;--color-ink-faint:#95898A;
+    --color-line:#463A3A;--color-line-strong:#59494A;
+    --color-brand:#D9A9CE;--color-brand-strong:#EBC6E0;--color-brand-soft:#432D40;--color-brand-contrast:#241A22;--color-accent-2:#BB90B0;
+    --color-success:#75C393;--color-success-soft:#213A29;--color-warning:#E3B564;--color-warning-soft:#3E2F16;--color-danger:#E99498;--color-danger-soft:#3E2224;
+    --shadow-stub:0 1px 2px rgba(0,0,0,.5),0 8px 20px rgba(0,0,0,.4);
+    --shadow-pop:0 16px 40px rgba(0,0,0,.5);
+    --noise-opacity:.06;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font-sans);
+    background-color:var(--color-bg);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(180deg,var(--color-bg) 0%,var(--color-bg-subtle) 100%);
+    background-blend-mode:overlay,normal;
+    background-size:140px 140px,100% 100%;
+    color:var(--color-ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    line-height:1.55;
+    font-size:var(--fs-base);
+  }
+  body::before{content:none;}
+  img,svg{display:block;}
+  button{font-family:inherit;}
+  .icon{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.15em;}
+
+  /* ============ Top bar ============ */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:14px 20px;max-width:1180px;margin:0 auto;
+  }
+  .brandmark{display:flex;align-items:center;gap:10px;}
+  .brandmark .stub-logo{
+    width:34px;height:34px;border-radius:8px;background:var(--color-brand);color:var(--color-brand-contrast);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    box-shadow:var(--shadow-stub);
+  }
+  .brandmark .titles{line-height:1.25;}
+  .brandmark .titles .name{font-size:var(--fs-md);font-weight:700;letter-spacing:.02em;}
+  .brandmark .titles .sub{font-size:var(--fs-xs);color:var(--color-ink-faint);}
+  .theme-toggle{
+    display:flex;align-items:center;gap:6px;
+    background:var(--color-surface);border:1px solid var(--color-line);color:var(--color-ink-soft);
+    padding:8px 14px;border-radius:var(--radius-pill);font-size:var(--fs-sm);cursor:pointer;
+    box-shadow:var(--shadow-stub);
+  }
+  .theme-toggle:hover{border-color:var(--color-line-strong);color:var(--color-ink);}
+
+  /* ============ Tabs nav ============ */
+  .tabs{
+    display:flex;gap:8px;overflow-x:auto;padding:4px 20px 14px;max-width:1180px;margin:0 auto;
+    scrollbar-width:thin;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    display:flex;align-items:center;gap:7px;
+    padding:9px 16px;border-radius:var(--radius-pill);
+    border:1px solid var(--color-line);
+    background:var(--color-surface);
+    color:var(--color-ink-soft);
+    font-size:var(--fs-sm);font-weight:600;cursor:pointer;white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s,transform .1s;
+  }
+  .tab-btn .tab-idx{
+    font-size:var(--fs-xs);opacity:.6;font-weight:700;
+  }
+  .tab-btn:hover{border-color:var(--color-line-strong);}
+  .tab-btn.active{
+    background:var(--color-brand);border-color:var(--color-brand);color:var(--color-brand-contrast);
+    box-shadow:var(--shadow-stub);
+  }
+  .tab-group-label{
+    align-self:center;font-size:var(--fs-xs);color:var(--color-ink-faint);padding:0 4px 0 10px;flex:0 0 auto;
+  }
+
+  main{max-width:1180px;margin:0 auto;padding:6px 20px 80px;}
+  .screen{display:none;animation:fadein .25s ease;}
+  .screen.active{display:block;}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  .screen-head{margin-bottom:22px;}
+  .screen-head .kicker{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;color:var(--color-brand);
+    background:var(--color-brand-soft);padding:4px 10px;border-radius:var(--radius-pill);margin-bottom:10px;
+  }
+  .screen-head h1{font-size:var(--fs-2xl);margin:0 0 6px;letter-spacing:.01em;}
+  .screen-head p{margin:0;color:var(--color-ink-soft);font-size:var(--fs-base);max-width:56ch;}
+
+  /* ============ generic surface card ============ */
+  .card{
+    background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-card);
+    box-shadow:var(--shadow-stub);
+  }
+
+  /* ============ chips / filters ============ */
+  .chipbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .chipbar .chipbar-label{font-size:var(--fs-xs);color:var(--color-ink-faint);align-self:center;margin-right:2px;}
+  .chip{
+    border:1px solid var(--color-line);background:var(--color-surface);color:var(--color-ink-soft);
+    padding:6px 13px;border-radius:var(--radius-pill);font-size:var(--fs-sm);cursor:pointer;
+    transition:all .12s;
+  }
+  .chip:hover{border-color:var(--color-line-strong);}
+  .chip.active{background:var(--color-brand);border-color:var(--color-brand);color:var(--color-brand-contrast);font-weight:600;}
+
+  /* ============ STUB CARD (存根卡) ============ */
+  .stub-list{display:flex;flex-direction:column;gap:14px;}
+  .stub-card{
+    position:relative;
+    display:grid;
+    grid-template-columns:96px auto 1fr auto;
+    align-items:center;
+    gap:0;
+    background:var(--color-surface);
+    border:1px solid var(--color-line);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-stub);
+    overflow:hidden;
+    min-width:640px;
+  }
+  .stub-scroll{overflow-x:auto;padding-bottom:4px;}
+  .stub-card .stub-ribbon{
+    position:absolute;top:10px;right:-30px;
+    background:var(--color-brand);color:var(--color-brand-contrast);
+    font-size:10px;font-weight:700;letter-spacing:.04em;
+    padding:3px 34px;transform:rotate(38deg);
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+  }
+  .stub-card .stub-stampzone{
+    display:flex;align-items:center;justify-content:center;padding:18px 10px;
+  }
+  .stub-card .stub-perf{
+    align-self:stretch;width:0;border-left:2px dashed var(--color-line-strong);
+    position:relative;
+  }
+  .stub-card .stub-perf::before,.stub-card .stub-perf::after{
+    content:"";position:absolute;left:-5px;width:10px;height:10px;border-radius:50%;
+    background:var(--color-bg);border:1px solid var(--color-line);
+  }
+  .stub-card .stub-perf::before{top:-5px;}
+  .stub-card .stub-perf::after{bottom:-5px;}
+  .stub-card .stub-body{padding:16px 20px;min-width:0;}
+  .stub-card .stub-body .stub-title{font-size:var(--fs-md);font-weight:700;margin:0 0 4px;}
+  .stub-card .stub-body .stub-meta{font-size:var(--fs-sm);color:var(--color-ink-soft);display:flex;flex-wrap:wrap;gap:4px 12px;}
+  .stub-card .stub-body .stub-meta span{display:inline-flex;align-items:center;gap:4px;}
+  .stub-card .stub-action{padding:16px 20px;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .stub-card .stub-note{font-size:var(--fs-xs);color:var(--color-ink-faint);text-align:right;max-width:16ch;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;justify-content:center;
+    padding:9px 16px;border-radius:var(--radius-sm);font-size:var(--fs-sm);font-weight:600;
+    border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:filter .12s,transform .05s;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--color-brand);color:var(--color-brand-contrast);}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-ghost{background:transparent;border-color:var(--color-line);color:var(--color-ink-soft);}
+  .btn-ghost:hover{border-color:var(--color-line-strong);color:var(--color-ink);}
+  .btn-danger{background:var(--color-danger);color:#fff;}
+  .btn-danger:hover{filter:brightness(1.06);}
+  .btn:disabled,.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed;filter:none;}
+
+  /* ============ STAMP (戳章) ============ */
+  .stamp{
+    --stamp-color:var(--color-ink-faint);
+    width:64px;height:64px;border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--stamp-color);border:2.5px solid var(--stamp-color);
+    transform:rotate(-7deg);
+    font-weight:800;position:relative;flex:0 0 auto;
+    background:transparent;
+  }
+  .stamp::after{content:"";position:absolute;inset:5px;border:1px solid var(--stamp-color);border-radius:50%;opacity:.55;}
+  .stamp .stamp-icon{width:18px;height:18px;margin-bottom:2px;}
+  .stamp .stamp-label{font-size:9.5px;letter-spacing:.03em;}
+  .stamp.stamp-done{--stamp-color:var(--color-brand);border-style:solid;background:var(--color-brand-soft);}
+  .stamp.stamp-active{--stamp-color:var(--color-brand);border-style:dashed;}
+  .stamp.stamp-pending{--stamp-color:var(--color-ink-faint);border-style:dotted;opacity:.7;}
+  .stamp.stamp-danger{--stamp-color:var(--color-danger);border-style:double;border-width:5px;background:var(--color-danger-soft);}
+  @media (prefers-color-scheme:light){ .stamp.stamp-done{mix-blend-mode:multiply;} }
+
+  /* ============ Screen 1: 我的存根本 ============ */
+  .stubbook-cover{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    background:linear-gradient(135deg,var(--color-brand) 0%,var(--color-brand-strong) 100%);
+    color:var(--color-brand-contrast);border-radius:var(--radius-card);
+    padding:22px 26px;margin-bottom:22px;box-shadow:var(--shadow-pop);
+  }
+  .stubbook-cover h2{margin:0 0 4px;font-size:var(--fs-lg);}
+  .stubbook-cover p{margin:0;opacity:.85;font-size:var(--fs-sm);max-width:48ch;}
+  .stubbook-cover .cover-count{font-size:var(--fs-display);font-weight:800;line-height:1;}
+  .stubbook-cover .cover-count-label{font-size:var(--fs-xs);opacity:.8;}
+
+  /* ============ Screen 2: 好物瀏覽 ============ */
+  .browse-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;
+  }
+  .item-card{
+    background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-card);
+    overflow:hidden;box-shadow:var(--shadow-stub);display:flex;flex-direction:column;
+  }
+  .item-card .thumb{
+    height:120px;position:relative;
+    display:flex;align-items:center;justify-content:center;color:var(--color-brand-contrast);
+  }
+  .item-card .thumb .icon{width:30px;height:30px;opacity:.85;}
+  .item-card .thumb .freshness{
+    position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--radius-pill);
+  }
+  .item-card .thumb .freshness.new{background:var(--color-success-soft);color:var(--color-success);}
+  .item-card .thumb .freshness.soon{background:var(--color-warning-soft);color:var(--color-warning);}
+  .item-card .body{padding:13px 14px 15px;flex:1;display:flex;flex-direction:column;gap:8px;}
+  .item-card h3{margin:0;font-size:var(--fs-base);font-weight:700;line-height:1.4;}
+  .item-card .tagrow{display:flex;flex-wrap:wrap;gap:5px;}
+  .tag{font-size:10.5px;padding:2px 8px;border-radius:var(--radius-pill);background:var(--color-surface-alt);color:var(--color-ink-soft);border:1px solid var(--color-line);display:inline-flex;align-items:center;gap:3px;}
+  .item-card .footer-row{margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-xs);color:var(--color-ink-faint);}
+  .item-card.is-hidden{display:none;}
+
+  /* ============ Screen 3: 詳情頁存根戳章 ============ */
+  .timeline-wrap{overflow-x:auto;padding:10px 4px 18px;}
+  .timeline{display:flex;align-items:flex-start;gap:0;min-width:660px;}
+  .tl-step{display:flex;flex-direction:column;align-items:center;width:130px;flex:0 0 auto;text-align:center;}
+  .tl-step .tl-title{font-size:var(--fs-sm);font-weight:700;margin-top:10px;}
+  .tl-step .tl-time{font-size:var(--fs-xs);color:var(--color-ink-faint);margin-top:2px;}
+  .tl-step .tl-actor{font-size:var(--fs-xs);color:var(--color-ink-soft);margin-top:1px;}
+  .tl-connector{flex:1 1 auto;height:2px;margin-top:32px;background-image:linear-gradient(to right,var(--color-line-strong) 60%,transparent 0%);background-size:10px 2px;background-repeat:repeat-x;min-width:24px;}
+  .tl-connector.done{background-image:linear-gradient(to right,var(--color-brand) 60%,transparent 0%);}
+
+  .ledger-mini{
+    margin-top:8px;background:var(--color-surface-alt);border:1px solid var(--color-line);border-radius:var(--radius-card);
+    padding:16px 18px;position:relative;
+  }
+  .ledger-mini h4{margin:0 0 10px;font-size:var(--fs-sm);color:var(--color-ink-soft);display:flex;align-items:center;gap:6px;}
+  .ledger-mini .lm-row{
+    display:flex;gap:10px;padding:6px 0;border-top:1px dashed var(--color-line);font-size:var(--fs-sm);
+  }
+  .ledger-mini .lm-row:first-of-type{border-top:none;}
+  .ledger-mini .lm-row .lm-time{color:var(--color-ink-faint);font-variant-numeric:tabular-nums;flex:0 0 128px;}
+  .ledger-mini .lm-row .lm-event{font-weight:600;flex:0 0 60px;}
+  .ledger-mini .lm-row .lm-detail{color:var(--color-ink-soft);flex:1;}
+  .tear-line{
+    height:14px;margin:0 -18px -16px;
+    background-image:radial-gradient(circle at center,var(--color-bg) 5px,transparent 5.3px);
+    background-size:16px 14px;background-position:6px center;background-repeat:repeat-x;
+    border-top:1px dashed var(--color-line-strong);
+  }
+
+  /* ============ Screen 4: 查核簿 ============ */
+  .today-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px;}
+  .today-card{
+    background:var(--color-surface);border:1px solid var(--color-line);
+    border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow-stub);cursor:pointer;
+    display:flex;align-items:center;gap:12px;
+    transition:transform .12s,border-color .12s;
+  }
+  .today-card:hover{transform:translateY(-2px);border-color:var(--color-line-strong);}
+  .today-card .today-badge{
+    width:38px;height:38px;border-radius:50%;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--color-brand-soft);color:var(--color-brand);
+  }
+  .today-card .today-badge .icon{width:18px;height:18px;}
+  .today-card .today-num{font-size:var(--fs-2xl);font-weight:800;line-height:1;}
+  .today-card .today-label{font-size:var(--fs-sm);color:var(--color-ink-soft);margin-top:2px;}
+  .today-card.warn .today-badge{background:var(--color-warning-soft);color:var(--color-warning);}
+  .today-card.danger .today-badge{background:var(--color-danger-soft);color:var(--color-danger);}
+
+  .ledger-scroll{overflow-x:auto;}
+  .ledger{min-width:760px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-card);
+    box-shadow:var(--shadow-stub);
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 55px,var(--color-line) 55px,var(--color-line) 56px);
+  }
+  .ledger-head,.ledger-row{
+    display:grid;grid-template-columns:110px 1fr 100px 130px 150px 100px;gap:10px;align-items:center;padding:0 18px;
+  }
+  .ledger-head{font-size:var(--fs-xs);color:var(--color-ink-faint);font-weight:700;height:38px;display:grid;align-items:center;border-bottom:1px solid var(--color-line-strong);}
+  .ledger-row{height:56px;position:relative;border-left:5px solid transparent;}
+  .ledger-row.sev-1{border-left-color:var(--color-brand-strong);}
+  .ledger-row.sev-2{border-left-color:var(--color-brand);}
+  .ledger-row.sev-3{border-left-color:var(--color-accent-2);}
+  .ledger-row.sev-4{border-left-color:var(--color-line-strong);}
+  .ledger-row .lr-id{font-size:var(--fs-xs);color:var(--color-ink-faint);font-variant-numeric:tabular-nums;}
+  .ledger-row .lr-title{font-size:var(--fs-sm);font-weight:600;display:flex;align-items:center;gap:6px;}
+  .ledger-row .lr-title .icon{width:14px;height:14px;color:var(--color-ink-faint);flex:0 0 auto;}
+  .status-pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+  .status-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .status-submitted{background:var(--color-danger-soft);color:var(--color-danger);}
+  .status-in_progress{background:var(--color-warning-soft);color:var(--color-warning);}
+  .status-pending{background:var(--color-brand-soft);color:var(--color-brand);}
+  .status-triaged{background:var(--color-surface-alt);color:var(--color-ink-soft);border:1px solid var(--color-line);}
+  .status-resolved{background:var(--color-success-soft);color:var(--color-success);}
+  .lr-time{font-size:var(--fs-xs);color:var(--color-ink-faint);}
+
+  /* ============ Screen 5: 檢舉處理 ============ */
+  .backlink{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-sm);color:var(--color-ink-soft);background:none;border:none;cursor:pointer;padding:0 0 10px;}
+  .backlink:hover{color:var(--color-brand);}
+  .report-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start;}
+  @media (max-width:860px){.report-layout{grid-template-columns:1fr;}}
+  .copy-timeline{padding:18px 20px;}
+  .copy-timeline h3{margin:0 0 4px;font-size:var(--fs-md);}
+  .copy-timeline .copy-note{font-size:var(--fs-xs);color:var(--color-ink-faint);margin-bottom:14px;}
+  .copy-event{display:flex;gap:12px;padding:10px 0;border-top:1px dashed var(--color-line);}
+  .copy-event:first-of-type{border-top:none;}
+  .copy-event .ce-stamp{flex:0 0 auto;}
+  .copy-event .ce-body{flex:1;min-width:0;}
+  .copy-event .ce-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:var(--fs-sm);font-weight:700;}
+  .copy-event .ce-time{font-size:var(--fs-xs);color:var(--color-ink-faint);font-weight:500;}
+  .copy-event .ce-quote{margin-top:6px;font-size:var(--fs-sm);color:var(--color-ink-soft);}
+  .copy-event.flagged{background:var(--color-danger-soft);margin:0 -20px;padding:10px 20px;border-top:1px dashed var(--color-line);}
+  .flag-tag{background:var(--color-danger);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--radius-pill);}
+
+  .side-card{padding:18px 20px;margin-bottom:16px;}
+  .side-card h4{margin:0 0 10px;font-size:var(--fs-sm);color:var(--color-ink-soft);text-transform:uppercase;letter-spacing:.04em;font-size:var(--fs-xs);}
+  .quote-block{background:var(--color-danger-soft);padding:10px 12px 10px 14px;border-radius:6px;font-size:var(--fs-sm);color:var(--color-ink);margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;}
+  .quote-block .icon{width:14px;height:14px;color:var(--color-danger);flex:0 0 auto;margin-top:3px;}
+  .kv{display:flex;justify-content:space-between;font-size:var(--fs-sm);padding:5px 0;border-top:1px dashed var(--color-line);}
+  .kv:first-of-type{border-top:none;}
+  .kv .k{color:var(--color-ink-faint);}
+
+  .state-machine{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .sm-btn{flex:1 1 auto;min-width:110px;}
+  textarea{
+    width:100%;font-family:inherit;font-size:var(--fs-sm);color:var(--color-ink);background:var(--color-surface);
+    border:1px solid var(--color-line);border-radius:var(--radius-sm);padding:10px 12px;resize:vertical;min-height:74px;
+  }
+  textarea:focus,input:focus{outline:2px solid var(--color-brand);outline-offset:1px;}
+  label.field-label{display:block;font-size:var(--fs-xs);color:var(--color-ink-faint);margin-bottom:6px;font-weight:600;}
+
+  /* ============ Screen 6: 開立作廢聯 ============ */
+  .danger-banner{
+    display:flex;gap:12px;align-items:flex-start;background:var(--color-danger-soft);color:var(--color-danger);
+    border:1px solid var(--color-danger);border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:20px;font-size:var(--fs-sm);
+  }
+  .danger-banner .icon{width:20px;height:20px;flex:0 0 auto;margin-top:1px;}
+  .danger-banner strong{display:block;margin-bottom:2px;font-size:var(--fs-base);}
+
+  .stepper{display:flex;gap:0;margin-bottom:22px;counter-reset:step;}
+  .step-item{flex:1;display:flex;align-items:center;gap:10px;}
+  .step-item .step-circle{
+    width:30px;height:30px;border-radius:50%;background:var(--color-surface-alt);border:2px solid var(--color-line-strong);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--fs-sm);color:var(--color-ink-faint);flex:0 0 auto;
+  }
+  .step-item .step-text{font-size:var(--fs-sm);font-weight:600;color:var(--color-ink-faint);}
+  .step-item .step-line{flex:1;height:2px;background:var(--color-line);margin:0 4px;}
+  .step-item:last-child .step-line{display:none;}
+  .step-item.is-active .step-circle,.step-item.is-done .step-circle{background:var(--color-brand);border-color:var(--color-brand);color:var(--color-brand-contrast);}
+  .step-item.is-active .step-text,.step-item.is-done .step-text{color:var(--color-ink);}
+  .step-item.is-done .step-line{background:var(--color-brand);}
+
+  .void-stub{
+    display:flex;border:1px solid var(--color-line);border-radius:var(--radius-card);overflow:hidden;box-shadow:var(--shadow-stub);
+    transition:gap .35s ease;
+  }
+  .void-stub .vs-half{flex:1;padding:20px;position:relative;transition:transform .35s ease;}
+  .void-stub .vs-half.keep{background:var(--color-surface);}
+  .void-stub .vs-half.void{background:var(--color-surface-alt);}
+  .void-stub .vs-label{font-size:var(--fs-xs);font-weight:700;letter-spacing:.05em;color:var(--color-ink-faint);margin-bottom:8px;}
+  .void-stub .vs-item{font-size:var(--fs-md);font-weight:700;margin-bottom:4px;}
+  .void-stub .vs-desc{font-size:var(--fs-sm);color:var(--color-ink-soft);}
+  .void-stub .vs-perf{
+    width:0;border-left:3px dashed var(--color-line-strong);position:relative;flex:0 0 auto;
+  }
+  .void-stub.torn{gap:14px;}
+  .void-stub.torn .vs-half.keep{transform:translateX(-4px) rotate(-.6deg);border-radius:var(--radius-card) 0 0 var(--radius-card);}
+  .void-stub.torn .vs-half.void{transform:translateX(4px) rotate(.6deg);border-radius:0 var(--radius-card) var(--radius-card) 0;background:var(--color-danger-soft);}
+  .void-stub.torn .vs-perf{border-left-style:solid;border-left-color:var(--color-danger);}
+
+  .fold-panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .35s ease,opacity .3s ease .05s;}
+  .fold-panel.open{grid-template-rows:1fr;opacity:1;}
+  .fold-panel > .fold-inner{overflow:hidden;min-height:0;}
+  .form-card{padding:20px 22px;margin-top:16px;}
+  .checkline{display:flex;align-items:flex-start;gap:9px;margin-top:12px;font-size:var(--fs-sm);color:var(--color-ink-soft);}
+  .checkline input{margin-top:3px;width:16px;height:16px;accent-color:var(--color-brand);flex:0 0 auto;}
+
+  .void-result{
+    display:none;margin-top:16px;padding:20px 22px;border-radius:var(--radius-card);
+    background:var(--color-danger-soft);border:1px solid var(--color-danger);gap:16px;align-items:center;
+  }
+  .void-result.show{display:flex;animation:popin .3s ease;}
+  @keyframes popin{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+  .void-result .vr-stamp{
+    width:78px;height:78px;border-radius:50%;border:5px double var(--color-danger);color:var(--color-danger);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;transform:rotate(-8deg);flex:0 0 auto;
+    font-size:var(--fs-sm);
+  }
+  .void-result .vr-body{font-size:var(--fs-sm);color:var(--color-ink);}
+  .void-result .vr-body strong{display:block;color:var(--color-danger);font-size:var(--fs-base);margin-bottom:4px;}
+
+  .demo-reset{margin-top:18px;}
+
+  footer.page-footer{
+    max-width:1180px;margin:0 auto;padding:20px;text-align:center;font-size:var(--fs-xs);color:var(--color-ink-faint);
+  }
+
+  @media (max-width:640px){
+    .stub-card{grid-template-columns:72px 0 1fr;min-width:520px;}
+    .stub-card .stub-action{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;border-top:1px dashed var(--color-line);padding-top:12px;}
+    .ledger-head,.ledger-row{grid-template-columns:90px 1fr 90px 110px 120px 84px;}
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5C4 3.7 4.7 3 5.5 3H12v18H5.5c-.8 0-1.5-.7-1.5-1.5v-15z"/><path d="M20 4.5c0-.8-.7-1.5-1.5-1.5H12v18h6.5c.8 0 1.5-.7 1.5-1.5v-15z"/><path d="M12 7h5M12 11h5M7 7h1M7 11h1"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12 12 3h6a3 3 0 0 1 3 3v6l-9 9-9-9z"/><circle cx="15.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.6 7-11.5A7 7 0 0 0 5 9.5C5 14.4 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 0 0 4v4h18v-4a2 2 0 0 1 0-4V5H3v4z"/><path d="M13 5v14" stroke-dasharray="2 2"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3.2 2"/></symbol>
+  <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 8h14M5 8 2.5 14a3 3 0 0 0 5 0L5 8zM19 8l-2.5 6a3 3 0 0 0 5 0L19 8z"/><path d="M8 21h8"/></symbol>
+  <symbol id="i-life" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/><path d="m6 6 3.6 3.6M18 6l-3.6 3.6M6 18l3.6-3.6M18 18l-3.6-3.6"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><path d="M8 7.5 20 19M8 16.5 20 5"/></symbol>
+  <symbol id="i-file-x" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M10 12l4 4m0-4-4 4"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-couch" viewBox="0 0 24 24"><path d="M4 15v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 15h18v4H3z"/><path d="M5 19v1.5M19 19v1.5"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 8 12 4l9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v9a3 3 0 0 0 3 3v6M4 3v6M7 3v6M4 9h3"/><path d="M14 3s-2 3-2 7 2 4 2 4v9"/></symbol>
+  <symbol id="i-book2" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13"/></symbol>
+  <symbol id="i-baby" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M6 20c0-4 3-6 6-6s6 2 6 6"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+  <symbol id="i-sport" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18z"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="brandmark">
+    <div class="stub-logo"><svg class="icon" style="width:18px;height:18px"><use href="#i-book"/></svg></div>
+    <div class="titles">
+      <div class="name">ShareGood．交接存根</div>
+      <div class="sub">M13 前端重頭設計 · 方向三提案</div>
+    </div>
+  </div>
+  <button class="theme-toggle" id="themeToggle" type="button">
+    <svg class="icon" id="themeIcon" style="width:15px;height:15px"><use href="#i-clock"/></svg>
+    <span id="themeLabel">切換為暗色模式</span>
+  </button>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="畫面切換">
+  <span class="tab-group-label">前台</span>
+  <button class="tab-btn active" data-target="screen-stubbook" role="tab" aria-selected="true"><span class="tab-idx">1</span>我的存根本</button>
+  <button class="tab-btn" data-target="screen-browse" role="tab" aria-selected="false"><span class="tab-idx">2</span>好物瀏覽</button>
+  <button class="tab-btn" data-target="screen-detail" role="tab" aria-selected="false"><span class="tab-idx">3</span>物品詳情．存根戳章</button>
+  <span class="tab-group-label">後台</span>
+  <button class="tab-btn" data-target="screen-admin-ledger" role="tab" aria-selected="false"><span class="tab-idx">4</span>查核簿</button>
+  <button class="tab-btn" data-target="screen-admin-report" role="tab" aria-selected="false"><span class="tab-idx">5</span>檢舉處理</button>
+  <button class="tab-btn" data-target="screen-admin-remove" role="tab" aria-selected="false"><span class="tab-idx">6</span>開立作廢聯</button>
+</nav>
+
+<main>
+
+<!-- ============ SCREEN 1：我的存根本 ============ -->
+<section class="screen active" id="screen-stubbook">
+  <div class="stubbook-cover">
+    <div>
+      <h2>我的存根本</h2>
+      <p>錢包、訂閱通知、站內通知、對話——原本分散在四個地方，現在收在同一本存根裡，一次看完你手上每一件事的進度。</p>
+    </div>
+    <div style="text-align:right">
+      <div class="cover-count">6</div>
+      <div class="cover-count-label">本本子裡的存根</div>
+    </div>
+  </div>
+
+  <div class="chipbar" id="stubFilterBar">
+    <span class="chipbar-label">篩選：</span>
+    <button class="chip active" data-filter="all">全部</button>
+    <button class="chip" data-filter="handover">交接中</button>
+    <button class="chip" data-filter="conversation">對話</button>
+    <button class="chip" data-filter="coupon">優惠券</button>
+    <button class="chip" data-filter="subscription">訂閱通知</button>
+    <button class="chip" data-filter="done">已完成</button>
+  </div>
+
+  <div class="stub-scroll">
+  <div class="stub-list" id="stubList">
+
+    <div class="stub-card" data-type="handover">
+      <div class="stub-ribbon">交接聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-active"><svg class="icon stamp-icon"><use href="#i-clock"/></svg><span class="stamp-label">交接中</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">IKEA 書架（近全新，無刮痕）</div>
+        <div class="stub-meta">
+          <span><svg class="icon" style="width:12px;height:12px"><use href="#i-pin"/></svg>台北市大安區</span>
+          <span>對象：陳先生</span>
+          <span>約定 7/21 19:00 面交</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-primary">確認完成交接</button>
+        <div class="stub-note">雙方皆確認後才算完成</div>
+      </div>
+    </div>
+
+    <div class="stub-card" data-type="conversation">
+      <div class="stub-ribbon">訊息聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-active"><svg class="icon stamp-icon"><use href="#i-msg"/></svg><span class="stamp-label">待回覆</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">無印良品收納箱 3 入</div>
+        <div class="stub-meta">
+          <span><svg class="icon" style="width:12px;height:12px"><use href="#i-pin"/></svg>新北市板橋區</span>
+          <span>對象：林小姐</span>
+          <span>3 則新訊息</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-primary">前往對話</button>
+        <div class="stub-note">上次訊息 2 小時前</div>
+      </div>
+    </div>
+
+    <div class="stub-card" data-type="coupon done">
+      <div class="stub-ribbon">兌換聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-done"><svg class="icon stamp-icon"><use href="#i-check"/></svg><span class="stamp-label">已兌換</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">全家便利商店 100 元購物金序號</div>
+        <div class="stub-meta">
+          <span><svg class="icon" style="width:12px;height:12px"><use href="#i-ticket"/></svg>來自：黃先生的分享</span>
+          <span>兌換於 7/18</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-ghost">回報使用狀況</button>
+        <div class="stub-note">回報能幫助下一位領取者</div>
+      </div>
+    </div>
+
+    <div class="stub-card" data-type="subscription">
+      <div class="stub-ribbon">訂閱聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-active"><svg class="icon stamp-icon"><use href="#i-bell"/></svg><span class="stamp-label">新符合</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">訂閱條件：新北市板橋區 · 傢俱大型物</div>
+        <div class="stub-meta">
+          <span>符合條件的新好物 2 件</span>
+          <span>今天 09:14</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-primary">查看好物</button>
+        <div class="stub-note">符合你設定的訂閱條件</div>
+      </div>
+    </div>
+
+    <div class="stub-card" data-type="handover done">
+      <div class="stub-ribbon">交接聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-done"><svg class="icon stamp-icon"><use href="#i-check"/></svg><span class="stamp-label">已完成</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">兒童繪本一箱（10 本合售分享）</div>
+        <div class="stub-meta">
+          <span>對象：周小姐</span>
+          <span>完成於 7/17</span>
+          <span style="color:var(--color-brand);font-weight:700">貢獻值 +10</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-ghost">查看感謝留言</button>
+        <div class="stub-note">對方留了一句感謝</div>
+      </div>
+    </div>
+
+    <div class="stub-card" data-type="subscription">
+      <div class="stub-ribbon">提醒聯</div>
+      <div class="stub-stampzone">
+        <div class="stamp stamp-active"><svg class="icon stamp-icon"><use href="#i-clock"/></svg><span class="stamp-label">即將到期</span></div>
+      </div>
+      <div class="stub-perf"></div>
+      <div class="stub-body">
+        <div class="stub-title">小美冰淇淋家庭號（即期食品）</div>
+        <div class="stub-meta">
+          <span>你收藏的物品</span>
+          <span style="color:var(--color-warning);font-weight:600">3 天後到期下架</span>
+        </div>
+      </div>
+      <div class="stub-action">
+        <button class="btn btn-ghost">查看物品</button>
+        <div class="stub-note">再不處理就會自動下架</div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 2：好物瀏覽列表 ============ -->
+<section class="screen" id="screen-browse">
+  <div class="screen-head">
+    <span class="kicker">前台 · 好物瀏覽</span>
+    <h1>逛好物</h1>
+    <p>存根隱喻只用在「交接」相關的流程；一般瀏覽情境維持中性、好讀優先，紫色只在少數重點上點綴。</p>
+  </div>
+
+  <div class="chipbar" id="cityFilterBar">
+    <span class="chipbar-label">縣市：</span>
+    <button class="chip active" data-city="all">全部</button>
+    <button class="chip" data-city="台北市">台北市</button>
+    <button class="chip" data-city="新北市">新北市</button>
+    <button class="chip" data-city="台中市">台中市</button>
+    <button class="chip" data-city="高雄市">高雄市</button>
+  </div>
+  <div class="chipbar" id="catFilterBar">
+    <span class="chipbar-label">分類：</span>
+    <button class="chip active" data-cat="all">全部</button>
+    <button class="chip" data-cat="傢俱大型物">傢俱大型物</button>
+    <button class="chip" data-cat="3C家電">3C 家電</button>
+    <button class="chip" data-cat="食品雜貨">食品雜貨</button>
+    <button class="chip" data-cat="母嬰用品">母嬰用品</button>
+    <button class="chip" data-cat="優惠券">優惠券</button>
+    <button class="chip" data-cat="書籍雜誌">書籍雜誌</button>
+    <button class="chip" data-cat="運動戶外">運動戶外</button>
+  </div>
+
+  <div class="browse-grid" id="browseGrid">
+
+    <div class="item-card" data-city="台北市" data-cat="傢俱大型物">
+      <div class="thumb" style="background:linear-gradient(135deg,#5B3A55,#7C5A73)"><span class="freshness new">3 天前上架</span><svg class="icon"><use href="#i-couch"/></svg></div>
+      <div class="body">
+        <h3>IKEA 書架（近全新，無刮痕）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>台北市大安區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>傢俱大型物</span>
+        </div>
+        <div class="footer-row"><span>留言 4</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="新北市" data-cat="傢俱大型物">
+      <div class="thumb" style="background:linear-gradient(135deg,#6B4F63,#8A6B7C)"><span class="freshness new">剛剛上架</span><svg class="icon"><use href="#i-box"/></svg></div>
+      <div class="body">
+        <h3>無印良品收納箱 3 入</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>新北市板橋區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>傢俱大型物</span>
+        </div>
+        <div class="footer-row"><span>留言 0</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="台中市" data-cat="優惠券">
+      <div class="thumb" style="background:linear-gradient(135deg,#7C5A73,#5B3A55)"><span class="freshness new">1 天前上架</span><svg class="icon"><use href="#i-ticket"/></svg></div>
+      <div class="body">
+        <h3>全家便利商店 100 元購物金序號</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>台中市西屯區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>優惠券</span>
+        </div>
+        <div class="footer-row"><span>留言 2</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="高雄市" data-cat="食品雜貨">
+      <div class="thumb" style="background:linear-gradient(135deg,#8F620E,#B8811A)"><span class="freshness soon">即期：3 天內</span><svg class="icon"><use href="#i-food"/></svg></div>
+      <div class="body">
+        <h3>小美冰淇淋家庭號（即期）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>高雄市左營區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>食品雜貨</span>
+        </div>
+        <div class="footer-row"><span>留言 6</span><span>需盡快面交</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="台北市" data-cat="書籍雜誌">
+      <div class="thumb" style="background:linear-gradient(135deg,#4A5A73,#6B7C8A)"><span class="freshness new">5 天前上架</span><svg class="icon"><use href="#i-book2"/></svg></div>
+      <div class="body">
+        <h3>兒童繪本一箱（10 本合售）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>台北市文山區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>書籍雜誌</span>
+        </div>
+        <div class="footer-row"><span>留言 1</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="新北市" data-cat="母嬰用品">
+      <div class="thumb" style="background:linear-gradient(135deg,#6B5473,#8A6F94)"><span class="freshness new">2 天前上架</span><svg class="icon"><use href="#i-baby"/></svg></div>
+      <div class="body">
+        <h3>嬰兒推車（可摺疊）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>新北市中和區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>母嬰用品</span>
+        </div>
+        <div class="footer-row"><span>留言 3</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="台中市" data-cat="3C家電">
+      <div class="thumb" style="background:linear-gradient(135deg,#3F4A52,#5C6B73)"><span class="freshness new">1 週前上架</span><svg class="icon"><use href="#i-chip"/></svg></div>
+      <div class="body">
+        <h3>舊筆電（可開機，需更換電池）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>台中市北屯區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>3C 家電</span>
+        </div>
+        <div class="footer-row"><span>留言 8</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+    <div class="item-card" data-city="高雄市" data-cat="運動戶外">
+      <div class="thumb" style="background:linear-gradient(135deg,#2F7A4D,#4F9A6D)"><span class="freshness new">4 天前上架</span><svg class="icon"><use href="#i-sport"/></svg></div>
+      <div class="body">
+        <h3>羽球拍 2 支（含拍套）</h3>
+        <div class="tagrow">
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-pin"/></svg>高雄市三民區</span>
+          <span class="tag"><svg class="icon" style="width:10px;height:10px"><use href="#i-tag"/></svg>運動戶外</span>
+        </div>
+        <div class="footer-row"><span>留言 0</span><span>先到先得</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ SCREEN 3：物品詳情．存根戳章 ============ -->
+<section class="screen" id="screen-detail">
+  <div class="screen-head">
+    <span class="kicker">前台 · 物品詳情</span>
+    <h1>IKEA 書架（近全新，無刮痕）</h1>
+    <p>物主：王小姐 · 台北市大安區 · 傢俱大型物　　交接的每一步都蓋上戳章，有憑有據、累積成冊。</p>
+  </div>
+
+  <div class="card" style="padding:20px 22px 4px">
+    <h4 style="margin:0 0 2px;font-size:var(--fs-sm);color:var(--color-ink-soft);display:flex;align-items:center;gap:6px">
+      <svg class="icon" style="width:14px;height:14px"><use href="#i-book"/></svg>副本 · 交接歷程
+    </h4>
+    <div class="timeline-wrap">
+      <div class="timeline">
+        <div class="tl-step">
+          <div class="stamp stamp-done"><svg class="icon stamp-icon"><use href="#i-check"/></svg><span class="stamp-label">上架</span></div>
+          <div class="tl-title">上架</div>
+          <div class="tl-time">7/15 14:02</div>
+          <div class="tl-actor">王小姐</div>
+        </div>
+        <div class="tl-connector done"></div>
+        <div class="tl-step">
+          <div class="stamp stamp-done"><svg class="icon stamp-icon"><use href="#i-msg"/></svg><span class="stamp-label">留言</span></div>
+          <div class="tl-title">留言</div>
+          <div class="tl-time">7/16 09:10</div>
+          <div class="tl-actor">4 則留言</div>
+        </div>
+        <div class="tl-connector done"></div>
+        <div class="tl-step">
+          <div class="stamp stamp-done"><svg class="icon stamp-icon"><use href="#i-dot"/></svg><span class="stamp-label">認領</span></div>
+          <div class="tl-title">認領</div>
+          <div class="tl-time">7/16 09:15</div>
+          <div class="tl-actor">陳先生</div>
+        </div>
+        <div class="tl-connector done"></div>
+        <div class="tl-step">
+          <div class="stamp stamp-active"><svg class="icon stamp-icon"><use href="#i-clock"/></svg><span class="stamp-label">交接中</span></div>
+          <div class="tl-title">交接</div>
+          <div class="tl-time">約 7/21 19:00</div>
+          <div class="tl-actor">待雙方確認</div>
+        </div>
+        <div class="tl-connector"></div>
+        <div class="tl-step">
+          <div class="stamp stamp-pending"><svg class="icon stamp-icon"><use href="#i-dot"/></svg><span class="stamp-label">完成</span></div>
+          <div class="tl-title" style="color:var(--color-ink-faint)">完成</div>
+          <div class="tl-time">尚未發生</div>
+          <div class="tl-actor">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ledger-mini">
+      <h4><svg class="icon" style="width:13px;height:13px"><use href="#i-book"/></svg>存根摘要（複寫留存，逐筆記錄不可竄改）</h4>
+      <div class="lm-row"><span class="lm-time">2026-07-15 14:02</span><span class="lm-event">上架</span><span class="lm-detail">王小姐建立物品，狀態轉為「已上架」</span></div>
+      <div class="lm-row"><span class="lm-time">2026-07-16 09:10</span><span class="lm-event">留言</span><span class="lm-detail">陳先生等 4 人留言表達想要</span></div>
+      <div class="lm-row"><span class="lm-time">2026-07-16 09:15</span><span class="lm-event">認領</span><span class="lm-detail">先到先得，陳先生成為接手者</span></div>
+      <div class="lm-row"><span class="lm-time">2026-07-19 18:30</span><span class="lm-event">約定</span><span class="lm-detail">雙方約定 7/21 19:00 於捷運科技大樓站面交</span></div>
+      <div class="tear-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 4：/admin 查核簿 ============ -->
+<section class="screen" id="screen-admin-ledger">
+  <div class="screen-head">
+    <span class="kicker">後台 · 查核簿</span>
+    <h1>查核簿</h1>
+    <p>案件像帳冊一樣一筆一筆記，色深即急件；不需要工程背景也看得懂今天該辦什麼事。</p>
+  </div>
+
+  <div class="today-row">
+    <div class="today-card danger" data-goto="screen-admin-report">
+      <div class="today-badge"><svg class="icon"><use href="#i-alert"/></svg></div>
+      <div><div class="today-num">5</div><div class="today-label">未處理檢舉</div></div>
+    </div>
+    <div class="today-card warn">
+      <div class="today-badge"><svg class="icon"><use href="#i-scale"/></svg></div>
+      <div><div class="today-num">2</div><div class="today-label">待複審申訴</div></div>
+    </div>
+    <div class="today-card">
+      <div class="today-badge"><svg class="icon"><use href="#i-life"/></svg></div>
+      <div><div class="today-num">3</div><div class="today-label">待認領客服回報</div></div>
+    </div>
+  </div>
+
+  <div class="ledger-scroll">
+  <div class="ledger">
+    <div class="ledger-head">
+      <span>編號</span><span>案件</span><span>類型</span><span>狀態</span><span>提交時間</span><span>操作</span>
+    </div>
+
+    <div class="ledger-row sev-1">
+      <span class="lr-id">#R-10482</span>
+      <span class="lr-title"><svg class="icon"><use href="#i-alert"/></svg>檢舉：留言辱罵（IKEA 書架）</span>
+      <span class="tag">檢舉</span>
+      <span class="status-pill status-submitted">未處理</span>
+      <span class="lr-time">7/16 10:00</span>
+      <button class="btn btn-primary" id="btnOpenReport" style="padding:6px 12px;font-size:12px">開啟</button>
+    </div>
+
+    <div class="ledger-row sev-2">
+      <span class="lr-id">#R-10479</span>
+      <span class="lr-title"><svg class="icon"><use href="#i-alert"/></svg>檢舉：物品造假（嬰兒推車）</span>
+      <span class="tag">檢舉</span>
+      <span class="status-pill status-in_progress">處理中</span>
+      <span class="lr-time">7/15 16:22</span>
+      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" title="示範版僅完整呈現 #R-10482">開啟</button>
+    </div>
+
+    <div class="ledger-row sev-1">
+      <span class="lr-id">#A-2201</span>
+      <span class="lr-title"><svg class="icon"><use href="#i-scale"/></svg>申訴：強制下架複審（舊沙發）</span>
+      <span class="tag">申訴</span>
+      <span class="status-pill status-pending">待複審</span>
+      <span class="lr-time">7/14 11:05</span>
+      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" title="示範版僅完整呈現 #R-10482">開啟</button>
+    </div>
+
+    <div class="ledger-row sev-3">
+      <span class="lr-id">#S-3390</span>
+      <span class="lr-title"><svg class="icon"><use href="#i-life"/></svg>客服回報：無法上傳圖片</span>
+      <span class="tag">客服</span>
+      <span class="status-pill status-triaged">待認領</span>
+      <span class="lr-time">7/16 08:40</span>
+      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" title="示範版僅完整呈現 #R-10482">開啟</button>
+    </div>
+
+    <div class="ledger-row sev-4">
+      <span class="lr-id">#R-10465</span>
+      <span class="lr-title"><svg class="icon"><use href="#i-alert"/></svg>檢舉：私訊騷擾</span>
+      <span class="tag">檢舉</span>
+      <span class="status-pill status-resolved">已結案</span>
+      <span class="lr-time">7/12 09:00</span>
+      <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" title="示範版僅完整呈現 #R-10482">開啟</button>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 5：檢舉處理 ============ -->
+<section class="screen" id="screen-admin-report">
+  <button class="backlink" data-goto="screen-admin-ledger"><svg class="icon"><use href="#i-back"/></svg>返回查核簿</button>
+  <div class="screen-head">
+    <span class="kicker">後台 · 檢舉處理</span>
+    <h1>#R-10482 檢舉：留言辱罵</h1>
+    <p>提交人：林小姐 · 2026-07-16 10:00　　先看完物品的完整副本歷程，再做處理判斷，降低誤判。</p>
+  </div>
+
+  <div class="report-layout">
+    <div class="card copy-timeline">
+      <h3>副本 · 物品完整歷程</h3>
+      <div class="copy-note">與物品詳情頁同一份存根紀錄，供處理判斷用，不可竄改</div>
+
+      <div class="copy-event">
+        <div class="ce-stamp"><div class="stamp stamp-done" style="width:44px;height:44px"><svg class="icon stamp-icon" style="width:14px;height:14px"><use href="#i-check"/></svg></div></div>
+        <div class="ce-body">
+          <div class="ce-head">上架 <span class="ce-time">7/15 14:02 · 王小姐</span></div>
+          <div class="ce-quote">建立物品「IKEA 書架（近全新，無刮痕）」，狀態轉為已上架。</div>
+        </div>
+      </div>
+
+      <div class="copy-event flagged">
+        <div class="ce-stamp"><div class="stamp stamp-danger" style="width:44px;height:44px;border-width:3px"><svg class="icon stamp-icon" style="width:14px;height:14px"><use href="#i-msg"/></svg></div></div>
+        <div class="ce-body">
+          <div class="ce-head">留言 <span class="flag-tag">被檢舉</span><span class="ce-time">7/16 09:10 · 陳先生</span></div>
+          <div class="ce-quote">「這個我要，可以先幫我留嗎？其他人都馬上手不要來搶」</div>
+        </div>
+      </div>
+
+      <div class="copy-event">
+        <div class="ce-stamp"><div class="stamp stamp-done" style="width:44px;height:44px"><svg class="icon stamp-icon" style="width:14px;height:14px"><use href="#i-dot"/></svg></div></div>
+        <div class="ce-body">
+          <div class="ce-head">認領 <span class="ce-time">7/16 09:15 · 陳先生</span></div>
+          <div class="ce-quote">先到先得成立，陳先生成為接手者。</div>
+        </div>
+      </div>
+
+      <div class="copy-event">
+        <div class="ce-stamp"><div class="stamp stamp-pending" style="width:44px;height:44px"><svg class="icon stamp-icon" style="width:14px;height:14px"><use href="#i-dot"/></svg></div></div>
+        <div class="ce-body">
+          <div class="ce-head" style="color:var(--color-ink-faint)">交接 <span class="ce-time">尚未開始</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card side-card">
+        <h4>檢舉內容</h4>
+        <div class="quote-block"><svg class="icon"><use href="#i-alert"/></svg><span>「留言內容涉及人身攻擊字眼，讓人感覺被威脅，希望平台協助處理。」</span></div>
+        <div class="kv"><span class="k">檢舉類型</span><span>留言</span></div>
+        <div class="kv"><span class="k">檢舉人</span><span>林小姐</span></div>
+        <div class="kv"><span class="k">證據圖片</span><span>1 張</span></div>
+        <div class="kv"><span class="k">目前狀態</span><span class="status-pill status-submitted">未處理</span></div>
+      </div>
+
+      <div class="card side-card">
+        <h4>處理動作</h4>
+        <div class="state-machine">
+          <button class="btn btn-ghost sm-btn">標記調查中</button>
+          <button class="btn btn-danger sm-btn" data-goto="screen-admin-remove">核准並下架物品</button>
+          <button class="btn btn-ghost sm-btn">駁回檢舉</button>
+        </div>
+        <label class="field-label" for="reportNote">處理備註（結案為核准／駁回時必填）</label>
+        <textarea id="reportNote" placeholder="例如：留言確實涉及人身攻擊，依社群規範第 4 條處理……"></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 6：開立作廢聯（強制下架） ============ -->
+<section class="screen" id="screen-admin-remove">
+  <button class="backlink" data-goto="screen-admin-report"><svg class="icon"><use href="#i-back"/></svg>返回檢舉處理</button>
+  <div class="screen-head">
+    <span class="kicker">後台 · 強制下架</span>
+    <h1>開立作廢聯</h1>
+    <p>物品：IKEA 書架（近全新，無刮痕）　　刻意設計成兩段手勢，避免單次誤觸就讓物品下架。</p>
+  </div>
+
+  <div class="danger-banner">
+    <svg class="icon"><use href="#i-alert"/></svg>
+    <div>
+      <strong>這是不可逆操作</strong>
+      送出後物品會立即下架、通知物主，且無法復原；若物主不服，可另外提出申訴由 admin 複審。
+    </div>
+  </div>
+
+  <div class="stepper" id="removeStepper">
+    <div class="step-item is-active" data-step="1"><div class="step-circle">1</div><div class="step-text">撕開存根</div><div class="step-line"></div></div>
+    <div class="step-item" data-step="2"><div class="step-circle">2</div><div class="step-text">填寫原因</div><div class="step-line"></div></div>
+    <div class="step-item" data-step="3"><div class="step-circle">3</div><div class="step-text">確認送出</div></div>
+  </div>
+
+  <div class="void-stub" id="voidStub">
+    <div class="vs-half keep">
+      <div class="vs-label">存根聯（保留）</div>
+      <div class="vs-item">IKEA 書架（近全新，無刮痕）</div>
+      <div class="vs-desc">物主：王小姐 · 上架於 7/15 · 完整歷程保留於查核紀錄</div>
+    </div>
+    <div class="vs-perf"></div>
+    <div class="vs-half void">
+      <div class="vs-label">作廢聯（即將下架）</div>
+      <div class="vs-item">強制下架申請</div>
+      <div class="vs-desc">依檢舉 #R-10482 處理，撕開後需填寫原因才能送出</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px">
+    <button class="btn btn-danger" id="btnTear" style="padding:11px 24px">
+      <svg class="icon"><use href="#i-scissors"/></svg>撕開存根，開始下架
+    </button>
+  </div>
+
+  <div class="fold-panel" id="foldPanel">
+    <div class="fold-inner">
+    <div class="card form-card">
+      <label class="field-label" for="removeReason">下架原因（將寫入下架紀錄，物主看得到）</label>
+      <textarea id="removeReason" placeholder="例如：留言／描述涉及人身攻擊，違反社群規範第 4 條，經檢舉查證屬實。"></textarea>
+      <div class="checkline">
+        <input type="checkbox" id="removeAck">
+        <label for="removeAck">我了解此操作會立即下架物品、通知物主王小姐，且無法復原。</label>
+      </div>
+      <div style="margin-top:16px;text-align:right">
+        <button class="btn btn-danger" id="btnConfirmRemove" aria-disabled="true">
+          <svg class="icon"><use href="#i-file-x"/></svg>確認送出作廢聯
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="void-result" id="voidResult">
+    <div class="vr-stamp"><svg class="icon" style="width:20px;height:20px"><use href="#i-x"/></svg>已作廢</div>
+    <div class="vr-body">
+      <strong>物品已強制下架</strong>
+      已寫入 ItemRemoval／ItemStatusLog／AuditLog，並通知物主王小姐；物主可於下架紀錄頁提出一次申訴。
+      <div style="margin-top:8px;color:var(--color-ink-faint);font-size:var(--fs-xs)">處理人：moderator · 2026-07-21 14:32</div>
+    </div>
+  </div>
+
+  <div class="demo-reset">
+    <button class="btn btn-ghost" id="btnResetRemove">重新示範這個流程</button>
+  </div>
+</section>
+
+</main>
+
+<footer class="page-footer">ShareGood M13 方向三提案「交接存根」內部設計預覽 · 非最終產品 · 2026-07-21</footer>
+
+<script>
+(function(){
+  // ---------- 分頁籤切換 ----------
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var screens = document.querySelectorAll('.screen');
+  function activateScreen(id){
+    screens.forEach(function(s){ s.classList.toggle('active', s.id === id); });
+    tabBtns.forEach(function(b){
+      var on = b.dataset.target === id;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){ activateScreen(b.dataset.target); });
+  });
+  document.querySelectorAll('[data-goto]').forEach(function(el){
+    el.addEventListener('click', function(){ activateScreen(el.dataset.goto); });
+  });
+
+  // ---------- 主題切換 ----------
+  var root = document.documentElement;
+  var themeToggle = document.getElementById('themeToggle');
+  var themeLabel = document.getElementById('themeLabel');
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var current = prefersDark ? 'dark' : 'light';
+  function applyTheme(t){
+    current = t;
+    root.setAttribute('data-theme', t);
+    themeLabel.textContent = t === 'dark' ? '切換為亮色模式' : '切換為暗色模式';
+  }
+  applyTheme(current);
+  themeToggle.addEventListener('click', function(){
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // ---------- 存根本篩選 ----------
+  var stubFilterBar = document.getElementById('stubFilterBar');
+  var stubCards = document.querySelectorAll('#stubList .stub-card');
+  stubFilterBar.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip');
+    if(!chip) return;
+    stubFilterBar.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    chip.classList.add('active');
+    var f = chip.dataset.filter;
+    stubCards.forEach(function(card){
+      var types = card.dataset.type.split(' ');
+      card.style.display = (f === 'all' || types.indexOf(f) > -1) ? '' : 'none';
+    });
+  });
+
+  // ---------- 好物瀏覽篩選（縣市 + 分類，可並用）----------
+  var cityBar = document.getElementById('cityFilterBar');
+  var catBar = document.getElementById('catFilterBar');
+  var browseCards = document.querySelectorAll('#browseGrid .item-card');
+  var activeCity = 'all', activeCat = 'all';
+  function applyBrowseFilter(){
+    browseCards.forEach(function(card){
+      var okCity = activeCity === 'all' || card.dataset.city === activeCity;
+      var okCat = activeCat === 'all' || card.dataset.cat === activeCat;
+      card.classList.toggle('is-hidden', !(okCity && okCat));
+    });
+  }
+  cityBar.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip'); if(!chip) return;
+    cityBar.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    chip.classList.add('active');
+    activeCity = chip.dataset.city;
+    applyBrowseFilter();
+  });
+  catBar.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip'); if(!chip) return;
+    catBar.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    chip.classList.add('active');
+    activeCat = chip.dataset.cat;
+    applyBrowseFilter();
+  });
+
+  // ---------- 查核簿 → 檢舉處理 ----------
+  document.getElementById('btnOpenReport').addEventListener('click', function(){
+    activateScreen('screen-admin-report');
+  });
+
+  // ---------- 開立作廢聯：兩段手勢精靈 ----------
+  var voidStub = document.getElementById('voidStub');
+  var btnTear = document.getElementById('btnTear');
+  var foldPanel = document.getElementById('foldPanel');
+  var removeReason = document.getElementById('removeReason');
+  var removeAck = document.getElementById('removeAck');
+  var btnConfirmRemove = document.getElementById('btnConfirmRemove');
+  var voidResult = document.getElementById('voidResult');
+  var stepperItems = document.querySelectorAll('#removeStepper .step-item');
+
+  function setStep(n){
+    stepperItems.forEach(function(item){
+      var s = parseInt(item.dataset.step, 10);
+      item.classList.toggle('is-done', s < n);
+      item.classList.toggle('is-active', s === n);
+    });
+  }
+
+  function checkReadyToConfirm(){
+    var ready = removeReason.value.trim().length > 0 && removeAck.checked;
+    btnConfirmRemove.disabled = !ready;
+    btnConfirmRemove.setAttribute('aria-disabled', ready ? 'false' : 'true');
+  }
+
+  btnTear.addEventListener('click', function(){
+    voidStub.classList.add('torn');
+    foldPanel.classList.add('open');
+    btnTear.disabled = true;
+    btnTear.setAttribute('aria-disabled', 'true');
+    setStep(2);
+    removeReason.focus();
+  });
+  removeReason.addEventListener('input', checkReadyToConfirm);
+  removeAck.addEventListener('change', checkReadyToConfirm);
+
+  btnConfirmRemove.addEventListener('click', function(){
+    if(btnConfirmRemove.getAttribute('aria-disabled') === 'true') return;
+    setStep(3);
+    stepperItems.forEach(function(item){ item.classList.add('is-done'); });
+    stepperItems[stepperItems.length-1].classList.remove('is-done');
+    stepperItems[stepperItems.length-1].classList.add('is-active');
+    voidResult.classList.add('show');
+    removeReason.disabled = true;
+    removeAck.disabled = true;
+    btnConfirmRemove.disabled = true;
+    btnConfirmRemove.setAttribute('aria-disabled', 'true');
+  });
+
+  document.getElementById('btnResetRemove').addEventListener('click', function(){
+    voidStub.classList.remove('torn');
+    foldPanel.classList.remove('open');
+    btnTear.disabled = false;
+    btnTear.removeAttribute('aria-disabled');
+    removeReason.value = '';
+    removeReason.disabled = false;
+    removeAck.checked = false;
+    removeAck.disabled = false;
+    btnConfirmRemove.disabled = true;
+    btnConfirmRemove.setAttribute('aria-disabled', 'true');
+    voidResult.classList.remove('show');
+    setStep(1);
+  });
+})();
+</script>

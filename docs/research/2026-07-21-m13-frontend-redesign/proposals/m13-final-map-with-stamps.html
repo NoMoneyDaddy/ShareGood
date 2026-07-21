@@ -1,0 +1,1552 @@
+<title>ShareGood M13．定案方向：在地地圖＋存根戳章</title>
+<style>
+  /* ============ 圖標符號庫（一次定義、多處引用） ============ */
+  /* ============ Design tokens ============ */
+  :root {
+    color-scheme: light;
+    --bg: #EBEFF5;
+    --bg-map: #E1E7F1;
+    --bg-map-line: rgba(44, 74, 124, 0.08);
+    --surface: #FFFFFF;
+    --surface-2: #F5F7FB;
+    --border: #CCD5E3;
+    --border-strong: #A7B4C9;
+    --ink: #16223A;
+    --ink-soft: #4C5A72;
+    --ink-faint: #7C8AA0;
+    --brand: #2C4A7C;
+    --brand-deep: #1B3253;
+    --brand-tint: #DBE3F0;
+    --accent: #B98A2E;
+    --accent-deep: #8C6821;
+    --accent-tint: #F1E1BC;
+    --success: #2E9160;
+    --success-tint: #DAF0E4;
+    --warning: #D97B29;
+    --warning-tint: #F8E4CE;
+    --danger: #C0392B;
+    --danger-tint: #F5DAD6;
+    --cat-furniture: #8B5E3C;
+    --cat-appliance: #55708A;
+    --cat-beauty: #A8527A;
+    --cat-books: #5C4B8A;
+    --cat-outdoor: #6B7A3F;
+    --cat-voucher: #1F7A8C;
+    --shadow-c: 27, 50, 83;
+    --radius-s: 8px;
+    --radius-m: 14px;
+    --radius-l: 22px;
+    --font-ui: "PingFang TC", "Heiti TC", "Microsoft JhengHei", "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Noto Sans Mono TC", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #0E141F;
+      --bg-map: #141C2A;
+      --bg-map-line: rgba(124, 160, 214, 0.10);
+      --surface: #182234;
+      --surface-2: #1C2739;
+      --border: #2D3A50;
+      --border-strong: #3E4E68;
+      --ink: #E8ECF3;
+      --ink-soft: #ADBACD;
+      --ink-faint: #7C8AA3;
+      --brand: #82A6DA;
+      --brand-deep: #5A80B8;
+      --brand-tint: #223350;
+      --accent: #E3AC55;
+      --accent-deep: #C8933C;
+      --accent-tint: #3B2E17;
+      --success: #4FB786;
+      --success-tint: #163326;
+      --warning: #E8964A;
+      --warning-tint: #3A2A17;
+      --danger: #E2685A;
+      --danger-tint: #3B211F;
+      --cat-furniture: #B2854F;
+      --cat-appliance: #7E9BB9;
+      --cat-beauty: #C97BA1;
+      --cat-books: #8778C0;
+      --cat-outdoor: #90A363;
+      --cat-voucher: #4CA6B8;
+      --shadow-c: 0, 0, 0;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0E141F; --bg-map: #141C2A; --bg-map-line: rgba(124, 160, 214, 0.10);
+    --surface: #182234; --surface-2: #1C2739; --border: #2D3A50; --border-strong: #3E4E68;
+    --ink: #E8ECF3; --ink-soft: #ADBACD; --ink-faint: #7C8AA3;
+    --brand: #82A6DA; --brand-deep: #5A80B8; --brand-tint: #223350;
+    --accent: #E3AC55; --accent-deep: #C8933C; --accent-tint: #3B2E17;
+    --success: #4FB786; --success-tint: #163326; --warning: #E8964A; --warning-tint: #3A2A17;
+    --danger: #E2685A; --danger-tint: #3B211F;
+    --cat-furniture: #B2854F; --cat-appliance: #7E9BB9; --cat-beauty: #C97BA1;
+    --cat-books: #8778C0; --cat-outdoor: #90A363; --cat-voucher: #4CA6B8;
+    --shadow-c: 0, 0, 0;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: #EBEFF5; --bg-map: #E1E7F1; --bg-map-line: rgba(44, 74, 124, 0.08);
+    --surface: #FFFFFF; --surface-2: #F5F7FB; --border: #CCD5E3; --border-strong: #A7B4C9;
+    --ink: #16223A; --ink-soft: #4C5A72; --ink-faint: #7C8AA0;
+    --brand: #2C4A7C; --brand-deep: #1B3253; --brand-tint: #DBE3F0;
+    --accent: #B98A2E; --accent-deep: #8C6821; --accent-tint: #F1E1BC;
+    --success: #2E9160; --success-tint: #DAF0E4; --warning: #D97B29; --warning-tint: #F8E4CE;
+    --danger: #C0392B; --danger-tint: #F5DAD6;
+    --cat-furniture: #8B5E3C; --cat-appliance: #55708A; --cat-beauty: #A8527A;
+    --cat-books: #5C4B8A; --cat-outdoor: #6B7A3F; --cat-voucher: #1F7A8C;
+    --shadow-c: 27, 50, 83;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+  h1, h2, h3, h4 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  button { font-family: inherit; }
+  :focus-visible {
+    outline: 2.5px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  a { color: inherit; }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  /* ---------- 版面骨架 ---------- */
+  .app { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--brand-deep);
+    color: #F4F6FB;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto; padding: 10px 20px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .brandmark { display: flex; align-items: center; gap: 9px; margin-right: 6px; }
+  .brandmark .compass-icon { width: 26px; height: 26px; color: var(--accent); flex-shrink: 0; }
+  .brandmark-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brandmark-text strong { font-size: 15px; font-weight: 800; letter-spacing: 0.01em; }
+  .brandmark-text span { font-size: 10.5px; color: rgba(244,246,251,0.68); font-family: var(--font-mono); letter-spacing: 0.04em; }
+
+  .navgroups { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; flex: 1; }
+  .navgroup { display: flex; flex-direction: column; gap: 5px; }
+  .navgroup-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em;
+    color: rgba(244,246,251,0.55); font-family: var(--font-mono); padding-left: 2px;
+  }
+  .navgroup-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .navtab {
+    appearance: none; border: 1px solid rgba(244,246,251,0.18);
+    background: rgba(244,246,251,0.07); color: rgba(244,246,251,0.86);
+    padding: 7px 13px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+  .navtab:hover { background: rgba(244,246,251,0.14); }
+  .navtab[aria-current="page"] {
+    background: var(--accent); border-color: var(--accent); color: #221904;
+  }
+  .themebtn {
+    appearance: none; border: 1px solid rgba(244,246,251,0.22);
+    background: rgba(244,246,251,0.07); color: rgba(244,246,251,0.9);
+    padding: 7px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 44px;
+  }
+  .themebtn:hover { background: rgba(244,246,251,0.16); }
+  .themebtn svg { width: 15px; height: 15px; }
+
+  /* ---------- 頂部導覽：桌面版右側控制區（主題切換＋漢堡按鈕容器） ---------- */
+  .topbar-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+
+  /* ---------- 手機版漢堡選單按鈕（預設隱藏，斷點內顯示） ---------- */
+  .hamburger-btn {
+    display: none; appearance: none; border: 1px solid rgba(244,246,251,0.22);
+    background: rgba(244,246,251,0.07); color: rgba(244,246,251,0.9);
+    width: 44px; height: 44px; border-radius: 10px; cursor: pointer; flex-shrink: 0;
+    align-items: center; justify-content: center;
+  }
+  .hamburger-btn:hover { background: rgba(244,246,251,0.16); }
+  .hamburger-btn svg { width: 22px; height: 22px; }
+
+  /* ---------- 手機版導覽抽屜（從頂部導覽列下方滑出） ---------- */
+  .nav-drawer {
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--brand-deep); border-bottom: 1px solid rgba(0,0,0,0.25);
+    box-shadow: 0 14px 28px rgba(var(--shadow-c), 0.28);
+    padding: 10px 16px 18px; display: flex; flex-direction: column; gap: 16px;
+    transform: translateY(-8px); opacity: 0; visibility: hidden; pointer-events: none;
+    transition: transform 0.18s ease, opacity 0.18s ease, visibility 0.18s;
+    z-index: 45; max-height: calc(100vh - 56px); overflow-y: auto;
+  }
+  .nav-drawer.open { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
+  .nav-drawer-group { display: flex; flex-direction: column; gap: 6px; }
+  .nav-drawer-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em;
+    color: rgba(244,246,251,0.55); font-family: var(--font-mono); padding: 6px 6px 0;
+  }
+  .nav-drawer-list { display: flex; flex-direction: column; gap: 4px; }
+  .nav-drawer-link {
+    appearance: none; border: 1px solid transparent; background: none; text-align: left;
+    color: rgba(244,246,251,0.9); font-size: 14.5px; font-weight: 600;
+    padding: 11px 12px; border-radius: 10px; cursor: pointer; min-height: 44px;
+    display: flex; align-items: center; gap: 8px; transition: background 0.15s ease;
+  }
+  .nav-drawer-link:hover { background: rgba(244,246,251,0.1); }
+  .nav-drawer-link[aria-current="page"] { background: var(--accent); color: #221904; border-color: var(--accent); }
+
+  main { flex: 1; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .screen-inner { max-width: 1240px; margin: 0 auto; padding: 30px 20px 64px; }
+
+  .screen-head { margin-bottom: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    color: var(--brand); font-weight: 700; text-transform: uppercase;
+  }
+  .eyebrow.admin { color: var(--accent-deep); }
+  .screen-title { font-size: 1.7rem; color: var(--ink); }
+  .screen-sub { color: var(--ink-soft); font-size: 0.92rem; max-width: 62ch; }
+
+  .context-strip {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    background: var(--brand-tint); border: 1px solid var(--border);
+    border-radius: var(--radius-s); padding: 10px 14px; margin-bottom: 22px;
+    font-size: 13px; color: var(--brand-deep); font-weight: 600;
+  }
+  :root[data-theme="dark"] .context-strip, .context-strip { color: var(--ink); }
+  .context-strip strong { color: var(--brand); font-weight: 800; }
+  .context-strip .ctx-icon { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+
+  /* ---------- 卡片 / 面板通用 ---------- */
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-m); box-shadow: 0 1px 2px rgba(var(--shadow-c), 0.05);
+  }
+
+  /* ---------- Pin 圖釘元件 ---------- */
+  .pin-wrap { display: inline-flex; flex-direction: column; align-items: center; }
+  .pin {
+    width: 30px; height: 30px; border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg); position: relative;
+    background: var(--pin-c, var(--brand));
+    box-shadow: 0 3px 6px rgba(var(--shadow-c), 0.32), inset 0 0 0 1.5px rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pin[data-fresh="recent"] { background: color-mix(in srgb, var(--pin-c, var(--brand)) 62%, white); }
+  .pin[data-fresh="old"] {
+    background: color-mix(in srgb, var(--pin-c, var(--brand)) 26%, var(--surface));
+    box-shadow: inset 0 0 0 2px var(--pin-c, var(--brand));
+  }
+  .pin-icon { width: 14px; height: 14px; color: #fff; transform: rotate(45deg); }
+  .pin[data-fresh="old"] .pin-icon { color: var(--pin-c, var(--brand)); }
+  .pin-count {
+    position: absolute; top: -7px; right: -9px; transform: rotate(45deg);
+    background: var(--ink); color: var(--bg); font-family: var(--font-mono);
+    font-size: 10px; font-weight: 700; border-radius: 999px; min-width: 17px; height: 17px;
+    display: flex; align-items: center; justify-content: center; padding: 0 3px;
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+  .pin-fresh-tag {
+    margin-top: 6px; font-size: 10.5px; font-family: var(--font-mono); color: var(--ink-faint);
+  }
+  button.pin-btn { appearance: none; background: none; border: none; padding: 0; cursor: pointer; }
+  button.pin-btn:hover .pin { filter: brightness(1.06); transform: rotate(-45deg) translateY(-2px); }
+  button.pin-btn .pin { transition: transform 0.15s ease, filter 0.15s ease; }
+
+  /* ---------- Legend 圖例 ---------- */
+  .legend-card { padding: 16px 18px; }
+  .legend-title { font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em; color: var(--ink); margin-bottom: 10px; display:flex; align-items:center; gap:6px;}
+  .legend-title svg { width: 14px; height: 14px; color: var(--accent); }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px 14px; }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-soft); }
+  .legend-swatch {
+    width: 18px; height: 18px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+    background: var(--sw-c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .legend-swatch svg { width: 9px; height: 9px; color: #fff; transform: rotate(45deg); }
+  .legend-divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .legend-fresh-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-soft); }
+  .legend-fresh-row .pin { width: 20px; height: 20px; }
+  .legend-fresh-row .pin-icon { width: 9px; height: 9px; }
+  .legend-fresh-item { display: flex; align-items: center; gap: 6px; }
+
+  /* ---------- 分區地圖 tiles ---------- */
+  .map-board {
+    background: var(--bg-map);
+    background-image:
+      linear-gradient(var(--bg-map-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-map-line) 1px, transparent 1px);
+    background-size: 26px 26px;
+    border: 1px solid var(--border); border-radius: var(--radius-l);
+    padding: 20px; margin-bottom: 24px;
+  }
+  .zone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+  .zone-tile {
+    appearance: none; text-align: left; cursor: pointer;
+    background: var(--surface); border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius-m); padding: 14px 15px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .zone-tile:hover { border-color: var(--brand); box-shadow: 0 6px 16px rgba(var(--shadow-c), 0.12); transform: translateY(-2px); }
+  .zone-tile.is-active { border-style: solid; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+  .zone-tile-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .zone-code {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--ink-faint); background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 6px;
+  }
+  .zone-name { font-size: 15px; font-weight: 800; }
+  .zone-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .zone-count strong { color: var(--brand); font-size: 15px; }
+  .zone-pins { display: flex; gap: 6px; align-items: flex-end; flex-wrap: wrap; }
+  .zone-pins .pin { width: 22px; height: 22px; }
+  .zone-pins .pin-icon { width: 10px; height: 10px; }
+
+  /* ---------- 物品卡片牆 ---------- */
+  .card-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .item-card {
+    appearance: none; text-align: left; cursor: pointer; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-m); padding: 15px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color .15s ease;
+  }
+  .item-card:hover { box-shadow: 0 8px 20px rgba(var(--shadow-c), 0.14); transform: translateY(-2px); border-color: var(--border-strong); }
+  .item-card-top { display: flex; align-items: flex-start; gap: 10px; justify-content: space-between; }
+  .item-card-title { font-size: 14.5px; font-weight: 700; line-height: 1.4; }
+  .item-card-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 11.5px; color: var(--ink-faint); font-family: var(--font-mono); }
+  .item-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+  .status-pill {
+    font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .status-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .status-pill.open { background: var(--success-tint); color: var(--success); }
+  .status-pill.pending { background: var(--warning-tint); color: var(--warning); }
+  .status-pill.closed { background: var(--surface-2); color: var(--ink-faint); }
+  .status-pill.danger { background: var(--danger-tint); color: var(--danger); }
+
+  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .chip {
+    appearance: none; cursor: pointer; border: 1px solid var(--border); background: var(--surface);
+    color: var(--ink-soft); font-size: 12.5px; font-weight: 600; padding: 10px 14px;
+    border-radius: 999px; display: flex; align-items: center; gap: 6px; min-height: 44px;
+    transition: background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .chip .chip-dot { width: 9px; height: 9px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--dot-c, var(--ink-faint)); flex-shrink: 0; }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .section-flow { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 880px) { .section-flow { grid-template-columns: 1fr; } }
+
+  /* ---------- 交接進度戳章（造型借自方向三「交接存根」，顏色改回在地地圖色系） ---------- */
+  /* 用邊框樣式（實心／虛線／點線／雙線）分狀態，不只靠顏色，色弱使用者也能分辨 */
+  .stamp-track-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .stamp-track { display: flex; align-items: flex-start; min-width: 620px; padding: 10px 4px 2px; }
+  .stamp-step { flex: 0 0 auto; width: 118px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+  .stamp-connector {
+    flex: 1 1 auto; min-width: 20px; height: 0; margin-top: 27px;
+    border-top: 2px dashed var(--border-strong);
+  }
+  .stamp-connector.done { border-top-color: var(--brand); border-top-style: solid; }
+
+  .stamp {
+    --stamp-c: var(--ink-faint);
+    width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--stamp-c); border: 2.5px solid var(--stamp-c);
+    transform: rotate(-6deg); background: transparent;
+  }
+  .stamp::after {
+    content: ""; position: absolute; inset: 4px; border-radius: 50%;
+    border: 1px solid var(--stamp-c); opacity: 0.55;
+  }
+  .stamp .stamp-icon { width: 16px; height: 16px; margin-bottom: 1px; }
+  .stamp .stamp-label { font-size: 8.5px; font-weight: 700; letter-spacing: 0.02em; font-family: var(--font-mono); }
+  /* 已完成：實心邊框＋群青 */
+  .stamp.stamp-done { --stamp-c: var(--brand); border-style: solid; background: var(--brand-tint); }
+  /* 進行中：虛線邊框＋金黃強調色（沿用原本 current 步驟的強調色） */
+  .stamp.stamp-active { --stamp-c: var(--accent-deep); border-style: dashed; background: var(--accent-tint); }
+  /* 待辦：點線邊框＋中性灰 */
+  .stamp.stamp-pending { --stamp-c: var(--ink-faint); border-style: dotted; opacity: 0.72; }
+  /* 作廢／異常：雙線邊框＋警示紅（本頁未出現，僅列於圖例供未來狀態延伸） */
+  .stamp.stamp-void { --stamp-c: var(--danger); border-style: double; border-width: 5px; background: var(--danger-tint); }
+
+  .stamp-step-label { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .stamp-step.is-active .stamp-step-label { color: var(--accent-deep); }
+  .stamp-step.is-pending .stamp-step-label { color: var(--ink-faint); font-weight: 600; }
+  .stamp-step-time { font-size: 11px; color: var(--ink-faint); font-family: var(--font-mono); }
+
+  .stamp-legend-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .stamp-legend-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-soft); text-align: center; width: 76px; }
+  .stamp-legend-item .stamp { width: 40px; height: 40px; }
+  .stamp-legend-item .stamp .stamp-icon { width: 13px; height: 13px; margin-bottom: 0; }
+
+  /* ---------- 留言列表 ---------- */
+  .comment-list { display: flex; flex-direction: column; gap: 12px; }
+  .comment {
+    display: flex; gap: 10px; padding: 12px; border-radius: var(--radius-s);
+    background: var(--surface-2); border: 1px solid var(--border);
+  }
+  .avatar-dot {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--brand-tint); color: var(--brand-deep);
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0;
+  }
+  .comment-body { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .comment-head { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .comment-name { font-weight: 700; }
+  .comment-time { color: var(--ink-faint); font-family: var(--font-mono); font-size: 11px; }
+  .comment-text { font-size: 13.5px; color: var(--ink-soft); }
+
+  /* ---------- 巡查看板：熱點格 ---------- */
+  .stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 22px; }
+  .stat-tile { padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .stat-num { font-family: var(--font-mono); font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .stat-label { font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+  .stat-tile.warn .stat-num { color: var(--warning); }
+  .stat-tile.danger .stat-num { color: var(--danger); }
+
+  .hotspot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .hotspot {
+    appearance: none; cursor: pointer; text-align: left; border-radius: var(--radius-m);
+    padding: 16px; display: flex; flex-direction: column; gap: 10px; border: 1.5px solid var(--border);
+    background: var(--surface); position: relative; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .hotspot:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(var(--shadow-c), 0.14); }
+  .hotspot.is-active { box-shadow: 0 0 0 3px var(--accent); }
+  .hotspot-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .hotspot-loc { font-size: 13.5px; font-weight: 700; }
+  .hotspot-cat { font-size: 11.5px; color: var(--ink-soft); }
+  .heat-badge {
+    width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 16px; flex-shrink: 0; font-variant-numeric: tabular-nums;
+  }
+  .hotspot[data-level="low"] .heat-badge { background: var(--brand-tint); color: var(--brand); width: 34px; height: 34px; font-size: 13px; }
+  .hotspot[data-level="mid"] .heat-badge { background: var(--accent-tint); color: var(--accent-deep); width: 40px; height: 40px; font-size: 15px; }
+  .hotspot[data-level="high"] .heat-badge { background: var(--danger-tint); color: var(--danger); width: 48px; height: 48px; font-size: 18px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 14%, transparent); }
+  .hotspot-foot { display: flex; align-items: center; justify-content: space-between; }
+  .hotspot-trend { font-size: 11px; font-family: var(--font-mono); color: var(--ink-faint); }
+  .hotspot-trend.up { color: var(--danger); }
+
+  /* ---------- 檢舉佇列 ---------- */
+  .queue-list { display: flex; flex-direction: column; gap: 10px; }
+  .queue-row {
+    display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface); cursor: pointer; transition: border-color .15s ease, background .15s ease;
+  }
+  .queue-row:hover { border-color: var(--border-strong); }
+  .queue-row.is-selected { border-color: var(--brand); background: var(--brand-tint); }
+  .queue-main { flex: 1; min-width: 0; }
+  .queue-title { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+  .queue-sub { font-size: 12px; color: var(--ink-soft); }
+  .queue-meta { font-size: 11px; color: var(--ink-faint); font-family: var(--font-mono); white-space: nowrap; }
+
+  .process-panel { padding: 18px; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 76px; }
+  .field-label { font-size: 12.5px; font-weight: 700; color: var(--ink-soft); display: block; margin-bottom: 6px; }
+  select, textarea, input[type="text"] {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-s);
+    background: var(--surface-2); color: var(--ink); font-family: inherit; font-size: 13.5px;
+    padding: 9px 11px;
+  }
+  select:focus, textarea:focus, input:focus { border-color: var(--brand); outline: none; }
+  textarea { resize: vertical; min-height: 72px; }
+  .btn {
+    appearance: none; border: none; cursor: pointer; border-radius: var(--radius-s);
+    font-weight: 700; font-size: 13.5px; padding: 10px 16px; display: inline-flex; align-items: center; gap: 7px;
+    transition: filter .15s ease, background .15s ease; min-height: 44px; justify-content: center;
+  }
+  .btn-brand { background: var(--brand); color: #fff; }
+  .btn-brand:hover { filter: brightness(1.08); }
+  .btn-ghost { background: var(--surface-2); color: var(--ink); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--border-strong); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { filter: brightness(1.08); }
+  .btn-danger:disabled { background: var(--surface-2); color: var(--ink-faint); cursor: not-allowed; filter: none; }
+  .btn svg { width: 16px; height: 16px; }
+
+  /* ---------- 強制下架：拔除標記 ---------- */
+  .remove-stage { display: grid; grid-template-columns: 1fr 1.1fr; gap: 22px; }
+  @media (max-width: 880px) { .remove-stage { grid-template-columns: 1fr; } }
+  .flagged-card { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .flagged-item-top { display: flex; gap: 14px; align-items: flex-start; }
+  .pin-anomaly { position: relative; }
+  .pin-anomaly .pin { background: var(--surface); box-shadow: inset 0 0 0 2.5px var(--danger); }
+  .pin-anomaly .pin-icon { color: var(--danger); }
+  .pin-anomaly-ring {
+    position: absolute; inset: -6px; border: 2px dashed var(--danger); border-radius: 50%;
+    opacity: 0.7;
+  }
+  .anomaly-tag {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700;
+    color: var(--danger); background: var(--danger-tint); padding: 4px 10px; border-radius: 999px; width: fit-content;
+  }
+  .anomaly-tag svg { width: 12px; height: 12px; }
+  .flag-reason-list { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+  .flag-reason-list li { display: flex; gap: 8px; }
+  .flag-reason-list svg { width: 15px; height: 15px; color: var(--danger); flex-shrink: 0; margin-top: 1px; }
+
+  .irreversible-note {
+    background: var(--danger-tint); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+    border-radius: var(--radius-s); padding: 12px 14px; font-size: 13px; color: var(--ink); display: flex; gap: 10px;
+  }
+  .irreversible-note svg { width: 18px; height: 18px; color: var(--danger); flex-shrink: 0; }
+
+  .removed-state { display: none; align-items: center; gap: 12px; padding: 16px; background: var(--surface-2); border-radius: var(--radius-s); border: 1px dashed var(--border-strong); }
+  .removed-state.show { display: flex; }
+  .removed-state svg { width: 26px; height: 26px; color: var(--ink-faint); }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0; background: rgba(8, 12, 20, 0.55);
+    z-index: 100; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: var(--radius-l); max-width: 460px; width: 100%;
+    padding: 24px; display: flex; flex-direction: column; gap: 16px;
+    box-shadow: 0 24px 60px rgba(var(--shadow-c), 0.35); border: 1px solid var(--border);
+  }
+  .modal-head { display: flex; align-items: center; gap: 10px; }
+  .modal-head .icon-wrap {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--danger-tint); color: var(--danger);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .modal-head .icon-wrap svg { width: 20px; height: 20px; }
+  .modal-title { font-size: 16.5px; }
+  .modal-body-text { font-size: 13.5px; color: var(--ink-soft); }
+  .modal-quote {
+    font-size: 14px; font-weight: 700; color: var(--ink); background: var(--surface-2);
+    border-radius: var(--radius-s); padding: 8px 12px; border: 1px solid var(--border); font-family: var(--font-mono);
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; flex-wrap: wrap; }
+  .hint-text { font-size: 11.5px; color: var(--ink-faint); }
+
+  .toast {
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px;
+    font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 10px 26px rgba(var(--shadow-c), 0.3); opacity: 0; pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease; z-index: 200;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 16px; height: 16px; color: var(--success); }
+
+  .foot-note { margin-top: 30px; font-size: 12px; color: var(--ink-faint); text-align: center; }
+
+  @media (max-width: 620px) {
+    .screen-title { font-size: 1.4rem; }
+    .topbar-inner { gap: 12px; }
+    .navgroups { gap: 12px; }
+  }
+
+  /* ---------- 手機版導覽：768px 以下改用漢堡選單，桌面水平導覽列不變 ---------- */
+  @media (max-width: 768px) {
+    .topbar-inner { flex-wrap: nowrap; }
+    .navgroups { display: none; }
+    .hamburger-btn { display: inline-flex; }
+    .brandmark { min-width: 0; overflow: hidden; }
+    .brandmark-text { min-width: 0; overflow: hidden; }
+    .brandmark-text strong, .brandmark-text span {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+    }
+    /* 檢舉佇列處理面板：手機上改回一般排列，不要 sticky 貼在畫面上方 */
+    .process-panel { position: static; top: auto; }
+  }
+  @media (min-width: 769px) {
+    .nav-drawer { display: none; }
+  }
+
+  /* ---------- 手機版卡片牆／地圖 tiles／篩選：強制單欄，不維持桌面多欄擠壓 ---------- */
+  @media (max-width: 480px) {
+    .zone-grid { grid-template-columns: 1fr; }
+    .card-wall { grid-template-columns: 1fr; }
+    .hotspot-grid { grid-template-columns: 1fr; }
+    .stat-strip { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- ============ SVG symbol defs（分類圖釘圖示、系統圖示） ============ -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="ic-furniture" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 11V8.5A2.5 2.5 0 0 1 8.5 6h7A2.5 2.5 0 0 1 18 8.5V11" />
+      <path d="M4 16v-2.5A2.5 2.5 0 0 1 6.5 11h11a2.5 2.5 0 0 1 2.5 2.5V16" />
+      <path d="M3 16h18v2.5a1 1 0 0 1-1 1h-1.2a1 1 0 0 1-1-1V18H6.2v.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V16z" />
+    </symbol>
+    <symbol id="ic-appliance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="1.6" />
+      <path d="M12 10.2c-.3-2.6 1.3-4.6 3.8-4.9.3 2.6-1.3 4.6-3.8 4.9z" />
+      <path d="M12 13.8c.3 2.6-1.3 4.6-3.8 4.9-.3-2.6 1.3-4.6 3.8-4.9z" />
+      <path d="M10.2 12c-2.6.3-4.6-1.3-4.9-3.8 2.6-.3 4.6 1.3 4.9 3.8z" />
+    </symbol>
+    <symbol id="ic-beauty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.5S6.5 10.8 6.5 14.8a5.5 5.5 0 1 0 11 0C17.5 10.8 12 3.5 12 3.5z" />
+    </symbol>
+    <symbol id="ic-books" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="15.3" width="16" height="3" rx="1" />
+      <rect x="5.2" y="11.3" width="13.6" height="3" rx="1" />
+      <rect x="6.4" y="7.3" width="11.2" height="3" rx="1" />
+    </symbol>
+    <symbol id="ic-outdoor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 4.5 19.5 18h-15L12 4.5z" />
+      <path d="M9.3 18l2.7-5.2 2.7 5.2" />
+    </symbol>
+    <symbol id="ic-voucher" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 8.2A1.7 1.7 0 0 1 6.2 6.5h11.6a1.7 1.7 0 0 1 1.7 1.7v1.1a1.3 1.3 0 0 0 0 2.6v1.1a1.7 1.7 0 0 1-1.7 1.7H6.2a1.7 1.7 0 0 1-1.7-1.7v-1.1a1.3 1.3 0 0 0 0-2.6V8.2z" />
+      <path d="M12 6.5v11" stroke-dasharray="2.2 2.2" />
+    </symbol>
+    <symbol id="ic-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.6" />
+      <path d="M14.8 9.2 13 13l-3.8 1.8L11 11l3.8-1.8z" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" />
+    </symbol>
+    <symbol id="ic-moon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <path d="M20.6 14.6A8.6 8.6 0 0 1 9.4 3.4a9 9 0 1 0 11.2 11.2z" />
+    </symbol>
+    <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 12.5 9 17l10.5-11" />
+    </symbol>
+    <symbol id="ic-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 5.5h16v10.4H9.6L5.2 19V15.9H4V5.5z" />
+    </symbol>
+    <symbol id="ic-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 11.5l4-3.2 4 2.4 3-2.4 4.2 3" />
+      <path d="M8.5 12.5l2.3 2.1a1.3 1.3 0 0 0 1.9-1.7" />
+      <path d="M12.5 13.2l1.8 1.6a1.3 1.3 0 0 0 1.8-1.8" />
+    </symbol>
+    <symbol id="ic-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 3.5v17" />
+      <path d="M6 4.5h11.5l-2.6 3.6 2.6 3.6H6" />
+    </symbol>
+    <symbol id="ic-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.3 21 19.5H3L12 3.3z" />
+      <path d="M12 9.6v4" />
+      <circle cx="12" cy="16.3" r="0.15" fill="currentColor" stroke-width="2.4" />
+    </symbol>
+    <symbol id="ic-unpin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s6.5-6.8 6.5-11.3a6.5 6.5 0 1 0-13 0c0 4.5 6.5 11.3 6.5 11.3z" />
+      <path d="M4.5 4.5l15 15" />
+    </symbol>
+    <symbol id="ic-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10.8" cy="10.8" r="6.3" />
+      <path d="M19.5 19.5 15.4 15.4" />
+    </symbol>
+    <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M4 6.5h16M4 12h16M4 17.5h16" />
+    </symbol>
+    <symbol id="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M5 5l14 14M19 5 5 19" />
+    </symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <!-- ============ 頂部導覽 ============ -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brandmark">
+        <svg class="compass-icon"><use href="#ic-compass"></use></svg>
+        <div class="brandmark-text">
+          <strong>ShareGood 在地地圖</strong>
+          <span>M13 · 定案版（主體＋交接戳章）</span>
+        </div>
+      </div>
+      <div class="navgroups">
+        <div class="navgroup">
+          <span class="navgroup-label">前台</span>
+          <div class="navgroup-tabs">
+            <button class="navtab" data-target="screen-home" aria-current="page">找好物地圖</button>
+            <button class="navtab" data-target="screen-browse">好物瀏覽</button>
+            <button class="navtab" data-target="screen-detail">物品詳情</button>
+          </div>
+        </div>
+        <div class="navgroup">
+          <span class="navgroup-label">後台</span>
+          <div class="navgroup-tabs">
+            <button class="navtab" data-target="screen-admin-dashboard">巡查看板</button>
+            <button class="navtab" data-target="screen-admin-queue">檢舉佇列</button>
+            <button class="navtab" data-target="screen-admin-remove">強制下架</button>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-controls">
+        <button class="hamburger-btn" id="hamburgerBtn" type="button" aria-expanded="false" aria-controls="mobileNavDrawer" aria-label="開啟導覽選單">
+          <svg id="hamburgerIcon" aria-hidden="true"><use href="#ic-menu"></use></svg>
+        </button>
+        <button class="themebtn" id="themeToggle" type="button">
+          <svg id="themeIcon"><use href="#ic-sun"></use></svg>
+          <span id="themeLabel">淺色</span>
+        </button>
+      </div>
+    </div>
+    <nav class="nav-drawer" id="mobileNavDrawer" aria-label="行動版導覽選單">
+      <div class="nav-drawer-group">
+        <span class="nav-drawer-label">前台</span>
+        <div class="nav-drawer-list">
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-home" type="button" aria-current="page">找好物地圖</button>
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-browse" type="button">好物瀏覽</button>
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-detail" type="button">物品詳情</button>
+        </div>
+      </div>
+      <div class="nav-drawer-group">
+        <span class="nav-drawer-label">後台</span>
+        <div class="nav-drawer-list">
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-admin-dashboard" type="button">巡查看板</button>
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-admin-queue" type="button">檢舉佇列</button>
+          <button class="nav-drawer-link navtab-mobile" data-target="screen-admin-remove" type="button">強制下架</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============================================================ -->
+    <!-- 畫面 1：首頁「找好物」地圖式瀏覽 -->
+    <!-- ============================================================ -->
+    <section class="screen active" id="screen-home">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow">探索 · 前台首頁</span>
+          <h1 class="screen-title">找好物</h1>
+          <p class="screen-sub">不是先篩選、再捲動列表——地圖分區就是入口。點一個縣市分區，圖釘就直接帶你看見那裡現在有什麼。</p>
+        </div>
+
+        <div class="map-board">
+          <div class="zone-grid" id="zoneGrid">
+            <!-- 分區 tiles 由此開始 -->
+            <button class="zone-tile is-active" data-zone="taipei" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">台北市</span>
+                <span class="zone-code">TPE</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-furniture)" data-fresh="new"><svg class="pin-icon"><use href="#ic-furniture"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-voucher)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-voucher"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-beauty)" data-fresh="old"><svg class="pin-icon"><use href="#ic-beauty"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>16</strong> 件好物</div>
+            </button>
+
+            <button class="zone-tile" data-zone="newtaipei" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">新北市</span>
+                <span class="zone-code">NTP</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-outdoor)" data-fresh="new"><svg class="pin-icon"><use href="#ic-outdoor"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-appliance)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-appliance"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-beauty)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-beauty"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>22</strong> 件好物</div>
+            </button>
+
+            <button class="zone-tile" data-zone="taichung" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">台中市</span>
+                <span class="zone-code">TXG</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-books)" data-fresh="new"><svg class="pin-icon"><use href="#ic-books"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-furniture)" data-fresh="old"><svg class="pin-icon"><use href="#ic-furniture"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>11</strong> 件好物</div>
+            </button>
+
+            <button class="zone-tile" data-zone="tainan" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">台南市</span>
+                <span class="zone-code">TNN</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-outdoor)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-outdoor"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>7</strong> 件好物</div>
+            </button>
+
+            <button class="zone-tile" data-zone="kaohsiung" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">高雄市</span>
+                <span class="zone-code">KHH</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-voucher)" data-fresh="new"><svg class="pin-icon"><use href="#ic-voucher"></use></svg></span>
+                <span class="pin" style="--pin-c:var(--cat-appliance)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-appliance"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>13</strong> 件好物</div>
+            </button>
+
+            <button class="zone-tile" data-zone="hsinchu" type="button">
+              <div class="zone-tile-head">
+                <span class="zone-name">新竹市</span>
+                <span class="zone-code">HSZ</span>
+              </div>
+              <div class="zone-pins">
+                <span class="pin" style="--pin-c:var(--cat-voucher)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-voucher"></use></svg></span>
+              </div>
+              <div class="zone-count">目前 <strong>5</strong> 件好物</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="section-flow">
+          <div class="panel legend-card">
+            <div class="legend-title"><svg><use href="#ic-compass"></use></svg>圖例：分類看顏色，新鮮度看深淺</div>
+            <div class="legend-grid">
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-furniture)"><svg><use href="#ic-furniture"></use></svg></span>傢俱大型物</div>
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-appliance)"><svg><use href="#ic-appliance"></use></svg></span>家電</div>
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-beauty)"><svg><use href="#ic-beauty"></use></svg></span>美妝保養</div>
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-books)"><svg><use href="#ic-books"></use></svg></span>書籍雜誌</div>
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-outdoor)"><svg><use href="#ic-outdoor"></use></svg></span>運動戶外</div>
+              <div class="legend-row"><span class="legend-swatch" style="--sw-c:var(--cat-voucher)"><svg><use href="#ic-voucher"></use></svg></span>券票點（優惠券／電子票券／點數好康）</div>
+            </div>
+            <div class="legend-divider"></div>
+            <div class="legend-fresh-row">
+              <div class="legend-fresh-item"><span class="pin" style="--pin-c:var(--brand)" data-fresh="new"><svg class="pin-icon"><use href="#ic-furniture"></use></svg></span>24 小時內上架</div>
+              <div class="legend-fresh-item"><span class="pin" style="--pin-c:var(--brand)" data-fresh="recent"><svg class="pin-icon"><use href="#ic-furniture"></use></svg></span>1–3 天</div>
+              <div class="legend-fresh-item"><span class="pin" style="--pin-c:var(--brand)" data-fresh="old"><svg class="pin-icon"><use href="#ic-furniture"></use></svg></span>4 天以上</div>
+            </div>
+          </div>
+          <div class="panel legend-card">
+            <div class="legend-title"><svg><use href="#ic-search"></use></svg>為什麼不是列表優先？</div>
+            <p style="font-size:13px;color:var(--ink-soft)">
+              傳統做法：打開列表 → 選縣市 → 選分類 → 往下捲動找。<br>
+              地圖做法：分區本身就是篩選，圖釘本身就是入口——點下去直接看到物品卡，中間沒有多餘的一步。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 畫面 2：好物瀏覽細節 -->
+    <!-- ============================================================ -->
+    <section class="screen" id="screen-browse">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow">探索 · 分區瀏覽</span>
+          <h1 class="screen-title">好物瀏覽</h1>
+          <p class="screen-sub">從分區點進來的物品卡片牆。圖釘顏色＝分類，卡片右上角的圖釘深淺＝新鮮度，一眼分辨新舊。</p>
+        </div>
+        <div class="context-strip">
+          <svg class="ctx-icon"><use href="#ic-compass"></use></svg>
+          目前檢視：<strong id="browseZoneLabel">台北市</strong> 全分類
+        </div>
+
+        <div class="filter-row" id="catFilterRow">
+          <button class="chip" data-cat="all" aria-pressed="true">全部分類</button>
+          <button class="chip" data-cat="furniture" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-furniture)"></span>傢俱大型物</button>
+          <button class="chip" data-cat="appliance" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-appliance)"></span>家電</button>
+          <button class="chip" data-cat="beauty" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-beauty)"></span>美妝保養</button>
+          <button class="chip" data-cat="books" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-books)"></span>書籍雜誌</button>
+          <button class="chip" data-cat="outdoor" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-outdoor)"></span>運動戶外</button>
+          <button class="chip" data-cat="voucher" aria-pressed="false"><span class="chip-dot" style="--dot-c:var(--cat-voucher)"></span>券票點</button>
+        </div>
+
+        <div class="card-wall" id="itemCardWall">
+          <!-- 卡片由 JS data 產生 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 畫面 3：物品詳情頁片段 -->
+    <!-- ============================================================ -->
+    <section class="screen" id="screen-detail">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow">探索 · 物品詳情</span>
+          <h1 class="screen-title">IKEA 三人座沙發（含灰色椅套）</h1>
+          <p class="screen-sub">台北市大安區 · 傢俱大型物 · 圖例語言延伸到詳情頁：分類圖釘、留言時間戳沿用同一套視覺字彙；交接進度則借用「交接存根」提案的戳章造型，顏色改回在地地圖色系。</p>
+        </div>
+        <div class="context-strip">
+          <span class="pin" style="--pin-c:var(--cat-furniture);width:22px;height:22px" data-fresh="recent"><svg class="pin-icon" style="width:10px;height:10px"><use href="#ic-furniture"></use></svg></span>
+          傢俱大型物 · 2 天前上架 · <strong>可面交自取</strong>
+        </div>
+
+        <div class="section-flow">
+          <div class="panel" style="padding:18px;">
+            <h3 style="font-size:14px;margin-bottom:4px;">交接進度</h3>
+            <p style="font-size:12px;color:var(--ink-faint);margin-bottom:12px;">這一段的造型借用「交接存根」提案的戳章語彙——蓋章代表已留下紀錄，邊框樣式區分狀態，顏色維持在地地圖色系。</p>
+            <div class="stamp-track-scroll">
+              <div class="stamp-track">
+                <div class="stamp-step">
+                  <div class="stamp stamp-done"><svg class="stamp-icon"><use href="#ic-furniture"></use></svg><span class="stamp-label">上架</span></div>
+                  <div class="stamp-step-label">上架</div>
+                  <div class="stamp-step-time">07/19 20:30</div>
+                </div>
+                <div class="stamp-connector done"></div>
+                <div class="stamp-step">
+                  <div class="stamp stamp-done"><svg class="stamp-icon"><use href="#ic-message"></use></svg><span class="stamp-label">留言</span></div>
+                  <div class="stamp-step-label">留言認領</div>
+                  <div class="stamp-step-time">07/19 21:04</div>
+                </div>
+                <div class="stamp-connector done"></div>
+                <div class="stamp-step">
+                  <div class="stamp stamp-done"><svg class="stamp-icon"><use href="#ic-check"></use></svg><span class="stamp-label">確認</span></div>
+                  <div class="stamp-step-label">物主確認</div>
+                  <div class="stamp-step-time">07/19 22:10</div>
+                </div>
+                <div class="stamp-connector"></div>
+                <div class="stamp-step is-active">
+                  <div class="stamp stamp-active"><svg class="stamp-icon"><use href="#ic-message"></use></svg><span class="stamp-label">進行中</span></div>
+                  <div class="stamp-step-label">私訊敲面交時間</div>
+                  <div class="stamp-step-time">進行中</div>
+                </div>
+                <div class="stamp-connector"></div>
+                <div class="stamp-step is-pending">
+                  <div class="stamp stamp-pending"><svg class="stamp-icon"><use href="#ic-handshake"></use></svg><span class="stamp-label">待辦</span></div>
+                  <div class="stamp-step-label">完成交接</div>
+                  <div class="stamp-step-time">待雙方確認</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="legend-divider"></div>
+            <h3 style="font-size:14px;margin-bottom:10px;">留言 / 認領</h3>
+            <div class="comment-list">
+              <div class="comment">
+                <div class="avatar-dot">陳</div>
+                <div class="comment-body">
+                  <div class="comment-head"><span class="comment-name">陳○樺</span><span class="comment-time">07/19 21:04</span><span class="status-pill open">已認領</span></div>
+                  <p class="comment-text">您好，我這週六前都能面交，大安區、信義區都方便，謝謝分享！</p>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar-dot">林</div>
+                <div class="comment-body">
+                  <div class="comment-head"><span class="comment-name">林○宇</span><span class="comment-time">07/19 21:11</span><span class="status-pill closed">先到先得，已額滿</span></div>
+                  <p class="comment-text">請問椅套可以拆洗嗎？（留言時已被搶先一步）</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel legend-card">
+            <div class="legend-title"><svg><use href="#ic-compass"></use></svg>這頁的視覺語彙怎麼混搭</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+              <li>分類圖釘：詳情頁頂端沿用同一顆「傢俱大型物」棕色圖釘，讀者不用重新學一套符號。</li>
+              <li>交接進度改用戳章：地圖的圖釘步道適合表達「空間路徑」，但交接進度其實是「留痕紀錄」——蓋章隱喻更貼切，所以這裡借用方向三「交接存根」的造型語言。</li>
+              <li>顏色仍是在地地圖色系：戳章的群青／金黃／中性灰都對應既有 token，不是酒李紫，整頁色彩維持一致，不會忽然跳出另一種識別。</li>
+              <li>狀態不只靠顏色：實心／虛線／點線／雙線四種邊框樣式各自對應「已完成／進行中／待辦／作廢」，色弱使用者也分得出來。</li>
+              <li>時間一律用等寬數字字體（如刻度尺標示），方便掃視比對。</li>
+            </ul>
+            <div class="legend-divider"></div>
+            <div class="legend-title" style="margin-bottom:10px;"><svg><use href="#ic-check"></use></svg>戳章狀態圖例</div>
+            <div class="stamp-legend-row">
+              <div class="stamp-legend-item">
+                <span class="stamp stamp-done"><svg class="stamp-icon"><use href="#ic-check"></use></svg></span>
+                已完成<br>實心邊框
+              </div>
+              <div class="stamp-legend-item">
+                <span class="stamp stamp-active"><svg class="stamp-icon"><use href="#ic-message"></use></svg></span>
+                進行中<br>虛線邊框
+              </div>
+              <div class="stamp-legend-item">
+                <span class="stamp stamp-pending"><svg class="stamp-icon"><use href="#ic-handshake"></use></svg></span>
+                待辦<br>點線邊框
+              </div>
+              <div class="stamp-legend-item">
+                <span class="stamp stamp-void"><svg class="stamp-icon"><use href="#ic-warning"></use></svg></span>
+                作廢<br>雙線邊框
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 畫面 4：/admin 巡查看板 -->
+    <!-- ============================================================ -->
+    <section class="screen" id="screen-admin-dashboard">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow admin">後台 · 巡查看板</span>
+          <h1 class="screen-title">巡查看板</h1>
+          <p class="screen-sub">哪個縣市、哪個分類的檢舉正在集中，用熱點標記一眼看出——數字仍清楚疊在標記上，不必打開圖表才看得懂。</p>
+        </div>
+
+        <div class="stat-strip">
+          <div class="panel stat-tile warn">
+            <span class="stat-num">18</span>
+            <span class="stat-label">未處理檢舉</span>
+          </div>
+          <div class="panel stat-tile">
+            <span class="stat-num">6</span>
+            <span class="stat-label">待處理支援回報</span>
+          </div>
+          <div class="panel stat-tile danger">
+            <span class="stat-num">2</span>
+            <span class="stat-label">待複審申訴</span>
+          </div>
+        </div>
+
+        <div class="panel legend-card" style="margin-bottom:18px;">
+          <div class="legend-title"><svg><use href="#ic-warning"></use></svg>熱度圖例</div>
+          <div class="legend-fresh-row">
+            <div class="legend-fresh-item"><span class="heat-badge" style="background:var(--brand-tint);color:var(--brand);width:26px;height:26px;font-size:11px;">2</span>偶發（1–4 件）</div>
+            <div class="legend-fresh-item"><span class="heat-badge" style="background:var(--accent-tint);color:var(--accent-deep);width:30px;height:30px;font-size:12px;">8</span>需留意（5–9 件）</div>
+            <div class="legend-fresh-item"><span class="heat-badge" style="background:var(--danger-tint);color:var(--danger);width:34px;height:34px;font-size:13px;">14</span>集中（10 件以上）</div>
+          </div>
+        </div>
+
+        <div class="hotspot-grid" id="hotspotGrid">
+          <button class="hotspot is-active" data-hotspot="taipei-voucher" data-level="high" type="button">
+            <div class="hotspot-head">
+              <div>
+                <div class="hotspot-loc">台北市</div>
+                <div class="hotspot-cat">優惠券</div>
+              </div>
+              <span class="heat-badge">14</span>
+            </div>
+            <div class="hotspot-foot">
+              <span class="hotspot-trend up">↑ 較上週 +5</span>
+              <span class="zone-code">TPE</span>
+            </div>
+          </button>
+
+          <button class="hotspot" data-hotspot="kaohsiung-ticket" data-level="mid" type="button">
+            <div class="hotspot-head">
+              <div>
+                <div class="hotspot-loc">高雄市</div>
+                <div class="hotspot-cat">電子票券</div>
+              </div>
+              <span class="heat-badge">9</span>
+            </div>
+            <div class="hotspot-foot">
+              <span class="hotspot-trend">→ 與上週持平</span>
+              <span class="zone-code">KHH</span>
+            </div>
+          </button>
+
+          <button class="hotspot" data-hotspot="taoyuan-message" data-level="mid" type="button">
+            <div class="hotspot-head">
+              <div>
+                <div class="hotspot-loc">桃園市</div>
+                <div class="hotspot-cat">私訊</div>
+              </div>
+              <span class="heat-badge">5</span>
+            </div>
+            <div class="hotspot-foot">
+              <span class="hotspot-trend up">↑ 較上週 +2</span>
+              <span class="zone-code">TYN</span>
+            </div>
+          </button>
+
+          <button class="hotspot" data-hotspot="newtaipei-baby" data-level="low" type="button">
+            <div class="hotspot-head">
+              <div>
+                <div class="hotspot-loc">新北市</div>
+                <div class="hotspot-cat">母嬰用品</div>
+              </div>
+              <span class="heat-badge">3</span>
+            </div>
+            <div class="hotspot-foot">
+              <span class="hotspot-trend">→ 與上週持平</span>
+              <span class="zone-code">NTP</span>
+            </div>
+          </button>
+
+          <button class="hotspot" data-hotspot="taichung-appliance" data-level="low" type="button">
+            <div class="hotspot-head">
+              <div>
+                <div class="hotspot-loc">台中市</div>
+                <div class="hotspot-cat">家電</div>
+              </div>
+              <span class="heat-badge">2</span>
+            </div>
+            <div class="hotspot-foot">
+              <span class="hotspot-trend">↓ 較上週 -1</span>
+              <span class="zone-code">TXG</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 畫面 5：檢舉處理佇列 -->
+    <!-- ============================================================ -->
+    <section class="screen" id="screen-admin-queue">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow admin">後台 · 檢舉處理</span>
+          <h1 class="screen-title">檢舉處理佇列</h1>
+          <p class="screen-sub">從熱點點進來，直接展開該分區＋分類的案件清單；點清單裡的案子，右側處理面板立即帶出對應內容。</p>
+        </div>
+        <div class="context-strip">
+          <svg class="ctx-icon"><use href="#ic-flag"></use></svg>
+          展開自熱點：<strong id="queueHotspotLabel">台北市 × 優惠券</strong>（14 件）
+        </div>
+
+        <div class="section-flow">
+          <div class="queue-list" id="queueList">
+            <div class="queue-row is-selected" data-case="1">
+              <div class="queue-main">
+                <div class="queue-title">「全家咖啡兌換券 3 張」留言檢舉</div>
+                <div class="queue-sub">檢舉理由：疑似加價轉售 · 檢舉人：使用者 U-2291</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="status-pill pending">處理中</span>
+                <span class="queue-meta">07/20 09:14</span>
+              </div>
+            </div>
+            <div class="queue-row" data-case="2">
+              <div class="queue-main">
+                <div class="queue-title">「星巴克買一送一券」物品檢舉</div>
+                <div class="queue-sub">檢舉理由：券碼要求先私訊付款 · 檢舉人：使用者 U-1187</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="status-pill danger">待分類</span>
+                <span class="queue-meta">07/20 08:02</span>
+              </div>
+            </div>
+            <div class="queue-row" data-case="3">
+              <div class="queue-main">
+                <div class="queue-title">「肯德基兌換序號」私訊檢舉</div>
+                <div class="queue-sub">檢舉理由：要求提供個資核對 · 檢舉人：使用者 U-3390</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="status-pill closed">已結案</span>
+                <span class="queue-meta">07/19 17:40</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel process-panel">
+            <h3 style="font-size:14.5px;">處理面板</h3>
+            <div>
+              <span class="field-label">目前狀態</span>
+              <select id="statusSelect">
+                <option value="submitted">已送出</option>
+                <option value="triaged">已分類</option>
+                <option value="in_progress" selected>處理中</option>
+                <option value="resolved">已處理（成立）</option>
+                <option value="rejected">已駁回（不成立）</option>
+                <option value="closed">已結案</option>
+              </select>
+            </div>
+            <div>
+              <span class="field-label">處理備註（結案必填）</span>
+              <textarea placeholder="例如：已私訊提醒物主移除加價字樣，確認後轉為已處理。">已聯繫物主，確認留言內容為誤會，非實際加價要求。</textarea>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);">
+              送出後狀態預覽：<span class="status-pill pending" id="statusPreview">處理中</span>
+            </div>
+            <button class="btn btn-brand" type="button" id="queueSubmitBtn"><svg><use href="#ic-check"></use></svg>送出處理結果</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 畫面 6：強制下架（拔除標記，兩段式確認） -->
+    <!-- ============================================================ -->
+    <section class="screen" id="screen-admin-remove">
+      <div class="screen-inner">
+        <div class="screen-head">
+          <span class="eyebrow admin">後台 · 強制下架</span>
+          <h1 class="screen-title">拔除標記</h1>
+          <p class="screen-sub">地圖式互動容易「隨手一點」，所以下架刻意做成兩段：先標示異常，再要求覆誦物品標題才能真正送出——這是不可逆操作。</p>
+        </div>
+
+        <div class="remove-stage">
+          <div class="panel flagged-card">
+            <div class="flagged-item-top">
+              <div class="pin-anomaly">
+                <span class="pin-anomaly-ring"></span>
+                <span class="pin" style="--pin-c:var(--cat-voucher);width:36px;height:36px" data-fresh="new"><svg class="pin-icon" style="width:16px;height:16px"><use href="#ic-voucher"></use></svg></span>
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:15px;">星巴克買一送一券</div>
+                <div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">高雄市三民區 · 券票點 · 上架者 U-5021</div>
+              </div>
+            </div>
+            <span class="anomaly-tag"><svg><use href="#ic-warning"></use></svg>已標示異常</span>
+            <ul class="flag-reason-list">
+              <li><svg><use href="#ic-flag"></use></svg>2 件檢舉：券碼要求先私訊付款才提供</li>
+              <li><svg><use href="#ic-flag"></use></svg>命中關鍵字黑名單：「付款後」「私訊匯款」</li>
+            </ul>
+            <button class="btn btn-danger" id="openRemoveModalBtn" type="button">
+              <svg><use href="#ic-unpin"></use></svg>拔除此標記（強制下架）
+            </button>
+            <div class="removed-state" id="removedState">
+              <svg><use href="#ic-unpin"></use></svg>
+              <div>
+                <div style="font-weight:700;font-size:13.5px;">已拔除標記，物品已下架</div>
+                <div style="font-size:12px;color:var(--ink-faint);">已通知物主，並寫入稽核紀錄</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel legend-card">
+            <div class="legend-title"><svg><use href="#ic-warning"></use></svg>為什麼要兩段式確認</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+              <li>第一段「標示異常」只是把圖釘外圈變成紅色虛線，尚未真正下架，方便先讓其他 moderator 看到。</li>
+              <li>第二段一定要跳出對話框，並且要求輸入完全一致的物品標題才能啟用送出鍵——避免地圖介面「隨手一點」造成誤刪。</li>
+              <li>危險操作的紅色與虛線圈，跟分類圖釘的顏色語言完全分開，不會被誤讀成某種分類。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <p class="foot-note">ShareGood M13 前端重頭設計．定案版互動預覽——主體沿用方向二「在地地圖」，物品詳情頁的交接進度借用方向三「交接存根」的戳章造型（顏色已改回在地地圖色系）—— 本頁為靜態比較稿，非實際產品頁面</p>
+</div>
+
+<!-- ============ 強制下架二次確認 Modal ============ -->
+<div class="modal-backdrop" id="removeModalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="removeModalTitle">
+    <div class="modal-head">
+      <div class="icon-wrap"><svg><use href="#ic-warning"></use></svg></div>
+      <h2 class="modal-title" id="removeModalTitle">確認強制下架</h2>
+    </div>
+    <p class="modal-body-text">此操作會立即讓物品從所有使用者的地圖與列表消失，並通知物主。<strong style="color:var(--danger)">下架後無法復原</strong>，物主僅能提出申訴。請在下方輸入完整物品標題以確認：</p>
+    <div class="modal-quote">星巴克買一送一券</div>
+    <div>
+      <span class="field-label">請輸入上方物品標題</span>
+      <input type="text" id="removeConfirmInput" placeholder="請完整輸入：星巴克買一送一券" autocomplete="off">
+      <p class="hint-text" id="removeConfirmHint">輸入相符後，「確認下架」按鈕才會啟用。</p>
+    </div>
+    <div class="irreversible-note">
+      <svg><use href="#ic-warning"></use></svg>
+      <span>此為不可逆操作，將寫入稽核紀錄（AuditLog）並保留下架原因。</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="removeCancelBtn" type="button">取消</button>
+      <button class="btn btn-danger" id="removeConfirmBtn" type="button" disabled><svg><use href="#ic-unpin"></use></svg>確認下架</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg><use href="#ic-check"></use></svg><span id="toastText">已完成</span></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- 主題切換 ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  var themeIcon = document.getElementById('themeIcon');
+  var themeLabel = document.getElementById('themeLabel');
+  var currentTheme = null;
+
+  function applyThemeIcon(theme) {
+    var effective = theme;
+    if (!effective) {
+      effective = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    if (effective === 'dark') {
+      themeIcon.innerHTML = '<use href="#ic-moon"></use>';
+      themeLabel.textContent = '深色';
+    } else {
+      themeIcon.innerHTML = '<use href="#ic-sun"></use>';
+      themeLabel.textContent = '淺色';
+    }
+  }
+  applyThemeIcon(null);
+
+  themeBtn.addEventListener('click', function () {
+    var effective = currentTheme;
+    if (!effective) {
+      effective = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    currentTheme = effective === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', currentTheme);
+    applyThemeIcon(currentTheme);
+  });
+
+  /* ---------- 手機版漢堡選單 / 導覽抽屜 ---------- */
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var hamburgerIcon = document.getElementById('hamburgerIcon');
+  var navDrawer = document.getElementById('mobileNavDrawer');
+
+  function isDrawerOpen() { return navDrawer.classList.contains('open'); }
+
+  function openDrawer() {
+    navDrawer.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', '關閉導覽選單');
+    hamburgerIcon.innerHTML = '<use href="#ic-close"></use>';
+  }
+  function closeDrawer(returnFocus) {
+    if (!isDrawerOpen()) { return; }
+    navDrawer.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', '開啟導覽選單');
+    hamburgerIcon.innerHTML = '<use href="#ic-menu"></use>';
+    if (returnFocus) { hamburgerBtn.focus(); }
+  }
+
+  hamburgerBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (isDrawerOpen()) { closeDrawer(false); } else { openDrawer(); }
+  });
+  navDrawer.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function (e) {
+    if (isDrawerOpen() && !navDrawer.contains(e.target) && e.target !== hamburgerBtn && !hamburgerBtn.contains(e.target)) {
+      closeDrawer(false);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isDrawerOpen()) { closeDrawer(true); }
+  });
+
+  /* ---------- 六畫面導覽（桌面水平導覽列＋手機抽屜連結共用同一套邏輯） ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.navtab, .navtab-mobile'));
+  var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+
+  function showScreen(id) {
+    screens.forEach(function (s) { s.classList.toggle('active', s.id === id); });
+    tabs.forEach(function (t) {
+      if (t.dataset.target === id) { t.setAttribute('aria-current', 'page'); }
+      else { t.removeAttribute('aria-current'); }
+    });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      showScreen(t.dataset.target);
+      closeDrawer(false);
+    });
+  });
+
+  /* ---------- 畫面 1 → 畫面 2：點分區圖釘直接跳進物品卡 ---------- */
+  var zoneNames = {
+    taipei: '台北市', newtaipei: '新北市', taichung: '台中市',
+    tainan: '台南市', kaohsiung: '高雄市', hsinchu: '新竹市'
+  };
+  var zoneTiles = Array.prototype.slice.call(document.querySelectorAll('.zone-tile'));
+  var browseZoneLabel = document.getElementById('browseZoneLabel');
+  var currentZone = 'taipei';
+
+  var items = [
+    { title: 'IKEA 三人座沙發（含灰色椅套）', zone: 'taipei', cat: 'furniture', catLabel: '傢俱大型物', loc: '台北市大安區', fresh: 'recent', freshLabel: '2 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '兒童安全座椅（六歲以下適用）', zone: 'taipei', cat: 'furniture', catLabel: '傢俱大型物', loc: '台北市文山區', fresh: 'old', freshLabel: '6 天前', status: 'closed', statusLabel: '已被認領' },
+    { title: '全聯點數 500 點轉贈', zone: 'taipei', cat: 'voucher', catLabel: '點數好康', loc: '台北市信義區', fresh: 'new', freshLabel: '剛上架', status: 'open', statusLabel: '可留言認領' },
+    { title: '保養品試用組（未拆封）', zone: 'taipei', cat: 'beauty', catLabel: '美妝保養', loc: '台北市中山區', fresh: 'old', freshLabel: '5 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '二手嬰兒推車 Combi', zone: 'newtaipei', cat: 'furniture', catLabel: '母嬰同屬傢俱類展示', loc: '新北市板橋區', fresh: 'recent', freshLabel: '1 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '露營帳篷（4 人份，含地墊）', zone: 'newtaipei', cat: 'outdoor', catLabel: '運動戶外', loc: '新北市新莊區', fresh: 'new', freshLabel: '剛上架', status: 'pending', statusLabel: '認領審核中' },
+    { title: '落地電風扇（日立，附遙控器）', zone: 'newtaipei', cat: 'appliance', catLabel: '家電', loc: '新北市中和區', fresh: 'recent', freshLabel: '2 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '兒童繪本一箱（約 20 本）', zone: 'taichung', cat: 'books', catLabel: '書籍雜誌', loc: '台中市西屯區', fresh: 'new', freshLabel: '剛上架', status: 'open', statusLabel: '可留言認領' },
+    { title: '單人書桌（附層架）', zone: 'taichung', cat: 'furniture', catLabel: '傢俱大型物', loc: '台中市北屯區', fresh: 'old', freshLabel: '7 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '露營爐具組', zone: 'tainan', cat: 'outdoor', catLabel: '運動戶外', loc: '台南市東區', fresh: 'recent', freshLabel: '3 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '麥當勞 App 電子兌換券', zone: 'kaohsiung', cat: 'voucher', catLabel: '電子票券', loc: '高雄市苓雅區', fresh: 'new', freshLabel: '剛上架', status: 'open', statusLabel: '可留言認領' },
+    { title: '除濕機（三菱，運作正常）', zone: 'kaohsiung', cat: 'appliance', catLabel: '家電', loc: '高雄市三民區', fresh: 'recent', freshLabel: '1 天前', status: 'open', statusLabel: '可留言認領' },
+    { title: '全家咖啡兌換券 x3', zone: 'hsinchu', cat: 'voucher', catLabel: '優惠券', loc: '新竹市東區', fresh: 'recent', freshLabel: '2 天前', status: 'open', statusLabel: '可留言認領' }
+  ];
+
+  var catIconMap = {
+    furniture: 'ic-furniture', appliance: 'ic-appliance', beauty: 'ic-beauty',
+    books: 'ic-books', outdoor: 'ic-outdoor', voucher: 'ic-voucher'
+  };
+  var catColorVarMap = {
+    furniture: '--cat-furniture', appliance: '--cat-appliance', beauty: '--cat-beauty',
+    books: '--cat-books', outdoor: '--cat-outdoor', voucher: '--cat-voucher'
+  };
+  var statusClassMap = { open: 'open', pending: 'pending', closed: 'closed' };
+
+  var wall = document.getElementById('itemCardWall');
+  var currentCat = 'all';
+
+  function renderWall() {
+    wall.innerHTML = '';
+    var filtered = items.filter(function (it) {
+      var zoneMatch = it.zone === currentZone;
+      var catMatch = currentCat === 'all' || it.cat === currentCat;
+      return zoneMatch && catMatch;
+    });
+    if (filtered.length === 0) {
+      var empty = document.createElement('div');
+      empty.style.cssText = 'grid-column:1/-1;padding:30px;text-align:center;color:var(--ink-faint);font-size:13.5px;';
+      empty.textContent = '這個分區目前沒有符合的分類，換個圖例試試？';
+      wall.appendChild(empty);
+      return;
+    }
+    filtered.forEach(function (it) {
+      var card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'item-card';
+      card.setAttribute('data-cat', it.cat);
+      card.innerHTML =
+        '<div class="item-card-top">' +
+          '<span class="pin" style="--pin-c:var(' + catColorVarMap[it.cat] + ');width:26px;height:26px" data-fresh="' + it.fresh + '">' +
+            '<svg class="pin-icon" style="width:12px;height:12px"><use href="#' + catIconMap[it.cat] + '"></use></svg>' +
+          '</span>' +
+          '<span class="pin-fresh-tag">' + it.freshLabel + '</span>' +
+        '</div>' +
+        '<div class="item-card-title">' + it.title + '</div>' +
+        '<div class="item-card-meta"><span>' + it.loc + '</span><span>·</span><span>' + it.catLabel + '</span></div>' +
+        '<div class="item-card-foot"><span class="status-pill ' + statusClassMap[it.status] + '">' + it.statusLabel + '</span></div>';
+      card.addEventListener('click', function () { showScreen('screen-detail'); });
+      wall.appendChild(card);
+    });
+  }
+
+  zoneTiles.forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      zoneTiles.forEach(function (z) { z.classList.remove('is-active'); });
+      tile.classList.add('is-active');
+      currentZone = tile.dataset.zone;
+      browseZoneLabel.textContent = zoneNames[currentZone] || currentZone;
+      currentCat = 'all';
+      Array.prototype.slice.call(document.querySelectorAll('#catFilterRow .chip')).forEach(function (c) {
+        c.setAttribute('aria-pressed', c.dataset.cat === 'all' ? 'true' : 'false');
+      });
+      renderWall();
+      showScreen('screen-browse');
+    });
+  });
+
+  var catChips = Array.prototype.slice.call(document.querySelectorAll('#catFilterRow .chip'));
+  catChips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      catChips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+      currentCat = chip.dataset.cat;
+      renderWall();
+    });
+  });
+
+  renderWall();
+
+  /* ---------- 畫面 4 → 畫面 5：熱點點入展開清單 ---------- */
+  var hotspots = Array.prototype.slice.call(document.querySelectorAll('.hotspot'));
+  var queueLabel = document.getElementById('queueHotspotLabel');
+  var hotspotLabels = {
+    'taipei-voucher': '台北市 × 優惠券',
+    'kaohsiung-ticket': '高雄市 × 電子票券',
+    'taoyuan-message': '桃園市 × 私訊',
+    'newtaipei-baby': '新北市 × 母嬰用品',
+    'taichung-appliance': '台中市 × 家電'
+  };
+  hotspots.forEach(function (h) {
+    h.addEventListener('click', function () {
+      hotspots.forEach(function (x) { x.classList.remove('is-active'); });
+      h.classList.add('is-active');
+      queueLabel.textContent = hotspotLabels[h.dataset.hotspot] || h.dataset.hotspot;
+      showScreen('screen-admin-queue');
+    });
+  });
+
+  /* ---------- 畫面 5：狀態預覽 + 清單選取 ---------- */
+  var statusSelect = document.getElementById('statusSelect');
+  var statusPreview = document.getElementById('statusPreview');
+  var statusMeta = {
+    submitted: { label: '已送出', cls: 'pending' },
+    triaged: { label: '已分類', cls: 'pending' },
+    in_progress: { label: '處理中', cls: 'pending' },
+    resolved: { label: '已處理（成立）', cls: 'danger' },
+    rejected: { label: '已駁回（不成立）', cls: 'closed' },
+    closed: { label: '已結案', cls: 'closed' }
+  };
+  function refreshStatusPreview() {
+    var meta = statusMeta[statusSelect.value];
+    statusPreview.className = 'status-pill ' + meta.cls;
+    statusPreview.textContent = meta.label;
+  }
+  statusSelect.addEventListener('change', refreshStatusPreview);
+  refreshStatusPreview();
+
+  var queueRows = Array.prototype.slice.call(document.querySelectorAll('.queue-row'));
+  queueRows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      queueRows.forEach(function (r) { r.classList.remove('is-selected'); });
+      row.classList.add('is-selected');
+    });
+  });
+
+  document.getElementById('queueSubmitBtn').addEventListener('click', function () {
+    showToast('已更新此案件狀態');
+  });
+
+  /* ---------- 畫面 6：強制下架兩段式確認 ---------- */
+  var openBtn = document.getElementById('openRemoveModalBtn');
+  var backdrop = document.getElementById('removeModalBackdrop');
+  var cancelBtn = document.getElementById('removeCancelBtn');
+  var confirmBtn = document.getElementById('removeConfirmBtn');
+  var input = document.getElementById('removeConfirmInput');
+  var hint = document.getElementById('removeConfirmHint');
+  var removedState = document.getElementById('removedState');
+  var REQUIRED_TITLE = '星巴克買一送一券';
+
+  function openModal() {
+    backdrop.classList.add('open');
+    input.value = '';
+    confirmBtn.disabled = true;
+    hint.textContent = '輸入相符後，「確認下架」按鈕才會啟用。';
+    hint.style.color = 'var(--ink-faint)';
+    setTimeout(function () { input.focus(); }, 30);
+  }
+  function closeModal() { backdrop.classList.remove('open'); }
+
+  openBtn.addEventListener('click', openModal);
+  cancelBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function (e) { if (e.target === backdrop) { closeModal(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && backdrop.classList.contains('open')) { closeModal(); }
+  });
+
+  input.addEventListener('input', function () {
+    var match = input.value.trim() === REQUIRED_TITLE;
+    confirmBtn.disabled = !match;
+    if (input.value.length === 0) {
+      hint.textContent = '輸入相符後，「確認下架」按鈕才會啟用。';
+      hint.style.color = 'var(--ink-faint)';
+    } else if (match) {
+      hint.textContent = '標題相符，可以送出。';
+      hint.style.color = 'var(--success)';
+    } else {
+      hint.textContent = '標題尚未完全相符，請覆誦「' + REQUIRED_TITLE + '」。';
+      hint.style.color = 'var(--danger)';
+    }
+  });
+
+  confirmBtn.addEventListener('click', function () {
+    closeModal();
+    openBtn.style.display = 'none';
+    removedState.classList.add('show');
+    showToast('已拔除標記，此物品已下架');
+  });
+
+  /* ---------- Toast ---------- */
+  var toast = document.getElementById('toast');
+  var toastText = document.getElementById('toastText');
+  var toastTimer = null;
+  function showToast(msg) {
+    toastText.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+  }
+})();
+</script>
