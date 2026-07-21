@@ -70,6 +70,15 @@ export const NOTIFICATION_EVENT_TYPES = [
     defaultInAppEnabled: true,
     defaultExternalEnabled: false,
   },
+  {
+    // M12 交付內容 5（面交約定時間，docs/plan/m12-product-growth.md）：比照
+    // claim_accepted／handover_message 這類時效性高的既有事件，外部通知預設開——這正是
+    // 「降低 no-show」這個目標最需要觸及使用者的管道（規格明訂建議值）。
+    eventType: "handover_meetup_reminder",
+    label: "約定面交時間快到了",
+    defaultInAppEnabled: true,
+    defaultExternalEnabled: true,
+  },
 ] as const;
 
 export type NotificationEventType = (typeof NOTIFICATION_EVENT_TYPES)[number]["eventType"];

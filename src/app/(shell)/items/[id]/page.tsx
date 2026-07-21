@@ -144,6 +144,10 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   let isReceiver = false;
   let handoverId: string | null = null;
   let conversationId: string | null = null;
+  // M12 交付內容 5（面交約定時間）：只有 handover_pending 狀態的約定時間對雙方有意義
+  // （PATCH /api/handover/[id]/meetup 也只允許 status === "pending" 時修改），completed
+  // 之後不需要再顯示這個小工具。
+  let handoverScheduledAt: string | null = null;
   if (session?.user) {
     if (item.status === "reserved") {
       const [acceptedClaim, acceptedDirectShare] = await Promise.all([
@@ -160,6 +164,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
       isReceiver = handover?.receiverId === session.user.id;
       handoverId = handover?.id ?? null;
       conversationId = conversation?.id ?? null;
+      handoverScheduledAt = handover?.scheduledAt?.toISOString() ?? null;
     }
   }
 
@@ -406,6 +411,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
                 handoverId={handoverId}
                 conversationId={conversationId}
                 hasThanks={thanksMessage !== null}
+                scheduledAt={handoverScheduledAt}
               />
             </div>
           </div>

@@ -108,6 +108,14 @@ function describeNotification(type: string, payload: unknown): string {
   if (p.kind === "favorite_item_expiring") {
     return `你收藏的「${itemTitleOf(p)}」即將到期`;
   }
+  // M12 交付內容 5（面交約定時間，docs/plan/m12-product-growth.md）：同樣沿用「重用
+  // completion_confirmed type，payload.kind 判別」既定做法。
+  if (p.kind === "handover_meetup_reminder") {
+    const scheduledAt = typeof p.scheduledAt === "string" ? new Date(p.scheduledAt) : null;
+    const scheduledLabel =
+      scheduledAt && !Number.isNaN(scheduledAt.getTime()) ? formatTime(scheduledAt) : null;
+    return `「${itemTitleOf(p)}」的約定面交時間快到了${scheduledLabel ? `（${scheduledLabel}）` : ""}`;
+  }
   const count = mergedCountOf(payload);
   switch (type) {
     case "new_comment":

@@ -11,6 +11,7 @@ import { encryptCouponCode } from "@/lib/coupon-crypto";
 import { db } from "@/lib/db";
 import { FEATURE_FLAGS, getFeatureFlag } from "@/lib/feature-flags";
 import { checkIpThrottle, getClientIp, IpThrottleExceededError } from "@/lib/ip-throttle";
+import { validateBasicItemFields } from "@/lib/item-validation";
 import { listPublishedItems } from "@/lib/items";
 import { checkKeywordBlocklist } from "@/lib/keyword-blocklist";
 import { checkNonTransferableCouponType } from "@/lib/non-transferable-coupon-types";
@@ -18,29 +19,6 @@ import { containsTaiwanMobileNumber } from "@/lib/phone-guard";
 import { checkRateLimit, RateLimitExceededError } from "@/lib/rate-limit";
 import { checkUserRestriction } from "@/lib/restrictions";
 import { checkNonTransferableTicketType } from "@/lib/ticket-guard";
-
-const MIN_IMAGES = 1;
-const MAX_IMAGES = 5;
-
-type ImageInput = { thumbObjectId: string; mediumObjectId: string };
-
-function parseImages(value: unknown): ImageInput[] | null {
-  if (!Array.isArray(value) || value.length < MIN_IMAGES || value.length > MAX_IMAGES) return null;
-  const parsed: ImageInput[] = [];
-  for (const entry of value) {
-    if (
-      typeof entry !== "object" ||
-      entry === null ||
-      typeof (entry as Record<string, unknown>).thumbObjectId !== "string" ||
-      typeof (entry as Record<string, unknown>).mediumObjectId !== "string"
-    ) {
-      return null;
-    }
-    const { thumbObjectId, mediumObjectId } = entry as Record<string, string>;
-    parsed.push({ thumbObjectId, mediumObjectId });
-  }
-  return parsed;
-}
 
 // POST /api/items — 上架。M1 預設發布即公開；M2 起若 REQUIRE_REVIEW feature flag 開啟，
 // 改為先進 pending_review 等人工審核（見下方 requireReview 判斷）。
@@ -141,30 +119,19 @@ export async function POST(req: NextRequest) {
 
   const now = new Date();
   const body = await req.json().catch(() => null);
-  const title = typeof body?.title === "string" ? body.title.trim() : "";
-  const description = typeof body?.description === "string" ? body.description.trim() : "";
   const categoryId = typeof body?.categoryId === "string" ? body.categoryId : "";
   const cityId = typeof body?.cityId === "string" ? body.cityId : "";
-  const images = parseImages(body?.images);
 
-  if (title.length < 2 || title.length > 60) {
-    return jsonError("UNPROCESSABLE", "標題需為 2–60 個字");
+  // 標題／描述／圖片格式／關鍵字黑名單這段驗證邏輯抽到 src/lib/item-validation.ts
+  // 的 validateBasicItemFields()，跟 POST /api/items/batch 共用（見該檔案說明）。
+  const basicFields = await validateBasicItemFields(body);
+  if (!basicFields.ok) {
+    return jsonError("UNPROCESSABLE", basicFields.message);
   }
-  if (description.length < 1 || description.length > 1000) {
-    return jsonError("UNPROCESSABLE", "分享的話需為 1–1000 個字");
-  }
+  const { title, description, images } = basicFields.value;
+
   if (!categoryId || !cityId) {
     return jsonError("UNPROCESSABLE", "請選擇分類與縣市");
-  }
-  if (!images) {
-    return jsonError("UNPROCESSABLE", `請上傳 ${MIN_IMAGES}–${MAX_IMAGES} 張圖片`);
-  }
-
-  // M2 治理底線：關鍵字黑名單攔標題／描述，命中就擋（見 src/lib/keyword-blocklist.ts）。
-  const hitKeyword =
-    (await checkKeywordBlocklist(title)) ?? (await checkKeywordBlocklist(description));
-  if (hitKeyword) {
-    return jsonError("UNPROCESSABLE", "標題或描述包含不允許的內容，請修改後再送出");
   }
 
   const [category, city] = await Promise.all([
