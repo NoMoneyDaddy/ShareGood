@@ -16,6 +16,10 @@ type HandoverSectionProps = {
   conversationId: string | null;
   // completed 狀態才有意義：這個物品是否已經有一則感謝留言（見 page.tsx 查詢）。
   hasThanks: boolean;
+  // M12 交付內容 5（面交約定時間，docs/plan/m12-product-growth.md）：只有 handover_pending
+  // 狀態才會用到（PATCH /api/handover/[id]/meetup 也只允許 status === "pending" 時修改），
+  // 選填＋預設 null 讓「歷程」區塊（completed 狀態）沿用既有呼叫方式不必跟著改。
+  scheduledAt?: string | null;
 };
 
 // 交接與私訊區塊：只在物品進入 reserved／handover_pending／completed，且目前登入者是
@@ -29,6 +33,7 @@ export function HandoverSection({
   handoverId,
   conversationId,
   hasThanks,
+  scheduledAt = null,
 }: HandoverSectionProps) {
   if (!isOwner && !isReceiver) return null;
   if (
@@ -58,6 +63,7 @@ export function HandoverSection({
               handoverId={handoverId}
               conversationId={conversationId}
               isOwner={isOwner}
+              scheduledAt={scheduledAt}
             />
           ) : (
             // 正常情況下 handover_pending 一定有 handoverId／conversationId（page.tsx 查詢
@@ -117,10 +123,12 @@ function InProgressHandover({
   handoverId,
   conversationId,
   isOwner,
+  scheduledAt,
 }: {
   handoverId: string;
   conversationId: string;
   isOwner: boolean;
+  scheduledAt: string | null;
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState<"complete" | "no-show" | null>(null);
@@ -169,6 +177,9 @@ function InProgressHandover({
   return (
     <div className="space-y-3">
       <p className="text-sm text-ink-soft">物品正在交接中，跟對方私訊約時間地點吧。</p>
+      {/* M12 交付內容 5（面交約定時間，docs/plan/m12-product-growth.md）：緊鄰上方的面交
+          安全提示（A1）放置，任一方可設定/修改/清空，不需要雙方確認。 */}
+      <MeetupScheduler handoverId={handoverId} scheduledAt={scheduledAt} />
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline">
           <Link href={`/conversations/${conversationId}`}>前往私訊</Link>
@@ -206,6 +217,133 @@ function InProgressHandover({
           ))}
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
+    </div>
+  );
+}
+
+const MEETUP_DISPLAY_FORMATTER = new Intl.DateTimeFormat("zh-TW", {
+  timeZone: "Asia/Taipei",
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+// datetime-local input 需要「YYYY-MM-DDTHH:mm」這種不含時區資訊的本機時間字串；瀏覽器會
+// 用使用者裝置本身的時區顯示與解讀，本平台使用者實務上都在台灣，這裡不特別處理跨時區換算。
+function toLocalInputValue(iso: string | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+// 面交約定時間小工具（M12 交付內容 5，docs/plan/m12-product-growth.md）：任一方可設定/
+// 修改/清空，不需要雙方確認（規格明訂），送出後 router.refresh() 讓 page.tsx 重新查一次
+// HandoverRecord.scheduledAt，比照這個檔案其餘操作的既定寫法。
+function MeetupScheduler({
+  handoverId,
+  scheduledAt,
+}: {
+  handoverId: string;
+  scheduledAt: string | null;
+}) {
+  const router = useRouter();
+  const [editing, setEditing] = useState(scheduledAt === null);
+  const [value, setValue] = useState(() => toLocalInputValue(scheduledAt));
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  async function save(next: string | null) {
+    setSubmitting(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/handover/${handoverId}/meetup`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scheduledAt: next }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        setEditing(false);
+        router.refresh();
+      } else {
+        setError(data?.error?.message ?? "設定失敗，請再試一次");
+      }
+    } catch {
+      setError("網路連線異常，請再試一次");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!value || submitting) return;
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+      setError("時間格式不正確");
+      return;
+    }
+    save(parsed.toISOString());
+  }
+
+  const displayLabel = scheduledAt ? MEETUP_DISPLAY_FORMATTER.format(new Date(scheduledAt)) : null;
+
+  return (
+    <div className="rounded-lg border border-line bg-paper-2 px-3 py-2.5">
+      <p className="text-xs font-medium text-ink-soft">約定面交時間</p>
+      {!editing ? (
+        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <p className="text-sm text-ink">{displayLabel ?? "尚未約定時間"}</p>
+          <Button type="button" variant="outline" onClick={() => setEditing(true)}>
+            {displayLabel ? "修改" : "設定時間"}
+          </Button>
+          {displayLabel && (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={submitting}
+              onClick={() => save(null)}
+            >
+              {submitting ? (
+                <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+              ) : (
+                "清空"
+              )}
+            </Button>
+          )}
+        </div>
+      ) : (
+        <form onSubmit={submit} className="mt-1.5 flex flex-wrap items-center gap-2">
+          <input
+            type="datetime-local"
+            aria-label="約定面交時間"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            required
+            className="h-11 rounded-lg border border-line bg-card px-3 text-sm text-ink outline-hidden focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/20"
+          />
+          <Button type="submit" variant="brand" disabled={submitting || !value}>
+            {submitting ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+            ) : (
+              "儲存"
+            )}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              setValue(toLocalInputValue(scheduledAt));
+              setEditing(false);
+              setError("");
+            }}
+          >
+            取消
+          </Button>
+        </form>
+      )}
+      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
